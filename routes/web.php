@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeNomorSuratController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,6 @@ Route::post('/login', [AuthController::class, 'authenticate']);
 
 Route::get('/registration', [AuthController::class, 'registration']);
 Route::post('/registration', [AuthController::class, 'register']);
+
+//Penomoran Surat
+Route::get('/', [HomeNomorSuratController::class, 'index']);
