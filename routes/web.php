@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SuratMasukController;
+use App\Models\SuratMasuk;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +28,5 @@ Route::post('/login', [AuthController::class, 'authenticate']);
 
 Route::get('/registration', [AuthController::class, 'registration']);
 Route::post('/registration', [AuthController::class, 'register']);
+
+Route::resource('suratmasuk', SuratMasukController::class);
