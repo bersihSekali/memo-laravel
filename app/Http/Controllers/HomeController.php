@@ -8,10 +8,9 @@ class HomeController extends Controller
 {
     public function index(){
         $datas = [
-            'title' => 'Beranda',
-            'judul' => 'Beranda'
+            'title' => 'Pencatatan Memo'
         ];
     
-        return view('templates/home', $datas);
+        return view('templates.home', $datas);
     }
 }

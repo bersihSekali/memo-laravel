@@ -20,6 +20,14 @@
     <h1>Selamat {{ $salam }}</h1>
     
     <div class="container">
+        @if(session()->has('success'))
+            <div class="alert alert-success mt-3" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <a href="/nomorSurat/create" class="btn btn-info mt-3">Add Post</a>
+
         <div class="row">
             <div class="col">
                 <div class="card">
