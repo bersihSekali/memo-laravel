@@ -8,4 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class SuratMasuk extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'id',
+        'timestamps',
+        'otor_by',
+        'otor_status',
+        'created_by',
+        'nomor_surat',
+        'perihal',
+        'satuan_kerja_asal',
+        'departemen_asal',
+        'satuan_kerja_tujuan',
+        'departemen_tujuan',
+        'lampiran',
+        'checker',
+        'tanggal_disposisi',
+        'satuan_kerja_tujuan_disposisi',
+        'departemen_tujuan_disposisi',
+        'pesan_disposisi',
+        'lampiran_disposisi',
+        'tanggal_selesai',
+        'status',
+    ];
 }
