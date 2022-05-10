@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Nomor Surat | <?= $title; ?></title>
+  <title><?= $title; ?></title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -46,15 +46,15 @@
       <ul class="d-flex align-items-center">
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-              <i class="fas fa-user-secret fa-2xl"></i>
-              <i class="fas fa-user-alt fa-2xl"></i>
+            <i class="fas fa-user-secret fa-2xl"></i>
+            <i class="fas fa-user-alt fa-2xl"></i>
             <span class="d-none d-md-block dropdown-toggle ps-2"></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li>
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Log Out</span>
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Log Out</span>
               </a>
             </li>
           </ul><!-- End Profile Dropdown Items -->
@@ -66,12 +66,11 @@
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
     @if($title != 'Beranda')
-      @include('templates.sidebar')
+    @include('templates.sidebar')
     @endif
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
-    <h3><?= $judul; ?></h3>
     @yield('content')
   </main><!-- End #main -->
 
