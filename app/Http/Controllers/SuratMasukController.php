@@ -26,7 +26,9 @@ class SuratMasukController extends Controller
      */
     public function create()
     {
-        //
+        return view('suratmasuk/index', [
+            'title' => 'Surat Masuk'
+        ]);
     }
 
     /**

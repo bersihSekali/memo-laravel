@@ -10,8 +10,6 @@ class SuratMasuk extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
-        'timestamps',
         'otor_by',
         'otor_status',
         'created_by',
