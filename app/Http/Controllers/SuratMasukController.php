@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\SuratMasuk;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class SuratMasukController extends Controller
@@ -14,10 +16,13 @@ class SuratMasukController extends Controller
      */
     public function index()
     {
+        $id = Auth::id();
+        $user = User::where('id', $id)->first();
         $data = SuratMasuk::latest()->get();
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
-            'datas' => $data
+            'datas' => $data,
+            'user' => $user
         ]);
     }
 

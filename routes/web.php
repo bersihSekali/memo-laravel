@@ -24,7 +24,7 @@ use App\Models\SuratMasuk;
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/login', [AuthController::class, 'index']);
+Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
 Route::get('/registration', [AuthController::class, 'registration']);
@@ -33,4 +33,6 @@ Route::post('/registration', [AuthController::class, 'register']);
 //Penomoran Surat
 // Route::get('/nomorSurat', [NomorSuratController::class, 'index']);
 Route::resource('nomorSurat', NomorSuratController::class);
-Route::resource('suratmasuk', SuratMasukController::class);
+Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth');
+
+Route::post('/logout', [AuthController::class, 'logout']);
