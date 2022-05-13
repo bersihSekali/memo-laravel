@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
 
-class NomorSuratController extends Controller
+class OtorisasiSuratController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +17,11 @@ class NomorSuratController extends Controller
         $mails = SuratMasuk::latest()->get();
 
         $datas = [
-            'title' => 'Daftar Semua Surat',
+            'title' => 'Daftar Otorisasi Surat',
             'datas' => $mails
         ];
 
-        return view('nomorSurat.index', $datas);
+        return view('otorisasi.index', $datas);
     }
 
     /**
@@ -31,11 +31,7 @@ class NomorSuratController extends Controller
      */
     public function create()
     {
-        $datas = [
-            'title' => 'Tambah Surat'
-        ];
-
-        return view('nomorSurat.create', $datas);
+        //
     }
 
     /**
@@ -46,23 +42,7 @@ class NomorSuratController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request -> validate([
-            'created_by' => 'required',
-            'satuan_kerja_asal' => 'required',
-            'satuan_kerja_tujuan' => 'required',
-            'departemen_asal' => 'required',
-            'departemen_tujuan' => 'required',
-            'perihal' => 'required',
-        ]);
-        $validated['otor_status'] = '1';
-        // dd($validated);
-        $create = SuratMasuk::create($validated);
-
-        if(!$create){
-            return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal');    
-        }
-            
-        return redirect('/nomorSurat')->with('success', 'Pembuatan surat berhasil');
+        //
     }
 
     /**
@@ -73,13 +53,7 @@ class NomorSuratController extends Controller
      */
     public function show($id)
     {
-        $mails = SuratMasuk::find($id);   
-        $datas = [
-            'title' => 'Detil Surat',
-            'datas' => $mails
-        ];
-
-        return view('nomorSurat.index', $datas);
+        //
     }
 
     /**
@@ -100,9 +74,18 @@ class NomorSuratController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id) //Approved
     {
-        //
+        $datas = SuratMasuk::find($id);
+        $update[] = $datas['otor_status'] = '2';
+
+        $datas->update($update);
+        
+        if(!$datas){
+            return redirect('/otorisasi')->with('error', 'Update data failed!');    
+        } else {
+            return redirect('/otorisasi')->with('success', 'Update data success!');
+        }
     }
 
     /**
@@ -111,8 +94,17 @@ class NomorSuratController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id) //Disapproved
     {
-        //
+        $datas = SuratMasuk::find($id);
+        $update[] = $datas['otor_status'] = '3';
+
+        $datas->update($update);
+        
+        if(!$datas){
+            return redirect('/otorisasi')->with('error', 'Update data failed!');    
+        } else {
+            return redirect('/otorisasi')->with('success', 'Update data success!');
+        }
     }
 }

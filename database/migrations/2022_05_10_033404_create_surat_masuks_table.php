@@ -17,7 +17,7 @@ class CreateSuratMasuksTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('otor_by')->nullable();
-            $table->string('otor_status');
+            $table->string('otor_status')->default(1);
             $table->string('created_by');
             $table->string('nomor_surat')->unique()->nullable();
             $table->string('perihal');

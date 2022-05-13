@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NomorSuratController;
 use App\Http\Controllers\SuratMasukController;
+use App\Http\Controllers\OtorisasiSuratController;
 use App\Models\SuratMasuk;
 
 /*
@@ -34,3 +35,4 @@ Route::post('/registration', [AuthController::class, 'register']);
 // Route::get('/nomorSurat', [NomorSuratController::class, 'index']);
 Route::resource('nomorSurat', NomorSuratController::class);
 Route::resource('suratmasuk', SuratMasukController::class);
+Route::resource('otorisasi', OtorisasiSuratController::class);

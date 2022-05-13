@@ -26,21 +26,14 @@
         </a>
         <ul id="surat" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="/user/listSurat">
-                    <i class="fa-solid fa-envelopes-bulk"></i>
-                    <span>Daftar Surat</span>
-                </a>
-            </li>
-            
-            <li>
-                <a href="/user/formSurat">
+                <a href="/nomorSurat">
                     <i class="fa-solid fa-circle-plus"></i>
                     <span>Registrasi Surat</span>
                 </a>
             </li>
 
             <li>
-                <a href="/user/formSurat">
+                <a href="/otorisasi">
                     <i class="fa-solid fa-circle-plus"></i>
                     <span>Otorisasi</span>
                 </a>

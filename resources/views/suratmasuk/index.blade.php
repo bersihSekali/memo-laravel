@@ -30,7 +30,7 @@
                         </thead>
                         <tbody>
                             @foreach($datas as $data)
-                            @if($data['nomor_surat'])
+                            
                             <tr>
                                 <td class="align-top">{{$data['created_at']}}</td>
                                 <td class="align-top">{{$data['nomor_surat']}}</td>
@@ -50,7 +50,6 @@
                                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalhapus-"><i class="far fa-trash-alt"></i></button>
                                 </td>
                             </tr>
-                            @endif
                             @endforeach
                         </tbody>
                     </table>

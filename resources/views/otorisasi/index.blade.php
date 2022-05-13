@@ -2,18 +2,17 @@
 
 @section('content')
     <div class="container">
-        @if(session()->has('success'))
-            <div class="alert alert-success mt-3" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <h1 class="h3 mb-2 text-gray-800">{{ $title }}</h1>
         
-        <a href="/nomorSurat/create" class="btn btn-info my-3">Tambah Surat</a>
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-body py-3">
+                @if(session()->has('success'))
+                    <div class="alert alert-success mt-3" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                 
                 <div class="table-responsive">
                     <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
@@ -22,20 +21,20 @@
                                 <th scope="col">Asal</th>
                                 <th scope="col">Tujuan</th>
                                 <th scope="col">Perihal</th>
-                                <th scope="col">Lampiran</th>
                                 <th scope="col">PIC</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($datas as $data)
-                                <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
-                                    <td class="align-top">{{$data['created_at']}}</td>
-                                    <td class="align-top">{{$data['satuan_kerja_asal']}} {{$data['departemen_asal']}}</td>
-                                    <td class="align-top">{{$data['satuan_kerja_tujuan']}} {{$data['departemen_tujuan']}}</td>
-                                    <td class="align-top">{{$data['perihal']}}</td>
-                                    <td class="align-top">{{$data['lampiran']}} </td>
-                                    <td class="align-top">{{$data['created_by']}} </td>
-                                </tr>
+                                @if ($data['otor_status'] == '1')    
+                                    <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
+                                        <td class="align-top">{{$data['created_at']}}</td>
+                                        <td class="align-top">{{$data['satuan_kerja_asal']}} {{$data['departemen_asal']}}</td>
+                                        <td class="align-top">{{$data['satuan_kerja_tujuan']}} {{$data['departemen_tujuan']}}</td>
+                                        <td class="align-top">{{$data['perihal']}}</td>X
+                                        <td class="align-top">{{$data['created_by']}} </td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -62,6 +61,20 @@
                         <pre>Satuan Kerja Tujuan  :{{ $data['satuan_kerja_tujuan'] }}</pre>
                         <pre>Department Tujuan    :{{ $data['departemen_tujuan'] }}</pre>
                         <pre>Perihal              :{{ $data['perihal'] }}</pre>
+                    </div>
+
+                    <div class="modal-footer">
+                        <form action="/otorisasi/{{ $data['id'] }}" method="post">
+                            @csrf
+                            {{method_field('DELETE')}}
+                            <button type="submit" class="btn btn-danger">Tolak</button>
+                        </form>
+
+                        <form action="/otorisasi/{{ $data['id'] }}" method="post">
+                            @csrf
+                            {{method_field('PUT')}}
+                            <button type="submit" class="btn btn-primary">Setujui</button>
+                        </form>
                     </div>
                 </div>
             </div>
