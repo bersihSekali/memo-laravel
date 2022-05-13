@@ -21,26 +21,30 @@
 
 <ul class="sidebar-nav" id="sidebar-nav">
     <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#surat" data-bs-toggle="collapse" href="#">
-        <i class="fa-solid fa-envelope"></i><span>Surat</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="surat" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-        <a href="/user/listSurat">
-            <i class="fa-solid fa-envelopes-bulk"></i>
-            <span>Daftar Surat</span>
+        <a class="nav-link collapsed" data-bs-target="#surat" data-bs-toggle="collapse" href="#">
+            <i class="fa-solid fa-envelope"></i><span>Surat</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        </li>
-        
-        <li>
-            {{-- <?php if(in_groups('OPR') || in_groups('STL') || in_groups('STI') || in_groups('PPO') || in_groups('PTI')) : ?> --}}
+        <ul id="surat" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="/user/listSurat">
+                    <i class="fa-solid fa-envelopes-bulk"></i>
+                    <span>Daftar Surat</span>
+                </a>
+            </li>
+            
+            <li>
                 <a href="/user/formSurat">
                     <i class="fa-solid fa-circle-plus"></i>
                     <span>Registrasi Surat</span>
                 </a>
-            {{-- <?php endif; ?> --}}
-        </li>
-    </ul>
+            </li>
+
+            <li>
+                <a href="/user/formSurat">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <span>Otorisasi</span>
+                </a>
+            </li>
+        </ul>
     </li><!-- End Components Nav -->
 </ul>
-{{-- <?php endif; ?> --}}
