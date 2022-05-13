@@ -14,8 +14,10 @@ class SuratMasukController extends Controller
      */
     public function index()
     {
+        $data = SuratMasuk::latest()->get();
         return view('suratmasuk/index', [
-            'title' => 'Surat Masuk'
+            'title' => 'Surat Masuk',
+            'datas' => $data
         ]);
     }
 
@@ -26,7 +28,9 @@ class SuratMasukController extends Controller
      */
     public function create()
     {
-        //
+        return view('suratmasuk/index', [
+            'title' => 'Surat Masuk'
+        ]);
     }
 
     /**
