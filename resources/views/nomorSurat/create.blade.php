@@ -14,7 +14,7 @@
                 
                 <div class="form-group mb-3">
                     <label for="created_by" class="form-label ">PIC</label>
-                    <input type="text" class="form-control" id="created_by" name="created_by" autocomplete="off" required>
+                    <input type="text" class="form-control" id="created_by" name="created_by" autocomplete="off" value="{{$users->name}}" readonly>
                 </div>
 
                 <div class="form-group row">
@@ -76,8 +76,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="formFile" class="form-label">Input File</label>
-                    <input class="form-control" type="file" id="formFile" name="formFile">
+                    <label for="lampiran" class="form-label">Lampiran</label>
+                    <input class="form-control" type="file" id="lampiran" name="lampiran">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan</button>

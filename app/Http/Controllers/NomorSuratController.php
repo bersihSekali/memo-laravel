@@ -37,8 +37,11 @@ class NomorSuratController extends Controller
      */
     public function create()
     {
+        $id = Auth::id();
+        $user = User::where('id', $id)->first();
         $datas = [
-            'title' => 'Tambah Surat'
+            'title' => 'Tambah Surat',
+            'users' => $user
         ];
 
         return view('nomorSurat.create', $datas);
@@ -59,9 +62,11 @@ class NomorSuratController extends Controller
             'departemen_asal' => 'required',
             'departemen_tujuan' => 'required',
             'perihal' => 'required',
+            'lampiran' => 'required|mimes:pdf'
         ]);
         $validated['otor_status'] = '1';
-        // dd($validated);
+        $validated['lampiran'] = $request->file('lampiran')->store('lampiran');
+        
         $create = SuratMasuk::create($validated);
 
         if(!$create){
