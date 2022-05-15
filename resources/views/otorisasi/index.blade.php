@@ -26,7 +26,7 @@
                         </thead>
                         <tbody>
                             @foreach($datas as $data)
-                                @if ($data['otor_status'] == '1')    
+                                @if (($data['otor_status'] == '1') && ($data['satuan_kerja_tujuan'] == $users['satuan_kerja']))    
                                     <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                                         <td class="align-top">{{$data['created_at']}}</td>
                                         <td class="align-top">{{$data['satuan_kerja_asal']}} {{$data['departemen_asal']}}</td>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class NomorSuratController extends Controller
 {
@@ -14,12 +16,16 @@ class NomorSuratController extends Controller
      */
     public function index()
     {
+        $id = Auth::id();
+        $user = User::where('id', $id)->first();
         $mails = SuratMasuk::latest()->get();
 
         $datas = [
             'title' => 'Daftar Semua Surat',
-            'datas' => $mails
+            'datas' => $mails,
+            'users' => $user
         ];
+        // dd($datas);
 
         return view('nomorSurat.index', $datas);
     }
