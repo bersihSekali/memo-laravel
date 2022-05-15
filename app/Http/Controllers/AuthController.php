@@ -48,7 +48,8 @@ class AuthController extends Controller
             'name' => 'required|max:255|unique:users',
             'satuan_kerja' => 'required',
             'departemen' => 'required',
-            'password' => 'required|min:6|max:255'
+            'password' => 'required|min:6|max:255',
+            'level' => 'required'
         ]);
 
         $validated['password'] = hash::make($validated['password']);

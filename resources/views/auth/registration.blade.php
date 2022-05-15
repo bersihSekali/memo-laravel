@@ -100,6 +100,16 @@
                     </div>
 
                     <div class="col-12">
+                        <label for="level" class="form-label">Level</label>
+                        <select class="form-select" aria-label="Default select example" name="level" id="level">
+                            <option selected>Pilih Level</option>
+                            <option value="admin">Admin</option>
+                            <option value="head">Head</option>
+                            <option value="staff">staff</option>
+                          </select>
+                    </div>
+
+                    <div class="col-12">
                       <label for="password" class="form-label">Kata Sandi</label>
                       <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" required>
 
@@ -111,7 +121,7 @@
                     </div>
 
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Masuk</button>
+                      <button class="btn btn-primary w-100" type="submit">Daftar</button>
                     </div>
                   </form>
 
