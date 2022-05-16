@@ -64,8 +64,11 @@ class NomorSuratController extends Controller
             'perihal' => 'required',
             'lampiran' => 'required|mimes:pdf'
         ]);
-        $validated['otor_status'] = '1';
-        $validated['lampiran'] = $request->file('lampiran')->store('lampiran');
+        $file = $request->file('lampiran');
+        $fileName = $file->getClientOriginalName();
+        // dd($fileName);
+        // $validated['lampiran'] = $request->file('lampiran')->store('lampiran');
+        $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         
         $create = SuratMasuk::create($validated);
 

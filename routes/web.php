@@ -33,8 +33,8 @@ Route::post('/registration', [AuthController::class, 'register']);
 
 //Penomoran Surat
 // Route::get('/nomorSurat', [NomorSuratController::class, 'index']);
-Route::resource('nomorSurat', NomorSuratController::class);
-Route::resource('otorisasi', OtorisasiSuratController::class);
+Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
+Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth');
 Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth');
 
 Route::post('/logout', [AuthController::class, 'logout']);

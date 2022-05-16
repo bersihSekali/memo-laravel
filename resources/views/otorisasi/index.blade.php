@@ -31,7 +31,7 @@
                                         <td class="align-top">{{$data['created_at']}}</td>
                                         <td class="align-top">{{$data['satuan_kerja_asal']}} {{$data['departemen_asal']}}</td>
                                         <td class="align-top">{{$data['satuan_kerja_tujuan']}} {{$data['departemen_tujuan']}}</td>
-                                        <td class="align-top">{{$data['perihal']}}</td>X
+                                        <td class="align-top">{{$data['perihal']}}</td>
                                         <td class="align-top">{{$data['created_by']}} </td>
                                     </tr>
                                 @endif
@@ -61,6 +61,7 @@
                         <pre>Satuan Kerja Tujuan  :{{ $data['satuan_kerja_tujuan'] }}</pre>
                         <pre>Department Tujuan    :{{ $data['departemen_tujuan'] }}</pre>
                         <pre>Perihal              :{{ $data['perihal'] }}</pre>
+                        <pre>Lampiran             :<a href="/storage/{{ $data['lampiran'] }}"><button type="button" class="btn btn-info">Lihat Lampiran</button></a></pre>
                     </div>
 
                     <div class="modal-footer">
