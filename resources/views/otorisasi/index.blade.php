@@ -29,8 +29,8 @@
                                 @if (($data['otor_status'] == '1') && ($data['satuan_kerja_tujuan'] == $users['satuan_kerja']))    
                                     <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                                         <td class="align-top">{{$data['created_at']}}</td>
-                                        <td class="align-top">{{ $data->satuanKerja['satuan_kerja'] }} {{ $data->departemen['departemen'] }}</td>
-                                        <td class="align-top">{{$data['satuan_kerja_tujuan']}} {{$data['departemen_tujuan']}}</td>
+                                        <td class="align-top">{{ $data->satuanKerjaAsal['satuan_kerja'] }} {{ $data->departemenAsal['departemen'] }}</td>
+                                        <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} {{ $data->departemenTujuan['departemen'] }}</td>
                                         <td class="align-top">{{$data['perihal']}}</td>
                                         <td class="align-top">{{$data['created_by']}} </td>
                                     </tr>
