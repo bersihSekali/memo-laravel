@@ -29,4 +29,12 @@ class SuratMasuk extends Model
         'tanggal_selesai',
         'status',
     ];
+
+    public function satuanKerja() {
+        return $this->belongsTo(SatuanKerja::class, 'satuan_kerja_asal');
+    }
+
+    public function departemen() {
+        return $this->belongsTo(Departemen::class, 'departemen_asal');
+    }
 }
