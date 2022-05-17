@@ -21,15 +21,27 @@ class CreateSuratMasuksTable extends Migration
             $table->string('created_by');
             $table->string('nomor_surat')->unique()->nullable();
             $table->string('perihal');
-            $table->string('satuan_kerja_asal');
-            $table->string('departemen_asal');
-            $table->string('satuan_kerja_tujuan');
-            $table->string('departemen_tujuan');
+
+            $table->unsignedBigInteger('satuan_kerja_asal');
+            $table->unsignedBigInteger('departemen_asal');
+            $table->unsignedBigInteger('satuan_kerja_tujuan');
+            $table->unsignedBigInteger('departemen_tujuan');
+
+            $table->foreign('satuan_kerja_asal')->references('id')->on('satuan_kerjas');
+            $table->foreign('departemen_asal')->references('id')->on('departemens');
+            $table->foreign('satuan_kerja_tujuan')->references('id')->on('satuan_kerjas');
+            $table->foreign('departemen_tujuan')->references('id')->on('departemens');
+
             $table->string('lampiran')->nullable();
             $table->string('checker')->nullable();
             $table->datetime('tanggal_disposisi')->nullable();
-            $table->string('satuan_kerja_tujuan_disposisi')->nullable();
-            $table->string('departemen_tujuan_disposisi')->nullable();
+
+            $table->unsignedBigInteger('satuan_kerja_tujuan_disposisi');
+            $table->unsignedBigInteger('departemen_tujuan_disposisi');
+
+            $table->foreign('satuan_kerja_tujuan_disposisi')->references('id')->on('satuan_kerjas')->nullable();
+            $table->foreign('departemen_tujuan_disposisi')->references('id')->on('departemens')->nullable();
+
             $table->string('pesan_disposisi')->nullable();
             $table->string('lampiran_disposisi')->nullable();
             $table->datetime('tanggal_selesai')->nullable();

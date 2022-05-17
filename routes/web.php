@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NomorSuratController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\OtorisasiSuratController;
+use App\Http\Controllers\SatuanKerjaController;
+use App\Http\Controllers\DepartemenController;
 use App\Models\SuratMasuk;
 
 /*
@@ -24,6 +26,9 @@ use App\Models\SuratMasuk;
 // });
 
 Route::get('/', [HomeController::class, 'index'])->middleware('auth');
+
+Route::resource('satuanKerja', SatuanKerjaController::class);
+Route::resource('departemen', DepartemenController::class);
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
