@@ -20,26 +20,12 @@
             <div class="form-group row">
                 <div class="col-sm-6 mb-3">
                     <label for="satuan_kerja_asal" class="form-label">Satuan Kerja Asal</label>
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja_asal" id="satuan_kerja_asal">
-                        <option selected> ---- </option>
-                        <option value="1">SKTI & LOG</option>
-                        <option value="2">PPO</option>
-                        <option value="3">PPO</option>
-                        <option value="4">OPR</option>
-                        <option value="5">PTI</option>
-                    </select>
+                    <input type="text" class="form-control" id="satuan_kerja_tujuan" name="satuan_kerja_tujuan" autocomplete="off" value="{{ $users->satuanKerja['satuan_kerja'] }}" readonly>
                 </div>
 
                 <div class="col-sm-6 mb-3">
                     <label for="departemen_asal" class="form-label">Department Asal</label>
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen_asal" id="departemen_asal">
-                        <option selected> ---- </option>
-                        <option value="1">Department 1</option>
-                        <option value="2">Department 2</option>
-                        <option value="3">Department 3</option>
-                        <option value="4">Department 4</option>
-                        <option value="5">Department 5</option>
-                    </select>
+                    <input type="text" class="form-control" id="departemen_asal" name="departemen_asal" autocomplete="off" value="{{ $users->departemenTable['departemen'] }}" readonly>
                 </div>
             </div>
 
