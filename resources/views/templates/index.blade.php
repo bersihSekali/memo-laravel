@@ -44,21 +44,10 @@
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
-        <li class="nav-item dropdown pe-3">
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <i class="fas fa-user-secret fa-2xl"></i>
-            <i class="fas fa-user-alt fa-2xl"></i>
-            <span class="d-none d-md-block dropdown-toggle ps-2"></span>
-          </a><!-- End Profile Iamge Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li>
-              <i class="bi bi-box-arrow-right"></i>
-              <span>Log Out</span>
-              </a>
-            </li>
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
+        <form action="/logout" method="post">
+          @csrf
+          <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-from-bracket fa-2xl mr-5"></i></button>
+        </form>
       </ul>
     </nav><!-- End Icons Navigation -->
   </header><!-- End Header -->
@@ -74,12 +63,7 @@
     @yield('content')
   </main><!-- End #main -->
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      {{-- &copy; Copyright <strong><span><img src="{{url('assets/img/bcasLogo.jpeg" alt="" width="100"></span></strong>. All Rights Reserved --}}
-    </div>
-  </footer><!-- End Footer -->
+  
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

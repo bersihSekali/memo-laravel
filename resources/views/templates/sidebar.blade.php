@@ -26,7 +26,7 @@
         </a>
         <ul id="surat" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="/nomorSurat">
+                <a href="/nomorSurat/create">
                     <i class="fa-solid fa-circle-plus"></i>
                     <span>Registrasi Surat</span>
                 </a>

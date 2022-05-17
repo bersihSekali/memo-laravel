@@ -66,8 +66,6 @@ class NomorSuratController extends Controller
         ]);
         $file = $request->file('lampiran');
         $fileName = $file->getClientOriginalName();
-        // dd($fileName);
-        // $validated['lampiran'] = $request->file('lampiran')->store('lampiran');
         $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         
         $create = SuratMasuk::create($validated);
