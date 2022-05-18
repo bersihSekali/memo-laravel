@@ -33,7 +33,9 @@ class CreateSuratMasuksTable extends Migration
             $table->foreign('departemen_tujuan')->references('id')->on('departemens');
 
             $table->string('lampiran')->nullable();
-            $table->string('checker')->nullable();
+
+            $table->unsignedBigInteger('checker')->nullable();
+
             $table->datetime('tanggal_disposisi')->nullable();
 
             $table->unsignedBigInteger('satuan_kerja_tujuan_disposisi')->nullable();

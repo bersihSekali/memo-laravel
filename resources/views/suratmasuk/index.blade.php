@@ -12,6 +12,11 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-body py-3">
+                @if(session()->has('success'))
+                <div class="alert alert-success mt-3" role="alert">
+                    {{ session('success') }}
+                </div>
+                @endif
                 <div class="table-responsive">
                     <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
@@ -40,21 +45,21 @@
                                 <td class="align-top">{{$data['perihal']}}</td>
                                 <td class="align-top">{{$data['lampiran']}} </td>
                                 @if($data['checker'])
-                                <td class="align-top text-center">$data['checker']</td>
+                                <td class="align-top text-center">{{$data->checkerUser['name']}}</td>
                                 @elseif($users['level'] == 'admin')
                                 <td>-</td>
                                 @else
                                 <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalChecker-{{$data['id']}}">+</button></td>
                                 @endif
                                 @if($data['tanggal_disposisi'])
-                                <td class="align-top text-center">$data['tanggal_disposisi']</td>
+                                <td class="align-top text-center">{{$data['tanggal_disposisi']}}</td>
                                 @elseif($users['level'] == 'admin')
                                 <td>-</td>
                                 @else
                                 <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalDisposisi-{{$data['id']}}">+</button></td>
                                 @endif
                                 @if($data['status'])
-                                <td class="align-top text-center">Diselesaikan pada $data['tanggal_selesai']</td>
+                                <td class="align-top text-center">Diselesaikan pada {{$data['tanggal_selesai']}}</td>
                                 @elseif($users['level'] == 'admin')
                                 <td>Belum diselesaikan</td>
                                 @else
@@ -121,13 +126,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalCheckerLabel">Tambah sebagai checker</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/checker" method="post">
+            <form action="/suratMasuk/{{$data['id']}}" method="post">
                 @csrf
+                {{method_field('PUT')}}
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja" id="satuan_kerja">
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="checker" id="checker">
                             <option selected> ---- </option>
                             @foreach($checker as $item)
                             <option value="{{$item['id']}}">{{$item['name']}} ({{$item->satuanKerjaTable['satuan_kerja']}} - {{$item->departemenTable['departemen']}})</option>
@@ -136,8 +142,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" href="">Simpan</a>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" type="submit">Simpan</button>
                 </div>
             </form>
         </div>
@@ -151,14 +157,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalSelesaiLabel">Selesaikan Memo Masuk</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/selesai" method="post">
+            <form action="/suratMasuk/{{$data['id']}}" method="post">
                 @csrf
                 <div class="modal-body">Klik tombol "Akhiri" di bawah untuk mengakhiri pemeriksaan.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" href="">Selesaikan</a>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" type="submit">Selesaikan</button>
                 </div>
             </form>
         </div>
@@ -172,7 +178,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalDisposisiLabel">Tambah Disposisi</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="/disposisi" method="post">
                 @csrf
@@ -198,7 +204,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                     <button type="button submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>

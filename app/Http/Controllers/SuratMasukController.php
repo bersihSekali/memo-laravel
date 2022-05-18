@@ -17,9 +17,9 @@ class SuratMasukController extends Controller
     public function index()
     {
         $id = Auth::id();
-        $user = User::where('id', $id)->first();
+        $user = User::find($id);
         $checker = User::latest()->get();
-        $data = SuratMasuk::latest()->get();
+        $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])->latest()->get();
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
             'datas' => $data,
@@ -80,9 +80,20 @@ class SuratMasukController extends Controller
      * @param  \App\Models\SuratMasuk  $suratMasuk
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SuratMasuk $suratMasuk)
+    public function update(Request $request, $id)
     {
-        //
+        $update = SuratMasuk::find($id);
+        if (!$update) {
+            return redirect('/suratMasuk')->with('error', 'Data not Found');
+        }
+        $update->checker = $request['checker'];
+
+        $update->save();
+
+        if (!$update) {
+            return redirect('/suratMasuk')->with('error', 'Update Failed');
+        }
+        return redirect('/suratMasuk')->with('success', 'Update Success');
     }
 
     /**

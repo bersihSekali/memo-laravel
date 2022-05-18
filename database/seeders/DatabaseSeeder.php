@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'satuan_kerja' => 'SKTILOG'
         ]);
         SatuanKerja::create([
-            'satuan_kerja' => 'PPO'
+            'satuan_kerja' => 'SKAI'
         ]);
         SatuanKerja::create([
             'satuan_kerja' => 'OPR'
@@ -36,11 +36,23 @@ class DatabaseSeeder extends Seeder
 
         Departemen::create([
             'satuan_kerja' => '1',
-            'departemen' => 'SKTILOG 1'
+            'departemen' => 'LOGISTIK'
         ]);
         Departemen::create([
             'satuan_kerja' => '1',
-            'departemen' => 'SKTILOG 2'
+            'departemen' => 'SISTEM PROSEDUR & PENDUKUNG OPERASI'
+        ]);
+        Departemen::create([
+            'satuan_kerja' => '1',
+            'departemen' => 'PENGEMBANGAN TEKNOLOGI INFORMASI'
+        ]);
+        Departemen::create([
+            'satuan_kerja' => '2',
+            'departemen' => 'AUDIT INTERNAL'
+        ]);
+        Departemen::create([
+            'satuan_kerja' => '2',
+            'departemen' => 'AUDIT TEKNOLOGI INFORMASI'
         ]);
 
         User::create([
