@@ -22,7 +22,7 @@ class SuratMasukController extends Controller
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
             'datas' => $data,
-            'user' => $user
+            'users' => $user
         ]);
     }
 

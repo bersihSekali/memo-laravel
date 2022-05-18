@@ -1,16 +1,8 @@
 @extends('templates.index')
 
 @section('content')
-<!-- Begin Page Content -->
-<div class="container-fluid">
-
     <!-- Page Heading -->
     <div class="container-fluid">
-        <form action="/logout" method="post">
-            @csrf
-            <button type="submit" class="btn btn-warning btn-sm">Logout</button>
-        </form>
-
         <!-- Page Heading -->
         <h1 class="h3 mb-2 text-gray-800">Daftar Memo</h1>
         <!-- DataTales Example -->
@@ -29,7 +21,7 @@
                                 <th scope="col">Checker</th>
                                 <th scope="col">Disposisi</th>
                                 <th scope="col">Status</th>
-                                @if($user['level'] == 'admin')
+                                @if($users['level'] == 'admin')
                                 <th scope="col">Aksi</th>
                                 @endif
                             </tr>
@@ -40,8 +32,8 @@
                             <tr>
                                 <td class="align-top">{{$data['created_at']}}</td>
                                 <td class="align-top">{{$data['nomor_surat']}}</td>
-                                <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} {{$data->departemenAsal['departemen']}}</td>
-                                <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} {{ $data->departemenTujuan['departemen'] }}</td>
+                                <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
+                                <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                                 <td class="align-top">{{$data['perihal']}}</td>
                                 <td class="align-top">{{$data['lampiran']}} </td>
                                 @if($data['checker'])
