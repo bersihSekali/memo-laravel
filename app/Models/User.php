@@ -26,11 +26,13 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function satuanKerja() {
+    public function satuanKerja()
+    {
         return $this->belongsTo(SatuanKerja::class, 'satuan_kerja');
     }
 
-    public function departemenTable() {
+    public function departemenTable()
+    {
         return $this->belongsTo(Departemen::class, 'departemen');
     }
 
@@ -56,10 +58,5 @@ class User extends Authenticatable
     public function satuanKerjaTable()
     {
         return $this->belongsTo(SatuanKerja::class, 'satuan_kerja');
-    }
-
-    public function departemenTable()
-    {
-        return $this->belongsTo(Departemen::class, 'departemen');
     }
 }

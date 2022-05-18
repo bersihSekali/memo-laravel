@@ -25,7 +25,7 @@
                                 <th scope="col">Checker</th>
                                 <th scope="col">Disposisi</th>
                                 <th scope="col">Status</th>
-                                @if($user['level'] == 'admin')
+                                @if($users['level'] == 'admin')
                                 <th scope="col">Aksi</th>
                                 @endif
                             </tr>
@@ -41,26 +41,26 @@
                                 <td class="align-top">{{$data['lampiran']}} </td>
                                 @if($data['checker'])
                                 <td class="align-top text-center">$data['checker']</td>
-                                @elseif($user['level'] == 'admin')
+                                @elseif($users['level'] == 'admin')
                                 <td>-</td>
                                 @else
                                 <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalChecker-{{$data['id']}}">+</button></td>
                                 @endif
                                 @if($data['tanggal_disposisi'])
                                 <td class="align-top text-center">$data['tanggal_disposisi']</td>
-                                @elseif($user['level'] == 'admin')
+                                @elseif($users['level'] == 'admin')
                                 <td>-</td>
                                 @else
                                 <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalDisposisi-{{$data['id']}}">+</button></td>
                                 @endif
                                 @if($data['status'])
                                 <td class="align-top text-center">Diselesaikan pada $data['tanggal_selesai']</td>
-                                @elseif($user['level'] == 'admin')
+                                @elseif($users['level'] == 'admin')
                                 <td>Belum diselesaikan</td>
                                 @else
                                 <td class="align-top text-center"><button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{$data['id']}}">Selesaikan</button></td>
                                 @endif
-                                @if($user['level'] == 'admin')
+                                @if($users['level'] == 'admin')
                                 <td class="align-top">
                                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit-"><i class="fas fa-pen-square"></i></button>
                                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalhapus-"><i class="far fa-trash-alt"></i></button>
