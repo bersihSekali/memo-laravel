@@ -26,6 +26,14 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function satuanKerja() {
+        return $this->belongsTo(SatuanKerja::class, 'satuan_kerja');
+    }
+
+    public function departemenTable() {
+        return $this->belongsTo(Departemen::class, 'departemen');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
