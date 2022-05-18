@@ -25,7 +25,7 @@ use App\Models\SuratMasuk;
 //     return view('templates/index');
 // });
 
-Route::get('/', [HomeController::class, 'index'])->middleware('auth');
+Route::get('/', [HomeController::class, 'index']);
 
 Route::resource('satuanKerja', SatuanKerjaController::class);
 Route::resource('departemen', DepartemenController::class);

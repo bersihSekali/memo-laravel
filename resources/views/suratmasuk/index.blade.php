@@ -40,8 +40,8 @@
                             <tr>
                                 <td class="align-top">{{$data['created_at']}}</td>
                                 <td class="align-top">{{$data['nomor_surat']}}</td>
-                                <td class="align-top">{{$data['satuan_kerja_asal']}} {{$data['departemen_asal']}}</td>
-                                <td class="align-top">{{$data['satuan_kerja_tujuan']}} {{$data['departemen_tujuan']}}</td>
+                                <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} {{$data->departemenAsal['departemen']}}</td>
+                                <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} {{ $data->departemenTujuan['departemen'] }}</td>
                                 <td class="align-top">{{$data['perihal']}}</td>
                                 <td class="align-top">{{$data['lampiran']}} </td>
                                 @if($data['checker'])
