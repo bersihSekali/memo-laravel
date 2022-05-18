@@ -44,4 +44,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function satuanKerjaTable()
+    {
+        return $this->belongsTo(SatuanKerja::class, 'satuan_kerja');
+    }
+
+    public function departemenTable()
+    {
+        return $this->belongsTo(Departemen::class, 'departemen');
+    }
 }

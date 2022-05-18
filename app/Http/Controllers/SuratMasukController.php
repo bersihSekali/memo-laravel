@@ -18,11 +18,13 @@ class SuratMasukController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
+        $checker = User::latest()->get();
         $data = SuratMasuk::latest()->get();
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
             'datas' => $data,
-            'user' => $user
+            'user' => $user,
+            'checker' => $checker
         ]);
     }
 
