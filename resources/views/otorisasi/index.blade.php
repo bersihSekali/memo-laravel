@@ -14,7 +14,7 @@
                 @endif
                  
                 <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" cellspacing="0">
+                    <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th scope="col">Tanggal</th>
@@ -28,7 +28,7 @@
                             @foreach($datas as $data)
                                 @if (($data['otor_status'] == '1') && ($data['satuan_kerja_asal'] == $users['satuan_kerja']))    
                                     <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
-                                        <td class="align-top">{{$data['created_at']}}</td>
+                                        <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
                                         <td class="align-top">{{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
                                         <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                                         <td class="align-top">{{$data['perihal']}}</td>
@@ -55,7 +55,7 @@
 
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table style="width:100%">
+                        <table id="tabel-data" style="width:100%">
                             <tr>
                                 <td>Tanggal Registrasi</td>
                                 <td>: {{ $data->created_at }}</td>

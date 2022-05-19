@@ -28,7 +28,7 @@
                 @endif
                  
                 <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" cellspacing="0">
+                    <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th scope="col">Tanggal</th>
@@ -43,12 +43,26 @@
                             @foreach($datas as $data)
                                 @if (($data['satuan_kerja_asal'] == $users['satuan_kerja']))    
                                     <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
-                                        <td class="align-top">{{$data['created_at']}}</td>
+                                        <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
                                         <td class="align-top">{{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
                                         <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                                         <td class="align-top">{{$data['perihal']}}</td>
                                         <td class="align-top">{{$data['created_by']}} </td>
-                                        <td class="align-top">{{$data['otor_status']}} </td>
+                                        <td class="align-top">
+                                            @if ($data->otor_status == '2')
+                                                <span class="badge bg-success">
+                                                    Disetujui {{ $data->otor_by }} <br>
+                                                    at: {{ date("Y-m-d", strtotime($data->tanggal_otor)) }}
+                                                </span>
+                                            @elseif ($data->otor_status == '3')
+                                                <span class="badge bg-warning">
+                                                    Ditolak {{ $data->otor_by }} <br>
+                                                    at: {{ date("Y-m-d", strtotime($data->tanggal_otor)) }}
+                                                </span>
+                                            @else
+                                                <span class="badge bg-secondary">Pending</span>
+                                            @endif 
+                                        </td>
                                     </tr>
                                 @endif
                             @endforeach
@@ -71,7 +85,7 @@
 
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table style="width:100%">
+                        <table id="tabel-data" style="width:100%">
                             <tr>
                                 <td>Tanggal Registrasi</td>
                                 <td>: {{ $data->created_at }}</td>

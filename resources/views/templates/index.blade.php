@@ -21,6 +21,10 @@
     <script defer src="{{url('assets/fontawesome/js/brands.js')}}"></script>
     <script defer src="{{url('assets/fontawesome/js/solid.js')}}"></script>
     <script defer src="{{url('assets/fontawesome/js/fontawesome.js')}}"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="{{url('assets/dataTables/jquery.dataTables.min.css')}}">
+    <script src="{{url('assets/dataTables/jquery.min.js')}}"></script>
+    <script src="{{url('assets/dataTables/jquery.dataTables.min.js')}}"></script>
   </head>
   <body >
     <div class="page">
@@ -38,5 +42,6 @@
     <!-- Tabler Core -->
     <script src="{{url('assets/dist/js/tabler.min.js')}}" defer></script>
     <script src="{{url('assets/dist/js/demo.min.js')}}" defer></script>
+    <script src="{{url('assets/dataTables/table.js')}}"></script>
   </body>
 </html>
