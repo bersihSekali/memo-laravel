@@ -28,7 +28,7 @@
                 <div class="col-sm-6 mb-3">
                     <label for="departemen_asal" class="form-label">Department Asal</label>
                     <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen_asal" id="departemen_asal">
-                        <option selected value="{{ $users->departemen}}"> {{ $users->departemenTable['departemen'] }} </option>
+                        <option value="{{ $users->departemen}}"> {{ $users->departemenTable['departemen'] }} </option>
                     </select>
                 </div>
             </div>
