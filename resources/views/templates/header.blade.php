@@ -37,6 +37,8 @@
     </div>
   </div>
 </header>
+
+
 <div class="navbar-expand-md">
   <div class="collapse navbar-collapse" id="navbar-menu">
     <div class="navbar navbar-light">
@@ -51,83 +53,69 @@
             </a>
           </li>
 
-          <div class="navbar-expand-md">
-            <div class="collapse navbar-collapse" id="navbar-menu">
-              <div class="navbar navbar-light">
-                <div class="container-xl">
-                  <ul class="navbar-nav">
-                    <li class="nav-item">
-                      <a class="nav-link" href="/">
-                        <i class="fas fa-home"></i>
-                        <span class="nav-link-title ms-1">
-                          Home
-                        </span>
-                      </a>
-                    </li>
+          @if ($users->level == 'admin')
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+              <i class="fas fa-users"></i>
+              <span class="nav-link-title ms-1">
+                Admin
+              </span>
+            </a>
 
-                    @if ($users->level == 'admin')
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                        <i class="fas fa-users"></i>
-                        <span class="nav-link-title ms-1">
-                          Admin
-                        </span>
-                      </a>
-
-                      <div class="dropdown-menu">
-                        <div class="dropdown-menu-columns">
-                          <div class="dropdown-menu-column">
-                            <a class="dropdown-item" href="/listuser">
-                              Daftar Pengguna
-                            </a>
-                            <a class="dropdown-item" href="/registration">
-                              Tambah Pengguna
-                            </a>
-                          </div>
-                        </div>
-                    </li>
-                    @endif
-
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                        <i class="fas fa-envelope"></i>
-                        <span class="nav-link-title ms-1">
-                          Surat
-                        </span>
-                      </a>
-
-                      <div class="dropdown-menu">
-                        <div class="dropdown-menu-columns">
-                          <div class="dropdown-menu-column">
-                            <a class="dropdown-item" href="/nomorSurat">
-                              Registrasi Surat
-                            </a>
-                            @if ($users->level == 'head')
-                            <a class="dropdown-item" href="/otorisasi">
-                              Otorisasi Surat
-                            </a>
-                            @endif
-
-                            <a class="dropdown-item" href="/suratMasuk">
-                              Surat Masuk
-                            </a>
-
-                            <a class="dropdown-item" href="">
-                              Disposisi Masuk
-                            </a>
-
-                            <a class="dropdown-item" href="/suratKeluar">
-                              Surat Keluar
-                            </a>
-
-                            <a class="dropdown-item" href="">
-                              Generate Laporan
-                            </a>
-                          </div>
-                        </div>
-                    </li>
-                  </ul>
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="/listuser">
+                    Daftar Pengguna
+                  </a>
+                  <a class="dropdown-item" href="/registration">
+                    Tambah Pengguna
+                  </a>
                 </div>
               </div>
-            </div>
-          </div>
+          </li>
+          @endif
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+              <i class="fas fa-envelope"></i>
+              <span class="nav-link-title ms-1">
+                Surat
+              </span>
+            </a>
+
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="/nomorSurat">
+                    Registrasi Surat
+                  </a>
+                  @if ($users->level == 'head')
+                  <a class="dropdown-item" href="/otorisasi">
+                    Otorisasi Surat
+                  </a>
+                  @endif
+
+                  <a class="dropdown-item" href="/suratMasuk">
+                    Surat Masuk
+                  </a>
+
+                  <a class="dropdown-item" href="">
+                    Disposisi Masuk
+                  </a>
+
+                  <a class="dropdown-item" href="/suratKeluar">
+                    Surat Keluar
+                  </a>
+
+                  <a class="dropdown-item" href="">
+                    Generate Laporan
+                  </a>
+                </div>
+              </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -89,7 +89,19 @@ class SuratMasukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $update = SuratMasuk::find($id);
+        if (!$update) {
+            return redirect('/suratMasuk')->with('error', 'Data not Found');
+        }
+        $update->tanggal_selesai = date("Y-m-d");
+        $update->status = 1;
+
+        $update->save();
+
+        if (!$update) {
+            return redirect('/suratMasuk')->with('error', 'Update Failed');
+        }
+        return redirect('/suratMasuk')->with('success', 'Update Success');
     }
 
     /**

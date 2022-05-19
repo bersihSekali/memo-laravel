@@ -42,20 +42,20 @@
                             <td class="align-top">{{$data['lampiran']}} </td>
                             @if($data['checker'])
                             <td class="align-top text-center">{{$data->checkerUser['name']}}</td>
-                            @elseif($users['level'] == 'admin')
+                            @elseif($users['level'] == 'admin' | $data['status']==1)
                             <td>-</td>
                             @else
                             <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalChecker-{{$data['id']}}">+</button></td>
                             @endif
                             @if($data['tanggal_disposisi'])
-                            <td class="align-top text-center">{{$data['tanggal_disposisi']}}</td>
-                            @elseif($users['level'] == 'admin')
+                            <td class="align-top text-center">{{date("Y-m-d", strtotime($data['tanggal_disposisi']))}} <span class="badge bg-success">Lihat</span></td>
+                            @elseif($users['level'] == 'admin' | $data['status']==1)
                             <td>-</td>
                             @else
                             <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalDisposisi-{{$data['id']}}">+</button></td>
                             @endif
                             @if($data['status'])
-                            <td class="align-top text-center">Diselesaikan pada {{$data['tanggal_selesai']}}</td>
+                            <td class="align-top text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_selesai']))}}</td>
                             @elseif($users['level'] == 'admin')
                             <td>Belum diselesaikan</td>
                             @else
@@ -207,11 +207,11 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="disposisi" class="form-label">Pesan Disposisi</label>
-                        <input type="text" class="form-control" id="disposisi" name="disposisi">
+                        <input type="text" class="form-control" id="pesan_disposisi" name="pesan_disposisi">
                     </div>
                     <div class="form-group mb-3">
                         <label for="lampiran" class="form-label">Lampiran</label>
-                        <input class="form-control" type="file" id="lampiran" name="lampiran">
+                        <input class="form-control" type="file" id="lampiran_disposisi" name="lampiran_disposisi">
                     </div>
                 </div>
                 <div class="modal-footer">
