@@ -4,9 +4,9 @@
 <div class="row justify-content-center">
     <div class="col-md-6">
         @if(session()->has('error'))
-        <div class="alert alert-warning mt-3" role="alert">
-            {{ session('error') }}
-        </div>
+            <div class="alert alert-warning mt-3" role="alert">
+                {{ session('error') }}
+            </div>
         @endif
 
         <form action="/nomorSurat" method="post" enctype="multipart/form-data">
@@ -20,12 +20,16 @@
             <div class="form-group row">
                 <div class="col-sm-6 mb-3">
                     <label for="satuan_kerja_asal" class="form-label">Satuan Kerja Asal</label>
-                    <input type="text" class="form-control" id="satuan_kerja_tujuan" name="satuan_kerja_tujuan" autocomplete="off" value="{{ $users->satuanKerja['satuan_kerja'] }}" readonly>
+                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja_asal" id="satuan_kerja_asal">
+                        <option selected value="{{ $users->satuan_kerja}}"> {{ $users->satuanKerja['satuan_kerja'] }} </option>
+                    </select>
                 </div>
 
                 <div class="col-sm-6 mb-3">
                     <label for="departemen_asal" class="form-label">Department Asal</label>
-                    <input type="text" class="form-control" id="departemen_asal" name="departemen_asal" autocomplete="off" value="{{ $users->departemenTable['departemen'] }}" readonly>
+                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen_asal" id="departemen_asal">
+                        <option selected value="{{ $users->departemen}}"> {{ $users->departemenTable['departemen'] }} </option>
+                    </select>
                 </div>
             </div>
 
@@ -39,7 +43,6 @@
                         <option value="3">PPO</option>
                         <option value="4">OPR</option>
                         <option value="5">PTI</option>
-
                     </select>
                 </div>
 

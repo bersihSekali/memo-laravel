@@ -20,68 +20,75 @@
         </div>
 
         <form class="card card-md" action="/login" method="post" class="row g-3 needs-validation">
-			@csrf
-			<div class="card-body">
-				<h2 class="card-title text-center">Registrasi Pengguna Baru <br> Pencatatan Memo Internal BCASyariah</h2>
-				
-				<div class="mb-2">
-					<label class="form-label">Username</label>
-					<input type="text" name="name" id="name" class="form-control" placeholder="Username" autocomplete="off">
+          @csrf
 
-          @error('name')
-              <div class="invalid-feedback">
-                  {{ $message }}
+          <div class="card-body">
+            @if(session()->has('error'))
+              <div class="alert alert-danger" role="alert">
+                {{ session('error') }}
               </div>
-          @enderror
-				</div>
+            @endif
 
-        <div class="mb-2">
-          <label for="satuan_kerja" class="form-label">Satuan Kerja</label>
-          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja" id="satuan_kerja">
-              <option selected> ---- </option>
-              <option value="1">SKTI & LOG</option>
-              <option value="2">PPO</option>
-              <option value="3">OPR</option>
-              <option value="4">PTI</option>
-          </select>
-        </div>
+            <h2 class="card-title text-center">Registrasi Pengguna Baru <br> Pencatatan Memo Internal BCASyariah</h2>
+            
+            <div class="mb-2">
+              <label class="form-label">Username</label>
+              <input type="text" name="name" id="name" class="form-control" placeholder="Username" autocomplete="off">
 
-        <div class="mb-2">
-          <label for="departemen" class="form-label">Departemen</label>
-          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen" id="departemen">
-              <option selected> ---- </option>
-              <option value="1">Departemen 1</option>
-              <option value="2">Departemen 2</option>
-              <option value="3">Departemen 3</option>
-              <option value="4">Departemen 4</option>
-          </select>
-        </div>
+              @error('name')
+                  <div class="invalid-feedback">
+                      {{ $message }}
+                  </div>
+              @enderror
+            </div>
 
-        <div class="mb-2">
-          <label for="level" class="form-label">Level</label>
-          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="level" id="level">
-              <option selected> ---- </option>
-              <option value="1">Admin</option>
-              <option value="2">Head</option>
-              <option value="3">Staff</option>
-          </select>
-        </div>
+            <div class="mb-2">
+              <label for="satuan_kerja" class="form-label">Satuan Kerja</label>
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja" id="satuan_kerja">
+                  <option selected> ---- </option>
+                  <option value="1">SKTI & LOG</option>
+                  <option value="2">PPO</option>
+                  <option value="3">OPR</option>
+                  <option value="4">PTI</option>
+              </select>
+            </div>
 
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <div class="input-group input-group-flat">
-            <input type="password" class="form-control"  placeholder="Password"  autocomplete="off">
-            <span class="input-group-text">
-              <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
-              </a>
-            </span>
+            <div class="mb-2">
+              <label for="departemen" class="form-label">Departemen</label>
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen" id="departemen">
+                  <option selected> ---- </option>
+                  <option value="1">Departemen 1</option>
+                  <option value="2">Departemen 2</option>
+                  <option value="3">Departemen 3</option>
+                  <option value="4">Departemen 4</option>
+              </select>
+            </div>
+
+            <div class="mb-2">
+              <label for="level" class="form-label">Level</label>
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="level" id="level">
+                  <option selected> ---- </option>
+                  <option value="1">Admin</option>
+                  <option value="2">Head</option>
+                  <option value="3">Staff</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <div class="input-group input-group-flat">
+                <input type="password" class="form-control"  placeholder="Password"  autocomplete="off">
+                <span class="input-group-text">
+                  <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                  </a>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-footer">
+            <button type="submit" class="btn btn-primary w-100">Sign in</button>
+            </div>
           </div>
-        </div>
-
-				<div class="form-footer">
-				<button type="submit" class="btn btn-primary w-100">Sign in</button>
-				</div>
-			</div>
         </form>
       </div>
     </div>
