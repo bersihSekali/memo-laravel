@@ -55,6 +55,8 @@ class NomorSuratController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
+
         $validated = $request -> validate([
             'created_by' => 'required',
             'satuan_kerja_asal' => 'required',
@@ -67,6 +69,7 @@ class NomorSuratController extends Controller
         $file = $request->file('lampiran');
         $fileName = $file->getClientOriginalName();
         $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        // dd($validated);
         
         $create = SuratMasuk::create($validated);
 

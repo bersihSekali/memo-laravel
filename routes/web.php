@@ -26,14 +26,14 @@ use App\Models\SuratMasuk;
 //     return view('templates/index');
 // });
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->middleware('auth');
 
 Route::resource('satuanKerja', SatuanKerjaController::class);
 Route::resource('departemen', DepartemenController::class);
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
-Route::get('/listuser', [AuthController::class, 'listUser'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
+Route::get('/listuser', [AuthController::class, 'listUser'])->middleware('auth');
 
 Route::get('/registration', [AuthController::class, 'registration']);
 Route::post('/registration', [AuthController::class, 'register']);
