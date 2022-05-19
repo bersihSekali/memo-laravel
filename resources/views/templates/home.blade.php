@@ -24,6 +24,29 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-auto">
+                            <span class="bg-info text-white avatar">
+                                <i class="far fa-file fa-2x"></i>
+                            </span>
+                        </div>
+
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                132 Sales
+                            </div>
+                            <div class="text-muted">
+                                Total
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
                             <span class="bg-success text-white avatar">
                                 <i class="far fa-check-circle fa-2x"></i>
                             </span>
@@ -31,10 +54,10 @@
 
                         <div class="col">
                             <div class="font-weight-medium">
-                            132 Sales
+                                
                             </div>
                             <div class="text-muted">
-                            12 waiting payments
+                                Disetujui
                             </div>
                         </div>
                     </div>
@@ -47,17 +70,16 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <span class="bg-green text-white avatar">
-
+                            <span class="bg-danger text-white avatar">
+                                <i class="far fa-times-circle fa-2x"></i>
                             </span>
                         </div>
-
                         <div class="col">
                             <div class="font-weight-medium">
-                            78 Orders
+                                623 Shares
                             </div>
                             <div class="text-muted">
-                            32 shipped
+                                Ditolak
                             </div>
                         </div>
                     </div>
@@ -70,39 +92,17 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <span class="bg-twitter text-white avatar">
-
-                            </span>
-                        </div>
-                        <div class="col">
-                            <div class="font-weight-medium">
-                            623 Shares
-                            </div>
-                            <div class="text-muted">
-                            16 today
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-lg-3">
-            <div class="card card-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="bg-facebook text-white avatar">
-
+                            <span class="bg-secondary text-white avatar">
+                                <i class="fas fa-spinner fa-pulse fa-2x"></i>
                             </span>
                         </div>
 
                         <div class="col">
                             <div class="font-weight-medium">
-                            132 Likes
+                                132 Likes
                             </div>
                             <div class="text-muted">
-                            21 today
+                                Pending
                             </div>
                         </div>
                     </div>
