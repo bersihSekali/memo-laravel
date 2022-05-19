@@ -51,10 +51,12 @@
                                 @else
                                 <td class="align-top text-center"><button type="button" class="btn btn-sm btn-outline-primary">Selesaikan</button></td>
                                 @endif
+                                @if ($users['level'] == 'admin')
                                 <td class="align-top">
                                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit-"><i class="fas fa-pen-square"></i></button>
                                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalhapus-"><i class="far fa-trash-alt"></i></button>
                                 </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>
