@@ -14,7 +14,7 @@
             </div>
             @endif
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th scope="col">Tanggal</th>
