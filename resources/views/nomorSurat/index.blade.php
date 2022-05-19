@@ -28,7 +28,7 @@
                 @endif
                  
                 <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" cellspacing="0">
+                    <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th scope="col">Tanggal</th>
@@ -71,7 +71,7 @@
 
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table style="width:100%">
+                        <table id="tabel-data" style="width:100%">
                             <tr>
                                 <td>Tanggal Registrasi</td>
                                 <td>: {{ $data->created_at }}</td>
