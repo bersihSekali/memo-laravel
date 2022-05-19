@@ -63,6 +63,19 @@ class AuthController extends Controller
         }
     }
 
+    public function listUser() {
+        $id = Auth::id();
+        $user = User::where('id', $id)->first();
+        $data = User::All();
+
+        $datas = [
+            'title' => 'List User',
+            'users' => $user,
+            'datas' => $data
+        ];
+        return view('auth/list', $datas);
+    }
+
     public function logout(Request $request) {
         Auth::logout();
     

@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Sign in - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
+    <title>{{ $title }}</title>
     <!-- CSS files -->
     <link href="{{url('assets/dist/css/tabler.min.css')}}" rel="stylesheet"/>
     <link href="{{url('assets/dist/css/tabler-flags.min.css')}}" rel="stylesheet"/>
@@ -49,7 +49,7 @@
     </div>
     <!-- Libs JS -->
     <!-- Tabler Core -->
-    <script src="{{url('dist/js/tabler.min.js')}}" defer></script>
-    <script src="{{url('dist/js/demo.min.js')}}" defer></script>
+    <script src="{{url('assets/dist/js/tabler.min.js')}}" defer></script>
+    <script src="{{url('assets/dist/js/demo.min.js')}}" defer></script>
   </body>
 </html>

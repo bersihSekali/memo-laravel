@@ -26,11 +26,11 @@
                         </thead>
                         <tbody>
                             @foreach($datas as $data)
-                                @if (($data['otor_status'] == '1') && ($data['satuan_kerja_tujuan'] == $users['satuan_kerja']))    
+                                @if (($data['otor_status'] == '1') && ($data['satuan_kerja_asal'] == $users['satuan_kerja']))    
                                     <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                                         <td class="align-top">{{$data['created_at']}}</td>
-                                        <td class="align-top">{{ $data->satuanKerjaAsal['satuan_kerja'] }} {{ $data->departemenAsal['departemen'] }}</td>
-                                        <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} {{ $data->departemenTujuan['departemen'] }}</td>
+                                        <td class="align-top">{{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                                        <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                                         <td class="align-top">{{$data['perihal']}}</td>
                                         <td class="align-top">{{$data['created_by']}} </td>
                                     </tr>
@@ -45,40 +45,74 @@
 
     <!-- Modal For Showing Detail Data -->
     @foreach($datas as $data)
-        <div class="modal fade" id="mail-{{ $data['id'] }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Detil Surat</h5>
-                    </div>
+    <div class="modal modal-blur fade" id="mail-{{$data['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detil Surat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
-                    <div class="modal-body">
-                        <pre>Tanggal              :{{ $data['created_at'] }}</pre>
-                        <pre>Nomor Surat          :{{ $data['nomor_surat'] }}</pre>
-                        <pre>PIC                  :{{ $data['created_by'] }}</pre>
-                        <pre>Satuan Kerja Asal    :{{ $data['satuan_kerja_asal'] }}</pre>
-                        <pre>Department Asal      :{{ $data['departemen_asal'] }}</pre>
-                        <pre>Satuan Kerja Tujuan  :{{ $data['satuan_kerja_tujuan'] }}</pre>
-                        <pre>Department Tujuan    :{{ $data['departemen_tujuan'] }}</pre>
-                        <pre>Perihal              :{{ $data['perihal'] }}</pre>
-                        <pre>Lampiran             :<a href="/storage/{{ $data['lampiran'] }}"><button type="button" class="btn btn-info">Lihat Lampiran</button></a></pre>
-                    </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table style="width:100%">
+                            <tr>
+                                <td>Tanggal Registrasi</td>
+                                <td>: {{ $data->created_at }}</td>
+                            </tr>
 
-                    <div class="modal-footer">
-                        <form action="/otorisasi/{{ $data['id'] }}" method="post">
-                            @csrf
-                            {{method_field('DELETE')}}
-                            <button type="submit" class="btn btn-danger">Tolak</button>
-                        </form>
+                            <tr>
+                                <td>Nomor Surat</td>
+                                <td>: 
+                                    @if (!$data->nomor_surat)
+                                        Setujui surat terlebih dahulu
+                                    @endif
+                                </td>
+                            </tr>
 
-                        <form action="/otorisasi/{{ $data['id'] }}" method="post">
-                            @csrf
-                            {{method_field('PUT')}}
-                            <button type="submit" class="btn btn-primary">Setujui</button>
-                        </form>
+                            <tr>
+                                <td>PIC</td>
+                                <td>: {{ strtoupper($data->created_by) }}</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>Asal</td>
+                                <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>Tujuan</td>
+                                <td>: {{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Perihal</td>
+                                <td>: {{ $data->perihal }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Lampiran</td>
+                                <td>: <a href="/storage/{{ $data['lampiran'] }}"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
+                            </tr>
+                        </table>
                     </div>
+                </div>
+
+                <div class="modal-footer">
+                    <form action="/otorisasi/{{ $data['id'] }}" method="post">
+                        @csrf
+                        {{method_field('DELETE')}}
+                        <button type="submit" class="btn btn-danger">Tolak</button>
+                    </form>
+
+                    <form action="/otorisasi/{{ $data['id'] }}" method="post">
+                        @csrf
+                        {{method_field('PUT')}}
+                        <button type="submit" class="btn btn-primary">Setujui</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     @endforeach
 @endsection

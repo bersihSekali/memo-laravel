@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NomorSuratController;
 use App\Http\Controllers\SuratMasukController;
+use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\OtorisasiSuratController;
 use App\Http\Controllers\SatuanKerjaController;
 use App\Http\Controllers\DepartemenController;
@@ -31,6 +32,7 @@ Route::resource('satuanKerja', SatuanKerjaController::class);
 Route::resource('departemen', DepartemenController::class);
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::get('/listuser', [AuthController::class, 'listUser'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
 Route::get('/registration', [AuthController::class, 'registration']);
@@ -41,5 +43,6 @@ Route::post('/registration', [AuthController::class, 'register']);
 Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
 Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth');
 Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth');
+Route::resource('suratKeluar', SuratKeluarController::class)->middleware('auth');
 
 Route::post('/logout', [AuthController::class, 'logout']);
