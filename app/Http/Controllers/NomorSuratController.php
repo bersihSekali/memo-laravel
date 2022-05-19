@@ -55,7 +55,8 @@ class NomorSuratController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request -> validate([
+        dd($request);
+        $validated = $request->validate([
             'created_by' => 'required',
             'satuan_kerja_asal' => 'required',
             'satuan_kerja_tujuan' => 'required',
@@ -67,13 +68,13 @@ class NomorSuratController extends Controller
         $file = $request->file('lampiran');
         $fileName = $file->getClientOriginalName();
         $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
-        
+
         $create = SuratMasuk::create($validated);
 
-        if(!$create){
-            return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal');    
+        if (!$create) {
+            return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal');
         }
-            
+
         return redirect('/nomorSurat')->with('success', 'Pembuatan surat berhasil');
     }
 
@@ -85,7 +86,7 @@ class NomorSuratController extends Controller
      */
     public function show($id)
     {
-        $mails = SuratMasuk::find($id);   
+        $mails = SuratMasuk::find($id);
         $datas = [
             'title' => 'Detil Surat',
             'datas' => $mails

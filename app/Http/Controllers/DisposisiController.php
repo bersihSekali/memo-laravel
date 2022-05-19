@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SatuanKerja;
-use App\Models\Departemen;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
-class DepartemenController extends Controller
+class DisposisiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,15 +23,7 @@ class DepartemenController extends Controller
      */
     public function create()
     {
-        $id = Auth::id();
-        $user = User::where('id', $id)->first();
-        $satuanKerja = SatuanKerja::all();
-        $datas = [
-            'title' => 'Tambah Departemen',
-            'users' => $user,
-            'satuanKerja' => $satuanKerja
-        ];
-        return view('departemen.create', $datas);
+        //
     }
 
     /**
@@ -46,18 +34,7 @@ class DepartemenController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'satuan_kerja' => 'required',
-            'departemen' => 'required',
-        ]);
-
-        $create = Departemen::create($validated);
-
-        if (!$create) {
-            return redirect('/departemen/create')->with('error', 'Pembuatan surat gagal');
-        }
-
-        return redirect('/departemen')->with('success', 'Tambah Departemen berhasil');
+        //
     }
 
     /**
@@ -91,7 +68,7 @@ class DepartemenController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd($request);
     }
 
     /**

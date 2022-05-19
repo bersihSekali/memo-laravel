@@ -6,6 +6,8 @@ use App\Models\SuratMasuk;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\SatuanKerja;
+use App\Models\Departemen;
 
 class SuratMasukController extends Controller
 {
@@ -20,11 +22,16 @@ class SuratMasukController extends Controller
         $user = User::find($id);
         $checker = User::latest()->get();
         $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])->latest()->get();
+        $satuanKerja = SatuanKerja::all();
+        $departemen = Departemen::all();
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
             'datas' => $data,
             'users' => $user,
-            'checker' => $checker
+            'checker' => $checker,
+            'satuanKerja' => $satuanKerja,
+            'departemen' => $departemen
+
         ]);
     }
 
@@ -82,18 +89,7 @@ class SuratMasukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $update = SuratMasuk::find($id);
-        if (!$update) {
-            return redirect('/suratMasuk')->with('error', 'Data not Found');
-        }
-        $update->checker = $request['checker'];
-
-        $update->save();
-
-        if (!$update) {
-            return redirect('/suratMasuk')->with('error', 'Update Failed');
-        }
-        return redirect('/suratMasuk')->with('success', 'Update Success');
+        //
     }
 
     /**

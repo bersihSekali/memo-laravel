@@ -29,7 +29,6 @@
             </button>
           </form>
         </div>
-        <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
         </a>
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
           <a href="#" class="dropdown-item">Logout</a>

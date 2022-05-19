@@ -9,6 +9,8 @@ use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\OtorisasiSuratController;
 use App\Http\Controllers\SatuanKerjaController;
 use App\Http\Controllers\DepartemenController;
+use App\Http\Controllers\CheckerController;
+use App\Http\Controllers\DisposisiController;
 use App\Models\SuratMasuk;
 
 /*
@@ -26,16 +28,16 @@ use App\Models\SuratMasuk;
 //     return view('templates/index');
 // });
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->middleware('auth');
 
 Route::resource('satuanKerja', SatuanKerjaController::class);
 Route::resource('departemen', DepartemenController::class);
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
-Route::get('/listuser', [AuthController::class, 'listUser'])->name('login');
+Route::get('/listuser', [AuthController::class, 'listUser'])->middleware('auth');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
-Route::get('/registration', [AuthController::class, 'registration']);
+Route::get('/registration', [AuthController::class, 'registration'])->middleware('auth');
 Route::post('/registration', [AuthController::class, 'register']);
 
 //Penomoran Surat
@@ -44,5 +46,8 @@ Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
 Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth');
 Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth');
 Route::resource('suratKeluar', SuratKeluarController::class)->middleware('auth');
+
+Route::resource('checker', CheckerController::class)->middleware('auth');
+Route::resource('disposisi', DisposisiController::class)->middleware('auth');
 
 Route::post('/logout', [AuthController::class, 'logout']);

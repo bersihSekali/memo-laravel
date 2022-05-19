@@ -1,80 +1,80 @@
 @extends('templates.index')
 
 @section('content')
+<!-- Page Heading -->
+<div class="container-fluid">
     <!-- Page Heading -->
-    <div class="container-fluid">
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Daftar Memo</h1>
-        <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-            <div class="card-body py-3">
-                @if(session()->has('success'))
-                <div class="alert alert-success mt-3" role="alert">
-                    {{ session('success') }}
-                </div>
-                @endif
-                <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">No.</th>
-                                <th scope="col">Asal</th>
-                                <th scope="col">Tujuan</th>
-                                <th scope="col">Perihal</th>
-                                <th scope="col">Lampiran</th>
-                                <th scope="col">Checker</th>
-                                <th scope="col">Disposisi</th>
-                                <th scope="col">Status</th>
-                                @if($users['level'] == 'admin')
-                                <th scope="col">Aksi</th>
-                                @endif
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($datas as $data)
-                            <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
-                                <td class="align-top">{{$data['created_at']}}</td>
-                                <td class="align-top">{{$data['nomor_surat']}}</td>
-                                <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
-                                <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
-                                <td class="align-top">{{$data['perihal']}}</td>
-                                <td class="align-top">{{$data['lampiran']}} </td>
-                                @if($data['checker'])
-                                <td class="align-top text-center">{{$data->checkerUser['name']}}</td>
-                                @elseif($users['level'] == 'admin')
-                                <td>-</td>
-                                @else
-                                <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalChecker-{{$data['id']}}">+</button></td>
-                                @endif
-                                @if($data['tanggal_disposisi'])
-                                <td class="align-top text-center">{{$data['tanggal_disposisi']}}</td>
-                                @elseif($users['level'] == 'admin')
-                                <td>-</td>
-                                @else
-                                <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalDisposisi-{{$data['id']}}">+</button></td>
-                                @endif
-                                @if($data['status'])
-                                <td class="align-top text-center">Diselesaikan pada {{$data['tanggal_selesai']}}</td>
-                                @elseif($users['level'] == 'admin')
-                                <td>Belum diselesaikan</td>
-                                @else
-                                <td class="align-top text-center"><button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{$data['id']}}">Selesaikan</button></td>
-                                @endif
-                                @if($users['level'] == 'admin')
-                                <td class="align-top">
-                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit-"><i class="fas fa-pen-square"></i></button>
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalhapus-"><i class="far fa-trash-alt"></i></button>
-                                </td>
-                                @endif
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+    <h1 class="h3 mb-2 text-gray-800">Daftar Memo</h1>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-body py-3">
+            @if(session()->has('success'))
+            <div class="alert alert-success mt-3" role="alert">
+                {{ session('success') }}
+            </div>
+            @endif
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tanggal</th>
+                            <th scope="col">No.</th>
+                            <th scope="col">Asal</th>
+                            <th scope="col">Tujuan</th>
+                            <th scope="col">Perihal</th>
+                            <th scope="col">Lampiran</th>
+                            <th scope="col">Checker</th>
+                            <th scope="col">Disposisi</th>
+                            <th scope="col">Status</th>
+                            @if($users['level'] == 'admin')
+                            <th scope="col">Aksi</th>
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($datas as $data)
+                        <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
+                            <td class="align-top">{{$data['created_at']}}</td>
+                            <td class="align-top">{{$data['nomor_surat']}}</td>
+                            <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
+                            <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
+                            <td class="align-top">{{$data['perihal']}}</td>
+                            <td class="align-top">{{$data['lampiran']}} </td>
+                            @if($data['checker'])
+                            <td class="align-top text-center">{{$data->checkerUser['name']}}</td>
+                            @elseif($users['level'] == 'admin')
+                            <td>-</td>
+                            @else
+                            <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalChecker-{{$data['id']}}">+</button></td>
+                            @endif
+                            @if($data['tanggal_disposisi'])
+                            <td class="align-top text-center">{{$data['tanggal_disposisi']}}</td>
+                            @elseif($users['level'] == 'admin')
+                            <td>-</td>
+                            @else
+                            <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalDisposisi-{{$data['id']}}">+</button></td>
+                            @endif
+                            @if($data['status'])
+                            <td class="align-top text-center">Diselesaikan pada {{$data['tanggal_selesai']}}</td>
+                            @elseif($users['level'] == 'admin')
+                            <td>Belum diselesaikan</td>
+                            @else
+                            <td class="align-top text-center"><button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{$data['id']}}">Selesaikan</button></td>
+                            @endif
+                            @if($users['level'] == 'admin')
+                            <td class="align-top">
+                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit-"><i class="fas fa-pen-square"></i></button>
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalhapus-"><i class="far fa-trash-alt"></i></button>
+                            </td>
+                            @endif
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 </div>
 <!-- /.container-fluid -->
 
@@ -124,7 +124,7 @@
                 <h5 class="modal-title" id="modalCheckerLabel">Tambah sebagai checker</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/suratMasuk/{{$data['id']}}" method="post">
+            <form action="/checker/{{$data['id']}}" method="post">
                 @csrf
                 {{method_field('PUT')}}
                 <div class="modal-body">
@@ -157,7 +157,8 @@
             </div>
             <form action="/suratMasuk/{{$data['id']}}" method="post">
                 @csrf
-                <div class="modal-body">Klik tombol "Akhiri" di bawah untuk mengakhiri pemeriksaan.</div>
+                {{method_field('PUT')}}
+                <div class="modal-body">Klik tombol "Akhiri" di bawah untuk menyelesaikan.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
                     <button class="btn btn-primary" type="submit">Selesaikan</button>
@@ -176,27 +177,41 @@
                 <h5 class="modal-title" id="modalDisposisiLabel">Tambah Disposisi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/disposisi" method="post">
+            <form action="/disposisi/{{$data['id']}}" method="post" enctype="multipart/form-data">
                 @csrf
+                {{method_field('PUT')}}
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="keluar" class="form-label">Tanggal Keluar</label>
-                        <input type="date" class="form-control" id="keluar" name="keluar">
+                        <input type="date" class="form-control" id="tanggal_disposisi" name="tanggal_disposisi" value="{{date('Y-m-d')}}" readonly>
                     </div>
-                    <div class="form-group">
-                        <label for="tujuan" class="form-label">Tujuan Disposisi</label>
-                        <input type="text" class="form-control" id="tujuan" name="tujuan">
+                    <div class="form-group row mb-3">
+                        <div class="col-sm-6">
+                            <label for="satuan_kerja" class="form-label ">Satuan Kerja</label>
+                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja_tujuan_disposisi" id="satuan_kerja_tujuan_disposisi">
+                                <option selected> ---- </option>
+                                @foreach($satuanKerja as $item)
+                                <option value="{{$item['id']}}">{{$item['satuan_kerja']}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="departemen_tujuan_disposisi" class="form-label">Departemen Tujuan</label>
+                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen_tujuan_disposisi" id="departemen_tujuan_disposisi">
+                                <option selected> ---- </option>
+                                @foreach($departemen as $item)
+                                <option value="{{$item['id']}}">{{$item['departemen']}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="disposisi" class="form-label">Pesan Disposisi</label>
                         <input type="text" class="form-control" id="disposisi" name="disposisi">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Upload Lampiran</label>
-                        <div class="custom-file">
-                            <label class="custom-file-label" for="customFile" id="lampirankeluar-label">Choose file</label>
-                            <input type="file" class="custom-file-input" id="lampirankeluar" name="lampirankeluar" onchange="previewkeluar()">
-                        </div>
+                    <div class="form-group mb-3">
+                        <label for="lampiran" class="form-label">Lampiran</label>
+                        <input class="form-control" type="file" id="lampiran" name="lampiran">
                     </div>
                 </div>
                 <div class="modal-footer">
