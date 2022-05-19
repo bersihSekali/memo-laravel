@@ -34,8 +34,8 @@ Route::resource('satuanKerja', SatuanKerjaController::class);
 Route::resource('departemen', DepartemenController::class);
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
-Route::get('/listuser', [AuthController::class, 'listUser'])->middleware('auth');
 Route::post('/login', [AuthController::class, 'authenticate']);
+Route::get('/listuser', [AuthController::class, 'listUser'])->middleware('auth');
 
 Route::get('/registration', [AuthController::class, 'registration'])->middleware('auth');
 Route::post('/registration', [AuthController::class, 'register']);
