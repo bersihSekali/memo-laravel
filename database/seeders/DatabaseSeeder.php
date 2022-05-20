@@ -28,10 +28,10 @@ class DatabaseSeeder extends Seeder
             'satuan_kerja' => 'SKAI'
         ]);
         SatuanKerja::create([
-            'satuan_kerja' => 'OPR'
+            'satuan_kerja' => 'SKHSDM'
         ]);
         SatuanKerja::create([
-            'satuan_kerja' => 'PTI'
+            'satuan_kerja' => 'SBK'
         ]);
 
         Departemen::create([
@@ -53,6 +53,22 @@ class DatabaseSeeder extends Seeder
         Departemen::create([
             'satuan_kerja' => '2',
             'departemen' => 'AUDIT TEKNOLOGI INFORMASI'
+        ]);
+        Departemen::create([
+            'satuan_kerja' => '3',
+            'departemen' => 'DEPARTEMEN SDM'
+        ]);
+        Departemen::create([
+            'satuan_kerja' => '3',
+            'departemen' => 'DEPARTEMEN HUKUM'
+        ]);
+        Departemen::create([
+            'satuan_kerja' => '4',
+            'departemen' => 'DEPARTEMEN KOMUNIKASI DAN KESEKTRETARIATAN PERUSAHAAN'
+        ]);
+        Departemen::create([
+            'satuan_kerja' => '4',
+            'departemen' => 'DEPARTEMEN PENDUKUNG BISNIS'
         ]);
 
         User::create([
