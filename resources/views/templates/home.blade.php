@@ -30,8 +30,8 @@
                         </div>
 
                         <div class="col">
-                            <div class="font-weight-medium">
-                                132 Sales
+                            <div class="fs-3 font-weight-medium">
+                                {{ $countTotal }}
                             </div>
                             <div class="text-muted">
                                 Total
@@ -53,8 +53,8 @@
                         </div>
 
                         <div class="col">
-                            <div class="font-weight-medium">
-                                
+                            <div class="fs-3 font-weight-medium">
+                                {{ $countApproved }}
                             </div>
                             <div class="text-muted">
                                 Disetujui
@@ -75,8 +75,8 @@
                             </span>
                         </div>
                         <div class="col">
-                            <div class="font-weight-medium">
-                                623 Shares
+                            <div class="fs-3 font-weight-medium">
+                                {{ $countRejected }}
                             </div>
                             <div class="text-muted">
                                 Ditolak
@@ -98,8 +98,8 @@
                         </div>
 
                         <div class="col">
-                            <div class="font-weight-medium">
-                                132 Likes
+                            <div class="fs-3 font-weight-medium">
+                                {{ $countPending }}
                             </div>
                             <div class="text-muted">
                                 Pending

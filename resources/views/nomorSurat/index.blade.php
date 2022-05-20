@@ -9,14 +9,16 @@
               </h2>
             </div>
 
-            <div class="col-12 col-md-auto ms-auto d-print-none">
-              <div class="btn-list">
-                <a href="/nomorSurat/create" class="btn btn-primary d-none d-sm-inline-block">
-                    <i class="fas fa-plus-circle me-2"></i>
-                    Tambah Surat
-                </a>
-              </div>
-            </div>
+            @if ($users->level != "admin")
+                <div class="col-12 col-md-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <a href="/nomorSurat/create" class="btn btn-primary d-none d-sm-inline-block">
+                            <i class="fas fa-plus-circle me-2"></i>
+                            Tambah Surat
+                        </a>
+                    </div>
+                </div>
+            @endif
           </div>
         
         <div class="card shadow mb-4">
@@ -31,12 +33,12 @@
                     <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">Asal</th>
-                                <th scope="col">Tujuan</th>
-                                <th scope="col">Perihal</th>
-                                <th scope="col">PIC</th>
-                                <th scope="col">Status</th>
+                                <th class="fs-4" scope="col" width="10%">Tanggal</th>
+                                <th class="fs-4" scope="col">Asal</th>
+                                <th class="fs-4" scope="col">Tujuan</th>
+                                <th class="fs-4" scope="col">Perihal</th>
+                                <th class="fs-4" scope="col">PIC</th>
+                                <th class="fs-4" scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
