@@ -15,6 +15,7 @@ class AddForeignChecker extends Migration
     {
         Schema::table('surat_masuks', function (Blueprint $table) {
             $table->foreign('checker')->references('id')->on('users');
+            $table->foreign('checker_disposisi')->references('id')->on('users');
         });
     }
 

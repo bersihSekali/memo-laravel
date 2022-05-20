@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\SatuanKerja;
+use App\Models\Departemen;
 
 class DisposisiController extends Controller
 {
@@ -14,7 +18,21 @@ class DisposisiController extends Controller
      */
     public function index()
     {
-        //
+        $id = Auth::id();
+        $user = User::find($id);
+        $checker = User::latest()->get();
+        $data = SuratMasuk::where('satuan_kerja_tujuan_disposisi', $user['satuan_kerja'])->where('status', 1)->latest()->get();
+        $satuanKerja = SatuanKerja::all();
+        $departemen = Departemen::all();
+        return view('disposisi/index', [
+            'title' => 'Disposisi Masuk',
+            'datas' => $data,
+            'users' => $user,
+            'checker' => $checker,
+            'satuanKerja' => $satuanKerja,
+            'departemen' => $departemen
+
+        ]);
     }
 
     /**

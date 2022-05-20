@@ -54,4 +54,19 @@ class SuratMasuk extends Model
     {
         return $this->belongsTo(User::class, 'checker');
     }
+
+    public function satuanKerjaDisposisi()
+    {
+        return $this->belongsTo(SatuanKerja::class, 'satuan_kerja_tujuan_disposisi');
+    }
+
+    public function departemenDisposisi()
+    {
+        return $this->belongsTo(Departemen::class, 'departemen_tujuan_disposisi');
+    }
+
+    public function checkerUserDisposisi()
+    {
+        return $this->belongsTo(User::class, 'checker_disposisi');
+    }
 }

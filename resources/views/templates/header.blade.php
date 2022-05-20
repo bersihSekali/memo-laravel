@@ -100,7 +100,7 @@
                     Surat Masuk
                   </a>
 
-                  <a class="dropdown-item" href="">
+                  <a class="dropdown-item" href="/disposisi">
                     Disposisi Masuk
                   </a>
 
