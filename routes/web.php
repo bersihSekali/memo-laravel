@@ -11,6 +11,7 @@ use App\Http\Controllers\SatuanKerjaController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\CheckerController;
 use App\Http\Controllers\DisposisiController;
+use App\Http\Controllers\CheckerDisposisiController;
 use App\Models\SuratMasuk;
 
 /*
@@ -49,6 +50,8 @@ Route::resource('disposisi', DisposisiController::class)->middleware('auth');
 Route::resource('suratKeluar', SuratKeluarController::class)->middleware('auth');
 
 Route::resource('checker', CheckerController::class)->middleware('auth');
+Route::resource('checkerDisposisi', CheckerDisposisiController::class)->middleware('auth');
+Route::post('disposisi/selesai/{id}', [DisposisiController::class, 'selesai'])->middleware('auth');
 Route::resource('disposisi', DisposisiController::class)->middleware('auth');
 
 Route::post('/logout', [AuthController::class, 'logout']);

@@ -108,11 +108,24 @@ class DisposisiController extends Controller
             'lampiran_disposisi' => $validated['lampiran_disposisi']
         ]);
 
-        // if (!$update) {
-        //     return redirect('/suratMasuk')->with('error', 'Pembuatan surat gagal');
-        // }
-
         return redirect('/suratMasuk')->with('success', 'Pembuatan surat berhasil');
+    }
+
+    public function selesai($id)
+    {
+        $update = SuratMasuk::find($id);
+        if (!$update) {
+            return redirect('/disposisi')->with('error', 'Data not Found');
+        }
+        $update->tanggal_selesai_disposisi = date("Y-m-d");
+        $update->status_disposisi = 1;
+
+        $update->save();
+
+        if (!$update) {
+            return redirect('/disposisi')->with('error', 'Update Failed');
+        }
+        return redirect('/disposisi')->with('success', 'Update Success');
     }
 
     /**
