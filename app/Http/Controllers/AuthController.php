@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Departemen;
+use App\Models\SatuanKerja;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +12,8 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $datas = [
             'title' => 'Login',
             'judul' => 'Login'
@@ -18,15 +21,16 @@ class AuthController extends Controller
         return view('auth/index', $datas);
     }
 
-    public function authenticate(Request $request){
-        $validated = $request -> validate([
+    public function authenticate(Request $request)
+    {
+        $validated = $request->validate([
             'name' => 'required',
             'password' => 'required',
         ]);
 
         if (Auth::attempt($validated)) {
             $request->session()->regenerate();
- 
+
             return redirect()->intended('/');
         }
 
@@ -35,16 +39,24 @@ class AuthController extends Controller
         ])->onlyInput('name');
     }
 
-    public function registration(){
+    public function registration()
+    {
+
+        $satuanKerja = SatuanKerja::all();
+        $departemen = Departemen::all();
+
         $datas = [
             'title' => 'registration',
-            'judul' => 'registration'
+            'judul' => 'registration',
+            'satuanKerja' => $satuanKerja,
+            'departemen' => $departemen
         ];
         return view('auth/registration', $datas);
     }
 
-    public function register(Request $request){
-        $validated = $request -> validate([
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
             'name' => 'required|max:255|unique:users',
             'satuan_kerja' => 'required',
             'departemen' => 'required',
@@ -56,14 +68,15 @@ class AuthController extends Controller
 
         $registration = User::create($validated);
 
-        if(!$registration){
-            return redirect('/registration')->with('error', 'Registration failed!');    
+        if (!$registration) {
+            return redirect('/registration')->with('error', 'Registration failed!');
         } else {
             return redirect('/login')->with('success', 'Registration success!');
         }
     }
 
-    public function listUser() {
+    public function listUser()
+    {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
         $data = User::All();
@@ -76,13 +89,14 @@ class AuthController extends Controller
         return view('auth/list', $datas);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         Auth::logout();
-    
+
         $request->session()->invalidate();
-    
+
         $request->session()->regenerateToken();
-    
+
         return redirect('/login');
     }
 }
