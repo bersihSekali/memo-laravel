@@ -38,23 +38,16 @@
                     <label for="satuan_kerja_tujuan" class="form-label">Satuan Kerja Tujuan</label>
                     <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja_tujuan" id="satuan_kerja_tujuan">
                         <option selected> ---- </option>
-                        <option value="1">SKTI & LOG</option>
-                        <option value="2">PPO</option>
-                        <option value="3">PPO</option>
-                        <option value="4">OPR</option>
-                        <option value="5">PTI</option>
+                        @foreach ($satuanKerjas as $item)
+                        <option value="{{$item['id']}}">{{$item['satuan_kerja']}}</option>
+                        @endforeach
                     </select>
                 </div>
 
                 <div class="col-sm-6 mb-3">
                     <label for="departemen_tujuan" class="form-label">Department Tujuan</label>
                     <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen_tujuan" id="departemen_tujuan">
-                        <option selected> ---- </option>
-                        <option value="1">Department 1</option>
-                        <option value="2">Department 2</option>
-                        <option value="3">Department 3</option>
-                        <option value="4">Department 4</option>
-                        <option value="5">Department 5</option>
+                        <option value=""> ---- </option>
                     </select>
                 </div>
             </div>
@@ -73,4 +66,22 @@
         </form>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script>
+    jQuery(document).ready(function(){
+        jQuery('#satuan_kerja_tujuan').change(function(){
+            var skid = jQuery(this).val();
+            jQuery.ajax({
+                url: '/getSatuanKerja',
+                type: 'post',
+                data: 'skid='+skid+'&_token={{csrf_token()}}',
+                success: function(result){
+                    jQuery('#departemen_tujuan').html(result)
+                }
+            });
+        });
+    });
+</script>
 @endsection

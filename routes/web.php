@@ -11,6 +11,7 @@ use App\Http\Controllers\SatuanKerjaController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\CheckerController;
 use App\Http\Controllers\DisposisiController;
+use App\Http\Controllers\CreateNomorSuratController;
 use App\Models\SuratMasuk;
 
 /*
@@ -46,6 +47,7 @@ Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
 Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth');
 Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth');
 Route::resource('suratKeluar', SuratKeluarController::class)->middleware('auth');
+Route::post('/getSatuanKerja', [CreateNomorSuratController::class, 'index']);
 
 Route::resource('checker', CheckerController::class)->middleware('auth');
 Route::resource('disposisi', DisposisiController::class)->middleware('auth');

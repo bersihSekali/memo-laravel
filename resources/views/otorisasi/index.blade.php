@@ -99,18 +99,6 @@
                 </div>
 
                 <div class="modal-footer">
-                    {{-- <form action="/otorisasi/{{ $data['id'] }}" method="post">
-                        @csrf
-                        {{method_field('DELETE')}}
-                        <button type="submit" class="btn btn-danger">Tolak</button>
-                    </form> --}}
-
-                    {{-- <form action="/otorisasi/{{ $data['id'] }}" method="post">
-                        @csrf
-                        {{method_field('PUT')}}
-                        <button type="submit" class="btn btn-primary">Setujui</button>
-                    </form> --}}
-
                     <button type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-rejected-{{ $data['id'] }}">Tolak</button>
 
                     <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-approved-{{ $data['id'] }}">Setuju</button>

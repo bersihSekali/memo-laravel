@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
 use App\Models\User;
+use App\Models\SatuanKerja;
+use App\Models\Departemen;
 use Illuminate\Support\Facades\Auth;
 
 class NomorSuratController extends Controller
@@ -39,8 +41,11 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
+        $satuanKerja = SatuanKerja::all();
+
         $datas = [
             'title' => 'Tambah Surat',
+            'satuanKerjas' => $satuanKerja,
             'users' => $user
         ];
 
