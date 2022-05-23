@@ -92,7 +92,7 @@
 
                             <tr>
                                 <td>Lampiran</td>
-                                <td>: <a href="/storage/{{ $data['lampiran'] }}"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
+                                <td>: <a href="/storage/{{ $data['lampiran'] }}" target="_blank"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
                             </tr>
                         </table>
                     </div>
@@ -108,7 +108,7 @@
     </div>
 
     {{-- Modal approved for confirmation --}}
-    <div class="modal modal-blur fade" id="modal-approved-{{ $data['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+    {{-- <div class="modal modal-blur fade" id="modal-approved-{{ $data['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
           <div class="modal-content">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -137,6 +137,30 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+    </div> --}}
+
+    <div class="modal modal-blur fade" id="modal-approved-{{ $data['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-success"></div>
+            
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menyetujui?</h3>
+              <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+              <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+                @csrf
+                {{method_field('PUT')}}
+
+                <div class="mb-3">
+                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Setujui</button>
+              </form>
             </div>
           </div>
         </div>

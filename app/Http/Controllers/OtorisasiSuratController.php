@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\SuratMasuk;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class OtorisasiSuratController extends Controller
@@ -93,6 +94,17 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['tanggal_otor']);
         $datas['otor_by'] = $user->name;
         array_push($update, $datas['otor_by']);
+
+        if ($request->file('lampiran')) {
+            if ($datas->lampiran) {
+                Storage::delete($datas->lampiran);
+            }
+
+            $file = $request->file('lampiran');
+            $fileName = $file->getClientOriginalName();
+            $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+            array_push($update, $datas['lampiran']);
+        }
 
         $datas->update($update);
         
