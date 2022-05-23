@@ -10,7 +10,6 @@ class CreateNomorSuratController extends Controller
 {
     public function index(Request $request){
         echo $skid = $request->post('skid');
-        // $departemen = Departemen::where('id', $skid)->get();
         $departemen = DB::table('departemens')->where('satuan_kerja', $skid)->get();
         $html = '<option value=""> ---- </option>';
         foreach ($departemen as $key) {

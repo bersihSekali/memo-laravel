@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class OtorisasiSuratController extends Controller
 {
@@ -18,7 +19,9 @@ class OtorisasiSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratMasuk::latest()->get();
+        $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('otor_status', 1)
+                    ->latest()->get();
 
         $datas = [
             'title' => 'Daftar Otorisasi Surat',
@@ -81,8 +84,15 @@ class OtorisasiSuratController extends Controller
      */
     public function update(Request $request, $id) //Approved
     {
+        $user_id = Auth::id();
+        $user = User::where('id', $user_id)->first();
+
         $datas = SuratMasuk::find($id);
         $update[] = $datas['otor_status'] = '2';
+        $datas['tanggal_otor'] = Carbon::now();
+        array_push($update, $datas['tanggal_otor']);
+        $datas['otor_by'] = $user->name;
+        array_push($update, $datas['otor_by']);
 
         $datas->update($update);
         
@@ -101,8 +111,15 @@ class OtorisasiSuratController extends Controller
      */
     public function destroy($id) //Disapproved
     {
+        $user_id = Auth::id();
+        $user = User::where('id', $user_id)->first();
+
         $datas = SuratMasuk::find($id);
         $update[] = $datas['otor_status'] = '3';
+        $datas['tanggal_otor'] = Carbon::now();
+        array_push($update, $datas['tanggal_otor']);
+        $datas['otor_by'] = $user->name;
+        array_push($update, $datas['otor_by']);
 
         $datas->update($update);
         

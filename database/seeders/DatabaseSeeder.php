@@ -123,9 +123,9 @@ class DatabaseSeeder extends Seeder
             'created_by' => 'agusta',
             'perihal' => 'asd asd asd',
             'satuan_kerja_asal' => '1',
-            'departemen_asal' => '1',
-            'satuan_kerja_tujuan' => '1',
-            'departemen_tujuan' => '2',
+            'departemen_asal' => '2',
+            'satuan_kerja_tujuan' => '2',
+            'departemen_tujuan' => '4',
         ]);
 
         SuratMasuk::create([
@@ -133,8 +133,8 @@ class DatabaseSeeder extends Seeder
             'perihal' => 'asd asd asd asdasdasd',
             'satuan_kerja_asal' => '1',
             'departemen_asal' => '1',
-            'satuan_kerja_tujuan' => '1',
-            'departemen_tujuan' => '2',
+            'satuan_kerja_tujuan' => '2',
+            'departemen_tujuan' => '5',
         ]);
 
         SuratMasuk::create([
@@ -142,15 +142,15 @@ class DatabaseSeeder extends Seeder
             'perihal' => 'asd asd asdasdasdasdasdasdasdasd',
             'satuan_kerja_asal' => '1',
             'departemen_asal' => '1',
-            'satuan_kerja_tujuan' => '1',
-            'departemen_tujuan' => '2',
+            'satuan_kerja_tujuan' => '2',
+            'departemen_tujuan' => '5',
         ]);
 
         SuratMasuk::create([
             'created_by' => 'hernandi',
             'perihal' => 'asd asdasdasdasd asdasddsa asd',
             'satuan_kerja_asal' => '1',
-            'departemen_asal' => '1',
+            'departemen_asal' => '2',
             'satuan_kerja_tujuan' => '1',
             'departemen_tujuan' => '1',
         ]);
@@ -162,6 +162,15 @@ class DatabaseSeeder extends Seeder
             'departemen_asal' => '2',
             'satuan_kerja_tujuan' => '1',
             'departemen_tujuan' => '1',
+        ]);
+
+        SuratMasuk::create([
+            'created_by' => 'yudhi',
+            'perihal' => 'dasdasdsadsadaasd asd asd',
+            'satuan_kerja_asal' => '2',
+            'departemen_asal' => '4',
+            'satuan_kerja_tujuan' => '2',
+            'departemen_tujuan' => '4',
         ]);
     }
 }

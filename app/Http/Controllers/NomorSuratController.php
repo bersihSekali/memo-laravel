@@ -20,14 +20,13 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratMasuk::latest()->get();
+        $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->latest()->get();
 
         $datas = [
             'title' => 'Daftar Semua Surat',
             'datas' => $mails,
             'users' => $user
         ];
-        // dd($datas);
 
         return view('nomorSurat.index', $datas);
     }

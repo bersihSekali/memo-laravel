@@ -21,7 +21,9 @@ class SuratMasukController extends Controller
         $id = Auth::id();
         $user = User::find($id);
         $checker = User::latest()->get();
-        $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])->latest()->get();
+        $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                ->where('otor_status', 2)
+                ->latest()->get();
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
         return view('suratmasuk/index', [
