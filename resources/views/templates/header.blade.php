@@ -10,16 +10,20 @@
         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
           <div class="d-none d-xl-block pe-2">
             <div class="text-end">{{ strtoupper($users->name) }}</div>
-            @if ($users->departemen == 0)  
-              <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}</div>
+            @if ($users->level == "Admin")
+            <div class="mt-1 small text-muted">ADMIN</div>
+            @elseif ($users->level == "Kepala Satuan Kerja")
+            <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}</div>
+            @elseif ($users->level == "Kepala Departemen")
+            <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | KEPALA {{ $users->departemenTable['departemen'] }}</div>
             @else
-              <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | {{ $users->departemenTable['departemen'] }}</div>
+            <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | {{ $users->departemenTable['departemen'] }}</div>
             @endif
           </div>
 
-          @if ($users->level == "admin")
+          @if ($users->level == "Admin")
           <i class="fas fa-users-cog fa-2x"></i>
-          @elseif ($users->level == "head")
+          @elseif ($users->level == "Kepala Satuan Kerja" | $users->level == "Kepala Departemen")
           <i class="fas fa-user-plus fa-2x"></i>
           @else
           <i class="fas fa-user fa-2x"></i>
@@ -49,7 +53,7 @@
             </a>
           </li>
 
-          @if ($users->level == 'admin')
+          @if ($users->level == 'Admin')
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
               <i class="fas fa-users"></i>
@@ -89,7 +93,7 @@
                   <a class="dropdown-item" href="/nomorSurat">
                     Registrasi Surat
                   </a>
-                  @if ($users->level == 'sk' || $users->level == 'dep')
+                  @if ($users->level == 'Kepala Satuan Kerja' || $users->level == 'Kepala Departemen')
                   <a class="dropdown-item" href="/otorisasi">
                     Otorisasi Surat
                   </a>
