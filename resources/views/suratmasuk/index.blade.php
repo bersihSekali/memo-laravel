@@ -17,7 +17,7 @@
                 <table id="tabel-data" class="table table-bordered table-hover" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th scope="col">Tanggal</th>
+                            <th scope="col" width="10%">Tanggal</th>
                             <th scope="col">No.</th>
                             <th scope="col">Asal</th>
                             <th scope="col">Tujuan</th>

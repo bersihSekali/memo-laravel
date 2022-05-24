@@ -28,6 +28,8 @@ class NomorSuratController extends Controller
             'users' => $user
         ];
 
+        // dd($datas);
+
         return view('nomorSurat.index', $datas);
     }
 

@@ -10,7 +10,11 @@
         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
           <div class="d-none d-xl-block pe-2">
             <div class="text-end">{{ strtoupper($users->name) }}</div>
-            <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | {{ $users->departemenTable['departemen'] }}</div>
+            @if ($users->departemen == 0)  
+              <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}</div>
+            @else
+              <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | {{ $users->departemenTable['departemen'] }}</div>
+            @endif
           </div>
 
           @if ($users->level == "admin")
@@ -82,7 +86,7 @@
                   <a class="dropdown-item" href="/nomorSurat">
                     Registrasi Surat
                   </a>
-                  @if ($users->level == 'head')
+                  @if ($users->level == 'sk' || $users->level == 'dep')
                   <a class="dropdown-item" href="/otorisasi">
                     Otorisasi Surat
                   </a>

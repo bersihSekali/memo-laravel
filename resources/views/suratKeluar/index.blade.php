@@ -28,7 +28,6 @@
                                         <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
                                         <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                                         <td class="align-top">{{$data['perihal']}}</td>
-                                        <td class="align-top">{{$data['lampiran']}} </td>
                                     </tr>
                                 @endif
                             @endforeach
