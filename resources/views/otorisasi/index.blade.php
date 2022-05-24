@@ -17,11 +17,11 @@
                     <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">Asal</th>
-                                <th scope="col">Tujuan</th>
-                                <th scope="col">Perihal</th>
-                                <th scope="col">PIC</th>
+                                <th class="fs-4" scope="col" width="10%">Tanggal</th>
+                                <th class="fs-4" scope="col">Asal</th>
+                                <th class="fs-4" scope="col">Tujuan</th>
+                                <th class="fs-4" scope="col">Perihal</th>
+                                <th class="fs-4" scope="col">PIC</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,26 +92,111 @@
 
                             <tr>
                                 <td>Lampiran</td>
-                                <td>: <a href="/storage/{{ $data['lampiran'] }}"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
+                                <td>: <a href="/storage/{{ $data['lampiran'] }}" target="_blank"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
                             </tr>
                         </table>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <form action="/otorisasi/{{ $data['id'] }}" method="post">
-                        @csrf
-                        {{method_field('DELETE')}}
-                        <button type="submit" class="btn btn-danger">Tolak</button>
-                    </form>
+                    <button type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-rejected-{{ $data['id'] }}">Tolak</button>
 
+                    <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-approved-{{ $data['id'] }}">Setuju</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal approved for confirmation --}}
+    {{-- <div class="modal modal-blur fade" id="modal-approved-{{ $data['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-success"></div>
+            
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menyetujui?</h3>
+            </div>
+      
+            <div class="modal-footer">
+              <div class="w-100">
+                <div class="row">
+                  <div class="col">
+                    <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                      Tidak
+                    </a>
+                  </div>
+      
+                  <div class="col">
                     <form action="/otorisasi/{{ $data['id'] }}" method="post">
                         @csrf
                         {{method_field('PUT')}}
-                        <button type="submit" class="btn btn-primary">Setujui</button>
+                        <button type="submit" class="btn btn-success w-100">Setujui</button>
                     </form>
+                    </form>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
+        </div>
+    </div> --}}
+
+    <div class="modal modal-blur fade" id="modal-approved-{{ $data['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-success"></div>
+            
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menyetujui?</h3>
+              <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+              <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+                @csrf
+                {{method_field('PUT')}}
+
+                <div class="mb-3">
+                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Setujui</button>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+    {{-- Modal rejected for confirmation --}}
+    <div class="modal modal-blur fade" id="modal-rejected-{{ $data['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menolak?</h3>
+            </div>
+      
+            <div class="modal-footer">
+              <div class="w-100">
+                <div class="row">
+                  <div class="col">
+                    <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                      Tidak
+                    </a>
+                  </div>
+      
+                  <div class="col">
+                    <form action="/otorisasi/{{ $data['id'] }}" method="post">
+                        @csrf
+                        {{method_field('DELETE')}}
+                        <button type="submit" class="btn btn-danger w-100">Tolak</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
     @endforeach

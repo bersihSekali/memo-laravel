@@ -14,24 +14,16 @@
           </div>
 
           @if ($users->level == "admin")
-          <i class="fas fa-users-cog fa-2x"></i>
+            <i class="fas fa-users-cog fa-2x"></i>
           @elseif ($users->level == "head")
-          <i class="fas fa-user-plus fa-2x"></i>
+            <i class="fas fa-user-plus fa-2x"></i>
           @else
-          <i class="fas fa-user fa-2x"></i>
+            <i class="fas fa-user fa-2x"></i>
           @endif
         </a>
+
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-          <form action="/logout" method="post">
-            @csrf
-            <button type="submit" class="dropdown-item">
-              Logout
-            </button>
-          </form>
-        </div>
-        </a>
-        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-          <a href="#" class="dropdown-item">Logout</a>
+          <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-logout">Logout</a>
         </div>
       </div>
     </div>
@@ -115,6 +107,40 @@
               </div>
           </li>
         </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-logout" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-status bg-danger"></div>
+      
+      <div class="modal-body text-center py-4">
+        <h3>Apakah yakin ingin logout</h3>
+      </div>
+
+      <div class="modal-footer">
+        <div class="w-100">
+          <div class="row">
+            <div class="col">
+              <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                Tidak
+              </a>
+            </div>
+
+            <div class="col">
+              <form action="/logout" method="post">
+                @csrf
+                <button type="submit" class="btn btn-danger w-100">
+                  Logout
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

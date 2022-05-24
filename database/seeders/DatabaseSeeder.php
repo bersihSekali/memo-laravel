@@ -95,13 +95,37 @@ class DatabaseSeeder extends Seeder
             'password' => hash::make('asdasd')
         ]);
 
+        User::create([
+            'name' => 'yudhi',
+            'level' => 'head',
+            'satuan_kerja' => '2',
+            'departemen' => '4',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'nur',
+            'level' => 'staff',
+            'satuan_kerja' => '2',
+            'departemen' => '5',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'bayu',
+            'level' => 'staff',
+            'satuan_kerja' => '3',
+            'departemen' => '6',
+            'password' => hash::make('asdasd')
+        ]);
+
         SuratMasuk::create([
             'created_by' => 'agusta',
             'perihal' => 'asd asd asd',
             'satuan_kerja_asal' => '1',
-            'departemen_asal' => '1',
-            'satuan_kerja_tujuan' => '1',
-            'departemen_tujuan' => '2',
+            'departemen_asal' => '2',
+            'satuan_kerja_tujuan' => '2',
+            'departemen_tujuan' => '4',
         ]);
 
         SuratMasuk::create([
@@ -109,8 +133,8 @@ class DatabaseSeeder extends Seeder
             'perihal' => 'asd asd asd asdasdasd',
             'satuan_kerja_asal' => '1',
             'departemen_asal' => '1',
-            'satuan_kerja_tujuan' => '1',
-            'departemen_tujuan' => '2',
+            'satuan_kerja_tujuan' => '2',
+            'departemen_tujuan' => '5',
         ]);
 
         SuratMasuk::create([
@@ -118,15 +142,15 @@ class DatabaseSeeder extends Seeder
             'perihal' => 'asd asd asdasdasdasdasdasdasdasd',
             'satuan_kerja_asal' => '1',
             'departemen_asal' => '1',
-            'satuan_kerja_tujuan' => '1',
-            'departemen_tujuan' => '2',
+            'satuan_kerja_tujuan' => '2',
+            'departemen_tujuan' => '5',
         ]);
 
         SuratMasuk::create([
             'created_by' => 'hernandi',
             'perihal' => 'asd asdasdasdasd asdasddsa asd',
             'satuan_kerja_asal' => '1',
-            'departemen_asal' => '1',
+            'departemen_asal' => '2',
             'satuan_kerja_tujuan' => '1',
             'departemen_tujuan' => '1',
         ]);
@@ -138,6 +162,15 @@ class DatabaseSeeder extends Seeder
             'departemen_asal' => '2',
             'satuan_kerja_tujuan' => '1',
             'departemen_tujuan' => '1',
+        ]);
+
+        SuratMasuk::create([
+            'created_by' => 'yudhi',
+            'perihal' => 'dasdasdsadsadaasd asd asd',
+            'satuan_kerja_asal' => '2',
+            'departemen_asal' => '4',
+            'satuan_kerja_tujuan' => '2',
+            'departemen_tujuan' => '4',
         ]);
     }
 }

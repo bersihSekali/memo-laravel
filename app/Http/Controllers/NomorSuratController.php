@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
 use App\Models\User;
+use App\Models\SatuanKerja;
+use App\Models\Departemen;
 use Illuminate\Support\Facades\Auth;
 
 class NomorSuratController extends Controller
@@ -18,14 +20,13 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratMasuk::latest()->get();
+        $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->latest()->get();
 
         $datas = [
             'title' => 'Daftar Semua Surat',
             'datas' => $mails,
             'users' => $user
         ];
-        // dd($datas);
 
         return view('nomorSurat.index', $datas);
     }
@@ -39,8 +40,11 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
+        $satuanKerja = SatuanKerja::all();
+
         $datas = [
             'title' => 'Tambah Surat',
+            'satuanKerjas' => $satuanKerja,
             'users' => $user
         ];
 
