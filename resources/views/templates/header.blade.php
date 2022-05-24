@@ -14,11 +14,11 @@
           </div>
 
           @if ($users->level == "admin")
-            <i class="fas fa-users-cog fa-2x"></i>
+          <i class="fas fa-users-cog fa-2x"></i>
           @elseif ($users->level == "head")
-            <i class="fas fa-user-plus fa-2x"></i>
+          <i class="fas fa-user-plus fa-2x"></i>
           @else
-            <i class="fas fa-user fa-2x"></i>
+          <i class="fas fa-user fa-2x"></i>
           @endif
         </a>
 
@@ -63,6 +63,9 @@
                   <a class="dropdown-item" href="/registration">
                     Tambah Pengguna
                   </a>
+                  <a class="dropdown-item" href="/departemen">
+                    List Satuan Kerja dan Departemen
+                  </a>
                 </div>
               </div>
           </li>
@@ -72,7 +75,7 @@
             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
               <i class="fas fa-envelope"></i>
               <span class="nav-link-title ms-1">
-                Surat
+                Keluar
               </span>
             </a>
 
@@ -88,23 +91,36 @@
                   </a>
                   @endif
 
-                  <a class="dropdown-item" href="/suratMasuk">
-                    Surat Masuk
-                  </a>
-
-                  <a class="dropdown-item" href="/disposisi">
-                    Disposisi Masuk
-                  </a>
-
                   <a class="dropdown-item" href="/suratKeluar">
                     Surat Keluar
                   </a>
+                </div>
+              </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+              <i class="fas fa-envelope"></i>
+              <span class="nav-link-title ms-1">
+                Masuk
+              </span>
+            </a>
 
-                  <a class="dropdown-item" href="/laporan">
-                    Generate Laporan
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="/suratMasuk">
+                    Surat Masuk
+                  </a>
+                  <a class="dropdown-item" href="/disposisi">
+                    Disposisi Masuk
                   </a>
                 </div>
               </div>
+          </li>
+          <li class="nav-item">
+            <a class="dropdown-item" href="/laporan">
+              Generate Laporan
+            </a>
           </li>
         </ul>
       </div>
@@ -117,7 +133,7 @@
     <div class="modal-content">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="modal-status bg-danger"></div>
-      
+
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin logout</h3>
       </div>

@@ -16,7 +16,7 @@
                 @csrf
 
                 <div class="form-group mb-3">
-                    <label for="satuan_kerja" class="form-label ">Satuan Kerja</label>
+                    <label for="satuan_kerja" class="form-label ">Nama Satuan Kerja</label>
                     <input type="text" class="form-control" id="satuan_kerja" name="satuan_kerja">
                 </div>
 

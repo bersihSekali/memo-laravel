@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\SatuanKerja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class SatuanKerjaController extends Controller
 {
@@ -14,10 +16,7 @@ class SatuanKerjaController extends Controller
      */
     public function index()
     {
-        $datas = [
-            'title' => 'Daftar Satuan Kerja dan Departemen'
-        ];
-        return view('satuanKerja.index', $datas);
+        //
     }
 
     /**
@@ -27,8 +26,11 @@ class SatuanKerjaController extends Controller
      */
     public function create()
     {
+        $id = Auth::id();
+        $user = User::find($id);
         $datas = [
-            'title' => 'Tambah Satuan Kerja'
+            'title' => 'Tambah Satuan Kerja',
+            'users' => $user
         ];
         return view('satuanKerja.create', $datas);
     }
@@ -48,10 +50,10 @@ class SatuanKerjaController extends Controller
         $create = SatuanKerja::create($validated);
 
         if (!$create) {
-            return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal');
+            return redirect('/satuanKerja/create')->with('error', 'Pembuatan surat gagal');
         }
 
-        return redirect('/nomorSurat')->with('success', 'Pembuatan surat berhasil');
+        return redirect('/satuanKerja')->with('success', 'Pembuatan surat berhasil');
     }
 
     /**

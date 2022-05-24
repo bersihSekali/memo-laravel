@@ -17,7 +17,17 @@ class DepartemenController extends Controller
      */
     public function index()
     {
-        //
+        $id = Auth::id();
+        $user = User::find($id);
+        $satuanKerja = SatuanKerja::all();
+        $departemen = Departemen::all();
+        $datas = [
+            'title' => 'Daftar Satuan Kerja dan Departemen',
+            'users' => $user,
+            'satuanKerjas' => $satuanKerja,
+            'departemens' => $departemen
+        ];
+        return view('departemen.index', $datas);
     }
 
     /**

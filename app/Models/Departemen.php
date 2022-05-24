@@ -13,4 +13,9 @@ class Departemen extends Model
         'satuan_kerja',
         'departemen'
     ];
+
+    public function satuanKerjaTable()
+    {
+        return $this->belongsTo(SatuanKerja::class, 'satuan_kerja');
+    }
 }
