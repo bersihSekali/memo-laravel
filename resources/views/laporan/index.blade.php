@@ -44,7 +44,7 @@
                             <td>-</td>
                             @endif
                             @if($data['tanggal_disposisi'])
-                            <td class="align-top text-center">{{date("Y-m-d", strtotime($data['tanggal_disposisi']))}} <span type="button" data-bs-toggle="modal" data-bs-target="#disposisi-{{$data['id']}}" class="badge bg-info">Lihat Disposisi</span></td>
+                            <td class="align-top text-center">{{date("Y-m-d", strtotime($data['tanggal_disposisi']))}} {{$data->satuanKerjaDisposisi['satuan_kerja']}} | {{$data->departemenDisposisi['departemen']}} [{{$data['pesan_disposisi']}}] </td>
                             @else
                             <td>-</td>
                             @endif
