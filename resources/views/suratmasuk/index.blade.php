@@ -17,7 +17,7 @@
                 <table id="tabel-data" class="table table-bordered table-hover" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th scope="col">Tanggal</th>
+                            <th scope="col" width="10%">Tanggal</th>
                             <th scope="col">No.</th>
                             <th scope="col">Asal</th>
                             <th scope="col">Tujuan</th>
@@ -167,7 +167,7 @@
 
                         <tr>
                             <td>Lampiran</td>
-                            <td>: <a href="/storage/{{ $data['lampiran'] }}"><button type="button" class="btn btn-info btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
+                            <td>: <a href="/storage/{{ $data['lampiran'] }}"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
                         </tr>
                     </table>
                 </div>
@@ -259,10 +259,7 @@
                         <div class="col-sm-6">
                             <label for="departemen_tujuan_disposisi" class="form-label">Departemen Tujuan</label>
                             <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen_tujuan_disposisi" id="departemen_tujuan_disposisi">
-                                <option selected> ---- </option>
-                                @foreach($departemen as $item)
-                                <option value="{{$item['id']}}">{{$item['departemen']}}</option>
-                                @endforeach
+                                <option value=""> ---- </option>
                             </select>
                         </div>
                     </div>
@@ -284,4 +281,22 @@
     </div>
 </div>
 @endforeach
+
+<script src="{{url('/assets/dist/js/jquery-3.6.0.min.js')}}" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script>
+    jQuery(document).ready(function(){
+        jQuery('#satuan_kerja_tujuan_disposisi').change(function(){
+            var skid = jQuery(this).val();
+            jQuery.ajax({
+                url: '/getSatuanKerja',
+                type: 'post',
+                data: 'skid='+skid+'&_token={{csrf_token()}}',
+                success: function(result){
+                    jQuery('#departemen_tujuan_disposisi').html(result)
+                }
+            });
+        });
+    });
+</script>
 @endsection

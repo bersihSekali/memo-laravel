@@ -23,7 +23,7 @@ class CreateSuratMasuksTable extends Migration
             $table->string('perihal');
 
             $table->unsignedBigInteger('satuan_kerja_asal');
-            $table->unsignedBigInteger('departemen_asal');
+            $table->unsignedBigInteger('departemen_asal')->nullable();
             $table->unsignedBigInteger('satuan_kerja_tujuan');
             $table->unsignedBigInteger('departemen_tujuan');
 

@@ -12,6 +12,7 @@
   <link href="{{url('/assets/fontawesome/css/fontawesome.css')}}" rel="stylesheet">
   <link href="{{url('/assets/fontawesome/css/brands.css')}}" rel="stylesheet">
   <link href="{{url('/assets/fontawesome/css/solid.css')}}" rel="stylesheet">
+  <link href="{{url('/assets/fontawesome/css/regular.css')}}" rel="stylesheet">
   <link href="{{url('assets/dist/css/tabler.min.css')}}" rel="stylesheet" />
   <link href="{{url('assets/dist/css/tabler-flags.min.css')}}" rel="stylesheet" />
   <link href="{{url('assets/dist/css/tabler-payments.min.css')}}" rel="stylesheet" />
@@ -19,10 +20,11 @@
   <link href="{{url('assets/dist/css/demo.min.css')}}" rel="stylesheet" />
 
   <script defer src="{{url('assets/fontawesome/js/all.js')}}"></script>
-  <!--load all styles -->
   <script defer src="{{url('assets/fontawesome/js/brands.js')}}"></script>
   <script defer src="{{url('assets/fontawesome/js/solid.js')}}"></script>
   <script defer src="{{url('assets/fontawesome/js/fontawesome.js')}}"></script>
+  <script defer src="{{url('assets/fontawesome/js/regular.js')}}"></script>
+  <script defer src="{{url('assets/fontawesome/js/conflict-detection.js')}}"></script>
 
   <link rel="stylesheet" type="text/css" media="screen" href="{{url('assets/dataTables/jquery.dataTables.min.css')}}">
   <script src="{{url('assets/dataTables/jquery.min.js')}}"></script>

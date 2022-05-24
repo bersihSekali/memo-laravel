@@ -24,13 +24,15 @@
                         <option selected value="{{ $users->satuan_kerja}}"> {{ $users->satuanKerja['satuan_kerja'] }} </option>
                     </select>
                 </div>
-
-                <div class="col-sm-6 mb-3">
-                    <label for="departemen_asal" class="form-label">Department Asal</label>
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen_asal" id="departemen_asal">
-                        <option value="{{ $users->departemen}}"> {{ $users->departemenTable['departemen'] }} </option>
-                    </select>
-                </div>
+                
+                @if ($users->departemen != 0)
+                    <div class="col-sm-6 mb-3 d-none">
+                        <label for="departemen_asal" class="form-label">Department Asal</label>
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen_asal" id="departemen_asal">
+                            <option value="{{ $users->departemen}}"> {{ $users->departemenTable['departemen'] }} </option>
+                        </select>
+                    </div>
+                @endif
             </div>
 
             <div class="form-group row">
@@ -67,7 +69,7 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="{{url('/assets/dist/js/jquery-3.6.0.min.js')}}" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script>
     jQuery(document).ready(function(){

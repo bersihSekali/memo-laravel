@@ -19,7 +19,7 @@
     <h1>Selamat {{ $salam }}, {{ strtoupper($users->name) }}</h1>
     
     @if ($users->level != 'admin')
-        <div class="row row-cards">
+        <div class="row row-cards mt-2">
             <div class="col-sm-6 col-lg-3">
                 <div class="card card-sm">
                     <div class="card-body">
@@ -104,6 +104,54 @@
                                 </div>
                                 <div class="text-muted">
                                     Pending
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cards justify-content-center mt-3">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-info text-white avatar">
+                                    <i class="fas fa-inbox fa-2x"></i>
+                                </span>
+                            </div>
+
+                            <div class="col">
+                                <div class="fs-3 font-weight-medium">
+                                    {{ $countSuratMasuk }}
+                                </div>
+                                <div class="text-muted">
+                                    Total Surat Masuk
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-success text-white avatar">
+                                    <i class="fas fa-file-alt fa-2x"></i>
+                                </span>
+                            </div>
+
+                            <div class="col">
+                                <div class="fs-3 font-weight-medium">
+                                    {{ $countSelesai }}
+                                </div>
+                                <div class="text-muted">
+                                    Total Surat Selesai
                                 </div>
                             </div>
                         </div>

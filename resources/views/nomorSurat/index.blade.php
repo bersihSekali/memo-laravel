@@ -53,12 +53,12 @@
                                         <td class="align-top">
                                             @if ($data->otor_status == '2')
                                                 <span class="badge bg-success">
-                                                    Disetujui {{ $data->otor_by }} <br>
+                                                    Disetujui {{ strtoupper($data->otor_by) }} <br>
                                                     at: {{ date("Y-m-d", strtotime($data->tanggal_otor)) }}
                                                 </span>
                                             @elseif ($data->otor_status == '3')
                                                 <span class="badge bg-warning">
-                                                    Ditolak {{ $data->otor_by }} <br>
+                                                    Ditolak {{ strtoupper($data->otor_by) }} <br>
                                                     at: {{ date("Y-m-d", strtotime($data->tanggal_otor)) }}
                                                 </span>
                                             @else
@@ -120,6 +120,23 @@
                             <tr>
                                 <td>Perihal</td>
                                 <td>: {{ $data->perihal }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Status</td>
+                                <td>
+                                    : @if ($data->otor_status == '2')
+                                        <span class="badge bg-success">
+                                            Disetujui {{ strtoupper($data->otor_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor)) }}
+                                        </span>
+                                    @elseif ($data->otor_status == '3')
+                                        <span class="badge bg-warning">
+                                            Ditolak {{ strtoupper($data->otor_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor)) }}
+                                        </span>
+                                    @else
+                                        <span class="badge bg-secondary">Pending</span>
+                                    @endif 
+                                </td>
                             </tr>
 
                             <tr>
