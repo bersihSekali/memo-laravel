@@ -21,8 +21,8 @@ class OtorisasiSuratController extends Controller
         $id = Auth::id();
         $user = User::where('id', $id)->first();
         $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->where('otor_status', 1)
-                    ->latest()->get();
+            ->where('otor_status', 1)
+            ->latest()->get();
 
         $datas = [
             'title' => 'Daftar Otorisasi Surat',
@@ -92,8 +92,13 @@ class OtorisasiSuratController extends Controller
         $update[] = $datas['otor_status'] = '2';
         $datas['tanggal_otor'] = Carbon::now();
         array_push($update, $datas['tanggal_otor']);
+
         $datas['otor_by'] = $user->name;
         array_push($update, $datas['otor_by']);
+
+        $datas['no_urut'] = sprintf("%03d", $datas['no_urut']);
+        array_push($update, $datas['no_urut']);
+        dd($update);
 
         if ($request->file('lampiran')) {
             if ($datas->lampiran) {
@@ -107,9 +112,9 @@ class OtorisasiSuratController extends Controller
         }
 
         $datas->update($update);
-        
-        if(!$datas){
-            return redirect('/otorisasi')->with('error', 'Update data failed!');    
+
+        if (!$datas) {
+            return redirect('/otorisasi')->with('error', 'Update data failed!');
         } else {
             return redirect('/otorisasi')->with('success', 'Update data success!');
         }
@@ -134,9 +139,9 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['otor_by']);
 
         $datas->update($update);
-        
-        if(!$datas){
-            return redirect('/otorisasi')->with('error', 'Update data failed!');    
+
+        if (!$datas) {
+            return redirect('/otorisasi')->with('error', 'Update data failed!');
         } else {
             return redirect('/otorisasi')->with('success', 'Update data success!');
         }

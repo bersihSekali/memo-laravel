@@ -65,14 +65,19 @@ class NomorSuratController extends Controller
             'created_by' => 'required',
             'satuan_kerja_asal' => 'required',
             'satuan_kerja_tujuan' => 'required',
-            'departemen_asal' => 'required',
             'departemen_tujuan' => 'required',
             'perihal' => 'required',
-            'lampiran' => 'required|mimes:pdf'
+            'lampiran' => 'required|mimes:pdf',
+            'no_urut' => 'required'
         ]);
+        $validated['departemen_asal'] = $request->departemen_asal;
         $file = $request->file('lampiran');
         $fileName = $file->getClientOriginalName();
         $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+
+        $mails = SuratMasuk::max('no_urut');
+        $no_urut = $validated['no_urut'] + $mails;
+        $validated['no_urut'] = $no_urut;
 
         $create = SuratMasuk::create($validated);
 

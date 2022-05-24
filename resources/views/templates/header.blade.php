@@ -18,11 +18,11 @@
           </div>
 
           @if ($users->level == "admin")
-          <i class="fas fa-users-cog fa-2x"></i>
+            <i class="fa-solid fa-user-gear fa-2x"></i>
           @elseif ($users->level == "head")
-          <i class="fas fa-user-plus fa-2x"></i>
+            <i class="fas fa-user-plus fa-2x"></i>
           @else
-          <i class="fas fa-user fa-2x"></i>
+            <i class="fas fa-user fa-2x"></i>
           @endif
         </a>
 
@@ -52,7 +52,7 @@
           @if ($users->level == 'admin')
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-              <i class="fas fa-users"></i>
+              <i class="fa-solid fa-user-pen"></i>
               <span class="nav-link-title ms-1">
                 Admin
               </span>
@@ -121,11 +121,17 @@
                 </div>
               </div>
           </li>
-          <li class="nav-item">
-            <a class="dropdown-item" href="/laporan">
-              Generate Laporan
-            </a>
-          </li>
+          
+          @if ($users->level != 'admin')
+            <li class="nav-item">
+              <a class="nav-link" href="/laporan">
+                <i class="fa-solid fa-file-arrow-down"></i>
+                <span class="nav-link-title ms-1">
+                  Generate Laporan
+                </span>
+              </a>
+            </li>
+          @endif
         </ul>
       </div>
     </div>

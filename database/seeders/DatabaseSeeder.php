@@ -122,85 +122,94 @@ class DatabaseSeeder extends Seeder
             'password' => hash::make('asdasd')
         ]);
 
-        SuratMasuk::create([
-            'created_by' => 'hernandi',
-            'perihal' => 'asd asd asd',
-            'satuan_kerja_asal' => '1',
-            'departemen_asal' => '1',
-            'satuan_kerja_tujuan' => '1',
-            'departemen_tujuan' => '2',
-        ]);
+        // SuratMasuk::create([
+        //     'created_by' => 'hernandi',
+        //     'perihal' => 'asd asd asd',
+        //     'satuan_kerja_asal' => '1',
+        //     'departemen_asal' => '1',
+        //     'satuan_kerja_tujuan' => '1',
+        //     'departemen_tujuan' => '2',
+        //     'no_urut' => '1'
+        // ]);
 
-        SuratMasuk::create([
-            'created_by' => 'hernandi',
-            'perihal' => 'asd asd asd asdasdasd',
-            'satuan_kerja_asal' => '1',
-            'departemen_asal' => '1',
-            'satuan_kerja_tujuan' => '1',
-            'departemen_tujuan' => '3',
-        ]);
+        // SuratMasuk::create([
+        //     'created_by' => 'hernandi',
+        //     'perihal' => 'asd asd asd asdasdasd',
+        //     'satuan_kerja_asal' => '1',
+        //     'departemen_asal' => '1',
+        //     'satuan_kerja_tujuan' => '1',
+        //     'departemen_tujuan' => '3',
+        //     'no_urut' => '2'
+        // ]);
 
-        SuratMasuk::create([
-            'created_by' => 'hernandi',
-            'perihal' => 'asd asd asdasdasdasdasdasdasdasd',
-            'satuan_kerja_asal' => '1',
-            'departemen_asal' => '1',
-            'satuan_kerja_tujuan' => '2',
-            'departemen_tujuan' => '5',
-        ]);
+        // SuratMasuk::create([
+        //     'created_by' => 'hernandi',
+        //     'perihal' => 'asd asd asdasdasdasdasdasdasdasd',
+        //     'satuan_kerja_asal' => '1',
+        //     'departemen_asal' => '1',
+        //     'satuan_kerja_tujuan' => '2',
+        //     'departemen_tujuan' => '5',
+        //     'no_urut' => '3'
+        // ]);
 
-        SuratMasuk::create([
-            'created_by' => 'hernandi',
-            'perihal' => 'asd asdasdasdasd asdasddsa asd',
-            'satuan_kerja_asal' => '1',
-            'departemen_asal' => '2',
-            'satuan_kerja_tujuan' => '1',
-            'departemen_tujuan' => '1',
-        ]);
+        // SuratMasuk::create([
+        //     'created_by' => 'hernandi',
+        //     'perihal' => 'asd asdasdasdasd asdasddsa asd',
+        //     'satuan_kerja_asal' => '1',
+        //     'departemen_asal' => '2',
+        //     'satuan_kerja_tujuan' => '1',
+        //     'departemen_tujuan' => '1',
+        //     'no_urut' => '4'
+        // ]);
 
-        SuratMasuk::create([
-            'created_by' => 'hernandi',
-            'perihal' => 'dasdasdsadsad aasd asd asd',
-            'satuan_kerja_asal' => '1',
-            'departemen_asal' => '2',
-            'satuan_kerja_tujuan' => '1',
-            'departemen_tujuan' => '1',
-        ]);
+        // SuratMasuk::create([
+        //     'created_by' => 'hernandi',
+        //     'perihal' => 'dasdasdsadsad aasd asd asd',
+        //     'satuan_kerja_asal' => '1',
+        //     'departemen_asal' => '2',
+        //     'satuan_kerja_tujuan' => '1',
+        //     'departemen_tujuan' => '1',
+        //     'no_urut' => '5'
+        // ]);
 
-        SuratMasuk::create([
-            'created_by' => 'yudhi',
-            'perihal' => 'dasdasdsads adaasd asd asd',
-            'satuan_kerja_asal' => '2',
-            'departemen_asal' => '4',
-            'satuan_kerja_tujuan' => '2',
-            'departemen_tujuan' => '4',
-        ]);
+        // SuratMasuk::create([
+        //     'created_by' => 'yudhi',
+        //     'perihal' => 'dasdasdsads adaasd asd asd',
+        //     'satuan_kerja_asal' => '2',
+        //     'departemen_asal' => '4',
+        //     'satuan_kerja_tujuan' => '2',
+        //     'departemen_tujuan' => '4',
+        //     'no_urut' => '6'
+        // ]);
 
-        SuratMasuk::create([
-            'created_by' => 'yudhi',
-            'perihal' => 'dasdasd sadsadaasd asd asd',
-            'satuan_kerja_asal' => '2',
-            'departemen_asal' => '4',
-            'satuan_kerja_tujuan' => '3',
-            'departemen_tujuan' => '6',
-        ]);
+        // SuratMasuk::create([
+        //     'created_by' => 'yudhi',
+        //     'perihal' => 'dasdasd sadsadaasd asd asd',
+        //     'satuan_kerja_asal' => '2',
+        //     'departemen_asal' => '4',
+        //     'satuan_kerja_tujuan' => '3',
+        //     'departemen_tujuan' => '6',
+        //     'no_urut' => '7'
+        // ]);
 
-        SuratMasuk::create([
-            'created_by' => 'yudhi',
-            'perihal' => 'dasda sdsa dsadaasd asd asd',
-            'satuan_kerja_asal' => '2',
-            'departemen_asal' => '4',
-            'satuan_kerja_tujuan' => '3',
-            'departemen_tujuan' => '6',
-        ]);
+        // SuratMasuk::create([
+        //     'created_by' => 'yudhi',
+        //     'perihal' => 'dasda sdsa dsadaasd asd asd',
+        //     'satuan_kerja_asal' => '2',
+        //     'departemen_asal' => '4',
+        //     'satuan_kerja_tujuan' => '3',
+        //     'departemen_tujuan' => '6',
+        //     'no_urut' => '8'
+        // ]);
 
-        SuratMasuk::create([
-            'created_by' => 'yudhi',
-            'perihal' => 'das da sds adsadaasd asd asd',
-            'satuan_kerja_asal' => '2',
-            'departemen_asal' => '4',
-            'satuan_kerja_tujuan' => '4',
-            'departemen_tujuan' => '8',
-        ]);
+        // SuratMasuk::create([
+        //     'created_by' => 'yudhi',
+        //     'perihal' => 'das da sds adsadaasd asd asd',
+        //     'satuan_kerja_asal' => '2',
+        //     'departemen_asal' => '4',
+        //     'satuan_kerja_tujuan' => '4',
+        //     'departemen_tujuan' => '8',
+        //     'no_urut' => '9'
+        // ]);
     }
 }

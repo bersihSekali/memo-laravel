@@ -28,6 +28,7 @@ class SuratMasuk extends Model
         'lampiran_disposisi',
         'tanggal_selesai',
         'status',
+        'no_urut'
     ];
 
     public function satuanKerjaAsal()

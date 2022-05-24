@@ -15,6 +15,7 @@
             <div class="form-group mb-3">
                 <label for="created_by" class="form-label ">PIC</label>
                 <input type="text" class="form-control" id="created_by" name="created_by" autocomplete="off" value="{{ strtoupper($users->name) }}" readonly>
+                <input type="hidden" id="no_urut" name="no_urut" value="1">
             </div>
 
             <div class="form-group row">
@@ -26,10 +27,10 @@
                 </div>
                 
                 @if ($users->departemen != 0)
-                    <div class="col-sm-6 mb-3 d-none">
+                    <div class="col-sm-6 mb-3">
                         <label for="departemen_asal" class="form-label">Department Asal</label>
                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen_asal" id="departemen_asal">
-                            <option value="{{ $users->departemen}}"> {{ $users->departemenTable['departemen'] }} </option>
+                            <option value="{{ $users->departemen }}"> {{ $users->departemenTable['departemen'] }} </option>
                         </select>
                     </div>
                 @endif

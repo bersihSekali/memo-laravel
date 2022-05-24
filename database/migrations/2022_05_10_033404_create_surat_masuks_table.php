@@ -53,6 +53,7 @@ class CreateSuratMasuksTable extends Migration
             $table->unsignedBigInteger('checker_disposisi')->nullable();
             $table->datetime('tanggal_selesai_disposisi')->nullable();
             $table->string('status_disposisi')->nullable();
+            $table->unsignedBigInteger('no_urut');
         });
     }
 
