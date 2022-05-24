@@ -11,7 +11,9 @@ use App\Http\Controllers\SatuanKerjaController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\CheckerController;
 use App\Http\Controllers\DisposisiController;
+use App\Http\Controllers\CheckerDisposisiController;
 use App\Http\Controllers\CreateNomorSuratController;
+use App\Http\Controllers\GenerateLaporanController;
 use App\Models\SuratMasuk;
 
 /*
@@ -46,10 +48,14 @@ Route::post('/registration', [AuthController::class, 'register']);
 Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
 Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth');
 Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth');
+Route::resource('disposisi', DisposisiController::class)->middleware('auth');
 Route::resource('suratKeluar', SuratKeluarController::class)->middleware('auth');
 Route::post('/getSatuanKerja', [CreateNomorSuratController::class, 'index']);
+Route::resource('laporan', GenerateLaporanController::class)->middleware('auth');
 
 Route::resource('checker', CheckerController::class)->middleware('auth');
+Route::resource('checkerDisposisi', CheckerDisposisiController::class)->middleware('auth');
+Route::post('disposisi/selesai/{id}', [DisposisiController::class, 'selesai'])->middleware('auth');
 Route::resource('disposisi', DisposisiController::class)->middleware('auth');
 
 Route::post('/logout', [AuthController::class, 'logout']);

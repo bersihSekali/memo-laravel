@@ -92,7 +92,7 @@
                     Surat Masuk
                   </a>
 
-                  <a class="dropdown-item" href="">
+                  <a class="dropdown-item" href="/disposisi">
                     Disposisi Masuk
                   </a>
 
@@ -100,7 +100,7 @@
                     Surat Keluar
                   </a>
 
-                  <a class="dropdown-item" href="">
+                  <a class="dropdown-item" href="/laporan">
                     Generate Laporan
                   </a>
                 </div>
