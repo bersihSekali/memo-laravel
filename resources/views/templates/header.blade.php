@@ -100,7 +100,7 @@
                     Surat Keluar
                   </a>
 
-                  <a class="dropdown-item" href="">
+                  <a class="dropdown-item" href="/laporan">
                     Generate Laporan
                   </a>
                 </div>
