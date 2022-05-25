@@ -98,7 +98,6 @@ class OtorisasiSuratController extends Controller
 
         $datas['no_urut'] = sprintf("%03d", $datas['no_urut']);
         array_push($update, $datas['no_urut']);
-        dd($update);
 
         if ($request->file('lampiran')) {
             if ($datas->lampiran) {

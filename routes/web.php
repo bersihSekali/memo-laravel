@@ -48,7 +48,6 @@ Route::post('/registration', [AuthController::class, 'register']);
 Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
 Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth');
 Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth');
-Route::resource('disposisi', DisposisiController::class)->middleware('auth');
 Route::resource('suratKeluar', SuratKeluarController::class)->middleware('auth');
 Route::post('/getSatuanKerja', [CreateNomorSuratController::class, 'index']);
 Route::resource('laporan', GenerateLaporanController::class)->middleware('auth');

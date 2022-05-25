@@ -20,10 +20,7 @@
                             <th scope="col" width="10%">Tanggal</th>
                             <th scope="col">No.</th>
                             <th scope="col">Asal</th>
-                            <th scope="col">Tujuan</th>
                             <th scope="col">Perihal</th>
-                            <th scope="col">Checker</th>
-                            <th scope="col">Disposisi</th>
                             <th scope="col">Status</th>
                             @if($users['level'] == 'Admin')
                             <th scope="col">Aksi</th>
@@ -33,31 +30,14 @@
                     <tbody>
                         @foreach($datas as $data)
                         <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
-                            <td class="align-top">{{date('Y-m-d', strtotime($data['created_at']))}}</td>
+                            <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_otor']))}}</td>
                             <td class="align-top">{{$data['nomor_surat']}}</td>
                             <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
-                            <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                             <td class="align-top">{{$data['perihal']}}</td>
-                            @if($data['checker'])
-                            <td class="align-top text-center">{{$data->checkerUser['name']}}</td>
-                            @elseif($users['level'] == 'Admin' | $data['status']==1)
-                            <td>-</td>
-                            @else
-                            <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalChecker-{{$data['id']}}">+</button></td>
-                            @endif
-                            @if($data['tanggal_disposisi'])
-                            <td class="align-top text-center">{{date("Y-m-d", strtotime($data['tanggal_disposisi']))}} <span type="button" data-bs-toggle="modal" data-bs-target="#disposisi-{{$data['id']}}" class="badge bg-info">Lihat Disposisi</span></td>
-                            @elseif($users['level'] == 'Admin' | $data['status']==1)
-                            <td>-</td>
-                            @else
-                            <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalDisposisi-{{$data['id']}}">+</button></td>
-                            @endif
                             @if($data['status'])
                             <td class="align-top text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_selesai']))}}</td>
-                            @elseif($users['level'] == 'Admin')
-                            <td>Belum diselesaikan</td>
                             @else
-                            <td class="align-top text-center"><button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{$data['id']}}">Selesaikan</button></td>
+                            <td>Belum Selesai</td>
                             @endif
                             @if($users['level'] == 'Admin')
                             <td class="align-top">
@@ -151,19 +131,38 @@
                         </tr>
 
                         <tr>
+                            <td>Tanggal Masuk</td>
+                            <td>: {{date('Y-m-d', strtotime($data['tanggal_otor']))}}</td>
+                        </tr>
+
+                        <tr>
                             <td>Asal</td>
                             <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
                         </tr>
 
                         <tr>
                             <td>Tujuan</td>
-                            <td>: {{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                            <td>: {{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                         </tr>
 
                         <tr>
                             <td>Perihal</td>
                             <td>: {{ $data->perihal }}</td>
                         </tr>
+
+                        @if($data['checker'])
+                        <tr>
+                            <td>Checker</td>
+                            <td>: {{$data->checkerUser['name']}}</td>
+                        </tr>
+                        @endif
+
+                        @if($data['tanggal_disposisi'])
+                        <tr>
+                            <td>Disposisi</td>
+                            <td class="align-top text-center">: {{date("Y-m-d", strtotime($data['tanggal_disposisi']))}} <span type="button" data-bs-toggle="modal" data-bs-target="#disposisi-{{$data['id']}}" class="badge bg-info">Lihat Disposisi</span></td>
+                        </tr>
+                        @endif
 
                         <tr>
                             <td>Lampiran</td>
@@ -172,6 +171,12 @@
                     </table>
                 </div>
             </div>
+            @if (!$data['status'])
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalDisposisi-{{ $data['id'] }}">Buat Disposisi</button>
+                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['id'] }}">Teruskan ke Kepala Departemen</button>
+            </div>
+            @endif
         </div>
     </div>
 </div>
@@ -242,6 +247,9 @@
                 @csrf
                 {{method_field('PUT')}}
                 <div class="modal-body">
+                    <div class="mb-3">
+                        {{$data['perihal']}}
+                    </div>
                     <div class="form-group mb-3">
                         <label for="keluar" class="form-label">Tanggal Keluar</label>
                         <input type="date" class="form-control" id="tanggal_disposisi" name="tanggal_disposisi" value="{{date('Y-m-d')}}" readonly>
