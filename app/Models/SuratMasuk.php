@@ -10,8 +10,8 @@ class SuratMasuk extends Model
     use HasFactory;
 
     protected $fillable = [
-        'otor_by',
-        'otor_status',
+        'otor2_by',
+        'otor1_by',
         'created_by',
         'nomor_surat',
         'perihal',
@@ -27,7 +27,10 @@ class SuratMasuk extends Model
         'pesan_disposisi',
         'lampiran_disposisi',
         'tanggal_selesai',
+        'tanggal_otor2',
+        'tanggal_otor1',
         'status',
+        'target',
         'no_urut'
     ];
 

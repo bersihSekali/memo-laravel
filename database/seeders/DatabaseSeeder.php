@@ -78,14 +78,14 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'agusta',
-            'level' => 'sk',
+            'level' => 'Kepala Satuan Kerja',
             'satuan_kerja' => '1',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
             'name' => 'hernandi',
-            'level' => 'dep',
+            'level' => 'Kepala Departemen',
             'satuan_kerja' => '1',
             'departemen' => '1',
             'password' => hash::make('asdasd')
@@ -93,32 +93,48 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'yudhi',
-            'level' => 'staff',
-            'satuan_kerja' => '2',
-            'departemen' => '4',
+            'level' => 'Senior Officer',
+            'satuan_kerja' => '1',
+            'departemen' => '1',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
             'name' => 'nur',
-            'level' => 'sk',
-            'satuan_kerja' => '2',
+            'level' => 'Staff',
+            'satuan_kerja' => '1',
+            'departemen' => '1',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
             'name' => 'bayu',
-            'level' => 'dep',
+            'level' => 'Kepala Satuan Kerja',
             'satuan_kerja' => '2',
-            'departemen' => '5',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
             'name' => 'Eka',
-            'level' => 'staff',
-            'satuan_kerja' => '3',
-            'departemen' => '6',
+            'level' => 'Kepala Departemen',
+            'satuan_kerja' => '2',
+            'departemen' => '2',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Prasetyo',
+            'level' => 'Senior Officer',
+            'satuan_kerja' => '2',
+            'departemen' => '2',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Ariefin',
+            'level' => 'Staff',
+            'satuan_kerja' => '2',
+            'departemen' => '2',
             'password' => hash::make('asdasd')
         ]);
 

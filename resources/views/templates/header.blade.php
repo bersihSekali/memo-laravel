@@ -89,7 +89,7 @@
                   <a class="dropdown-item" href="/nomorSurat">
                     Registrasi Surat
                   </a>
-                  @if ($users->level == 'sk' || $users->level == 'dep')
+                  @if (($users->level == 'Kepala Satuan Kerja') || ($users->level == 'Kepala Departemen') || ($users->level == 'Senior Officer'))
                   <a class="dropdown-item" href="/otorisasi">
                     Otorisasi Surat
                   </a>

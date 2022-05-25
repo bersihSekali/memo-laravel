@@ -51,17 +51,44 @@
                                         <td class="align-top">{{$data['perihal']}}</td>
                                         <td class="align-top">{{$data['created_by']}} </td>
                                         <td class="align-top">
-                                            @if ($data->otor_status == '2')
+                                            {{-- approved otor2_by --}}
+                                            @if ($data->status == '2')
                                                 <span class="badge bg-success">
-                                                    Disetujui {{ strtoupper($data->otor_by) }} <br>
-                                                    at: {{ date("Y-m-d", strtotime($data->tanggal_otor)) }}
+                                                    Disetujui {{ strtoupper($data->otor2_by) }} <br>
+                                                    at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                                                 </span>
-                                            @elseif ($data->otor_status == '3')
+                                            
+                                            {{-- approved otor2_by and otor1_by --}}
+                                            @elseif ($data->status == '3')
+                                                <span class="badge bg-success mb-1">
+                                                    Disetujui {{ strtoupper($data->otor2_by) }} <br>
+                                                    at: {{ date("Y-m-d", strtotime($data->tanggal2_otor)) }}
+                                                </span> <br>
+                                                <span class="badge bg-success">
+                                                    Disetujui {{ strtoupper($data->otor1_by) }} <br>
+                                                    at: {{ date("Y-m-d", strtotime($data->tanggal1_otor)) }}
+                                                </span>
+
+                                            {{-- disapporved otor2_by --}}
+                                            @elseif (($data->status == '0') && ($data->otor1_by == null))
                                                 <span class="badge bg-warning">
-                                                    Ditolak {{ strtoupper($data->otor_by) }} <br>
-                                                    at: {{ date("Y-m-d", strtotime($data->tanggal_otor)) }}
+                                                    Ditolak {{ strtoupper($data->otor2_by) }} <br>
+                                                    at: {{ date("Y-m-d", strtotime($data->tanggal2_otor)) }}
                                                 </span>
-                                            @else
+
+                                            {{-- approved otor2_by but disapporved otor1_by --}}
+                                            @elseif (($data->status == '0') && ($data->otor1_by != null))
+                                                <span class="badge bg-success mb-1">
+                                                    Disetujui {{ strtoupper($data->otor2_by) }} <br>
+                                                    at: {{ date("Y-m-d", strtotime($data->tanggal2_otor)) }}
+                                                </span><br>
+                                                <span class="badge bg-warning">
+                                                    Ditolak {{ strtoupper($data->otor1_by) }} <br>
+                                                    at: {{ date("Y-m-d", strtotime($data->tanggal1_otor)) }}
+                                                </span>
+
+                                            {{-- Pending --}}
+                                            @elseif ($data->status == '1')
                                                 <span class="badge bg-secondary">Pending</span>
                                             @endif 
                                         </td>
@@ -127,17 +154,39 @@
                             <tr>
                                 <td>Status</td>
                                 <td>
-                                    : @if ($data->otor_status == '2')
-                                        <span class="badge bg-success">
-                                            Disetujui {{ strtoupper($data->otor_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor)) }}
-                                        </span>
-                                    @elseif ($data->otor_status == '3')
-                                        <span class="badge bg-warning">
-                                            Ditolak {{ strtoupper($data->otor_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor)) }}
-                                        </span>
-                                    @else
+                                    : @if ($data->status == '1')
                                         <span class="badge bg-secondary">Pending</span>
-                                    @endif 
+                                    
+                                    {{-- approved otor2_by --}}
+                                    @elseif ($data->status == '2')
+                                        <span class="badge bg-success">
+                                            Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                        </span>
+                                    
+                                    {{-- approved otor2_by otor1_by --}}
+                                    @elseif ($data->status == '3')
+                                        <span class="badge bg-success">
+                                            Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                        </span> <br>
+
+                                        <span class="badge bg-success">
+                                            Disetujui {{ strtoupper($data->otor1_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
+                                        </span>
+
+                                    {{-- disapproved otor2_by --}}
+                                    @elseif (($data->status == '0') && ($data->otor1_by == ''))
+                                        <span class="badge bg-danger">
+                                            Ditolak {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                        </span>
+
+                                    {{-- approved otor2_by disapproved otor1_by --}}
+                                    @elseif (($data->status == '0') && ($data->otor1_by != ''))
+                                        <span class="badge bg-success">
+                                            Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }} <br>
+                                        </span> <br>
+                                        <span class="badge bg-danger">Ditolak {{ strtoupper($data->otor1_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
+                                        </span>
+                                    @endif
                                 </td>
                             </tr>
 
