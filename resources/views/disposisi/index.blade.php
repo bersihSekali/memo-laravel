@@ -23,7 +23,7 @@
                             <th scope="col">Pesan Disposisi</th>
                             <th scope="col">Checker</th>
                             <th scope="col">Status</th>
-                            @if($users['level'] == 'admin')
+                            @if($users['level'] == 'Admin')
                             <th scope="col">Aksi</th>
                             @endif
                         </tr>
@@ -37,19 +37,19 @@
                             <td class="align-top">{{$data['pesan_disposisi']}}</td>
                             @if($data['checker_disposisi'])
                             <td class="align-top text-center">{{$data->checkerUserDisposisi['name']}}</td>
-                            @elseif($users['level'] == 'admin' | $data['status_disposisi']==1)
+                            @elseif($users['level'] == 'Admin' | $data['status_disposisi']==1)
                             <td>-</td>
                             @else
                             <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalChecker-{{$data['id']}}">+</button></td>
                             @endif
                             @if($data['status_disposisi'])
                             <td class="align-top text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_selesai_disposisi']))}}</td>
-                            @elseif($users['level'] == 'admin')
+                            @elseif($users['level'] == 'Admin')
                             <td>Belum diselesaikan</td>
                             @else
                             <td class="align-top text-center"><button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{$data['id']}}">Selesaikan</button></td>
                             @endif
-                            @if($users['level'] == 'admin')
+                            @if($users['level'] == 'Admin')
                             <td class="align-top">
                                 <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit-"><i class="fas fa-pen-square"></i></button>
                                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalhapus-"><i class="far fa-trash-alt"></i></button>

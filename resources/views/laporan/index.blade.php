@@ -25,7 +25,7 @@
                             <th scope="col">Checker</th>
                             <th scope="col">Disposisi</th>
                             <th scope="col">Status</th>
-                            @if($users['level'] == 'admin')
+                            @if($users['level'] == 'Admin')
                             <th scope="col">Aksi</th>
                             @endif
                         </tr>

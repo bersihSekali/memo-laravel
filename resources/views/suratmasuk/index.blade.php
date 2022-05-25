@@ -25,7 +25,7 @@
                             <th scope="col">Checker</th>
                             <th scope="col">Disposisi</th>
                             <th scope="col">Status</th>
-                            @if($users['level'] == 'admin')
+                            @if($users['level'] == 'Admin')
                             <th scope="col">Aksi</th>
                             @endif
                         </tr>
@@ -40,26 +40,26 @@
                             <td class="align-top">{{$data['perihal']}}</td>
                             @if($data['checker'])
                             <td class="align-top text-center">{{$data->checkerUser['name']}}</td>
-                            @elseif($users['level'] == 'admin' | $data['status']==1)
+                            @elseif($users['level'] == 'Admin' | $data['status']==1)
                             <td>-</td>
                             @else
                             <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalChecker-{{$data['id']}}">+</button></td>
                             @endif
                             @if($data['tanggal_disposisi'])
                             <td class="align-top text-center">{{date("Y-m-d", strtotime($data['tanggal_disposisi']))}} <span type="button" data-bs-toggle="modal" data-bs-target="#disposisi-{{$data['id']}}" class="badge bg-info">Lihat Disposisi</span></td>
-                            @elseif($users['level'] == 'admin' | $data['status']==1)
+                            @elseif($users['level'] == 'Admin' | $data['status']==1)
                             <td>-</td>
                             @else
                             <td class="align-top text-center"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalDisposisi-{{$data['id']}}">+</button></td>
                             @endif
                             @if($data['status'])
                             <td class="align-top text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_selesai']))}}</td>
-                            @elseif($users['level'] == 'admin')
+                            @elseif($users['level'] == 'Admin')
                             <td>Belum diselesaikan</td>
                             @else
                             <td class="align-top text-center"><button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{$data['id']}}">Selesaikan</button></td>
                             @endif
-                            @if($users['level'] == 'admin')
+                            @if($users['level'] == 'Admin')
                             <td class="align-top">
                                 <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit-"><i class="fas fa-pen-square"></i></button>
                                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalhapus-"><i class="far fa-trash-alt"></i></button>
@@ -285,14 +285,14 @@
 <script src="{{url('/assets/dist/js/jquery-3.6.0.min.js')}}" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script>
-    jQuery(document).ready(function(){
-        jQuery('#satuan_kerja_tujuan_disposisi').change(function(){
+    jQuery(document).ready(function() {
+        jQuery('#satuan_kerja_tujuan_disposisi').change(function() {
             var skid = jQuery(this).val();
             jQuery.ajax({
                 url: '/getSatuanKerja',
                 type: 'post',
-                data: 'skid='+skid+'&_token={{csrf_token()}}',
-                success: function(result){
+                data: 'skid=' + skid + '&_token={{csrf_token()}}',
+                success: function(result) {
                     jQuery('#departemen_tujuan_disposisi').html(result)
                 }
             });

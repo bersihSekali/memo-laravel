@@ -68,9 +68,10 @@
             <label for="level" class="form-label">Level</label>
             <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="level" id="level">
               <option selected> ---- </option>
-              <option value="1">Admin</option>
-              <option value="2">Head</option>
-              <option value="3">Staff</option>
+              <option value="Admin">Admin</option>
+              <option value="Kepala Satuan Kerja">Kepala Satuan Kerja</option>
+              <option value="Kepala Departemen">Kepala Departemen</option>
+              <option value="Staff">Staff</option>
             </select>
           </div>
 
