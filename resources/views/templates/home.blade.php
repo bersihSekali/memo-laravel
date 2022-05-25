@@ -32,7 +32,7 @@ if ($jam > '05:30' && $jam < '10:00') {
 
                     <div class="col">
                         <div class="fs-3 font-weight-medium">
-                            {{ $countTotal }}
+                            Trial
                         </div>
                         <div class="text-muted">
                             Total
@@ -55,7 +55,7 @@ if ($jam > '05:30' && $jam < '10:00') {
 
                     <div class="col">
                         <div class="fs-3 font-weight-medium">
-                            {{ $countApproved }}
+                            Trial
                         </div>
                         <div class="text-muted">
                             Disetujui
@@ -77,7 +77,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                     </div>
                     <div class="col">
                         <div class="fs-3 font-weight-medium">
-                            {{ $countRejected }}
+                            Trial
                         </div>
                         <div class="text-muted">
                             Ditolak
@@ -100,7 +100,7 @@ if ($jam > '05:30' && $jam < '10:00') {
 
                     <div class="col">
                         <div class="fs-3 font-weight-medium">
-                            {{ $countPending }}
+                            Trial
                         </div>
                         <div class="text-muted">
                             Pending
@@ -125,7 +125,7 @@ if ($jam > '05:30' && $jam < '10:00') {
 
                     <div class="col">
                         <div class="fs-3 font-weight-medium">
-                            {{ $countSuratMasuk }}
+                            Trial
                         </div>
                         <div class="text-muted">
                             Total Surat Masuk
@@ -148,7 +148,7 @@ if ($jam > '05:30' && $jam < '10:00') {
 
                     <div class="col">
                         <div class="fs-3 font-weight-medium">
-                            {{ $countSelesai }}
+                            Trial
                         </div>
                         <div class="text-muted">
                             Total Surat Selesai

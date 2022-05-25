@@ -16,8 +16,8 @@ class CreateSuratMasuksTable extends Migration
         Schema::create('surat_masuks', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('otor_by')->nullable();
-            $table->string('otor_status')->default(1);
+            $table->string('otor2_by')->nullable();
+            $table->string('otor1_by')->nullable();
             $table->string('created_by');
             $table->string('nomor_surat')->unique()->nullable();
             $table->string('perihal');
@@ -47,8 +47,10 @@ class CreateSuratMasuksTable extends Migration
             $table->string('pesan_disposisi')->nullable();
             $table->string('lampiran_disposisi')->nullable();
             $table->datetime('tanggal_selesai')->nullable();
-            $table->datetime('tanggal_otor')->nullable();
-            $table->string('status')->nullable();
+            $table->datetime('tanggal_otor2')->nullable();
+            $table->datetime('tanggal_otor1')->nullable();
+            $table->unsignedBigInteger('status')->default(1);
+            $table->unsignedBigInteger('target')->nullable();
 
             $table->unsignedBigInteger('checker_disposisi')->nullable();
             $table->datetime('tanggal_selesai_disposisi')->nullable();

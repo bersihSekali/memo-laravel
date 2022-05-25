@@ -93,32 +93,48 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'yudhi',
-            'level' => 'Staff',
-            'satuan_kerja' => '2',
-            'departemen' => '4',
+            'level' => 'Senior Officer',
+            'satuan_kerja' => '1',
+            'departemen' => '1',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
             'name' => 'nur',
+            'level' => 'Staff',
+            'satuan_kerja' => '1',
+            'departemen' => '1',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'bayu',
             'level' => 'Kepala Satuan Kerja',
             'satuan_kerja' => '2',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
-            'name' => 'bayu',
+            'name' => 'Eka',
             'level' => 'Kepala Departemen',
             'satuan_kerja' => '2',
-            'departemen' => '5',
+            'departemen' => '2',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
-            'name' => 'Eka',
+            'name' => 'Prasetyo',
+            'level' => 'Senior Officer',
+            'satuan_kerja' => '2',
+            'departemen' => '2',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Ariefin',
             'level' => 'Staff',
-            'satuan_kerja' => '3',
-            'departemen' => '6',
+            'satuan_kerja' => '2',
+            'departemen' => '2',
             'password' => hash::make('asdasd')
         ]);
 
