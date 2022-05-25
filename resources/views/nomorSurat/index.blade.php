@@ -98,6 +98,8 @@
                                 <td>: 
                                     @if (!$data->nomor_surat)
                                         Setujui surat terlebih dahulu
+                                    @else
+                                        {{ $data->nomor_surat }}
                                     @endif
                                 </td>
                             </tr>

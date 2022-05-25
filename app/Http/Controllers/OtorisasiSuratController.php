@@ -89,17 +89,28 @@ class OtorisasiSuratController extends Controller
         $user = User::where('id', $user_id)->first();
 
         $datas = SuratMasuk::find($id);
+        // Update otor status
         $update[] = $datas['otor_status'] = '2';
+
+        // Update tanggal otor
         $datas['tanggal_otor'] = Carbon::now();
         array_push($update, $datas['tanggal_otor']);
 
+        // Update otor_by 
         $datas['otor_by'] = $user->name;
         array_push($update, $datas['otor_by']);
 
-        $datas['no_urut'] = sprintf("%03d", $datas['no_urut']);
-        array_push($update, $datas['no_urut']);
-        dd($update);
+        // Update nomor_surat
+        $tahun = date("Y", strtotime($datas['tanggal_otor']));
 
+        if ($datas->satuan_kerja_asal != $datas->satuan_kerja_tujuan) {
+            $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->satuanKerjaAsal['satuan_kerja'] . '/' . $tahun;
+        } else {
+            $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->departemenAsal['departemen'] . '/' . $tahun;
+        }
+        array_push($update, $no_surat);
+
+        // Update lampiran
         if ($request->file('lampiran')) {
             if ($datas->lampiran) {
                 Storage::delete($datas->lampiran);
