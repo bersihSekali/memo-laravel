@@ -75,7 +75,7 @@ class NomorSuratController extends Controller
         $fileName = $file->getClientOriginalName();
         $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
 
-        $mails = SuratMasuk::max('no_urut');
+        $mails = SuratMasuk::where('satuan_kerja_asal', $request->satuan_kerja_asal)->max('no_urut');
         $no_urut = $validated['no_urut'] + $mails;
         $validated['no_urut'] = $no_urut;
 
