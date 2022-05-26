@@ -34,7 +34,7 @@
                             <td class="align-top">{{$data['nomor_surat']}}</td>
                             <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
                             <td class="align-top">{{$data['perihal']}}</td>
-                            @if($data['status'])
+                            @if($data['status'] == 4)
                             <td class="align-top text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_selesai']))}}</td>
                             @else
                             <td>Belum Selesai</td>
@@ -120,20 +120,20 @@
                         </tr>
 
                         <tr>
-                            <td>Nomor Surat</td>
-                            <td>: {{ $data->nomor_surat }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>PIC</td>
-                            <td>: {{ strtoupper($data->created_by) }}</td>
+                            <td>Disusun Oleh</td>
+                            <td>: {{ strtoupper($data->Users['name']) }}</td>
                         </tr>
 
                         <tr>
                             <td>Tanggal Masuk</td>
-                            <td>: {{date('Y-m-d', strtotime($data['tanggal_otor']))}}</td>
+                            <td>: {{date('Y-m-d', strtotime($data['tanggal_otor2']))}}</td>
                         </tr>
+
+                        <tr>
+                            <td>Nomor Surat</td>
+                            <td>: {{ $data->nomor_surat }}</td>
+                        </tr>
+
 
                         <tr>
                             <td>Asal</td>
@@ -157,10 +157,10 @@
                         </tr>
                         @endif
 
-                        @if($data['tanggal_disposisi'])
+                        @if($data['pesan_disposisi'])
                         <tr>
                             <td>Disposisi</td>
-                            <td class="align-top text-center">: {{date("Y-m-d", strtotime($data['tanggal_disposisi']))}} <span type="button" data-bs-toggle="modal" data-bs-target="#disposisi-{{$data['id']}}" class="badge bg-info">Lihat Disposisi</span></td>
+                            <td>: {{$data['pesan_disposisi']}}</td>
                         </tr>
                         @endif
 
@@ -171,9 +171,8 @@
                     </table>
                 </div>
             </div>
-            @if (!$data['status'])
+            @if ($data['status'] != 4)
             <div class="modal-footer">
-                <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalDisposisi-{{ $data['id'] }}">Buat Disposisi</button>
                 <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['id'] }}">Teruskan ke Kepala Departemen</button>
             </div>
             @endif
@@ -224,7 +223,18 @@
             <form action="/suratMasuk/{{$data['id']}}" method="post">
                 @csrf
                 {{method_field('PUT')}}
-                <div class="modal-body">Klik tombol "Akhiri" di bawah untuk menyelesaikan.</div>
+                <div class="modal-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="disposisiCheckbox">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Teruskan dengan disposisi
+                        </label>
+                    </div>
+                    <div class="form-group mb-3" id="formPesan" style="display:none">
+                        <label for="disposisi" class="form-label">Pesan Disposisi</label>
+                        <input type="text" class="form-control" id="pesan_disposisi" name="pesan_disposisi">
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
                     <button class="btn btn-primary" type="submit">Selesaikan</button>
@@ -304,6 +314,15 @@
                     jQuery('#departemen_tujuan_disposisi').html(result)
                 }
             });
+        });
+        $('#disposisiCheckbox').change(function() {
+            // this will contain a reference to the checkbox   
+            if (this.checked) {
+                $('#formPesan').show(12)
+            } else {
+                $('#formPesan').hide(12)
+                // the checkbox is now no longer checked
+            }
         });
     });
 </script>
