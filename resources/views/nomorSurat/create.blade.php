@@ -39,7 +39,7 @@
             <div class="form-group row">
                 <div class="col-sm-6 mb-3">
                     <label for="satuan_kerja_tujuan" class="form-label">Satuan Kerja Tujuan</label>
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja_tujuan" id="satuan_kerja_tujuan">
+                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja_tujuan" id="satuan_kerja_tujuan" required>
                         <option selected> ---- </option>
                         @foreach ($satuanKerjas as $item)
                         <option value="{{$item['id']}}">{{$item['satuan_kerja']}}</option>
@@ -57,12 +57,12 @@
 
             <div class="form-group mb-3">
                 <label for="perihal" class="form-label ">Perihal</label>
-                <textarea class="form-control" aria-label="With textarea" name="perihal" required id="perihal"></textarea>
+                <textarea class="form-control" aria-label="With textarea" name="perihal" required id="perihal" required></textarea>
             </div>
 
             <div class="mb-3">
                 <label for="lampiran" class="form-label">Lampiran</label>
-                <input class="form-control" type="file" id="lampiran" name="lampiran">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Simpan</button>

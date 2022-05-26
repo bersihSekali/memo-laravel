@@ -35,7 +35,7 @@
 
           <div class="mb-2">
             <label class="form-label">Username</label>
-            <input type="text" name="name" id="name" class="form-control" placeholder="Username" autocomplete="off">
+            <input type="text" name="name" id="name" class="form-control" placeholder="Username" autocomplete="off" required>
 
             @error('name')
             <div class="invalid-feedback">
@@ -46,7 +46,7 @@
 
           <div class="mb-2">
             <label for="level" class="form-label">Level</label>
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="level" id="level">
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="level" id="level" required>
               <option selected> ---- </option>
               @foreach ($level as $item)
               <option value="{{$item['id']}}">{{$item['level']}}</option>
@@ -55,8 +55,8 @@
           </div>
 
           <div class="mb-3">
-              <label for="satuan_kerja_tujuan" class="form-label">Satuan Kerja Tujuan</label>
-              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja_tujuan" id="satuan_kerja_tujuan">
+              <label for="satuan_kerja" class="form-label">Satuan Kerja</label>
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja" id="satuan_kerja" required>
                   <option selected> ---- </option>
                   @foreach ($satuanKerja as $item)
                   <option value="{{$item['id']}}">{{$item['satuan_kerja']}}</option>
@@ -64,9 +64,9 @@
               </select>
           </div>
 
-          <div class="mb-3">
-              <label for="departemen_tujuan" class="form-label">Department Tujuan</label>
-              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen_tujuan" id="departemen_tujuan">
+          <div class="mb-3" id="input_departemen">
+              <label for="departemen" class="form-label">Department</label>
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen" id="departemen">
                   <option value=""> ---- </option>
               </select>
           </div>
@@ -74,7 +74,7 @@
           <div class="mb-3">
             <label class="form-label">Password</label>
             <div class="input-group input-group-flat">
-              <input type="password" class="form-control" placeholder="Password" autocomplete="off" name="password">
+              <input type="password" class="form-control" placeholder="Password" autocomplete="off" name="password" required>
               <span class="input-group-text">
                 <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
                   <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
@@ -94,18 +94,28 @@
 
   <script>
       jQuery(document).ready(function(){
-          jQuery('#satuan_kerja_tujuan').change(function(){
-              var skid = jQuery(this).val();
-              alert(skid);
-              jQuery.ajax({
-                  url: '/getSatuanKerja',
-                  type: 'post',
-                  data: 'skid='+skid+'&_token={{csrf_token()}}',
-                  success: function(result){
-                      jQuery('#departemen_tujuan').html(result)
-                  }
-              });
+        // Hide input departemen
+        jQuery('#input_departemen').hide();
+
+        // get value level id
+        jQuery('#level').change(function(){
+          var lid = jQuery(this).val();
+          if (lid == 2){
+            jQuery('#input_departemen').show();
+          }
+        });
+
+        jQuery('#satuan_kerja').change(function(){
+          var skid = jQuery(this).val();
+          jQuery.ajax({
+              url: '/getSatuanKerja',
+              type: 'post',
+              data: 'skid='+skid+'&_token={{csrf_token()}}',
+              success: function(result){
+                  jQuery('#departemen').html(result)
+              }
           });
+        });
       });
   </script>
   <!-- Libs JS -->
