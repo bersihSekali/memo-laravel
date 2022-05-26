@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Departemen;
 use App\Models\SatuanKerja;
+use App\Models\Level;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -44,12 +45,14 @@ class AuthController extends Controller
 
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
+        $level = Level::all();
 
         $datas = [
             'title' => 'registration',
             'judul' => 'registration',
             'satuanKerja' => $satuanKerja,
-            'departemen' => $departemen
+            'departemen' => $departemen,
+            'level' => $level
         ];
         return view('auth/registration', $datas);
     }

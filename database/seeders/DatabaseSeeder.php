@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\SuratMasuk;
 use Illuminate\Support\Facades\Hash;
 use App\Models\SatuanKerja;
+use App\Models\Level;
 
 class DatabaseSeeder extends Seeder
 {
@@ -37,55 +38,83 @@ class DatabaseSeeder extends Seeder
             'satuan_kerja' => '1',
             'departemen' => 'LOGISTIK'
         ]);
+
         Departemen::create([
             'satuan_kerja' => '1',
             'departemen' => 'SISTEM PROSEDUR & PENDUKUNG OPERASI'
         ]);
+
         Departemen::create([
             'satuan_kerja' => '1',
             'departemen' => 'PENGEMBANGAN TEKNOLOGI INFORMASI'
         ]);
+
         Departemen::create([
             'satuan_kerja' => '2',
             'departemen' => 'AUDIT INTERNAL'
         ]);
+
         Departemen::create([
             'satuan_kerja' => '2',
             'departemen' => 'AUDIT TEKNOLOGI INFORMASI'
         ]);
+
         Departemen::create([
             'satuan_kerja' => '3',
             'departemen' => 'DEPARTEMEN SDM'
         ]);
+
         Departemen::create([
             'satuan_kerja' => '3',
             'departemen' => 'DEPARTEMEN HUKUM'
         ]);
+
         Departemen::create([
             'satuan_kerja' => '4',
             'departemen' => 'DEPARTEMEN KOMUNIKASI DAN KESEKTRETARIATAN PERUSAHAAN'
         ]);
+
         Departemen::create([
             'satuan_kerja' => '4',
             'departemen' => 'DEPARTEMEN PENDUKUNG BISNIS'
         ]);
 
+        Level::create([
+            'level' => 'Admin'
+        ]);
+
+        Level::create([
+            'level' => 'Kepala Satuan Kerja'
+        ]);
+
+        Level::create([
+            'level' => 'Kepala Departemen'
+        ]);
+
+        Level::create([
+            'level' => 'Senior Officer'
+        ]);
+
+        Level::create([
+            'level' => 'Officer'
+        ]);
+
         User::create([
             'name' => 'klin',
-            'level' => 'admin',
+            'level' => '1',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
             'name' => 'agusta',
-            'level' => 'Kepala Satuan Kerja',
+            'level' => '2',
             'satuan_kerja' => '1',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
             'name' => 'hernandi',
-            'level' => 'Kepala Departemen',
+            'level' => '3',
             'satuan_kerja' => '1',
             'departemen' => '1',
             'password' => hash::make('asdasd')
@@ -93,7 +122,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'yudhi',
-            'level' => 'Senior Officer',
+            'level' => '4',
             'satuan_kerja' => '1',
             'departemen' => '1',
             'password' => hash::make('asdasd')
@@ -101,7 +130,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'nur',
-            'level' => 'Staff',
+            'level' => '5',
             'satuan_kerja' => '1',
             'departemen' => '1',
             'password' => hash::make('asdasd')
@@ -109,14 +138,14 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'bayu',
-            'level' => 'Kepala Satuan Kerja',
+            'level' => '2',
             'satuan_kerja' => '2',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
             'name' => 'Eka',
-            'level' => 'Kepala Departemen',
+            'level' => '3',
             'satuan_kerja' => '2',
             'departemen' => '2',
             'password' => hash::make('asdasd')
@@ -124,7 +153,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'Prasetyo',
-            'level' => 'Senior Officer',
+            'level' => '4',
             'satuan_kerja' => '2',
             'departemen' => '2',
             'password' => hash::make('asdasd')
@@ -132,7 +161,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'Ariefin',
-            'level' => 'Staff',
+            'level' => '5',
             'satuan_kerja' => '2',
             'departemen' => '2',
             'password' => hash::make('asdasd')

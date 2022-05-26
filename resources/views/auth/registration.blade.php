@@ -45,33 +45,30 @@
           </div>
 
           <div class="mb-2">
-            <label for="satuan_kerja" class="form-label">Satuan Kerja</label>
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja" id="satuan_kerja">
-              <option selected> ---- </option>
-              @foreach ($satuanKerja as $item)
-              <option value="{{$item['id']}}">{{$item['satuan_kerja']}}</option>
-              @endforeach
-            </select>
-          </div>
-
-          <div class="mb-2">
-            <label for="departemen" class="form-label">Departemen</label>
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen" id="departemen">
-              <option selected> ---- </option>
-              @foreach ($departemen as $item)
-              <option value="{{$item['id']}}">{{$item['departemen']}}</option>
-              @endforeach
-            </select>
-          </div>
-
-          <div class="mb-2">
             <label for="level" class="form-label">Level</label>
             <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="level" id="level">
               <option selected> ---- </option>
-              <option value="1">Admin</option>
-              <option value="2">Head</option>
-              <option value="3">Staff</option>
+              @foreach ($level as $item)
+              <option value="{{$item['id']}}">{{$item['level']}}</option>
+              @endforeach
             </select>
+          </div>
+
+          <div class="mb-3">
+              <label for="satuan_kerja_tujuan" class="form-label">Satuan Kerja Tujuan</label>
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja_tujuan" id="satuan_kerja_tujuan">
+                  <option selected> ---- </option>
+                  @foreach ($satuanKerja as $item)
+                  <option value="{{$item['id']}}">{{$item['satuan_kerja']}}</option>
+                  @endforeach
+              </select>
+          </div>
+
+          <div class="mb-3">
+              <label for="departemen_tujuan" class="form-label">Department Tujuan</label>
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen_tujuan" id="departemen_tujuan">
+                  <option value=""> ---- </option>
+              </select>
           </div>
 
           <div class="mb-3">
@@ -93,10 +90,28 @@
       </form>
     </div>
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <script>
+      jQuery(document).ready(function(){
+          jQuery('#satuan_kerja_tujuan').change(function(){
+              var skid = jQuery(this).val();
+              alert(skid);
+              jQuery.ajax({
+                  url: '/getSatuanKerja',
+                  type: 'post',
+                  data: 'skid='+skid+'&_token={{csrf_token()}}',
+                  success: function(result){
+                      jQuery('#departemen_tujuan').html(result)
+                  }
+              });
+          });
+      });
+  </script>
   <!-- Libs JS -->
   <!-- Tabler Core -->
   <script src="{{url('assets/dist/js/tabler.min.js')}}" defer></script>
   <script src="{{url('assets/dist/js/demo.min.js')}}" defer></script>
-</body>
 
+</body>
 </html>
