@@ -4,7 +4,7 @@
 <!-- Page Heading -->
 <div class="container-fluid">
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Daftar Memo</h1>
+    <h1 class="h3 mb-2 text-gray-800">Daftar Memo Masuk</h1>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-body py-3">
@@ -49,9 +49,7 @@
                             <td class="align-top">{{$data['nomor_surat']}}</td>
                             <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
                             <td class="align-top">{{$data['perihal']}}</td>
-                            @if($users['level'] == 3)
                             <td class="align-top">{{$data['pesan_disposisi']}}</td>
-                            @endif
                             @if($data['tanggal_dep'])
                             <td>Selesai pada {{date('Y-m-d', strtotime($data['tanggal_dep']))}}</td>
                             @else
@@ -65,7 +63,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 <!-- /.container-fluid -->
 
@@ -138,9 +135,13 @@
                     </table>
                 </div>
             </div>
-            @if ($data['status'] != 4)
+            @if ($data['status'] == 3 && $users['level'] == 2)
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['id'] }}">Teruskan ke Kepala Departemen</button>
+            </div>
+            @elseif ($data['status'] == 4 && $users['level'] == 3)
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['id'] }}">Selesaikan</button>
             </div>
             @endif
         </div>
@@ -160,6 +161,7 @@
                 @csrf
                 {{method_field('PUT')}}
                 <div class="modal-body">
+                    @if ($users['level'] == 2)
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="disposisiCheckbox">
                         <label class="form-check-label" for="flexCheckDefault">
@@ -170,6 +172,9 @@
                         <label for="disposisi" class="form-label">Pesan Disposisi</label>
                         <input type="text" class="form-control" id="pesan_disposisi" name="pesan_disposisi">
                     </div>
+                    @else
+                    <p>Tekan tombol Selesaikan untuk mengakhiri.</p>
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
