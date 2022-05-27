@@ -5,20 +5,18 @@
     <div class="row g-2 align-items-center mb-2">
         <div class="col">
             <h2 class="page-title">
-                Daftar Semua Surat
+                Daftar Surat Terhapus
             </h2>
         </div>
 
-        @if ($users->level != "Admin")
         <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="btn-list">
-                <a href="/nomorSurat/create" class="btn btn-primary d-none d-sm-inline-block">
-                    <i class="fas fa-plus-circle me-2"></i>
-                    Tambah Surat
+                <a href="/nomorSurat/hapusPermanen" class="btn btn-danger d-none d-sm-inline-block">
+                    <i class="fa-solid fa-dumpster-fire"></i>
+                    Hapus Permanen
                 </a>
             </div>
         </div>
-        @endif
     </div>
 
     <div class="card shadow mb-4">
@@ -39,11 +37,11 @@
                             <th class="fs-4" scope="col">Perihal</th>
                             <th class="fs-4" scope="col">PIC</th>
                             <th class="fs-4" scope="col">Status</th>
+                            <th class="fs-4" scope="col">Tanggal Hapus</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($datas as $data)
-                        @if (($data['satuan_kerja_asal'] == $users['satuan_kerja']))
+                        @foreach($mails as $data)
                         <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                             <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
                             <td class="align-top">{{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
@@ -69,8 +67,8 @@
                                     <span class="badge bg-secondary">Pending</span>
                                 @endif
                             </td>
+                            <td class="align-top">{{ date("Y-m-d", strtotime($data['deleted_at'])) }} </td>
                         </tr>
-                        @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -80,7 +78,7 @@
 </div>
 
     <!-- Modal For Showing Detail Data -->
-    @foreach($datas as $data)
+    @foreach($mails as $data)
     <div class="modal modal-blur fade" id="mail-{{$data['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -95,6 +93,11 @@
                             <tr>
                                 <td>Tanggal Registrasi</td>
                                 <td>: {{ $data->created_at }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Tanggal Hapus</td>
+                                <td>: {{ $data->deleted_at }} by {{ strtoupper($data->deleted_by) }}</td>
                             </tr>
 
                             <tr>
@@ -183,17 +186,6 @@
                         </table>
                     </div>
                 </div>
-
-                @if ($data->status == 0)
-                    <div class="modal-footer">
-                        <form action="/nomorSurat/{{ $data['id'] }}"  method="post">
-                            @csrf
-                            {{method_field('DELETE')}}
-            
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
-                    </div>
-                @endif
             </div>
         </div>
     </div>

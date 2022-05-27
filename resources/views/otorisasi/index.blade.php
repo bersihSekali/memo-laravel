@@ -85,15 +85,6 @@
                                 </td>
                             </tr>
 
-                            @if ($users->level == 2)    
-                              <tr>
-                                  <td>Disetujui Oleh</td>
-                                  <td>: 
-                                      {{ strtoupper($data->otor2_by) }}, {{ $data->tanggal_otor2 }}
-                                  </td>
-                              </tr>
-                            @endif
-
                             <tr>
                                 <td>PIC</td>
                                 <td>: {{ strtoupper($data->created_by) }}</td>
@@ -113,6 +104,20 @@
                                 <td>Perihal</td>
                                 <td>: {{ $data->perihal }}</td>
                             </tr>
+
+                            @if ($users->level == 2)    
+                              <tr>
+                                  <td>Disetujui Oleh</td>
+                                  <td>: 
+                                    <span class="badge bg-success">
+                                      Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                    </span>
+                                    <span class="badge bg-secondary">
+                                      Pending KaSat
+                                  </span>
+                                  </td>
+                              </tr>
+                            @endif
 
                             <tr>
                                 <td>Lampiran</td>
@@ -138,7 +143,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="modal-status bg-success"></div>
             
-            @if ($users->level == 3)
+            @if (($users->level == 3) || ($users->level == 4))
               <div class="modal-body text-center py-4">
                 <h3>Apakah yakin ingin menyetujui?</h3>
                 <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
@@ -182,7 +187,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="modal-status bg-danger"></div>
             
-            @if ($users->level == 3)
+            @if (($users->level == 3) || ($users->level == 4))
               <div class="modal-body text-center py-4">
                 <h3>Apakah yakin ingin menolak?</h3>
                 <span>Beri catatan jika perlu jika ingin menolak/merevisi surat</span>

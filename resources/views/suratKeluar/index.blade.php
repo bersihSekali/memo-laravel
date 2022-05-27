@@ -23,7 +23,7 @@
                         </thead>
                         <tbody>
                             @foreach($datas as $data)
-                                @if (($data->satuanKerjaAsal['satuan_kerja'] == $users->satuanKerja['satuan_kerja']) && ($data->otor_status != '1'))
+                                @if (($data->satuanKerjaAsal['satuan_kerja'] == $users->satuanKerja['satuan_kerja']) && ($data->nomor_surat != ''))
                                     <tr>
                                         <td class="align-top">{{$data['created_at']}}</td>
                                         <td class="align-top">{{$data['nomor_surat']}}</td>

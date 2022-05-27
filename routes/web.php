@@ -43,9 +43,11 @@ Route::get('/registration', [AuthController::class, 'registration'])->middleware
 Route::post('/registration', [AuthController::class, 'register']);
 
 //Penomoran Surat
-Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
+Route::get('/nomorSurat/suratHapus', [NomorSuratController::class, 'listSuratHapus']);
+Route::get('/nomorSurat/hapusPermanen', [NomorSuratController::class, 'hapusPermanen']);
 Route::post('/getSatuanKerja', [NomorSuratController::class, 'getSatuanKerja']);
 Route::post('/getLevel', [NomorSuratController::class, 'getLevel']);
+Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
 Route::post('otorisasi/approvedOtorSatu/{id}', [OtorisasiSuratController::class, 'approvedOtorSatu'])->middleware('auth');
 Route::post('otorisasi/disApprovedOtorSatu/{id}', [OtorisasiSuratController::class, 'disApprovedOtorSatu'])->middleware('auth');
 Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth');

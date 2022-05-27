@@ -119,6 +119,7 @@ class OtorisasiSuratController extends Controller
             $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
             array_push($update, $datas['lampiran']);
         }
+        // dd($update);
 
         $datas->update($update);
 
@@ -191,9 +192,10 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['otor1_by']);
 
         // Nomor surat antar divisi / satuan kerja
-        $tahun = date("Y", strtotime($datas['tanggal_otor']));
-        $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->satuanKerjaAsal['satua_kerja'] . '/' . $tahun;
-        array_push($update, $no_surat);
+        $tahun = date("Y", strtotime($datas['tanggal_otor1']));
+        $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->satuanKerjaAsal['satuan_kerja'] . '/' . $tahun;
+        $datas['nomor_surat'] = $no_surat;
+        array_push($update, $datas['nomor_surat']);
 
         // Update lampiran
         if ($request->file('lampiran')) {

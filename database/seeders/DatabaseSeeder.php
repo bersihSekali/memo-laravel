@@ -147,7 +147,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Eka',
             'level' => '3',
             'satuan_kerja' => '2',
-            'departemen' => '2',
+            'departemen' => '4',
             'password' => hash::make('asdasd')
         ]);
 
@@ -155,7 +155,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Prasetyo',
             'level' => '4',
             'satuan_kerja' => '2',
-            'departemen' => '2',
+            'departemen' => '4',
             'password' => hash::make('asdasd')
         ]);
 
@@ -163,7 +163,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Ariefin',
             'level' => '5',
             'satuan_kerja' => '2',
-            'departemen' => '2',
+            'departemen' => '4',
             'password' => hash::make('asdasd')
         ]);
 

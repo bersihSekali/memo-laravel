@@ -124,9 +124,8 @@ class NomorSuratController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id) // Force Delete
     {
-        //
     }
 
     /**
@@ -137,7 +136,17 @@ class NomorSuratController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user_id = Auth::id();
+        $user = User::where('id', $user_id)->first();
+
+        $datas = SuratMasuk::find($id);
+        $update[] = $datas['deleted_by'] = $user->name;
+
+        $datas->update($update);
+
+        $datas->delete();
+
+        return redirect('/nomorSurat')->with('success', 'Surat berhasil dihapus');
     }
 
     public function getSatuanKerja(Request $request)
@@ -169,5 +178,27 @@ class NomorSuratController extends Controller
         //     $html .= '<option value="' . $key->id . '">' . $key->departemen . '</option>';
         // }
         echo $html;
+    }
+
+    public function listSuratHapus(Request $request)
+    {
+        $id = Auth::id();
+        $user = User::where('id', $id)->first();
+
+        $mails = SuratMasuk::onlyTrashed()->get();
+
+        $datas = [
+            'users' => $user,
+            'mails' => $mails
+        ];
+
+        return view('nomorSurat.deleted', $datas);
+    }
+
+    public function hapusPermanen()
+    {
+        SuratMasuk::whereNotNull('deleted_at')->forceDelete();
+
+        return redirect('/nomorSurat/suratHapus')->with('success', 'Surat berhasil dibersihkan');
     }
 }

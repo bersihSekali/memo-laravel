@@ -15,7 +15,7 @@
             @elseif ($users->level == 1)
               <div class="mt-1 small text-muted">{{ strtoupper($users->levelTable['level']) }}</div>
             @else
-            <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | {{ $users->departemenTable['departemen'] }}</div>
+              <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | {{ $users->departemenTable['departemen'] }}</div>
             @endif
           </div>
 
@@ -100,6 +100,12 @@
                   <a class="dropdown-item" href="/suratKeluar">
                     Surat Keluar
                   </a>
+
+                  @if ($users->level == 1)
+                    <a class="dropdown-item" href="/nomorSurat/suratHapus">
+                      Surat Terhapus
+                    </a>
+                  @endif
                 </div>
               </div>
           </li>
