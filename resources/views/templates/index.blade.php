@@ -18,7 +18,8 @@
   <link href="{{url('assets/dist/css/tabler-payments.min.css')}}" rel="stylesheet" />
   <link href="{{url('assets/dist/css/tabler-vendors.min.css')}}" rel="stylesheet" />
   <link href="{{url('assets/dist/css/demo.min.css')}}" rel="stylesheet" />
-  
+  <link href="{{url('assets/dist/css/row-table-surat-masuk.css')}}" rel="stylesheet" />
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/brands.min.js" integrity="sha512-KGeeDLRAGeJZYsq3J/4s/X6eZyaxTAlScSN2b7z/H/r2MBZ3pAg4T52SzavEJa2Uthmll5HMhvRaLeuxT76EVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

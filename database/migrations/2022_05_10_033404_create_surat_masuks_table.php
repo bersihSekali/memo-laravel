@@ -18,9 +18,12 @@ class CreateSuratMasuksTable extends Migration
             $table->timestamps();
             $table->string('otor2_by')->nullable();
             $table->string('otor1_by')->nullable();
+            $table->datetime('tanggal_otor2')->nullable();
+            $table->datetime('tanggal_otor1')->nullable();
             $table->string('created_by');
             $table->string('nomor_surat')->unique()->nullable();
             $table->string('perihal');
+            $table->unsignedBigInteger('no_urut');
 
             $table->unsignedBigInteger('satuan_kerja_asal');
             $table->unsignedBigInteger('departemen_asal')->nullable();
@@ -34,28 +37,11 @@ class CreateSuratMasuksTable extends Migration
 
             $table->string('lampiran')->nullable();
 
-            $table->unsignedBigInteger('checker')->nullable();
-
-            $table->datetime('tanggal_disposisi')->nullable();
-
-            $table->unsignedBigInteger('satuan_kerja_tujuan_disposisi')->nullable();
-            $table->unsignedBigInteger('departemen_tujuan_disposisi')->nullable();
-
-            $table->foreign('satuan_kerja_tujuan_disposisi')->references('id')->on('satuan_kerjas');
-            $table->foreign('departemen_tujuan_disposisi')->references('id')->on('departemens');
-
             $table->string('pesan_disposisi')->nullable();
-            $table->string('lampiran_disposisi')->nullable();
-            $table->datetime('tanggal_selesai')->nullable();
-            $table->datetime('tanggal_otor2')->nullable();
-            $table->datetime('tanggal_otor1')->nullable();
+            $table->datetime('tanggal_sk')->nullable();
+            $table->datetime('tanggal_dep')->nullable();
             $table->unsignedBigInteger('status')->default(1);
             $table->unsignedBigInteger('target')->nullable();
-
-            $table->unsignedBigInteger('checker_disposisi')->nullable();
-            $table->datetime('tanggal_selesai_disposisi')->nullable();
-            $table->string('status_disposisi')->nullable();
-            $table->unsignedBigInteger('no_urut');
         });
     }
 
