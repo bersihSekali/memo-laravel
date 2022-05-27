@@ -22,8 +22,9 @@ class SuratMasukController extends Controller
         $user = User::find($id);
         $checker = User::latest()->get();
         $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
-                ->where('otor_status', 2)
-                ->latest()->get();
+            ->where('status', 3)
+            ->orWhere('status', 4)
+            ->latest()->get();
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
         return view('suratmasuk/index', [
@@ -96,8 +97,8 @@ class SuratMasukController extends Controller
             return redirect('/suratMasuk')->with('error', 'Data not Found');
         }
         $update->tanggal_selesai = date("Y-m-d");
-        $update->status = 1;
-
+        $update->status = 4;
+        $update->pesan_disposisi = $request['pesan_disposisi'];
         $update->save();
 
         if (!$update) {
