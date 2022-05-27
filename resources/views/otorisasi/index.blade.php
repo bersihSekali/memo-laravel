@@ -25,7 +25,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                          @if ($users->level == "Kepala Satuan Kerja") <!-- Kepala Satuan Kerja -->
+                          @if ($users->level == 2) <!-- Kepala Satuan Kerja -->
                             @foreach($datas as $data)
                               @if (($data['status'] == '2') && ($data['satuan_kerja_asal'] == $users['satuan_kerja']) && ($data['nomor_surat'] == ''))    
                                   <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
@@ -38,7 +38,7 @@
                               @endif
                             @endforeach
 
-                          @elseif (($users->level == 'Kepala Departemen') || ($users->level == 'Senior Officer')) <!-- Kepala Departemen -->
+                          @elseif (($users->level == 3) || ($users->level == 4)) <!-- Kepala Departemen -->
                             @foreach($datas as $data)
                               @if (($data['status'] == '1') && ($data['satuan_kerja_asal'] == $users['satuan_kerja']))    
                                   <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
@@ -85,7 +85,7 @@
                                 </td>
                             </tr>
 
-                            @if ($users->level == 'Kepala Satuan Kerja')    
+                            @if ($users->level == 2)    
                               <tr>
                                   <td>Disetujui Oleh</td>
                                   <td>: 
@@ -138,7 +138,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="modal-status bg-success"></div>
             
-            @if ($users->level == "Kepala Departemen")
+            @if ($users->level == 3)
               <div class="modal-body text-center py-4">
                 <h3>Apakah yakin ingin menyetujui?</h3>
                 <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
@@ -153,7 +153,7 @@
                   <button type="submit" class="btn btn-success w-100">Setujui</button>
                 </form>
               </div>
-            @elseif ($users->level == "Kepala Satuan Kerja")
+            @elseif ($users->level == 2)
               <div class="modal-body text-center py-4">
                 <h3>Apakah yakin ingin menyetujui?</h3>
                 <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
@@ -182,7 +182,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="modal-status bg-danger"></div>
             
-            @if ($users->level == 'Kepala Departemen')
+            @if ($users->level == 3)
               <div class="modal-body text-center py-4">
                 <h3>Apakah yakin ingin menolak?</h3>
                 <span>Beri catatan jika perlu jika ingin menolak/merevisi surat</span>
@@ -197,7 +197,7 @@
                     <button type="submit" class="btn btn-danger w-100">Tolak</button>
                 </form>
               </div>
-            @elseif ($users->level == 'Kepala Satuan Kerja')
+            @elseif ($users->level == 2)
               <div class="modal-body text-center py-4">
                 <h3>Apakah yakin ingin menolak?</h3>
                 <span>Beri catatan jika perlu jika ingin menolak/merevisi surat</span><br>
