@@ -10,21 +10,21 @@
         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
           <div class="d-none d-xl-block pe-2">
             <div class="text-end">{{ strtoupper($users->name) }}</div>
-            @if ($users->level == 2)  
-              <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}</div>
+            @if ($users->level == 2)
+            <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}</div>
             @elseif ($users->level == 1)
-              <div class="mt-1 small text-muted">{{ strtoupper($users->levelTable['level']) }}</div>
+            <div class="mt-1 small text-muted">{{ strtoupper($users->levelTable['level']) }}</div>
             @else
             <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | {{ $users->departemenTable['departemen'] }}</div>
             @endif
           </div>
 
           @if ($users->level == 1)
-            <i class="fa-solid fa-user-gear fa-2x"></i>
+          <i class="fa-solid fa-user-gear fa-2x"></i>
           @elseif ($users->level == 2)
-            <i class="fas fa-user-plus fa-2x"></i>
+          <i class="fas fa-user-plus fa-2x"></i>
           @else
-            <i class="fas fa-user fa-2x"></i>
+          <i class="fas fa-user fa-2x"></i>
           @endif
         </a>
 
@@ -91,7 +91,7 @@
                   <a class="dropdown-item" href="/nomorSurat">
                     Registrasi Surat
                   </a>
-                  @if (($users->level == 'Kepala Satuan Kerja') || ($users->level == 'Kepala Departemen') || ($users->level == 'Senior Officer'))
+                  @if (($users->level == 2) || ($users->level == 3) || ($users->level == 4))
                   <a class="dropdown-item" href="/otorisasi">
                     Otorisasi Surat
                   </a>
@@ -123,16 +123,16 @@
                 </div>
               </div>
           </li>
-          
+
           @if ($users->level != 'admin')
-            <li class="nav-item">
-              <a class="nav-link" href="/laporan">
-                <i class="fa-solid fa-file-arrow-down"></i>
-                <span class="nav-link-title ms-1">
-                  Generate Laporan
-                </span>
-              </a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/laporan">
+              <i class="fa-solid fa-file-arrow-down"></i>
+              <span class="nav-link-title ms-1">
+                Generate Laporan
+              </span>
+            </a>
+          </li>
           @endif
         </ul>
       </div>
