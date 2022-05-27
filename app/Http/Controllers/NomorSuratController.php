@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\SatuanKerja;
 use App\Models\Departemen;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class NomorSuratController extends Controller
 {
@@ -137,5 +138,36 @@ class NomorSuratController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getSatuanKerja(Request $request)
+    {
+        echo $skid = $request->post('skid');
+        $departemen = DB::table('departemens')->where('satuan_kerja', $skid)->get();
+        $html = '<option value=""> ---- </option>';
+        foreach ($departemen as $key) {
+            $html .= '<option value="' . $key->id . '">' . $key->departemen . '</option>';
+        }
+        echo $html;
+    }
+
+    public function getLevel(Request $request)
+    {
+        echo $lid = $request->post('lid');
+        $html = '';
+        if ($lid == 2) {
+            $html .= '<div class="mb-3">
+            <label for="departemen" class="form-label">Department</label>
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen" id="departemen">
+                <option value=""> ---- </option>
+            </select>
+        </div>';
+        }
+        // $departemen = DB::table('departemens')->where('satuan_kerja', $lid)->get();
+        // $html = '<option value=""> ---- </option>';
+        // foreach ($departemen as $key) {
+        //     $html .= '<option value="' . $key->id . '">' . $key->departemen . '</option>';
+        // }
+        echo $html;
     }
 }

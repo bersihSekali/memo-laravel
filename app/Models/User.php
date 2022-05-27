@@ -36,6 +36,11 @@ class User extends Authenticatable
         return $this->belongsTo(Departemen::class, 'departemen');
     }
 
+    public function levelTable()
+    {
+        return $this->belongsTo(Level::class, 'level');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

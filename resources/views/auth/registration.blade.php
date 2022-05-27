@@ -35,7 +35,7 @@
 
           <div class="mb-2">
             <label class="form-label">Username</label>
-            <input type="text" name="name" id="name" class="form-control" placeholder="Username" autocomplete="off">
+            <input type="text" name="name" id="name" class="form-control" placeholder="Username" autocomplete="off" required>
 
             @error('name')
             <div class="invalid-feedback">
@@ -45,40 +45,36 @@
           </div>
 
           <div class="mb-2">
-            <label for="satuan_kerja" class="form-label">Satuan Kerja</label>
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja" id="satuan_kerja">
-              <option selected> ---- </option>
-              @foreach ($satuanKerja as $item)
-              <option value="{{$item['id']}}">{{$item['satuan_kerja']}}</option>
-              @endforeach
-            </select>
-          </div>
-
-          <div class="mb-2">
-            <label for="departemen" class="form-label">Departemen</label>
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen" id="departemen">
-              <option selected> ---- </option>
-              @foreach ($departemen as $item)
-              <option value="{{$item['id']}}">{{$item['departemen']}}</option>
-              @endforeach
-            </select>
-          </div>
-
-          <div class="mb-2">
             <label for="level" class="form-label">Level</label>
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="level" id="level">
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="level" id="level" required>
               <option selected> ---- </option>
-              <option value="Admin">Admin</option>
-              <option value="Kepala Satuan Kerja">Kepala Satuan Kerja</option>
-              <option value="Kepala Departemen">Kepala Departemen</option>
-              <option value="Staff">Staff</option>
+              @foreach ($level as $item)
+              <option value="{{$item['id']}}">{{$item['level']}}</option>
+              @endforeach
             </select>
+          </div>
+
+          <div class="mb-3">
+              <label for="satuan_kerja" class="form-label">Satuan Kerja</label>
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="satuan_kerja" id="satuan_kerja" required>
+                  <option selected> ---- </option>
+                  @foreach ($satuanKerja as $item)
+                  <option value="{{$item['id']}}">{{$item['satuan_kerja']}}</option>
+                  @endforeach
+              </select>
+          </div>
+
+          <div class="mb-3" id="input_departemen">
+              <label for="departemen" class="form-label">Department</label>
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen" id="departemen">
+                  <option value=""> ---- </option>
+              </select>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Password</label>
             <div class="input-group input-group-flat">
-              <input type="password" class="form-control" placeholder="Password" autocomplete="off" name="password">
+              <input type="password" class="form-control" placeholder="Password" autocomplete="off" name="password" required>
               <span class="input-group-text">
                 <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
                   <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
@@ -94,10 +90,38 @@
       </form>
     </div>
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <script>
+      jQuery(document).ready(function(){
+        // Hide input departemen
+        jQuery('#input_departemen').hide();
+
+        // get value level id
+        jQuery('#level').change(function(){
+          var lid = jQuery(this).val();
+          if (lid == 2){
+            jQuery('#input_departemen').show();
+          }
+        });
+
+        jQuery('#satuan_kerja').change(function(){
+          var skid = jQuery(this).val();
+          jQuery.ajax({
+              url: '/getSatuanKerja',
+              type: 'post',
+              data: 'skid='+skid+'&_token={{csrf_token()}}',
+              success: function(result){
+                  jQuery('#departemen').html(result)
+              }
+          });
+        });
+      });
+  </script>
   <!-- Libs JS -->
   <!-- Tabler Core -->
   <script src="{{url('assets/dist/js/tabler.min.js')}}" defer></script>
   <script src="{{url('assets/dist/js/demo.min.js')}}" defer></script>
-</body>
 
+</body>
 </html>

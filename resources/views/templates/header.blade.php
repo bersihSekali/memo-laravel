@@ -10,20 +10,18 @@
         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
           <div class="d-none d-xl-block pe-2">
             <div class="text-end">{{ strtoupper($users->name) }}</div>
-            @if ($users->level == "Admin")
-            <div class="mt-1 small text-muted">ADMIN</div>
-            @elseif ($users->level == "Kepala Satuan Kerja")
-            <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}</div>
-            @elseif ($users->level == "Kepala Departemen")
-            <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | KEPALA {{ $users->departemenTable['departemen'] }}</div>
+            @if ($users->level == 2)  
+              <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}</div>
+            @elseif ($users->level == 1)
+              <div class="mt-1 small text-muted">{{ strtoupper($users->levelTable['level']) }}</div>
             @else
             <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | {{ $users->departemenTable['departemen'] }}</div>
             @endif
           </div>
 
-          @if ($users->level == "Admin")
-            <i class="fas fa-users-cog fa-2x"></i>
-          @elseif ($users->level == "Kepala Satuan Kerja" | $users->level == "Kepala Departemen")
+          @if ($users->level == 1)
+            <i class="fa-solid fa-user-gear fa-2x"></i>
+          @elseif ($users->level == 2)
             <i class="fas fa-user-plus fa-2x"></i>
           @else
             <i class="fas fa-user fa-2x"></i>
@@ -53,7 +51,7 @@
             </a>
           </li>
 
-          @if ($users->level == 'Admin')
+          @if ($users->level == 1)
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
               <i class="fa-solid fa-user-pen"></i>

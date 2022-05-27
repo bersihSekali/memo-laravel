@@ -22,7 +22,7 @@
                                 <td class="align-top">{{ $data->name}}</td>
                                 <td class="align-top">{{ $data->satuanKerja['satuan_kerja'] }}</td>
                                 <td class="align-top">{{ $data->departemenTable['departemen'] }}</td>
-                                <td class="align-top">{{ $data->level }}</td>
+                                <td class="align-top">{{ strtoupper($data->levelTable['level']) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
