@@ -20,18 +20,23 @@ class SuratMasukController extends Controller
     {
         $id = Auth::id();
         $user = User::find($id);
-        $checker = User::latest()->get();
-        $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
-            ->where('status', 3)
-            ->orWhere('status', 4)
-            ->latest()->get();
+
+        if ($user['level'] == 2) {
+            $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                ->where('status', '>=', 3)
+                ->latest()->get();
+        } elseif ($user['level'] == 3) {
+            $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                ->where('status', '>=', 4)
+                ->latest()->get();
+        }
+
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
             'datas' => $data,
             'users' => $user,
-            'checker' => $checker,
             'satuanKerja' => $satuanKerja,
             'departemen' => $departemen
 
@@ -92,14 +97,22 @@ class SuratMasukController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $idUser = Auth::id();
+        $user = User::find($idUser);
         $update = SuratMasuk::find($id);
         if (!$update) {
             return redirect('/suratMasuk')->with('error', 'Data not Found');
         }
-        $update->tanggal_selesai = date("Y-m-d");
-        $update->status = 4;
-        $update->pesan_disposisi = $request['pesan_disposisi'];
-        $update->save();
+        if ($user['level'] == 2) {
+            $update->tanggal_sk = date("Y-m-d");
+            $update->status = 4;
+            $update->pesan_disposisi = $request['pesan_disposisi'];
+            $update->save();
+        } elseif ($user['level'] == 3) {
+            $update->tanggal_dep = date("Y-m-d");
+            $update->status = 5;
+            $update->save();
+        }
 
         if (!$update) {
             return redirect('/suratMasuk')->with('error', 'Update Failed');
