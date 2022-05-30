@@ -29,10 +29,11 @@ class HomeController extends Controller
             case 2: // Home Kepala Satuan Kerja
                 $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
                 $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('satuan_kerja_asal', '=', 'satuan_kerja_tujuan')
                     ->where('status', 2)
                     ->count();
                 $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->where('status', '>', 2)
+                    ->where('status', '>', 1)
                     ->count();
                 $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
                     ->where('status', 0)
@@ -53,7 +54,7 @@ class HomeController extends Controller
                     ->where('status', 1)
                     ->count();
                 $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->where('status', '>', 2)
+                    ->where('status', '>', 1)
                     ->count();
                 $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
                     ->where('status', 0)
@@ -73,6 +74,9 @@ class HomeController extends Controller
                 $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
                     ->where('status', 1)
                     ->count();
+                $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', '>', 1)
+                    ->count();
                 $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
                     ->where('status', 0)
                     ->count();
@@ -80,6 +84,7 @@ class HomeController extends Controller
                     'title' => 'Pencatatan Memo',
                     'countTotal' => $countTotal,
                     'countNeedApprove' => $countNeedApprove,
+                    'countApproved' => $countAprroved,
                     'countRejected' => $countRejected,
                     'users' => $user
                 ];
@@ -90,10 +95,18 @@ class HomeController extends Controller
                 $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
                     ->where('status', 1)
                     ->count();
+                $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', '>', 1)
+                    ->count();
+                $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', 0)
+                    ->count();
                 $datas = [
                     'title' => 'Pencatatan Memo',
                     'countTotal' => $countTotal,
                     'countNeedApprove' => $countNeedApprove,
+                    'countApproved' => $countAprroved,
+                    'countRejected' => $countRejected,
                     'users' => $user
                 ];
                 return view('templates.home', $datas);

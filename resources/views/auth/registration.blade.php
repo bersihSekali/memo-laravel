@@ -35,7 +35,7 @@
 
           <div class="mb-2">
             <label class="form-label">Username</label>
-            <input type="text" name="name" id="name" class="form-control" placeholder="Username" autocomplete="off" required>
+            <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Username" autocomplete="off" required>
 
             @error('name')
             <div class="invalid-feedback">
@@ -74,13 +74,17 @@
           <div class="mb-3">
             <label class="form-label">Password</label>
             <div class="input-group input-group-flat">
-              <input type="password" class="form-control" placeholder="Password" autocomplete="off" name="password" required>
+              <input type="password" class="form-control @error('name') is-invalid @enderror" placeholder="Password" autocomplete="off" name="password" required>
               <span class="input-group-text">
                 <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
                 </a>
               </span>
             </div>
+            @error('password')
+              <div class="invalid-feedback">
+                {{ $message }}
+              </div>
+            @enderror
           </div>
 
           <div class="form-footer">

@@ -99,8 +99,8 @@ if ($jam > '05:30' && $jam < '10:00') {
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <span class="bg-success text-white avatar">
-                                    <i class="far fa-check-circle fa-2x"></i>
+                                <span class="bg-warning text-white avatar">
+                                    <i class="fas fa-spinner fa-pulse fa-2x"></i>
                                 </span>
                             </div>
         
@@ -109,7 +109,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                                     {{ $countNeedApprove }}
                                 </div>
                                 <div class="text-muted">
-                                    Perlu Persetujuan
+                                    Perlu Disetujui
                                 </div>
                             </div>
                         </div>
@@ -122,8 +122,8 @@ if ($jam > '05:30' && $jam < '10:00') {
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <span class="bg-danger text-white avatar">
-                                    <i class="far fa-times-circle fa-2x"></i>
+                                <span class="bg-success text-white avatar">
+                                    <i class="fa-solid fa-circle-check"></i>
                                 </span>
                             </div>
                             <div class="col">
@@ -145,7 +145,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                         <div class="row align-items-center">
                             <div class="col-auto">
                                 <span class="bg-secondary text-white avatar">
-                                    <i class="fas fa-spinner fa-pulse fa-2x"></i>
+                                    <i class="fa-solid fa-x"></i>
                                 </span>
                             </div>
         
@@ -194,8 +194,8 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <span class="bg-success text-white avatar">
-                                <i class="far fa-check-circle fa-2x"></i>
+                            <span class="bg-warning text-white avatar">
+                                <i class="fas fa-spinner fa-pulse fa-2x"></i>
                             </span>
                         </div>
     
@@ -204,7 +204,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                                 {{ $countNeedApprove }}
                             </div>
                             <div class="text-muted">
-                                Perlu Persetujuan
+                                Perlu Disetujui
                             </div>
                         </div>
                     </div>
@@ -217,8 +217,8 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <span class="bg-danger text-white avatar">
-                                <i class="far fa-times-circle fa-2x"></i>
+                            <span class="bg-success text-white avatar">
+                                <i class="fa-solid fa-circle-check"></i>
                             </span>
                         </div>
                         <div class="col">
@@ -239,8 +239,8 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <span class="bg-secondary text-white avatar">
-                                <i class="fas fa-spinner fa-pulse fa-2x"></i>
+                            <span class="bg-danger text-white avatar">
+                                <i class="fa-solid fa-x"></i>
                             </span>
                         </div>
     
@@ -289,14 +289,36 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <span class="bg-success text-white avatar">
-                                <i class="far fa-check-circle fa-2x"></i>
+                            <span class="bg-warning text-white avatar">
+                                <i class="fas fa-spinner fa-pulse fa-2x"></i>
                             </span>
                         </div>
     
                         <div class="col">
                             <div class="fs-3 font-weight-medium">
-                                Trial
+                                {{ $countNeedApprove }}
+                            </div>
+                            <div class="text-muted">
+                                Perlu Disetujui
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-success text-white avatar">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="fs-3 font-weight-medium">
+                                {{ $countApproved }}
                             </div>
                             <div class="text-muted">
                                 Disetujui
@@ -313,29 +335,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-danger text-white avatar">
-                                <i class="far fa-times-circle fa-2x"></i>
-                            </span>
-                        </div>
-                        <div class="col">
-                            <div class="fs-3 font-weight-medium">
-                                Trial
-                            </div>
-                            <div class="text-muted">
-                                Surat Antar SK
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="col-sm-6 col-lg-3">
-            <div class="card card-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="bg-secondary text-white avatar">
-                                <i class="fas fa-spinner fa-pulse fa-2x"></i>
+                                <i class="fa-solid fa-x"></i>
                             </span>
                         </div>
     
@@ -384,14 +384,36 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <span class="bg-success text-white avatar">
-                                <i class="far fa-check-circle fa-2x"></i>
+                            <span class="bg-warning text-white avatar">
+                                <i class="fas fa-spinner fa-pulse fa-2x"></i>
                             </span>
                         </div>
     
                         <div class="col">
                             <div class="fs-3 font-weight-medium">
-                                Trial
+                                {{ $countNeedApproved }}
+                            </div>
+                            <div class="text-muted">
+                                Perlu Disetujui
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-success text-white avatar">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="fs-3 font-weight-medium">
+                                {{ $countApproved }}
                             </div>
                             <div class="text-muted">
                                 Disetujui
@@ -408,38 +430,16 @@ if ($jam > '05:30' && $jam < '10:00') {
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-danger text-white avatar">
-                                <i class="far fa-times-circle fa-2x"></i>
-                            </span>
-                        </div>
-                        <div class="col">
-                            <div class="fs-3 font-weight-medium">
-                                Trial
-                            </div>
-                            <div class="text-muted">
-                                Surat Antar SK
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="col-sm-6 col-lg-3">
-            <div class="card card-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="bg-secondary text-white avatar">
-                                <i class="fas fa-spinner fa-pulse fa-2x"></i>
+                                <i class="fa-solid fa-x"></i>
                             </span>
                         </div>
     
                         <div class="col">
                             <div class="fs-3 font-weight-medium">
-                                {{ $countNeedApprove }}
+                                {{ $countRejected }}
                             </div>
                             <div class="text-muted">
-                                Pending
+                                Ditolak
                             </div>
                         </div>
                     </div>
@@ -452,145 +452,4 @@ if ($jam > '05:30' && $jam < '10:00') {
     @default
 @endswitch
 
-
-{{-- <div class="row row-cards mt-2">
-    <div class="col-sm-6 col-lg-3">
-        <div class="card card-sm">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <span class="bg-info text-white avatar">
-                            <i class="far fa-file fa-2x"></i>
-                        </span>
-                    </div>
-
-                    <div class="col">
-                        <div class="fs-3 font-weight-medium">
-                            Trial
-                        </div>
-                        <div class="text-muted">
-                            Total
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-lg-3">
-        <div class="card card-sm">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <span class="bg-success text-white avatar">
-                            <i class="far fa-check-circle fa-2x"></i>
-                        </span>
-                    </div>
-
-                    <div class="col">
-                        <div class="fs-3 font-weight-medium">
-                            Trial
-                        </div>
-                        <div class="text-muted">
-                            Disetujui
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-lg-3">
-        <div class="card card-sm">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <span class="bg-danger text-white avatar">
-                            <i class="far fa-times-circle fa-2x"></i>
-                        </span>
-                    </div>
-                    <div class="col">
-                        <div class="fs-3 font-weight-medium">
-                            Trial
-                        </div>
-                        <div class="text-muted">
-                            Ditolak
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-lg-3">
-        <div class="card card-sm">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <span class="bg-secondary text-white avatar">
-                            <i class="fas fa-spinner fa-pulse fa-2x"></i>
-                        </span>
-                    </div>
-
-                    <div class="col">
-                        <div class="fs-3 font-weight-medium">
-                            Trial
-                        </div>
-                        <div class="text-muted">
-                            Pending
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
-
-{{-- <div class="row row-cards justify-content-center mt-3">
-    <div class="col-sm-6 col-lg-3">
-        <div class="card card-sm">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <span class="bg-info text-white avatar">
-                            <i class="fas fa-inbox fa-2x"></i>
-                        </span>
-                    </div>
-
-                    <div class="col">
-                        <div class="fs-3 font-weight-medium">
-                            Trial
-                        </div>
-                        <div class="text-muted">
-                            Total Surat Masuk
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-lg-3">
-        <div class="card card-sm">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <span class="bg-success text-white avatar">
-                            <i class="fas fa-file-alt fa-2x"></i>
-                        </span>
-                    </div>
-
-                    <div class="col">
-                        <div class="fs-3 font-weight-medium">
-                            Trial
-                        </div>
-                        <div class="text-muted">
-                            Total Surat Selesai
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
 @endsection

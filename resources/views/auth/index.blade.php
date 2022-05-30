@@ -33,18 +33,30 @@
             
             <div class="mb-3">
               <label class="form-label">Username</label>
-              <input type="text" name="name" id="name" class="form-control" placeholder="Username" autocomplete="off">
+              <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Username" autocomplete="off">
+
+              @error('name')
+                  <div class="invalid-feedback">
+                    {{ $message }}
+                  </div>
+              @enderror
             </div>
             
             <div class="mb-2">
               <label class="form-label">Password</label>
               <div class="input-group input-group-flat">
-                <input type="password" name="password" id="password" class="form-control"  placeholder="Password"  autocomplete="off">
+                <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror"  placeholder="Password"  autocomplete="off">
                 <span class="input-group-text">
                 <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
                 </a>
                 </span>
               </div>
+
+              @error('password')
+                  <div class="invalid-feedback">
+                    {{ $message }}
+                  </div>
+              @enderror
             </div>
 
             <div class="form-footer">
