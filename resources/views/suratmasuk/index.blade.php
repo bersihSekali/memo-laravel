@@ -21,7 +21,7 @@
                             <th scope="col">No.</th>
                             <th scope="col">Asal</th>
                             <th scope="col">Perihal</th>
-                            @if($users['level'] == 3)
+                            @if($users['level'] >= 3)
                             <th scope="col">Disposisi</th>
                             @endif
                             <th scope="col">Status</th>
@@ -141,7 +141,9 @@
             </div>
             @elseif ($users['level'] == 3)
             <div class="modal-footer">
-                <form action="/forward/{{$data['id']}}" method="post">
+                <form action="/forward/{{$data['id']}}/edit" method="post">
+                    @csrf
+                    {{method_field('GET')}}
                     <button type="submit" class="btn btn-primary">Teruskan</button>
                 </form>
                 @if ($data['status'] == 4)

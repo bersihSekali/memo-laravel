@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\SatuanKerja;
 use App\Models\Departemen;
+use App\Models\Forward;
 
 class SuratMasukController extends Controller
 {
@@ -28,6 +29,12 @@ class SuratMasukController extends Controller
         } elseif ($user['level'] == 3) {
             $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                 ->where('status', '>=', 4)
+                ->latest()->get();
+        } elseif ($user['level'] >= 4) {
+            $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
+            $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                ->where('status', '>=', 5)
+                ->whereIn('id', $memoId)
                 ->latest()->get();
         }
 

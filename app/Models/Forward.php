@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Forward extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'memo_id'
+    ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
