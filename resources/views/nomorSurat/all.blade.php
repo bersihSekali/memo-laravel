@@ -23,12 +23,6 @@
 
     <div class="card shadow mb-4">
         <div class="card-body py-3">
-            @if(session()->has('success'))
-            <div class="alert alert-success mt-3" role="alert">
-                {{ session('success') }}
-            </div>
-            @endif
-
             <div class="table-responsive">
                 <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
@@ -56,14 +50,14 @@
                                         Disetujui {{ strtoupper($data->otor2_by) }}
                                     </span>
                                 @elseif (($data->status == 0) && ($data->otor1_by == ''))
-                                    <span class="badge bg-warning">Ditolak {{ strtoupper($data->otor2_by) }}
+                                    <span class="badge bg-warning">Ditolak {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                                     </span>
                                 @elseif ($data->status == 3)
                                     <span class="badge bg-success">
                                         Disetujui {{ strtoupper($data->otor1_by) }}
                                     </span>
                                 @elseif (($data->status == 0) && ($data->otor1_by != ''))
-                                    <span class="badge bg-warning">Ditolak {{ strtoupper($data->otor1_by) }}
+                                    <span class="badge bg-warning">Ditolak {{ strtoupper($data->otor1_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
                                     </span>
                                 @else
                                     <span class="badge bg-secondary">Pending</span>
@@ -183,17 +177,6 @@
                         </table>
                     </div>
                 </div>
-
-                @if ($data->status == 0)
-                    <div class="modal-footer">
-                        <form action="/nomorSurat/{{ $data['id'] }}"  method="post">
-                            @csrf
-                            {{method_field('DELETE')}}
-            
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
-                    </div>
-                @endif
             </div>
         </div>
     </div>

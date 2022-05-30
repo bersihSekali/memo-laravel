@@ -80,6 +80,10 @@ class NomorSuratController extends Controller
         $no_urut = $validated['no_urut'] + $mails;
         $validated['no_urut'] = $no_urut;
 
+        // if ($validated['satuan_kerja_asal'] == $validated['satuan_kerja_tujuan']) {
+        //     $validated['status'] = 2;
+        // }
+
         $create = SuratMasuk::create($validated);
 
         if (!$create) {
@@ -172,11 +176,7 @@ class NomorSuratController extends Controller
             </select>
         </div>';
         }
-        // $departemen = DB::table('departemens')->where('satuan_kerja', $lid)->get();
-        // $html = '<option value=""> ---- </option>';
-        // foreach ($departemen as $key) {
-        //     $html .= '<option value="' . $key->id . '">' . $key->departemen . '</option>';
-        // }
+
         echo $html;
     }
 
@@ -200,5 +200,19 @@ class NomorSuratController extends Controller
         SuratMasuk::whereNotNull('deleted_at')->forceDelete();
 
         return redirect('/nomorSurat/suratHapus')->with('success', 'Surat berhasil dibersihkan');
+    }
+
+    public function allSurat()
+    {
+        $id = Auth::id();
+        $user = User::where('id', $id)->first();
+        $mails = SuratMasuk::withTrashed()->get();
+
+        $datas = [
+            'users' => $user,
+            'datas' => $mails
+        ];
+
+        return view('nomorSurat.all', $datas);
     }
 }

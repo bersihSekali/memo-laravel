@@ -22,9 +22,11 @@
           @if ($users->level == 1)
             <i class="fa-solid fa-user-gear fa-2x"></i>
           @elseif ($users->level == 2)
-            <i class="fas fa-user-plus fa-2x"></i>
+            <i class="fas fa-user-secret fa-2x"></i>
+          @elseif ($users->level == 3)
+            <i class="fas fa-user-cowboy fa-2x"></i>
           @else
-            <i class="fas fa-user fa-2x"></i>
+            <i class="fas fa-user"></i>
           @endif
         </a>
 
@@ -50,87 +52,57 @@
               </span>
             </a>
           </li>
-
-          @if ($users->level == 1)
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-              <i class="fa-solid fa-user-pen"></i>
-              <span class="nav-link-title ms-1">
-                Admin
-              </span>
-            </a>
-
-            <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="/listuser">
-                    Daftar Pengguna
-                  </a>
-                  <a class="dropdown-item" href="/registration">
-                    Tambah Pengguna
-                  </a>
-                  <a class="dropdown-item" href="/departemen">
-                    List Satuan Kerja dan Departemen
-                  </a>
-                </div>
-              </div>
-          </li>
-          @endif
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-              <i class="fas fa-envelope"></i>
-              <span class="nav-link-title ms-1">
-                Keluar
-              </span>
-            </a>
-
-            <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="/nomorSurat">
-                    Registrasi Surat
-                  </a>
-                  @if (($users->level == 2) || ($users->level == 3) || ($users->level == 4))
-                  <a class="dropdown-item" href="/otorisasi">
-                    Otorisasi Surat
-                  </a>
-                  @endif
-
-                  <a class="dropdown-item" href="/suratKeluar">
-                    Surat Keluar
-                  </a>
-
-                  @if ($users->level == 1)
-                    <a class="dropdown-item" href="/nomorSurat/suratHapus">
-                      Surat Terhapus
-                    </a>
-                  @endif
-                </div>
-              </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-              <i class="fas fa-envelope"></i>
-              <span class="nav-link-title ms-1">
-                Masuk
-              </span>
-            </a>
-
-            <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="/suratMasuk">
-                    Surat Masuk
-                  </a>
-                  <a class="dropdown-item" href="/disposisi">
-                    Disposisi Masuk
-                  </a>
-                </div>
-              </div>
-          </li>
           
-          @if ($users->level != 'admin')
+          @if ($users->level != 1)    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                <i class="fas fa-envelope"></i>
+                <span class="nav-link-title ms-1">
+                  Keluar
+                </span>
+              </a>
+
+              <div class="dropdown-menu">
+                <div class="dropdown-menu-columns">
+                  <div class="dropdown-menu-column">
+                    <a class="dropdown-item" href="/nomorSurat">
+                      Registrasi Surat
+                    </a>
+                    @if (($users->level == 2) || ($users->level == 3) || ($users->level == 4))
+                    <a class="dropdown-item" href="/otorisasi">
+                      Otorisasi Surat
+                    </a>
+                    @endif
+
+                    <a class="dropdown-item" href="/suratKeluar">
+                      Surat Keluar
+                    </a>
+                  </div>
+                </div>
+            </li>
+            
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                <i class="fas fa-envelope"></i>
+                <span class="nav-link-title ms-1">
+                  Masuk
+                </span>
+              </a>
+
+              <div class="dropdown-menu">
+                <div class="dropdown-menu-columns">
+                  <div class="dropdown-menu-column">
+                    <a class="dropdown-item" href="/suratMasuk">
+                      Surat Masuk
+                    </a>
+                    <a class="dropdown-item" href="/disposisi">
+                      Disposisi Masuk
+                    </a>
+                  </div>
+                </div>
+            </li>
+            
             <li class="nav-item">
               <a class="nav-link" href="/laporan">
                 <i class="fa-solid fa-file-arrow-down"></i>
@@ -138,6 +110,53 @@
                   Generate Laporan
                 </span>
               </a>
+            </li>
+          @else
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                <i class="fa-solid fa-trash-can"></i>
+                <span class="nav-link-title ms-1">
+                  Log Surat
+                </span>
+              </a>
+
+              <div class="dropdown-menu">
+                <div class="dropdown-menu-columns">
+                  <div class="dropdown-menu-column">
+                    <a class="dropdown-item" href="/nomorSurat/allSurat">
+                      Semua Surat
+                    </a>
+                    <a class="dropdown-item" href="/nomorSurat/suratHapus">
+                      Surat Terhapus
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                <i class="fa-solid fa-user-pen"></i>
+                <span class="nav-link-title ms-1">
+                  Admin
+                </span>
+              </a>
+
+              <div class="dropdown-menu">
+                <div class="dropdown-menu-columns">
+                  <div class="dropdown-menu-column">
+                    <a class="dropdown-item" href="/listuser">
+                      Daftar Pengguna
+                    </a>
+                    <a class="dropdown-item" href="/registration">
+                      Tambah Pengguna
+                    </a>
+                    <a class="dropdown-item" href="/departemen">
+                      List Satuan Kerja dan Departemen
+                    </a>
+                  </div>
+                </div>
+              </div>
             </li>
           @endif
         </ul>

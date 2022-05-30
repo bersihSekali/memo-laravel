@@ -13,33 +13,91 @@ class HomeController extends Controller
         $id = Auth::id();
         $user = User::where('id', $id)->first();
 
-        // // Summary
-        // $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
-        // $countApproved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->where('otor_status', '2')->count();
-        // $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->where('otor_status', '3')->count();
-        // $countPending = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->where('otor_status', '1')->count();
+        // // All Summary
+        switch ($user->level) {
+            case 1: // Home Admin
+                $countTotal = SuratMasuk::withTrashed()->count();
+                $countTrashed = SuratMasuk::onlyTrashed()->count();
+                $datas = [
+                    'title' => 'Pencatatan Memo',
+                    'countTotal' => $countTotal,
+                    'countTrashed' => $countTrashed,
+                    'users' => $user
+                ];
+                return view('templates.home', $datas);
 
-        // // Surat Masuk
-        // $countSuratMasuk = SuratMasuk::where('satuan_kerja_tujuan', $user->satuan_kerja)
-        //     ->where('otor_status', 2)
-        //     ->count();
-        // $countSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user->satuan_kerja)
-        //     ->where('status', '1')
-        //     ->count();
+            case 2: // Home Kepala Satuan Kerja
+                $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
+                $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', 2)
+                    ->count();
+                $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', '>', 2)
+                    ->count();
+                $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', 0)
+                    ->count();
+                $datas = [
+                    'title' => 'Pencatatan Memo',
+                    'countTotal' => $countTotal,
+                    'countNeedApprove' => $countNeedApprove,
+                    'countApproved' => $countAprroved,
+                    'countRejected' => $countRejected,
+                    'users' => $user
+                ];
+                return view('templates.home', $datas);
 
-        $datas = [
-            'title' => 'Pencatatan Memo',
-            // 'countTotal' => $countTotal,
-            // 'countApproved' => $countApproved,
-            // 'countRejected' => $countRejected,
-            // 'countPending' => $countPending,
-            // 'countSuratMasuk' => $countSuratMasuk,
-            // 'countSelesai' => $countSelesai,
-            'users' => $user
-        ];
+            case 3: // Home Kepala Departemen
+                $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
+                $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', 1)
+                    ->count();
+                $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', '>', 2)
+                    ->count();
+                $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', 0)
+                    ->count();
+                $datas = [
+                    'title' => 'Pencatatan Memo',
+                    'countTotal' => $countTotal,
+                    'countNeedApprove' => $countNeedApprove,
+                    'countApproved' => $countAprroved,
+                    'countRejected' => $countRejected,
+                    'users' => $user
+                ];
+                return view('templates.home', $datas);
 
-        // dd($datas);
+            case 4: // Home Senior Officer
+                $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
+                $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', 1)
+                    ->count();
+                $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', 0)
+                    ->count();
+                $datas = [
+                    'title' => 'Pencatatan Memo',
+                    'countTotal' => $countTotal,
+                    'countNeedApprove' => $countNeedApprove,
+                    'countRejected' => $countRejected,
+                    'users' => $user
+                ];
+                return view('templates.home', $datas);
 
-        return view('templates.home', $datas);
+            case 5: // Home Officer
+                $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
+                $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                    ->where('status', 1)
+                    ->count();
+                $datas = [
+                    'title' => 'Pencatatan Memo',
+                    'countTotal' => $countTotal,
+                    'countNeedApprove' => $countNeedApprove,
+                    'users' => $user
+                ];
+                return view('templates.home', $datas);
+            default:
+        }
     }
 }
