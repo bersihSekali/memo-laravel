@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SatuanKerja;
 use App\Models\Departemen;
+use App\Models\Forward;
+use Illuminate\Auth\Events\Validated;
 
 class GenerateLaporanController extends Controller
 {
@@ -18,21 +20,7 @@ class GenerateLaporanController extends Controller
      */
     public function index()
     {
-        $id = Auth::id();
-        $user = User::find($id);
-        $checker = User::latest()->get();
-        $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])->latest()->get();
-        $satuanKerja = SatuanKerja::all();
-        $departemen = Departemen::all();
-        return view('laporan/index', [
-            'title' => 'Generate Laporan',
-            'datas' => $data,
-            'users' => $user,
-            'checker' => $checker,
-            'satuanKerja' => $satuanKerja,
-            'departemen' => $departemen
-
-        ]);
+        //
     }
 
     /**
@@ -53,7 +41,66 @@ class GenerateLaporanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'jenis' => 'required',
+            'tanggalmulai' => 'required',
+            'tanggalakhir' => 'required'
+        ]);
+
+        $id = Auth::id();
+        $user = User::find($id);
+
+        if ($validated['jenis'] == 'masuk') {
+            if ($user['level'] == 2) {
+                $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                    ->where('status', '>=', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->get();
+            } elseif ($user['level'] == 3) {
+                $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                    ->where('status', '>=', 4)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->get();
+            } elseif ($user['level'] >= 4) {
+                $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
+                $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                    ->where('status', '>=', 5)
+                    ->whereIn('id', $memoId)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->get();
+            }
+        } elseif ($validated['jenis'] == 'keluar') {
+            if ($user['level'] == 2) {
+                $data = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                    ->where('status', '>=', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->get();
+            } elseif ($user['level'] == 3) {
+                $data = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                    ->where('status', '>=', 4)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->get();
+            } elseif ($user['level'] >= 4) {
+                $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
+                $data = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                    ->where('status', '>=', 5)
+                    ->whereIn('id', $memoId)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->get();
+            }
+        }
+
+
+        $satuanKerja = SatuanKerja::all();
+        $departemen = Departemen::all();
+        return view('laporan/index', [
+            'title' => 'Surat Masuk',
+            'datas' => $data,
+            'users' => $user,
+            'satuanKerja' => $satuanKerja,
+            'departemen' => $departemen
+
+        ]);
     }
 
     /**

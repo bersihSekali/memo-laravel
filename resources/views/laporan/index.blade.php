@@ -13,43 +13,32 @@
                 {{ session('success') }}
             </div>
             @endif
-            <div class="table-responsive">
+            <div class="table-responsive caption-top">
                 <table id="tabel-laporan" class="table table-bordered table-hover" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th scope="col">Tanggal</th>
-                            <th scope="col">No.</th>
+                            <th scope="col">Tanggal Surat</th>
+                            <th scope="col">Tanggal Masuk</th>
+                            <th scope="col">Disusun Oleh</th>
+                            <th scope="col">Nomor Surat</th>
+                            <th scope="col">Perihal</th>
                             <th scope="col">Asal</th>
                             <th scope="col">Tujuan</th>
-                            <th scope="col">Perihal</th>
-                            <th scope="col">Checker</th>
-                            <th scope="col">Disposisi</th>
                             <th scope="col">Status</th>
-                            @if($users['level'] == 'Admin')
-                            <th scope="col">Aksi</th>
-                            @endif
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($datas as $data)
                         <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                             <td class="align-top">{{date('Y-m-d', strtotime($data['created_at']))}}</td>
+                            <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
+                            <td class="align-top">{{$data['created_by']}}</td>
                             <td class="align-top">{{$data['nomor_surat']}}</td>
+                            <td class="align-top">{{$data['perihal']}}</td>
                             <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
                             <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
-                            <td class="align-top">{{$data['perihal']}}</td>
-                            @if($data['checker'])
-                            <td class="align-top text-center">{{$data->checkerUser['name']}}</td>
-                            @else
-                            <td>-</td>
-                            @endif
-                            @if($data['tanggal_disposisi'])
-                            <td class="align-top text-center">{{date("Y-m-d", strtotime($data['tanggal_disposisi']))}} {{$data->satuanKerjaDisposisi['satuan_kerja']}} | {{$data->departemenDisposisi['departemen']}} [{{$data['pesan_disposisi']}}] </td>
-                            @else
-                            <td>-</td>
-                            @endif
-                            @if($data['status'])
-                            <td class="align-top text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_selesai']))}}</td>
+                            @if($data['tanggal_sk'])
+                            <td class="align-top text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_sk']))}}</td>
                             @else
                             <td>Belum diselesaikan</td>
                             @endif

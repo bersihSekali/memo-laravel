@@ -10,23 +10,23 @@
         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
           <div class="d-none d-xl-block pe-2">
             <div class="text-end">{{ strtoupper($users->name) }}</div>
-            @if ($users->level == 2)  
-              <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}</div>
+            @if ($users->level == 2)
+            <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}</div>
             @elseif ($users->level == 1)
-              <div class="mt-1 small text-muted">{{ strtoupper($users->levelTable['level']) }}</div>
+            <div class="mt-1 small text-muted">{{ strtoupper($users->levelTable['level']) }}</div>
             @else
-              <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | {{ $users->departemenTable['departemen'] }}</div>
+            <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | {{ $users->departemenTable['departemen'] }}</div>
             @endif
           </div>
 
           @if ($users->level == 1)
-            <i class="fa-solid fa-user-gear fa-2x"></i>
+          <i class="fa-solid fa-user-gear fa-2x"></i>
           @elseif ($users->level == 2)
-            <i class="fas fa-user-secret fa-2x"></i>
+          <i class="fas fa-user-secret fa-2x"></i>
           @elseif ($users->level == 3)
-            <i class="fas fa-user-cowboy fa-2x"></i>
+          <i class="fas fa-user-cowboy fa-2x"></i>
           @else
-            <i class="fas fa-user"></i>
+          <i class="fas fa-user"></i>
           @endif
         </a>
 
@@ -52,112 +52,112 @@
               </span>
             </a>
           </li>
-          
-          @if ($users->level != 1)    
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                <i class="fas fa-envelope"></i>
-                <span class="nav-link-title ms-1">
-                  Keluar
-                </span>
-              </a>
 
-              <div class="dropdown-menu">
-                <div class="dropdown-menu-columns">
-                  <div class="dropdown-menu-column">
-                    <a class="dropdown-item" href="/nomorSurat">
-                      Registrasi Surat
-                    </a>
-                    @if (($users->level == 2) || ($users->level == 3) || ($users->level == 4))
-                    <a class="dropdown-item" href="/otorisasi">
-                      Otorisasi Surat
-                    </a>
-                    @endif
+          @if ($users->level != 1)
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+              <i class="fas fa-envelope"></i>
+              <span class="nav-link-title ms-1">
+                Keluar
+              </span>
+            </a>
 
-                    <a class="dropdown-item" href="/suratKeluar">
-                      Surat Keluar
-                    </a>
-                  </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="/nomorSurat">
+                    Registrasi Surat
+                  </a>
+                  @if (($users->level == 2) || ($users->level == 3) || ($users->level == 4))
+                  <a class="dropdown-item" href="/otorisasi">
+                    Otorisasi Surat
+                  </a>
+                  @endif
+
+                  <a class="dropdown-item" href="/suratKeluar">
+                    Surat Keluar
+                  </a>
                 </div>
-            </li>
-            
+              </div>
+          </li>
 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                <i class="fas fa-envelope"></i>
-                <span class="nav-link-title ms-1">
-                  Masuk
-                </span>
-              </a>
 
-              <div class="dropdown-menu">
-                <div class="dropdown-menu-columns">
-                  <div class="dropdown-menu-column">
-                    <a class="dropdown-item" href="/suratMasuk">
-                      Surat Masuk
-                    </a>
-                    <a class="dropdown-item" href="/disposisi">
-                      Disposisi Masuk
-                    </a>
-                  </div>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+              <i class="fas fa-envelope"></i>
+              <span class="nav-link-title ms-1">
+                Masuk
+              </span>
+            </a>
+
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="/suratMasuk">
+                    Surat Masuk
+                  </a>
+                  <a class="dropdown-item" href="/disposisi">
+                    Disposisi Masuk
+                  </a>
                 </div>
-            </li>
-            
-            <li class="nav-item">
-              <a class="nav-link" href="/laporan">
-                <i class="fa-solid fa-file-arrow-down"></i>
-                <span class="nav-link-title ms-1">
-                  Generate Laporan
-                </span>
-              </a>
-            </li>
+              </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="" data-bs-toggle="modal" data-bs-target="#modalLaporan">
+              <i class="fa-solid fa-file-arrow-down"></i>
+              <span class="nav-link-title ms-1">
+                Generate Laporan
+              </span>
+            </a>
+          </li>
           @else
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                <i class="fa-solid fa-trash-can"></i>
-                <span class="nav-link-title ms-1">
-                  Log Surat
-                </span>
-              </a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+              <i class="fa-solid fa-trash-can"></i>
+              <span class="nav-link-title ms-1">
+                Log Surat
+              </span>
+            </a>
 
-              <div class="dropdown-menu">
-                <div class="dropdown-menu-columns">
-                  <div class="dropdown-menu-column">
-                    <a class="dropdown-item" href="/nomorSurat/allSurat">
-                      Semua Surat
-                    </a>
-                    <a class="dropdown-item" href="/nomorSurat/suratHapus">
-                      Surat Terhapus
-                    </a>
-                  </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="/nomorSurat/allSurat">
+                    Semua Surat
+                  </a>
+                  <a class="dropdown-item" href="/nomorSurat/suratHapus">
+                    Surat Terhapus
+                  </a>
                 </div>
               </div>
-            </li>
+            </div>
+          </li>
 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                <i class="fa-solid fa-user-pen"></i>
-                <span class="nav-link-title ms-1">
-                  Admin
-                </span>
-              </a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+              <i class="fa-solid fa-user-pen"></i>
+              <span class="nav-link-title ms-1">
+                Admin
+              </span>
+            </a>
 
-              <div class="dropdown-menu">
-                <div class="dropdown-menu-columns">
-                  <div class="dropdown-menu-column">
-                    <a class="dropdown-item" href="/listuser">
-                      Daftar Pengguna
-                    </a>
-                    <a class="dropdown-item" href="/registration">
-                      Tambah Pengguna
-                    </a>
-                    <a class="dropdown-item" href="/departemen">
-                      List Satuan Kerja dan Departemen
-                    </a>
-                  </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="/listuser">
+                    Daftar Pengguna
+                  </a>
+                  <a class="dropdown-item" href="/registration">
+                    Tambah Pengguna
+                  </a>
+                  <a class="dropdown-item" href="/departemen">
+                    List Satuan Kerja dan Departemen
+                  </a>
                 </div>
               </div>
-            </li>
+            </div>
+          </li>
           @endif
         </ul>
       </div>
@@ -195,6 +195,43 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalLaporan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/laporan" method="post">
+        @csrf
+        <div class="modal-body">
+          <div class="modal-body">
+            <div class="form-group mb-3">
+              <label for="jenis" class="form-label">Jenis Memo</label>
+              <select class="form-select" aria-label=".form-select-lg example" name="jenis" id="jenis">
+                <option value="masuk">Memo Masuk</option>
+                <option value="keluar">Memo Keluar</option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label for="tanggalmulai" class="form-label">Tanggal Mulai</label>
+              <input type="date" class="form-control" id="tanggalmulai" name="tanggalmulai">
+            </div>
+            <div class="form-group mb-3">
+              <label for="tanggalakhir" class="form-label">Tanggal Akhir</label>
+              <input type="date" class="form-control" id="tanggalakhir" name="tanggalakhir">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Lanjut</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

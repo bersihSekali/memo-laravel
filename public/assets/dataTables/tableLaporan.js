@@ -31,12 +31,6 @@ $(document).ready(function () {
         },
         "colvis",
       ],
-      columnDefs: [
-        {
-          targets: [1, 5, 6],
-          visible: false,
-        },
-      ],
     })
     .buttons()
     .container()
