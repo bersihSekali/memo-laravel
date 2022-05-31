@@ -137,6 +137,22 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
+            'name' => 'Dhatu',
+            'level' => '5',
+            'satuan_kerja' => '1',
+            'departemen' => '1',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Kertayuga',
+            'level' => '5',
+            'satuan_kerja' => '1',
+            'departemen' => '1',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
             'name' => 'bayu',
             'level' => '2',
             'satuan_kerja' => '2',
@@ -161,6 +177,22 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'Ariefin',
+            'level' => '5',
+            'satuan_kerja' => '2',
+            'departemen' => '4',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Hatta',
+            'level' => '5',
+            'satuan_kerja' => '2',
+            'departemen' => '4',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Febriansyah',
             'level' => '5',
             'satuan_kerja' => '2',
             'departemen' => '4',
