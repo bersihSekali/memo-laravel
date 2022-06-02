@@ -16,11 +16,16 @@ class CreateSuratMasuksTable extends Migration
         Schema::create('surat_masuks', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('otor2_by')->nullable();
-            $table->string('otor1_by')->nullable();
+            $table->unsignedBigInteger('otor2_by')->nullable();
+            $table->unsignedBigInteger('otor1_by')->nullable();
+            $table->unsignedBigInteger('created_by');
+
+            $table->foreign('otor2_by')->references('id')->on('users');
+            $table->foreign('otor1_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('users');
+
             $table->datetime('tanggal_otor2')->nullable();
             $table->datetime('tanggal_otor1')->nullable();
-            $table->string('created_by');
             $table->string('nomor_surat')->unique()->nullable();
             $table->string('perihal');
             $table->unsignedBigInteger('no_urut');

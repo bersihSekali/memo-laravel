@@ -55,9 +55,19 @@ class SuratMasuk extends Model
         return $this->belongsTo(Departemen::class, 'departemen_tujuan');
     }
 
-    public function Users()
+    public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function otor2By()
+    {
+        return $this->belongsTo(User::class, 'otor2_by');
+    }
+
+    public function otor1By()
+    {
+        return $this->belongsTo(User::class, 'otor1_by');
     }
 
     public function checkerUser()

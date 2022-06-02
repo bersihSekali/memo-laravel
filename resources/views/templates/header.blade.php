@@ -68,11 +68,10 @@
                   <a class="dropdown-item" href="/nomorSurat">
                     Registrasi Surat
                   </a>
-                  @if (($users->level == 2) || ($users->level == 3) || ($users->level == 4))
+                  
                   <a class="dropdown-item" href="/otorisasi">
                     Otorisasi Surat
                   </a>
-                  @endif
 
                   <a class="dropdown-item" href="/suratKeluar">
                     Surat Keluar
@@ -102,7 +101,7 @@
 
           <li class="nav-item">
             <a class="nav-link" href="" data-bs-toggle="modal" data-bs-target="#modalLaporan">
-              <i class="fa-solid fa-file-arrow-down"></i>
+              <i class="fas fa-file-pdf"></i>
               <span class="nav-link-title ms-1">
                 Generate Laporan
               </span>

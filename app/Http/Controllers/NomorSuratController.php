@@ -85,7 +85,9 @@ class NomorSuratController extends Controller
         $lastSuratMasuk = SuratMasuk::where('satuan_kerja_asal', $request->satuan_kerja_asal)
             ->latest()->first();
         $nowDate = date("Y-m-d H:i:s");
-        if (($lastSuratMasuk == '') || ($lastSuratMasuk->created_at != date("Y", strtotime($nowDate)))) {
+        if ($lastSuratMasuk == '') {
+            $validated['no_urut'] = 1;
+        } else if (date("Y", strtotime($nowDate)) != date("Y", strtotime($lastSuratMasuk->created_at))) {
             $validated['no_urut'] = 1;
         } else {
             $mails = SuratMasuk::where('satuan_kerja_asal', $request->satuan_kerja_asal)->max('no_urut');
@@ -154,6 +156,9 @@ class NomorSuratController extends Controller
 
         $datas = SuratMasuk::find($id);
         $update[] = $datas['deleted_by'] = $user->name;
+
+        $datas['no_urut'] = 0;
+        array_push($update, $datas['no_urut']);
 
         $datas->update($update);
 

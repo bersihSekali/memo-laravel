@@ -14,7 +14,8 @@
 
             <div class="form-group mb-3">
                 <label for="created_by" class="form-label ">PIC</label>
-                <input type="text" class="form-control" id="created_by" name="created_by" autocomplete="off" value="{{ strtoupper($users->name) }}" readonly>
+                <input type="text" class="form-control" autocomplete="off" value="{{ strtoupper($users->name) }}" readonly>
+                <input type="hidden" class="form-control" id="created_by" name="created_by" value="{{ $users->id }}" readonly>
                 <input type="hidden" id="no_urut" name="no_urut" value="1">
             </div>
 

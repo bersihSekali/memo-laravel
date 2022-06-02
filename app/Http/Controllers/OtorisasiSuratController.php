@@ -89,32 +89,17 @@ class OtorisasiSuratController extends Controller
         $user = User::where('id', $user_id)->first();
 
         $datas = SuratMasuk::find($id);
-        // Update otor status
-        // $update[] = $datas['status'] = '2';
 
         // Update tanggal otor
         $update[] = $datas['tanggal_otor2'] = date("Y-m-d H:i:s");
-        array_push($update, $datas['tanggal_otor2']);
 
         // Update otor_by 
-        $datas['otor2_by'] = $user->name;
+        $datas['otor2_by'] = $user->id;
         array_push($update, $datas['otor2_by']);
 
         // Nomor surat antar departemen
-        if ($datas['satuan_kerja_asal'] == $datas['satuan_kerja_tujuan']) {
-            // Antar Departemen
-            $datas['status'] = 3;
-            array_push($update, $datas['status']);
-
-            $tahun = date("Y", strtotime($datas['tanggal_otor2']));
-            $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->departemenAsal['departemen'] . '/' . $tahun;
-            $datas['nomor_surat'] = $no_surat;
-            array_push($update, $datas['nomor_surat']);
-        } else {
-            // Antar Satuan Kerja
-            $datas['status'] = 2;
-            array_push($update, $datas['status']);
-        }
+        $datas['status'] = 2;
+        array_push($update, $datas['status']);
 
         // Update lampiran
         if ($request->file('lampiran')) {
@@ -122,12 +107,13 @@ class OtorisasiSuratController extends Controller
                 Storage::delete($datas->lampiran);
             }
 
+            // get file and store
             $file = $request->file('lampiran');
-            $fileName = $file->getClientOriginalName();
-            $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
-            array_push($update, $datas['lampiran']);
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         }
-        // dd($update);
 
         $datas->update($update);
 
@@ -153,12 +139,16 @@ class OtorisasiSuratController extends Controller
         // Update otor status
         $update[] = $datas['status'] = '0';
 
+        // Hapus nomor urut
+        $datas['no_urut'] = 0;
+        array_push($update, $datas['no_urut']);
+
         // Update tanggal otor
         $datas['tanggal_otor2'] = date("Y-m-d H:i:s");
         array_push($update, $datas['tanggal_otor2']);
 
         // Update otor_by 
-        $datas['otor2_by'] = $user->name;
+        $datas['otor2_by'] = $user->id;
         array_push($update, $datas['otor2_by']);
 
         // Update lampiran
@@ -167,10 +157,12 @@ class OtorisasiSuratController extends Controller
                 Storage::delete($datas->lampiran);
             }
 
+            // get file and store
             $file = $request->file('lampiran');
-            $fileName = $file->getClientOriginalName();
-            $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
-            array_push($update, $datas['lampiran']);
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         }
 
         $datas->update($update);
@@ -196,7 +188,7 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['tanggal_otor1']);
 
         // Update otor_by 
-        $datas['otor1_by'] = $user->name;
+        $datas['otor1_by'] = $user->id;
         array_push($update, $datas['otor1_by']);
 
         // Nomor surat antar divisi / satuan kerja
@@ -211,10 +203,12 @@ class OtorisasiSuratController extends Controller
                 Storage::delete($datas->lampiran);
             }
 
+            // get file and store
             $file = $request->file('lampiran');
-            $fileName = $file->getClientOriginalName();
-            $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
-            array_push($update, $datas['lampiran']);
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         }
 
         $datas->update($update);
@@ -235,12 +229,16 @@ class OtorisasiSuratController extends Controller
         // Update otor status
         $update[] = $datas['status'] = '0';
 
+        // Hapus nomor urut
+        $datas['no_urut'] = 0;
+        array_push($update, $datas['no_urut']);
+
         // Update tanggal otor
         $datas['tanggal_otor1'] = date("Y-m-d H:i:s");
         array_push($update, $datas['tanggal_otor1']);
 
         // Update otor_by 
-        $datas['otor1_by'] = $user->name;
+        $datas['otor1_by'] = $user->id;
         array_push($update, $datas['otor1_by']);
 
         // Update lampiran
@@ -249,10 +247,12 @@ class OtorisasiSuratController extends Controller
                 Storage::delete($datas->lampiran);
             }
 
+            // get file and store
             $file = $request->file('lampiran');
-            $fileName = $file->getClientOriginalName();
-            $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
-            array_push($update, $datas['lampiran']);
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         }
 
         $datas->update($update);

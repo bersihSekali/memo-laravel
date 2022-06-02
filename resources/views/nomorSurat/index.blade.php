@@ -54,8 +54,8 @@
                                 @endif
                             </td>
                             <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
-                            <td class="align-top">{{$data['perihal']}}</td>
-                            <td class="align-top">{{$data['created_by']}} </td>
+                            <td class="align-top">{{ $data->perihal }}</td>
+                            <td class="align-top">{{ strtoupper($data->createdBy['name'] )}} </td>
                             <td class="align-top">
                                 {{-- Setuju --}}
                                 @if ($data->status == 3)
@@ -81,7 +81,7 @@
 </div>
 
     <!-- Modal For Showing Detail Data -->
-    @foreach($datas as $data)
+@foreach($datas as $data)
     <div class="modal modal-blur fade" id="mail-{{$data['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -111,7 +111,7 @@
 
                             <tr>
                                 <td>PIC</td>
-                                <td>: {{ strtoupper($data->created_by) }}</td>
+                                <td>: {{ strtoupper($data->createdBy['name']) }}</td>
                             </tr>
                             
                             <tr>
@@ -187,16 +187,46 @@
 
                 @if ($data->status == 0)
                     <div class="modal-footer">
-                        <form action="/nomorSurat/{{ $data['id'] }}"  method="post">
-                            @csrf
-                            {{method_field('DELETE')}}
-            
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$data['id']}}">Hapus</button>
                     </div>
                 @endif
             </div>
         </div>
     </div>
-    @endforeach             
+
+    {{-- Modal rejected for confirmation --}}
+    <div class="modal modal-blur fade" id="modal-delete-{{ $data['id'] }}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+      
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menghapus surat?</h3>
+            </div>
+      
+            <div class="modal-footer">
+              <div class="w-100">
+                <div class="row">
+                  <div class="col">
+                    <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                      Tidak
+                    </a>
+                  </div>
+      
+                  <div class="col">
+                    <form action="/nomorSurat/{{ $data['id'] }}"  method="post">
+                        @csrf
+                        {{method_field('DELETE')}}
+                    
+                        <button type="submit" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$data['id']}}">Hapus</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+@endforeach             
 @endsection
