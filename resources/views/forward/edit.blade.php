@@ -27,7 +27,7 @@
         {{method_field('PUT')}}
         <div class="form-group mb-3">
             <label for="satuan_kerja" class="form-label">Tambah</label>
-            <select class="form-select form-select-lg mb-3 forward-form" aria-label=".form-select-lg example" name="forward[]" id="forward-form" multiple="multiple">
+            <select class="form-select form-select mb-3 forward-form" aria-label=".form-select-sm example" name="forward[]" id="forward-form" multiple="multiple">
                 @foreach($forwards as $item)
                 @if(!in_array($item['id'], $forwarded_ids))
                 <option value="{{$item['id']}}">{{$item['name']}}</option>
@@ -44,10 +44,4 @@
 
 
 <script src="{{url('/assets/dist/js/jquery-3.6.0.min.js')}}" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-<script>
-    jQuery(document).ready(function() {
-        $('.forward-form').select2()
-    });
-</script>
 @endsection
