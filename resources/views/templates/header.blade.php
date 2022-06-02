@@ -96,9 +96,6 @@
                   <a class="dropdown-item" href="/suratMasuk">
                     Surat Masuk
                   </a>
-                  <a class="dropdown-item" href="/disposisi">
-                    Disposisi Masuk
-                  </a>
                 </div>
               </div>
           </li>
@@ -212,7 +209,7 @@
           <div class="modal-body">
             <div class="form-group mb-3">
               <label for="jenis" class="form-label">Jenis Memo</label>
-              <select class="form-select" aria-label=".form-select-lg example" name="jenis" id="jenis">
+              <select class="form-select" aria-label=".form-select-sm example" name="jenis" id="jenis">
                 <option value="masuk">Memo Masuk</option>
                 <option value="keluar">Memo Keluar</option>
               </select>
