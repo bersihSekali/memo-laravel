@@ -12,7 +12,6 @@ use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\CheckerController;
 use App\Http\Controllers\DisposisiController;
 use App\Http\Controllers\CheckerDisposisiController;
-use App\Http\Controllers\CreateNomorSuratController;
 use App\Http\Controllers\GenerateLaporanController;
 use App\Http\Controllers\ForwardController;
 
@@ -44,9 +43,9 @@ Route::get('/registration', [AuthController::class, 'registration'])->middleware
 Route::post('/registration', [AuthController::class, 'register']);
 
 //Penomoran Surat
-Route::get('/nomorSurat/suratHapus', [NomorSuratController::class, 'listSuratHapus']);
-Route::get('/nomorSurat/allSurat', [NomorSuratController::class, 'allSurat']);
-Route::get('/nomorSurat/hapusPermanen', [NomorSuratController::class, 'hapusPermanen']);
+Route::get('/nomorSurat/suratHapus', [NomorSuratController::class, 'listSuratHapus'])->middleware('auth');
+Route::get('/nomorSurat/allSurat', [NomorSuratController::class, 'allSurat'])->middleware('auth');
+Route::get('/nomorSurat/hapusPermanen', [NomorSuratController::class, 'hapusPermanen'])->middleware('auth');
 Route::post('/getSatuanKerja', [NomorSuratController::class, 'getSatuanKerja']);
 Route::post('/getLevel', [NomorSuratController::class, 'getLevel']);
 Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
@@ -64,4 +63,4 @@ Route::resource('checkerDisposisi', CheckerDisposisiController::class)->middlewa
 Route::post('disposisi/selesai/{id}', [DisposisiController::class, 'selesai'])->middleware('auth');
 Route::resource('disposisi', DisposisiController::class)->middleware('auth');
 
-Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');

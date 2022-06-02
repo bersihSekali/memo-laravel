@@ -125,7 +125,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="row align-items-center">
                     <div class="col-auto">
                         <span class="bg-success text-white avatar">
-                            <i class="fa-solid fa-circle-check"></i>
+                            <i class="far fa-check-circle fa-2x"></i>
                         </span>
                     </div>
                     <div class="col">
@@ -146,8 +146,8 @@ if ($jam > '05:30' && $jam < '10:00') {
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col-auto">
-                        <span class="bg-secondary text-white avatar">
-                            <i class="fa-solid fa-x"></i>
+                        <span class="bg-danger text-white avatar">
+                            <i class="far fa-times-circle fa-2x"></i>
                         </span>
                     </div>
 
@@ -221,7 +221,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="row align-items-center">
                     <div class="col-auto">
                         <span class="bg-success text-white avatar">
-                            <i class="fa-solid fa-circle-check"></i>
+                            <i class="far fa-check-circle fa-2x"></i>
                         </span>
                     </div>
                     <div class="col">
@@ -243,7 +243,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="row align-items-center">
                     <div class="col-auto">
                         <span class="bg-danger text-white avatar">
-                            <i class="fa-solid fa-x"></i>
+                            <i class="far fa-times-circle fa-2x"></i>
                         </span>
                     </div>
 
@@ -263,7 +263,7 @@ if ($jam > '05:30' && $jam < '10:00') {
 @break
 
 @case (4)
-<!-- Home Officer -->
+<!-- Home Senior Officer -->
 <div class="row row-cards mt-2">
     <div class="col-sm-6 col-lg-3">
         <div class="card card-sm">
@@ -317,7 +317,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="row align-items-center">
                     <div class="col-auto">
                         <span class="bg-success text-white avatar">
-                            <i class="fa-solid fa-circle-check"></i>
+                            <i class="far fa-check-circle fa-2x"></i>
                         </span>
                     </div>
                     <div class="col">
@@ -339,16 +339,16 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="row align-items-center">
                     <div class="col-auto">
                         <span class="bg-danger text-white avatar">
-                            <i class="fa-solid fa-x"></i>
+                            <i class="far fa-times-circle fa-2x"></i>
                         </span>
                     </div>
 
                     <div class="col">
                         <div class="fs-3 font-weight-medium">
-                            {{ $countNeedApprove }}
+                            {{ $countRejected }}
                         </div>
                         <div class="text-muted">
-                            Pending
+                            Ditolak
                         </div>
                     </div>
                 </div>
@@ -399,7 +399,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                             {{ $countNeedApprove }}
                         </div>
                         <div class="text-muted">
-                            Perlu Disetujui
+                            Menunggu Persetujuan
                         </div>
                     </div>
                 </div>
@@ -413,7 +413,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="row align-items-center">
                     <div class="col-auto">
                         <span class="bg-success text-white avatar">
-                            <i class="fa-solid fa-circle-check"></i>
+                            <i class="far fa-check-circle fa-2x"></i>
                         </span>
                     </div>
                     <div class="col">
@@ -435,7 +435,7 @@ if ($jam > '05:30' && $jam < '10:00') {
                 <div class="row align-items-center">
                     <div class="col-auto">
                         <span class="bg-danger text-white avatar">
-                            <i class="fa-solid fa-x"></i>
+                            <i class="far fa-times-circle fa-2x"></i>
                         </span>
                     </div>
 

@@ -29,11 +29,11 @@ class HomeController extends Controller
             case 2: // Home Kepala Satuan Kerja
                 $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
                 $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->where('satuan_kerja_asal', '=', 'satuan_kerja_tujuan')
+                    ->whereRaw('satuan_kerja_asal != satuan_kerja_tujuan') // Antar Divisi
                     ->where('status', 2)
                     ->count();
                 $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->where('status', '>', 1)
+                    ->where('nomor_surat', '!=', '')
                     ->count();
                 $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
                     ->where('status', 0)
@@ -54,7 +54,7 @@ class HomeController extends Controller
                     ->where('status', 1)
                     ->count();
                 $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->where('status', '>', 1)
+                    ->where('nomor_surat', '!=', '')
                     ->count();
                 $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
                     ->where('status', 0)
@@ -75,7 +75,7 @@ class HomeController extends Controller
                     ->where('status', 1)
                     ->count();
                 $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->where('status', '>', 1)
+                    ->where('nomor_surat', '!=', '')
                     ->count();
                 $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
                     ->where('status', 0)
@@ -96,7 +96,7 @@ class HomeController extends Controller
                     ->where('status', 1)
                     ->count();
                 $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->where('status', '>', 1)
+                    ->where('nomor_surat', '!=', '')
                     ->count();
                 $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
                     ->where('status', 0)

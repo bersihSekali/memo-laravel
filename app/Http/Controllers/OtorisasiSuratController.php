@@ -90,10 +90,10 @@ class OtorisasiSuratController extends Controller
 
         $datas = SuratMasuk::find($id);
         // Update otor status
-        $update[] = $datas['status'] = '2';
+        // $update[] = $datas['status'] = '2';
 
         // Update tanggal otor
-        $datas['tanggal_otor2'] = Carbon::now();
+        $update[] = $datas['tanggal_otor2'] = date("Y-m-d H:i:s");
         array_push($update, $datas['tanggal_otor2']);
 
         // Update otor_by 
@@ -102,10 +102,18 @@ class OtorisasiSuratController extends Controller
 
         // Nomor surat antar departemen
         if ($datas['satuan_kerja_asal'] == $datas['satuan_kerja_tujuan']) {
-            $tahun = date("Y", strtotime($datas['tanggal_otor']));
+            // Antar Departemen
+            $datas['status'] = 3;
+            array_push($update, $datas['status']);
+
+            $tahun = date("Y", strtotime($datas['tanggal_otor2']));
             $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->departemenAsal['departemen'] . '/' . $tahun;
             $datas['nomor_surat'] = $no_surat;
             array_push($update, $datas['nomor_surat']);
+        } else {
+            // Antar Satuan Kerja
+            $datas['status'] = 2;
+            array_push($update, $datas['status']);
         }
 
         // Update lampiran
@@ -146,7 +154,7 @@ class OtorisasiSuratController extends Controller
         $update[] = $datas['status'] = '0';
 
         // Update tanggal otor
-        $datas['tanggal_otor2'] = Carbon::now();
+        $datas['tanggal_otor2'] = date("Y-m-d H:i:s");
         array_push($update, $datas['tanggal_otor2']);
 
         // Update otor_by 
@@ -184,7 +192,7 @@ class OtorisasiSuratController extends Controller
         $update[] = $datas['status'] = '3';
 
         // Update tanggal otor
-        $datas['tanggal_otor1'] = Carbon::now();
+        $datas['tanggal_otor1'] = date("Y-m-d H:i:s");
         array_push($update, $datas['tanggal_otor1']);
 
         // Update otor_by 
@@ -228,7 +236,7 @@ class OtorisasiSuratController extends Controller
         $update[] = $datas['status'] = '0';
 
         // Update tanggal otor
-        $datas['tanggal_otor1'] = Carbon::now();
+        $datas['tanggal_otor1'] = date("Y-m-d H:i:s");
         array_push($update, $datas['tanggal_otor1']);
 
         // Update otor_by 

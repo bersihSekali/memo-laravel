@@ -30,7 +30,13 @@
                               @if (($data['status'] == '2') && ($data['satuan_kerja_asal'] == $users['satuan_kerja']) && ($data['nomor_surat'] == ''))    
                                   <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                                       <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-                                      <td class="align-top">{{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                                      <td class="align-top">
+                                        @if ($data->departemen_asal == '')
+                                            {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                                        @else
+                                            {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
+                                        @endif
+                                      </td>
                                       <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                                       <td class="align-top">{{$data['perihal']}}</td>
                                       <td class="align-top">{{$data['created_by']}} </td>
@@ -43,7 +49,13 @@
                               @if (($data['status'] == '1') && ($data['satuan_kerja_asal'] == $users['satuan_kerja']))    
                                   <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                                       <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-                                      <td class="align-top">{{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                                      <td class="align-top">
+                                        @if ($data->departemen_asal == '')
+                                            {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                                        @else
+                                            {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
+                                        @endif
+                                      </td>
                                       <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                                       <td class="align-top">{{$data['perihal']}}</td>
                                       <td class="align-top">{{$data['created_by']}} </td>
@@ -97,7 +109,7 @@
                             
                             <tr>
                                 <td>Tujuan</td>
-                                <td>: {{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                                <td>: {{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                             </tr>
 
                             <tr>

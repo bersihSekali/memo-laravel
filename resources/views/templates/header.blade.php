@@ -20,13 +20,13 @@
           </div>
 
           @if ($users->level == 1)
-          <i class="fa-solid fa-user-gear fa-2x"></i>
+          <i class="fas fa-user-cog fa-2x"></i>
           @elseif ($users->level == 2)
           <i class="fas fa-user-secret fa-2x"></i>
-          @elseif ($users->level == 3)
-          <i class="fas fa-user-cowboy fa-2x"></i>
+          @elseif (($users->level == 3) || ($users->level == 4))
+          <i class="fas fa-user-tie fa-2x"></i>
           @else
-          <i class="fas fa-user"></i>
+          <i class="fas fa-user fa-2x"></i>
           @endif
         </a>
 
@@ -114,7 +114,7 @@
           @else
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-              <i class="fa-solid fa-trash-can"></i>
+              <i class="fas fa-box"></i>
               <span class="nav-link-title ms-1">
                 Log Surat
               </span>
@@ -136,7 +136,7 @@
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-              <i class="fa-solid fa-user-pen"></i>
+              <i class="fas fa-users"></i>
               <span class="nav-link-title ms-1">
                 Admin
               </span>

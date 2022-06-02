@@ -9,7 +9,7 @@
             </h2>
         </div>
 
-        @if ($users->level != 1)
+        @if ($users->level == 5)
         <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="btn-list">
                 <a href="/nomorSurat/create" class="btn btn-primary d-none d-sm-inline-block">
@@ -46,25 +46,26 @@
                         @if (($data['satuan_kerja_asal'] == $users['satuan_kerja']))
                         <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                             <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-                            <td class="align-top">{{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                            <td class="align-top">
+                                @if ($data->departemen_asal == '')
+                                    {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                                @else
+                                    {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
+                                @endif
+                            </td>
                             <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                             <td class="align-top">{{$data['perihal']}}</td>
                             <td class="align-top">{{$data['created_by']}} </td>
                             <td class="align-top">
-                                @if (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
-                                    <span class="badge bg-success">
-                                        Disetujui {{ strtoupper($data->otor2_by) }}
-                                    </span>
-                                @elseif (($data->status == 0) && ($data->otor1_by == ''))
-                                    <span class="badge bg-warning">Ditolak {{ strtoupper($data->otor2_by) }}
-                                    </span>
-                                @elseif ($data->status == 3)
-                                    <span class="badge bg-success">
-                                        Disetujui {{ strtoupper($data->otor1_by) }}
-                                    </span>
-                                @elseif (($data->status == 0) && ($data->otor1_by != ''))
-                                    <span class="badge bg-warning">Ditolak {{ strtoupper($data->otor1_by) }}
-                                    </span>
+                                {{-- Setuju --}}
+                                @if ($data->status == 3)
+                                    <span class="badge bg-success">Disetujui</span>
+                                
+                                {{-- Ditolak antar departemen --}}
+                                @elseif ($data->status == 0)
+                                    <span class="badge bg-warning">Ditolak</span>
+                                
+                                {{-- Pending --}}
                                 @else
                                     <span class="badge bg-secondary">Pending</span>
                                 @endif
@@ -135,7 +136,7 @@
                                         <span class="badge bg-secondary">Pending</span>
                                     
                                     {{-- approved otor2_by antar departemen --}}
-                                    @elseif (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+                                    @elseif (($data->status == 3) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
                                         <span class="badge bg-success">
                                             Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                                         </span>

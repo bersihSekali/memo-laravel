@@ -9,6 +9,7 @@ use App\Models\SatuanKerja;
 use App\Models\Departemen;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class NomorSuratController extends Controller
 {
@@ -72,17 +73,25 @@ class NomorSuratController extends Controller
             'no_urut' => 'required'
         ]);
         $validated['departemen_asal'] = $request->departemen_asal;
+
+        // get file and store
         $file = $request->file('lampiran');
-        $fileName = $file->getClientOriginalName();
+        $originalFileName = $file->getClientOriginalName();
+        $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+        $fileName = date("YmdHis") . '_' . $fileName;
         $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
 
-        $mails = SuratMasuk::where('satuan_kerja_asal', $request->satuan_kerja_asal)->max('no_urut');
-        $no_urut = $validated['no_urut'] + $mails;
-        $validated['no_urut'] = $no_urut;
-
-        // if ($validated['satuan_kerja_asal'] == $validated['satuan_kerja_tujuan']) {
-        //     $validated['status'] = 2;
-        // }
+        // Compare latest date with now to reset no_urut
+        $lastSuratMasuk = SuratMasuk::where('satuan_kerja_asal', $request->satuan_kerja_asal)
+            ->latest()->first();
+        $nowDate = date("Y-m-d H:i:s");
+        if (($lastSuratMasuk == '') || ($lastSuratMasuk->created_at != date("Y", strtotime($nowDate)))) {
+            $validated['no_urut'] = 1;
+        } else {
+            $mails = SuratMasuk::where('satuan_kerja_asal', $request->satuan_kerja_asal)->max('no_urut');
+            $no_urut = $validated['no_urut'] + $mails;
+            $validated['no_urut'] = $no_urut;
+        }
 
         $create = SuratMasuk::create($validated);
 
@@ -128,7 +137,7 @@ class NomorSuratController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) // Force Delete
+    public function update(Request $request, $id)
     {
     }
 
@@ -138,7 +147,7 @@ class NomorSuratController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id) // Soft Delete
     {
         $user_id = Auth::id();
         $user = User::where('id', $user_id)->first();
@@ -180,7 +189,7 @@ class NomorSuratController extends Controller
         echo $html;
     }
 
-    public function listSuratHapus(Request $request)
+    public function listSuratHapus(Request $request) // get Surat deleted only
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
@@ -195,14 +204,14 @@ class NomorSuratController extends Controller
         return view('nomorSurat.deleted', $datas);
     }
 
-    public function hapusPermanen()
+    public function hapusPermanen() // Force Delete
     {
         SuratMasuk::whereNotNull('deleted_at')->forceDelete();
 
         return redirect('/nomorSurat/suratHapus')->with('success', 'Surat berhasil dibersihkan');
     }
 
-    public function allSurat()
+    public function allSurat() // get all Surat
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();

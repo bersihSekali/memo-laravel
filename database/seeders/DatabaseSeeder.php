@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Departemen;
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\SuratMasuk;
 use Illuminate\Support\Facades\Hash;
 use App\Models\SatuanKerja;
 use App\Models\Level;
@@ -138,29 +137,61 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'Dhatu',
-            'level' => '5',
+            'level' => '3',
             'satuan_kerja' => '1',
-            'departemen' => '1',
+            'departemen' => '2',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
             'name' => 'Kertayuga',
-            'level' => '5',
+            'level' => '4',
             'satuan_kerja' => '1',
-            'departemen' => '1',
+            'departemen' => '2',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
             'name' => 'bayu',
+            'level' => '5',
+            'satuan_kerja' => '1',
+            'departemen' => '2',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Eka',
+            'level' => '3',
+            'satuan_kerja' => '1',
+            'departemen' => '3',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Prasetyo',
+            'level' => '4',
+            'satuan_kerja' => '1',
+            'departemen' => '3',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Ariefin',
+            'level' => '5',
+            'satuan_kerja' => '1',
+            'departemen' => '3',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Hatta',
             'level' => '2',
             'satuan_kerja' => '2',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
-            'name' => 'Eka',
+            'name' => 'Febriansyah',
             'level' => '3',
             'satuan_kerja' => '2',
             'departemen' => '4',
@@ -168,7 +199,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Prasetyo',
+            'name' => 'Efrinaldi',
             'level' => '4',
             'satuan_kerja' => '2',
             'departemen' => '4',
@@ -176,7 +207,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Ariefin',
+            'name' => 'Alzuhri',
             'level' => '5',
             'satuan_kerja' => '2',
             'departemen' => '4',
@@ -184,109 +215,137 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Hatta',
-            'level' => '5',
+            'name' => 'Trinandadi',
+            'level' => '3',
             'satuan_kerja' => '2',
-            'departemen' => '4',
+            'departemen' => '5',
             'password' => hash::make('asdasd')
         ]);
 
         User::create([
-            'name' => 'Febriansyah',
-            'level' => '5',
+            'name' => 'Githa',
+            'level' => '4',
             'satuan_kerja' => '2',
-            'departemen' => '4',
+            'departemen' => '5',
             'password' => hash::make('asdasd')
         ]);
 
-        // SuratMasuk::create([
-        //     'created_by' => 'hernandi',
-        //     'perihal' => 'asd asd asd',
-        //     'satuan_kerja_asal' => '1',
-        //     'departemen_asal' => '1',
-        //     'satuan_kerja_tujuan' => '1',
-        //     'departemen_tujuan' => '2',
-        //     'no_urut' => '1'
-        // ]);
+        User::create([
+            'name' => 'Refina',
+            'level' => '5',
+            'satuan_kerja' => '2',
+            'departemen' => '5',
+            'password' => hash::make('asdasd')
+        ]);
 
-        // SuratMasuk::create([
-        //     'created_by' => 'hernandi',
-        //     'perihal' => 'asd asd asd asdasdasd',
-        //     'satuan_kerja_asal' => '1',
-        //     'departemen_asal' => '1',
-        //     'satuan_kerja_tujuan' => '1',
-        //     'departemen_tujuan' => '3',
-        //     'no_urut' => '2'
-        // ]);
+        User::create([
+            'name' => 'Muhammad',
+            'level' => '2',
+            'satuan_kerja' => '3',
+            'password' => hash::make('asdasd')
+        ]);
 
-        // SuratMasuk::create([
-        //     'created_by' => 'hernandi',
-        //     'perihal' => 'asd asd asdasdasdasdasdasdasdasd',
-        //     'satuan_kerja_asal' => '1',
-        //     'departemen_asal' => '1',
-        //     'satuan_kerja_tujuan' => '2',
-        //     'departemen_tujuan' => '5',
-        //     'no_urut' => '3'
-        // ]);
+        User::create([
+            'name' => 'Afta',
+            'level' => '3',
+            'satuan_kerja' => '3',
+            'departemen' => '6',
+            'password' => hash::make('asdasd')
+        ]);
 
-        // SuratMasuk::create([
-        //     'created_by' => 'hernandi',
-        //     'perihal' => 'asd asdasdasdasd asdasddsa asd',
-        //     'satuan_kerja_asal' => '1',
-        //     'departemen_asal' => '2',
-        //     'satuan_kerja_tujuan' => '1',
-        //     'departemen_tujuan' => '1',
-        //     'no_urut' => '4'
-        // ]);
+        User::create([
+            'name' => 'Buddin',
+            'level' => '4',
+            'satuan_kerja' => '3',
+            'departemen' => '6',
+            'password' => hash::make('asdasd')
+        ]);
 
-        // SuratMasuk::create([
-        //     'created_by' => 'hernandi',
-        //     'perihal' => 'dasdasdsadsad aasd asd asd',
-        //     'satuan_kerja_asal' => '1',
-        //     'departemen_asal' => '2',
-        //     'satuan_kerja_tujuan' => '1',
-        //     'departemen_tujuan' => '1',
-        //     'no_urut' => '5'
-        // ]);
+        User::create([
+            'name' => 'Arsyad',
+            'level' => '5',
+            'satuan_kerja' => '3',
+            'departemen' => '6',
+            'password' => hash::make('asdasd')
+        ]);
 
-        // SuratMasuk::create([
-        //     'created_by' => 'yudhi',
-        //     'perihal' => 'dasdasdsads adaasd asd asd',
-        //     'satuan_kerja_asal' => '2',
-        //     'departemen_asal' => '4',
-        //     'satuan_kerja_tujuan' => '2',
-        //     'departemen_tujuan' => '4',
-        //     'no_urut' => '6'
-        // ]);
+        User::create([
+            'name' => 'Risky',
+            'level' => '3',
+            'satuan_kerja' => '3',
+            'departemen' => '7',
+            'password' => hash::make('asdasd')
+        ]);
 
-        // SuratMasuk::create([
-        //     'created_by' => 'yudhi',
-        //     'perihal' => 'dasdasd sadsadaasd asd asd',
-        //     'satuan_kerja_asal' => '2',
-        //     'departemen_asal' => '4',
-        //     'satuan_kerja_tujuan' => '3',
-        //     'departemen_tujuan' => '6',
-        //     'no_urut' => '7'
-        // ]);
+        User::create([
+            'name' => 'Septiawan',
+            'level' => '4',
+            'satuan_kerja' => '3',
+            'departemen' => '7',
+            'password' => hash::make('asdasd')
+        ]);
 
-        // SuratMasuk::create([
-        //     'created_by' => 'yudhi',
-        //     'perihal' => 'dasda sdsa dsadaasd asd asd',
-        //     'satuan_kerja_asal' => '2',
-        //     'departemen_asal' => '4',
-        //     'satuan_kerja_tujuan' => '3',
-        //     'departemen_tujuan' => '6',
-        //     'no_urut' => '8'
-        // ]);
+        User::create([
+            'name' => 'John',
+            'level' => '5',
+            'satuan_kerja' => '3',
+            'departemen' => '7',
+            'password' => hash::make('asdasd')
+        ]);
 
-        // SuratMasuk::create([
-        //     'created_by' => 'yudhi',
-        //     'perihal' => 'das da sds adsadaasd asd asd',
-        //     'satuan_kerja_asal' => '2',
-        //     'departemen_asal' => '4',
-        //     'satuan_kerja_tujuan' => '4',
-        //     'departemen_tujuan' => '8',
-        //     'no_urut' => '9'
-        // ]);
+        User::create([
+            'name' => 'Lennon',
+            'level' => '2',
+            'satuan_kerja' => '4',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Alda',
+            'level' => '3',
+            'satuan_kerja' => '4',
+            'departemen' => '8',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Risma',
+            'level' => '4',
+            'satuan_kerja' => '4',
+            'departemen' => '8',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Freddy',
+            'level' => '5',
+            'satuan_kerja' => '4',
+            'departemen' => '8',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Mercury',
+            'level' => '3',
+            'satuan_kerja' => '4',
+            'departemen' => '9',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Venus',
+            'level' => '4',
+            'satuan_kerja' => '4',
+            'departemen' => '9',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'Bumi',
+            'level' => '5',
+            'satuan_kerja' => '4',
+            'departemen' => '9',
+            'password' => hash::make('asdasd')
+        ]);
     }
 }
