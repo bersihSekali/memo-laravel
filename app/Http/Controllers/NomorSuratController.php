@@ -69,7 +69,7 @@ class NomorSuratController extends Controller
             'satuan_kerja_tujuan' => 'required',
             'departemen_tujuan' => 'required',
             'perihal' => 'required',
-            'lampiran' => 'required|mimes:pdf'
+            'lampiran' => 'mimes:pdf'
         ]);
         $validated['departemen_asal'] = $request->departemen_asal;
 
@@ -79,20 +79,6 @@ class NomorSuratController extends Controller
         $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
         $fileName = date("YmdHis") . '_' . $fileName;
         $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
-
-        // // Compare latest date with now to reset no_urut
-        // $lastSuratMasuk = SuratMasuk::where('satuan_kerja_asal', $request->satuan_kerja_asal)
-        //     ->latest()->first();
-        // $nowDate = date("Y-m-d H:i:s");
-        // if ($lastSuratMasuk == '') {
-        //     $validated['no_urut'] = 1;
-        // } else if (date("Y", strtotime($nowDate)) != date("Y", strtotime($lastSuratMasuk->created_at))) {
-        //     $validated['no_urut'] = 1;
-        // } else {
-        //     $mails = SuratMasuk::where('satuan_kerja_asal', $request->satuan_kerja_asal)->max('no_urut');
-        //     $no_urut = $validated['no_urut'] + $mails;
-        //     $validated['no_urut'] = $no_urut;
-        // }
 
         $create = SuratMasuk::create($validated);
 

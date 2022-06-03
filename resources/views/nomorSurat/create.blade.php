@@ -62,7 +62,11 @@
 
             <div class="mb-3">
                 <label for="lampiran" class="form-label">Lampiran</label>
-                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                @if ($users->level == 5)
+                    <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                @else
+                    <input class="form-control" type="file" id="lampiran" name="lampiran">  
+                @endif
             </div>
 
             <button type="submit" class="btn btn-primary">Simpan</button>

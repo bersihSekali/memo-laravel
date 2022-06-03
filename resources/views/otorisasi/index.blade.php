@@ -17,11 +17,11 @@
           <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
             <thead>
               <tr>
-                  <th class="fs-4" scope="col" width="10%">Tanggal</th>
-                  <th class="fs-4" scope="col">Asal</th>
-                  <th class="fs-4" scope="col">Tujuan</th>
-                  <th class="fs-4" scope="col">Perihal</th>
-                  <th class="fs-4" scope="col">PIC</th>
+                <th class="fs-4" scope="col" width="10%">Tanggal</th>
+                <th class="fs-4" scope="col">Asal</th>
+                <th class="fs-4" scope="col">Tujuan</th>
+                <th class="fs-4" scope="col">Perihal</th>
+                <th class="fs-4" scope="col">PIC</th>
               </tr>
             </thead>
 
@@ -29,6 +29,7 @@
               @foreach($datas as $data)
                 {{-- Officer --}}
                 @if ($users->level == 5)
+                  {{-- Surat antar departemen --}}
                   @if (($data->status == 1) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
                     <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
                       <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
@@ -45,8 +46,59 @@
                     </tr>
                   @endif
                 
-                {{-- Kepala departemen / Senio Officer --}}
-                @elseif (($users->level == 4) || ($users->level == 3))
+                {{-- Senior Officer --}}
+                @elseif ($users->level == 4)
+                  {{-- Surat antar departemen sebagai otor2_by --}}
+                  @if (($data->status == 1) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+                    <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
+                      <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
+                      <td class="align-top">
+                        @if ($data->departemen_asal == '')
+                            {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                        @else
+                            {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
+                        @endif
+                      </td>
+                      <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
+                      <td class="align-top">{{ $data->perihal }}</td>
+                      <td class="align-top">{{ strtoupper($data->createdBy['name']) }} </td>
+                    </tr>
+
+                  {{-- Surat antar departemen sebagai otor1_by --}}
+                  @elseif (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+                    <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
+                      <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
+                      <td class="align-top">
+                        @if ($data->departemen_asal == '')
+                            {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                        @else
+                            {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
+                        @endif
+                      </td>
+                      <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
+                      <td class="align-top">{{ $data->perihal }}</td>
+                      <td class="align-top">{{ strtoupper($data->createdBy['name']) }} </td>
+                    </tr>
+                  
+                  {{-- Surat antar satuan kerja --}}
+                  @elseif (($data->status == 1) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
+                    <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
+                      <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
+                      <td class="align-top">
+                        @if ($data->departemen_asal == '')
+                            {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                        @else
+                            {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
+                        @endif
+                      </td>
+                      <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
+                      <td class="align-top">{{ $data->perihal }}</td>
+                      <td class="align-top">{{ strtoupper($data->createdBy['name']) }} </td>
+                    </tr>
+                  @endif
+                
+                {{-- Kepala departemen --}}
+                @elseif ($users->level == 3)
                   {{-- Surat antar departemen --}}
                   @if (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
                     <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
@@ -63,7 +115,7 @@
                       <td class="align-top">{{ strtoupper($data->createdBy['name']) }} </td>
                     </tr>
                   
-                  {{-- Surat antar satuan kerja   --}}
+                  {{-- Surat antar satuan kerja --}}
                   @elseif (($data->status == 1) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
                     <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
                       <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
@@ -153,9 +205,27 @@
                 <td>: {{ $data->perihal }}</td>
               </tr>
 
-              {{-- Kepala Departemen / Senior Officer --}}
-              @if (($users->level == 4) && ($users->level == 3))
-                {{-- Surat antar departemen  --}}
+              {{-- Senior Officer --}}
+              @if ($users->level == 4)
+                {{-- Surat antar departemen --}}
+                @if (($data->status == 1) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+                  {{-- otor2_by terisi --}}
+                  @if ($data->otor2_by != 0)
+                    <td>Disetujui Oleh</td>
+                    <td>: 
+                      <span class="badge bg-success">
+                        Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                      </span>
+                      <span class="badge bg-secondary">
+                        Pending Kadep / Senior
+                      </span>
+                    </td>
+                  @endif
+                @endif
+              
+              {{-- Kepala Departemen --}}
+              @elseif ($users->level == 3)
+                {{-- Surat antar departemen --}}
                 @if (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
                   <td>Disetujui Oleh</td>
                   <td>: 
@@ -163,24 +233,24 @@
                       Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                     </span>
                     <span class="badge bg-secondary">
-                      Pending Kadep
+                      Pending Kadep / Senior
                     </span>
                   </td>
                 @endif
-              
-              {{-- Kepala satuan kerja  --}}
+
+              {{-- Surat antar satuan Kerja --}}
               @elseif ($users->level == 2)
-                {{-- Surat antar satuan kerja  --}}
+                {{-- Surat antar departemen --}}
                 @if (($data->status == 2) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
-                <td>Disetujui Oleh</td>
-                <td>: 
-                  <span class="badge bg-success">
-                    Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                  </span>
-                  <span class="badge bg-secondary">
-                    Pending Kadep
-                  </span>
-                </td>
+                  <td>Disetujui Oleh</td>
+                  <td>: 
+                    <span class="badge bg-success">
+                      Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                    </span>
+                    <span class="badge bg-secondary">
+                      Pending Kasat
+                    </span>
+                  </td>
                 @endif
               @endif
 
@@ -226,10 +296,27 @@
             </form>
           </div>
 
-        <!-- Kepala Departemen / Senior Officer -->
-        @elseif (($users->level == 3) || ($users->level == 4))
-          {{-- Otor1_by surat antar departemen --}}
-          @if ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan)
+        {{-- Senior Officer --}}
+        @elseif ($users->level == 4)
+          {{-- Surat antar departemen sebagai otor2_by --}}
+          @if (($data->satuan_kerja_asal == $data->satuan_kerja_tujuan) && ($data->otor2_by == 0))
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menyetujui?</h3>
+              <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+              <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+                @csrf
+                {{method_field('PUT')}}
+
+                <div class="mb-3">
+                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Setujui</button>
+              </form>
+            </div>
+
+          {{-- Surat antar departemen sebagai otor1_by --}}
+          @elseif (($data->satuan_kerja_asal == $data->satuan_kerja_tujuan) && ($data->otor2_by != 0))
             <div class="modal-body text-center py-4">
               <h3>Apakah yakin ingin menyetujui?</h3>
               <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
@@ -245,8 +332,8 @@
                 <button type="submit" class="btn btn-success w-100">Setujui</button>
               </form>
             </div>
-
-          {{-- Otor2_by surat antar satuan Kerja --}}
+          
+          {{-- antar satuan kerja --}}
           @else
             <div class="modal-body text-center py-4">
               <h3>Apakah yakin ingin menyetujui?</h3>
@@ -261,7 +348,45 @@
 
                 <button type="submit" class="btn btn-success w-100">Setujui</button>
               </form>
-            </div>              
+            </div>
+          @endif
+        
+        {{-- Kepala departemen --}}
+        @elseif ($users->level == 3)
+          {{-- Surat antar departemen sebgai otor1_by --}}
+          @if (($data->status == 2) && ($data->satuan_kerja_tujuan == $data->satuan_kerja_asal))
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menyetujui?</h3>
+              <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
+              <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
+              <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+                @csrf
+                {{method_field('POST')}}
+
+                <div class="mb-3">
+                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Setujui</button>
+              </form>
+            </div>
+          
+          {{-- Surat antar satuan kerja --}}
+          @elseif (($data->status == 1) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menyetujui?</h3>
+              <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+              <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+                @csrf
+                {{method_field('PUT')}}
+
+                <div class="mb-3">
+                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Setujui</button>
+              </form>
+            </div>
           @endif
         
         {{-- Kepala Satuan Kerja --}}
@@ -310,11 +435,28 @@
               <button type="submit" class="btn btn-danger w-100">Tolak</button>
             </form>
           </div>
-        
-        {{-- Kepala Departemen / Senior Officer --}}
-        @elseif (($users->level == 4) || ($users->level == 3))
-          {{-- Rejected Otor1_by surat antar departemen --}}
-          @if ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan)
+
+        {{-- Senior Officer --}}
+        @elseif ($users->level == 4)
+          {{-- Rejected Surat antar departemen sebagai otor2_by --}}
+          @if (($data->satuan_kerja_asal == $data->satuan_kerja_tujuan) && ($data->otor2_by == 0))
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menolak?</h3>
+              <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+              <form action="/otorisasi/{{ $data['id'] }}"  method="post" enctype="multipart/form-data">
+                @csrf
+                {{method_field('DELETE')}}
+              
+                <div class="mb-3">
+                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                </div>
+              
+                <button type="submit" class="btn btn-danger w-100">Tolak</button>
+              </form>
+            </div>
+
+          {{-- Rejected Surat antar departemen sebagai otor1_by --}}
+          @elseif (($data->satuan_kerja_asal == $data->satuan_kerja_tujuan) && ($data->otor2_by != 0))
             <div class="modal-body text-center py-4">
               <h3>Apakah yakin ingin menolak?</h3>
               <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
@@ -330,8 +472,8 @@
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
               </form>
             </div>
-
-          {{-- Rejected Otor2_by surat antar departemen --}}
+          
+          {{-- Rejected Surat antar satuan Kerja --}}
           @else
             <div class="modal-body text-center py-4">
               <h3>Apakah yakin ingin menolak?</h3>
@@ -339,19 +481,56 @@
               <form action="/otorisasi/{{ $data['id'] }}"  method="post" enctype="multipart/form-data">
                 @csrf
                 {{method_field('DELETE')}}
+              
+                <div class="mb-3">
+                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                </div>
+              
+                <button type="submit" class="btn btn-danger w-100">Tolak</button>
+              </form>
+            </div>
+          @endif
+        
+        {{-- Kepala departemen --}}
+        @elseif ($users->level == 3)
+          {{-- Surat antar departemen sebagai otor1_by --}}
+          @if (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menolak?</h3>
+              <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
+              <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
+              <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+                @csrf
+                {{method_field('POST')}}
 
                 <div class="mb-3">
                   <input class="form-control" type="file" id="lampiran" name="lampiran" required>
                 </div>
 
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
-            </form>
+              </form>
+            </div>
+          
+          {{-- Surat antar satuan kerja sebagai otor2_by --}}
+          @else
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menolak?</h3>
+              <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+              <form action="/otorisasi/{{ $data['id'] }}"  method="post" enctype="multipart/form-data">
+                @csrf
+                {{method_field('DELETE')}}
+              
+                <div class="mb-3">
+                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                </div>
+              
+                <button type="submit" class="btn btn-danger w-100">Tolak</button>
               </form>
             </div>
           @endif
-        
-        {{-- Rejected Otor1_by surat antar satuan kerja  --}}
-        @elseif (($users->level == 2) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
+
+        {{-- Rejected surat antar satuan kerja sebagai otor1_by --}}
+        @elseif ($users->level == 2)
           <div class="modal-body text-center py-4">
             <h3>Apakah yakin ingin menolak?</h3>
             <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
@@ -365,7 +544,7 @@
               </div>
 
               <button type="submit" class="btn btn-danger w-100">Tolak</button>
-          </form>
+            </form>
           </div>
         @endif
       </div>
