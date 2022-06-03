@@ -28,7 +28,7 @@ class CreateSuratMasuksTable extends Migration
             $table->datetime('tanggal_otor1')->nullable();
             $table->string('nomor_surat')->unique()->nullable();
             $table->string('perihal');
-            $table->unsignedBigInteger('no_urut');
+            $table->unsignedBigInteger('no_urut')->nullable();
 
             $table->unsignedBigInteger('satuan_kerja_asal');
             $table->unsignedBigInteger('departemen_asal')->nullable();

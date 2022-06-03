@@ -9,7 +9,7 @@
             </h2>
         </div>
 
-        @if ($users->level == 5)
+        @if ($users->level >=3 && $users->level <=5)
         <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="btn-list">
                 <a href="/nomorSurat/create" class="btn btn-primary d-none d-sm-inline-block">
