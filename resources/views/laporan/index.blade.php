@@ -4,7 +4,8 @@
 <!-- Page Heading -->
 <div class="container-fluid">
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Laporan</h1>
+    <h1 class="h2 mb-2 text-gray-800" id="judul">Pencatatan Memo {{ucwords($requests['jenis'])}}</h1>
+    <h1 class="h4 mb-2 text-gray-800" id="tanggal">{{dateWithFormatter($requests['tanggalmulai'])}} s.d. {{dateWithFormatter($requests['tanggalakhir'])}}</h1>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-body py-3">
@@ -18,7 +19,11 @@
                     <thead>
                         <tr>
                             <th scope="col">Tanggal Surat</th>
+                            @if ($requests['jenis'] == 'masuk')
                             <th scope="col">Tanggal Masuk</th>
+                            @elseif ($requests['jenis'] == 'keluar')
+                            <th scope="col">Tanggal Keluar</th>
+                            @endif
                             <th scope="col">Disusun Oleh</th>
                             <th scope="col">Nomor Surat</th>
                             <th scope="col">Perihal</th>

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  var judul = document.querySelector('#judul').textContent;
+  var tanggal = document.querySelector('#tanggal').textContent;
     $('#tabel-laporan').DataTable({
         dom: "Bfrtip",
       order: false,
@@ -7,6 +9,7 @@ $(document).ready(function () {
       buttons: [
         {
           extend: "excel",
+          title: "COba dulu", 
           exportOptions: {
             columns: ":visible",
           },
@@ -19,6 +22,8 @@ $(document).ready(function () {
         },
         {
           extend: "pdf",
+          title: judul,
+          messageTop: "Tanggal: " + tanggal + "\n",
           exportOptions: {
             columns: ":visible",
           },

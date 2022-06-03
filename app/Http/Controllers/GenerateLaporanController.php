@@ -90,7 +90,6 @@ class GenerateLaporanController extends Controller
             }
         }
 
-
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
         return view('laporan/index', [
@@ -98,7 +97,8 @@ class GenerateLaporanController extends Controller
             'datas' => $data,
             'users' => $user,
             'satuanKerja' => $satuanKerja,
-            'departemen' => $departemen
+            'departemen' => $departemen,
+            'requests' => $validated
 
         ]);
     }
