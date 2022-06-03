@@ -21,12 +21,6 @@
 
     <div class="card shadow mb-4">
         <div class="card-body py-3">
-            @if(session()->has('success'))
-            <div class="alert alert-success mt-3" role="alert">
-                {{ session('success') }}
-            </div>
-            @endif
-
             <div class="table-responsive">
                 <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
@@ -37,37 +31,36 @@
                             <th class="fs-4" scope="col">Perihal</th>
                             <th class="fs-4" scope="col">PIC</th>
                             <th class="fs-4" scope="col">Status</th>
-                            <th class="fs-4" scope="col">Tanggal Hapus</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($mails as $data)
+                        @foreach($datas as $data)
                         <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                             <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-                            <td class="align-top">{{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
-                            <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
-                            <td class="align-top">{{$data['perihal']}}</td>
-                            <td class="align-top">{{$data['created_by']}} </td>
                             <td class="align-top">
-                                @if (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
-                                    <span class="badge bg-success">
-                                        Disetujui {{ strtoupper($data->otor2_by) }}
-                                    </span>
-                                @elseif (($data->status == 0) && ($data->otor1_by == ''))
-                                    <span class="badge bg-warning">Ditolak {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                    </span>
-                                @elseif ($data->status == 3)
-                                    <span class="badge bg-success">
-                                        Disetujui {{ strtoupper($data->otor1_by) }}
-                                    </span>
-                                @elseif (($data->status == 0) && ($data->otor1_by != ''))
-                                    <span class="badge bg-warning">Ditolak {{ strtoupper($data->otor1_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
-                                    </span>
+                                @if ($data->departemen_asal == '')
+                                    {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                                @else
+                                    {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
+                                @endif
+                            </td>
+                            <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
+                            <td class="align-top">{{ $data->perihal }}</td>
+                            <td class="align-top">{{ strtoupper($data->createdBy['name'] )}} </td>
+                            <td class="align-top">
+                                {{-- Setuju --}}
+                                @if ($data->status == 3)
+                                    <span class="badge bg-success">Disetujui</span>
+                                
+                                {{-- Ditolak antar departemen --}}
+                                @elseif ($data->status == 0)
+                                    <span class="badge bg-warning">Ditolak</span>
+                                
+                                {{-- Pending --}}
                                 @else
                                     <span class="badge bg-secondary">Pending</span>
                                 @endif
                             </td>
-                            <td class="align-top">{{ date("Y-m-d", strtotime($data['deleted_at'])) }} </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -78,7 +71,7 @@
 </div>
 
     <!-- Modal For Showing Detail Data -->
-    @foreach($mails as $data)
+    @foreach($datas as $data)
     <div class="modal modal-blur fade" id="mail-{{$data['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">

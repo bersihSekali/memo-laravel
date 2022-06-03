@@ -135,44 +135,64 @@
                                     : @if ($data->status == 1)
                                         <span class="badge bg-secondary">Pending</span>
                                     
-                                    {{-- approved otor2_by antar departemen --}}
-                                    @elseif (($data->status == 3) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
-                                        <span class="badge bg-success">
-                                            Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                        </span>
-
-                                    {{-- approved otor2_by antar satuan kerja --}}
+                                    {{-- approved otor2_by --}}
                                     @elseif ($data->status == 2)
-                                        <span class="badge bg-success">
-                                            Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                        </span>
-                                        <span class="badge bg-secondary">
-                                            Pending KaSat
-                                        </span>
+                                        {{-- Antar departemen --}}
+                                        @if ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan)
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                            <span class="badge bg-secondary">
+                                                Pending Kadep
+                                            </span>
+
+                                        {{-- Antar satuan kerja --}}
+                                        @else
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                            <span class="badge bg-secondary">
+                                                Pending Kasat
+                                            </span>
+                                        @endif
                                     
-                                    {{-- Disapprove otor2_by --}}
-                                    @elseif (($data->status == 0) && ($data->otor1_by == ''))
-                                        <span class="badge bg-warning">
-                                            Ditolak {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                        </span>
-                                    
-                                    {{-- approved otor2_by otor1_by --}}
+                                    {{-- approved otor1_by --}}
                                     @elseif ($data->status == 3)
-                                        <span class="badge bg-success">
-                                            Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                        </span> <br>
+                                        @if ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan)
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
+                                            </span>
 
-                                        <span class="badge bg-success">
-                                            Disetujui {{ strtoupper($data->otor1_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
-                                        </span>
-
-                                    {{-- approved otor2_by disapproved otor1_by --}}
-                                    @elseif (($data->status == 0) && ($data->otor1_by != ''))
-                                        <span class="badge bg-success">
-                                            Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }} <br>
-                                        </span> <br>
-                                        <span class="badge bg-warning">Ditolak {{ strtoupper($data->otor1_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
-                                        </span>
+                                        {{-- Antar satuan kerja --}}
+                                        @else
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
+                                            </span>
+                                        @endif
+                                    
+                                    {{-- rejected --}}
+                                    @elseif ($data->status == 0)
+                                        {{-- rejected otor2_by --}}
+                                        @if ($data->otor1_by == 0)
+                                            <span class="badge bg-warning">
+                                                Ditolak {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                        
+                                        {{-- rejected otor1_by --}}
+                                        @else
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                            <span class="badge bg-warning">
+                                                Ditolak {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
+                                            </span>
+                                        @endif
                                     @endif
                                 </td>
                             </tr>
@@ -194,7 +214,7 @@
         </div>
     </div>
 
-    {{-- Modal rejected for confirmation --}}
+    {{-- Modal delete for confirmation --}}
     <div class="modal modal-blur fade" id="modal-delete-{{ $data['id'] }}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
           <div class="modal-content">

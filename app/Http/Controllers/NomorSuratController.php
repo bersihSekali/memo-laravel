@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
 use App\Models\User;
 use App\Models\SatuanKerja;
-use App\Models\Departemen;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+
 
 class NomorSuratController extends Controller
 {
@@ -157,6 +157,8 @@ class NomorSuratController extends Controller
         $datas = SuratMasuk::find($id);
         $update[] = $datas['deleted_by'] = $user->name;
 
+        Storage::delete($datas->lampiran);
+
         $datas['no_urut'] = 0;
         array_push($update, $datas['no_urut']);
 
@@ -194,7 +196,7 @@ class NomorSuratController extends Controller
         echo $html;
     }
 
-    public function listSuratHapus(Request $request) // get Surat deleted only
+    public function listSuratHapus() // get Surat deleted only
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
@@ -203,7 +205,7 @@ class NomorSuratController extends Controller
 
         $datas = [
             'users' => $user,
-            'mails' => $mails
+            'datas' => $mails
         ];
 
         return view('nomorSurat.deleted', $datas);
@@ -211,6 +213,10 @@ class NomorSuratController extends Controller
 
     public function hapusPermanen() // Force Delete
     {
+        $datas = SuratMasuk::onlyTrashed()->get();
+        foreach ($datas as $data) {
+            Storage::delete($data->lampiran);
+        }
         SuratMasuk::whereNotNull('deleted_at')->forceDelete();
 
         return redirect('/nomorSurat/suratHapus')->with('success', 'Surat berhasil dibersihkan');

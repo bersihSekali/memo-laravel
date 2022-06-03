@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\SuratMasuk;
 use App\Models\User;
-use Carbon\Carbon;
 
 class OtorisasiSuratController extends Controller
 {
@@ -102,18 +101,17 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['status']);
 
         // Update lampiran
-        if ($request->file('lampiran')) {
-            if ($datas->lampiran) {
-                Storage::delete($datas->lampiran);
-            }
-
-            // get file and store
-            $file = $request->file('lampiran');
-            $originalFileName = $file->getClientOriginalName();
-            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-            $fileName = date("YmdHis") . '_' . $fileName;
-            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        if ($datas->lampiran) {
+            Storage::delete($datas->lampiran);
         }
+
+        // get file and store
+        $file = $request->file('lampiran');
+        $originalFileName = $file->getClientOriginalName();
+        $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+        $fileName = date("YmdHis") . '_' . $fileName;
+        $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        array_push($update, $datas['lampiran']);
 
         $datas->update($update);
 
@@ -152,18 +150,17 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['otor2_by']);
 
         // Update lampiran
-        if ($request->file('lampiran')) {
-            if ($datas->lampiran) {
-                Storage::delete($datas->lampiran);
-            }
-
-            // get file and store
-            $file = $request->file('lampiran');
-            $originalFileName = $file->getClientOriginalName();
-            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-            $fileName = date("YmdHis") . '_' . $fileName;
-            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        if ($datas->lampiran) {
+            Storage::delete($datas->lampiran);
         }
+
+        // get file and store
+        $file = $request->file('lampiran');
+        $originalFileName = $file->getClientOriginalName();
+        $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+        $fileName = date("YmdHis") . '_' . $fileName;
+        $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        array_push($update, $datas['lampiran']);
 
         $datas->update($update);
 
@@ -191,25 +188,28 @@ class OtorisasiSuratController extends Controller
         $datas['otor1_by'] = $user->id;
         array_push($update, $datas['otor1_by']);
 
-        // Nomor surat antar divisi / satuan kerja
         $tahun = date("Y", strtotime($datas['tanggal_otor1']));
-        $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->satuanKerjaAsal['satuan_kerja'] . '/' . $tahun;
+        // Nomor surat antar divisi / satuan kerja
+        if ($datas->satuan_kerja_asal != $datas->satuan_kerja_tujuan) {
+            $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->satuanKerjaAsal['satuan_kerja'] . '/' . $tahun;
+        } else { // Nomor surat antar departemen
+            $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->departemenAsal['departemen'] . '/' . $tahun;
+        }
         $datas['nomor_surat'] = $no_surat;
         array_push($update, $datas['nomor_surat']);
 
         // Update lampiran
-        if ($request->file('lampiran')) {
-            if ($datas->lampiran) {
-                Storage::delete($datas->lampiran);
-            }
-
-            // get file and store
-            $file = $request->file('lampiran');
-            $originalFileName = $file->getClientOriginalName();
-            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-            $fileName = date("YmdHis") . '_' . $fileName;
-            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        if ($datas->lampiran) {
+            Storage::delete($datas->lampiran);
         }
+
+        // get file and store
+        $file = $request->file('lampiran');
+        $originalFileName = $file->getClientOriginalName();
+        $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+        $fileName = date("YmdHis") . '_' . $fileName;
+        $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        array_push($update, $datas['lampiran']);
 
         $datas->update($update);
 
@@ -242,18 +242,17 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['otor1_by']);
 
         // Update lampiran
-        if ($request->file('lampiran')) {
-            if ($datas->lampiran) {
-                Storage::delete($datas->lampiran);
-            }
-
-            // get file and store
-            $file = $request->file('lampiran');
-            $originalFileName = $file->getClientOriginalName();
-            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-            $fileName = date("YmdHis") . '_' . $fileName;
-            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        if ($datas->lampiran) {
+            Storage::delete($datas->lampiran);
         }
+
+        // get file and store
+        $file = $request->file('lampiran');
+        $originalFileName = $file->getClientOriginalName();
+        $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+        $fileName = date("YmdHis") . '_' . $fileName;
+        $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        array_push($update, $datas['lampiran']);
 
         $datas->update($update);
 
