@@ -65,7 +65,7 @@
                     </tr>
 
                   {{-- Surat antar departemen sebagai otor1_by --}}
-                  @elseif (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+                  @elseif (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan) && ($data->otor2_by != $users->id))
                     <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
                       <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
                       <td class="align-top">

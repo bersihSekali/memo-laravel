@@ -74,11 +74,13 @@ class NomorSuratController extends Controller
         $validated['departemen_asal'] = $request->departemen_asal;
 
         // get file and store
-        $file = $request->file('lampiran');
-        $originalFileName = $file->getClientOriginalName();
-        $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-        $fileName = date("YmdHis") . '_' . $fileName;
-        $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        if ($request->file('lampiran')) {
+            $file = $request->file('lampiran');
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        }
 
         $create = SuratMasuk::create($validated);
 
