@@ -68,7 +68,7 @@
                   <a class="dropdown-item" href="/nomorSurat">
                     Registrasi Surat
                   </a>
-                  
+
                   <a class="dropdown-item" href="/otorisasi">
                     Otorisasi Surat
                   </a>

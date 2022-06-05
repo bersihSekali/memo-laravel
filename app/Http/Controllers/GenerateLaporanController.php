@@ -10,6 +10,9 @@ use App\Models\SatuanKerja;
 use App\Models\Departemen;
 use App\Models\Forward;
 use Illuminate\Auth\Events\Validated;
+// reference the Dompdf namespace
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class GenerateLaporanController extends Controller
 {
@@ -56,11 +59,27 @@ class GenerateLaporanController extends Controller
                     ->where('status', '>=', 3)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
+                $countBelumSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                    ->where('status', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
+                $countSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                    ->where('status', '>', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
             } elseif ($user['level'] == 3) {
                 $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                     ->where('status', '>=', 4)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
+                $countBelumSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                    ->where('status', 4)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
+                $countSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                    ->where('status', '>', 4)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
             } elseif ($user['level'] >= 4) {
                 $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
                 $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
@@ -68,6 +87,14 @@ class GenerateLaporanController extends Controller
                     ->whereIn('id', $memoId)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
+                $countBelumSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                    ->where('status', 5)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
+                $countSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                    ->where('status', '>', 5)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
             }
         } elseif ($validated['jenis'] == 'keluar') {
             if ($user['level'] == 2) {
@@ -75,11 +102,27 @@ class GenerateLaporanController extends Controller
                     ->where('status', '>=', 3)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
+                $countBelumSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                    ->where('status', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
+                $countSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                    ->where('status', '>', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
             } elseif ($user['level'] == 3) {
                 $data = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
                     ->where('status', '>=', 4)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
+                $countBelumSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                    ->where('status', 4)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
+                $countSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                    ->where('status', '>', 4)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
             } elseif ($user['level'] >= 4) {
                 $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
                 $data = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
@@ -87,20 +130,45 @@ class GenerateLaporanController extends Controller
                     ->whereIn('id', $memoId)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
+                $countBelumSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                    ->where('status', 5)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
+                $countSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                    ->where('status', '>', 5)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->latest()->count();
             }
         }
 
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
-        return view('laporan/index', [
+
+        // dompdf
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml(view('laporan/download', [
             'title' => 'Surat Masuk',
             'datas' => $data,
+            'countBelumSelesai' => $countBelumSelesai,
+            'countSelesai' => $countSelesai,
             'users' => $user,
             'satuanKerja' => $satuanKerja,
             'departemen' => $departemen,
             'requests' => $validated
 
-        ]);
+        ]));
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream();
     }
 
     /**
