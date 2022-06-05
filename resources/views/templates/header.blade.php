@@ -10,21 +10,35 @@
         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
           <div class="d-none d-xl-block pe-2">
             <div class="text-end">{{ strtoupper($users->name) }}</div>
-            @if ($users->level == 2)
+            {{-- Kepala Satuan Kerja, Kepala Divisi, Kepala Unit Kerja --}}
+            @if (($users->level >= 2) && ($users->level <= 4))
             <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}</div>
-            @elseif ($users->level == 1)
-            <div class="mt-1 small text-muted">{{ strtoupper($users->levelTable['level']) }}</div>
+            
+            {{-- Kepala Cabang, Kepala Departemen, Senior Officer, Kepala Bidang, Kepala Bagian, Kepala Operasi Cabang, Officer --}}
+            @elseif (($users->level >= 5) && ($users->level <= 11))
+            <div class="mt-1 small text-muted">{{ strtoupper($users->satuanKerja['satuan_kerja']) }} | {{ strtoupper($users->departemenTable['departemen']) }}</div>
+          
+            @elseif ($users->level == 1) 
+            <div class="mt-1 small text-muted">Admin</div>
+
+            
             @else
-            <div class="mt-1 small text-muted">{{ $users->satuanKerja['satuan_kerja'] }} | {{ $users->departemenTable['departemen'] }}</div>
+            <div class="mt-1 small text-muted">{{ strtoupper($users->satuanKerja['satuan_kerja']) }} | {{ strtoupper($users->departemenTable['departemen']) }}</div>
+          
             @endif
           </div>
 
-          @if ($users->level == 1)
-          <i class="fas fa-user-cog fa-2x"></i>
-          @elseif ($users->level == 2)
+          {{-- Kepala Satuan Kerja, Kepala Divisi, Kepala Unit Kerja --}}
+          @if (($users->level >= 2) && ($users->level <= 4))
           <i class="fas fa-user-secret fa-2x"></i>
-          @elseif (($users->level == 3) || ($users->level == 4))
+          
+          {{-- Kepala Cabang, Kepala Departemen, Senior Officer, Kepala Bidang, Kepala Bagian, Kepala Operasi Cabang, Officer --}}
+          @elseif (($users->level >= 5) && ($users->level <= 11))
           <i class="fas fa-user-tie fa-2x"></i>
+          
+          @elseif ($users->level == 1) 
+          <i class="fas fa-user-cog fa-2x"></i>
+
           @else
           <i class="fas fa-user fa-2x"></i>
           @endif
@@ -53,6 +67,7 @@
             </a>
           </li>
 
+          {{-- Untuk semua user --}}
           @if ($users->level != 1)
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -69,9 +84,11 @@
                     Registrasi Surat
                   </a>
                   
-                  <a class="dropdown-item" href="/otorisasi">
-                    Otorisasi Surat
-                  </a>
+                  @if ($users->level != 15)
+                    <a class="dropdown-item" href="/otorisasi">
+                      Otorisasi Surat
+                    </a>
+                  @endif
 
                   <a class="dropdown-item" href="/suratKeluar">
                     Surat Keluar
@@ -107,6 +124,8 @@
               </span>
             </a>
           </li>
+
+          {{-- Untuk Admin --}}
           @else
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">

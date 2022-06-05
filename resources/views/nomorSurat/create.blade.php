@@ -62,7 +62,7 @@
 
             <div class="mb-3">
                 <label for="lampiran" class="form-label">Lampiran</label>
-                @if ($users->level == 5)
+                @if ($users->level == 15)
                     <input class="form-control" type="file" id="lampiran" name="lampiran" required>
                 @else
                     <input class="form-control" type="file" id="lampiran" name="lampiran">  

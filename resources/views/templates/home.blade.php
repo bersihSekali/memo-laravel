@@ -18,8 +18,8 @@ if ($jam > '05:30' && $jam < '10:00') {
 
 <h1>Selamat {{ $salam }}, {{ strtoupper($users->name) }}</h1>
 
-@switch($users->level)
-@case(1)
+@switch (true)
+@case($users->level == 1)
 <!-- Home Admin -->
 <div class="row row-cards justify-content-center mt-3">
     <div class="col-sm-6 col-lg-3">
@@ -70,7 +70,7 @@ if ($jam > '05:30' && $jam < '10:00') {
 </div>
 @break
 
-@case(2)
+@case(($users->level >= 2) && ($users->level <=15))
 <!-- Home Kepala Satuan Kerja -->
 <div class="row row-cards mt-2">
     <div class="col-sm-6 col-lg-3">
@@ -166,7 +166,7 @@ if ($jam > '05:30' && $jam < '10:00') {
 </div>
 @break
 
-@case (3)
+{{-- @case (3)
 <!-- Home Kepala Departemen -->
 <div class="row row-cards mt-2">
     <div class="col-sm-6 col-lg-3">
@@ -452,7 +452,7 @@ if ($jam > '05:30' && $jam < '10:00') {
         </div>
     </div>
 </div>
-@break
+@break --}}
 
 @default
 @endswitch
