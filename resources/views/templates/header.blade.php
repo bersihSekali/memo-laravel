@@ -11,44 +11,42 @@
           <div class="d-none d-xl-block pe-2">
             <div class="text-end">{{ strtoupper($users->name) }}</div>
             {{-- Kepala Satuan Kerja, Kepala Divisi, Kepala Unit Kerja --}}
-            @if (($users->level >= 2) && ($users->level <= 4))
-            <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}</div>
-            
-            {{-- Kepala Cabang, Kepala Departemen, Senior Officer, Kepala Bidang, Kepala Bagian, Kepala Operasi Cabang, Officer --}}
-            @elseif (($users->level >= 5) && ($users->level <= 11))
-            <div class="mt-1 small text-muted">{{ strtoupper($users->satuanKerja['satuan_kerja']) }} | {{ strtoupper($users->departemenTable['departemen']) }}</div>
-          
-            @elseif ($users->level == 1) 
-            <div class="mt-1 small text-muted">Admin</div>
-
-            
-            @else
-            <div class="mt-1 small text-muted">{{ strtoupper($users->satuanKerja['satuan_kerja']) }} | {{ strtoupper($users->departemenTable['departemen']) }}</div>
-          
-            @endif
+            @if (($users->level >= 2) && ($users->level <= 4)) <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja['satuan_kerja'] }}
           </div>
 
-          {{-- Kepala Satuan Kerja, Kepala Divisi, Kepala Unit Kerja --}}
-          @if (($users->level >= 2) && ($users->level <= 4))
-          <i class="fas fa-user-secret fa-2x"></i>
-          
           {{-- Kepala Cabang, Kepala Departemen, Senior Officer, Kepala Bidang, Kepala Bagian, Kepala Operasi Cabang, Officer --}}
-          @elseif (($users->level >= 5) && ($users->level <= 11))
-          <i class="fas fa-user-tie fa-2x"></i>
-          
-          @elseif ($users->level == 1) 
-          <i class="fas fa-user-cog fa-2x"></i>
+          @elseif (($users->level >= 5) && ($users->level <= 11)) <div class="mt-1 small text-muted">{{ strtoupper($users->satuanKerja['satuan_kerja']) }} | {{ strtoupper($users->departemenTable['departemen']) }}
+      </div>
 
-          @else
-          <i class="fas fa-user fa-2x"></i>
-          @endif
+      @elseif ($users->level == 1)
+      <div class="mt-1 small text-muted">Admin</div>
+
+
+      @else
+      <div class="mt-1 small text-muted">{{ strtoupper($users->satuanKerja['satuan_kerja']) }} | {{ strtoupper($users->departemenTable['departemen']) }}</div>
+
+      @endif
+    </div>
+
+    {{-- Kepala Satuan Kerja, Kepala Divisi, Kepala Unit Kerja --}}
+    @if (($users->level >= 2) && ($users->level <= 4)) <i class="fas fa-user-secret fa-2x"></i>
+
+      {{-- Kepala Cabang, Kepala Departemen, Senior Officer, Kepala Bidang, Kepala Bagian, Kepala Operasi Cabang, Officer --}}
+      @elseif (($users->level >= 5) && ($users->level <= 11)) <i class="fas fa-user-tie fa-2x"></i>
+
+        @elseif ($users->level == 1)
+        <i class="fas fa-user-cog fa-2x"></i>
+
+        @else
+        <i class="fas fa-user fa-2x"></i>
+        @endif
         </a>
 
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
           <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-logout">Logout</a>
         </div>
-      </div>
-    </div>
+  </div>
+  </div>
   </div>
 </header>
 
@@ -83,11 +81,11 @@
                   <a class="dropdown-item" href="/nomorSurat">
                     Registrasi Surat
                   </a>
-                  
+
                   @if ($users->level != 15)
-                    <a class="dropdown-item" href="/otorisasi">
-                      Otorisasi Surat
-                    </a>
+                  <a class="dropdown-item" href="/otorisasi">
+                    Otorisasi Surat
+                  </a>
                   @endif
 
                   <a class="dropdown-item" href="/suratKeluar">
@@ -120,7 +118,7 @@
             <a class="nav-link" href="" data-bs-toggle="modal" data-bs-target="#modalLaporan">
               <i class="fas fa-file-pdf"></i>
               <span class="nav-link-title ms-1">
-                Generate Laporan
+                Cetak Laporan
               </span>
             </a>
           </li>
@@ -218,7 +216,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Cetak Laporan</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form action="/laporan" method="post">

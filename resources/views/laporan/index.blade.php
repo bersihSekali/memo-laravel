@@ -6,6 +6,9 @@
     <!-- Page Heading -->
     <h1 class="h2 mb-2 text-gray-800" id="judul">Pencatatan Memo {{ucwords($requests['jenis'])}}</h1>
     <h1 class="h4 mb-2 text-gray-800" id="tanggal">{{dateWithFormatter($requests['tanggalmulai'])}} s.d. {{dateWithFormatter($requests['tanggalakhir'])}}</h1>
+    <form action="/laporan">
+        <button type="submit">Download</button>
+    </form>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-body py-3">
