@@ -103,7 +103,7 @@
             <a class="nav-link" href="" data-bs-toggle="modal" data-bs-target="#modalLaporan">
               <i class="fas fa-file-pdf"></i>
               <span class="nav-link-title ms-1">
-                Generate Laporan
+                Cetak Laporan
               </span>
             </a>
           </li>
@@ -199,7 +199,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Cetak Laporan</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form action="/laporan" method="post">

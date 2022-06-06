@@ -35,7 +35,7 @@
                             <td class="align-top">{{$data['nomor_surat']}}</td>
                             <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
                             <td class="align-top">{{$data['perihal']}}</td>
-                            @if($data['status'] == 4)
+                            @if($data['status'] >= 4)
                             <td>Selesai pada {{date('Y-m-d', strtotime($data['tanggal_sk']))}}</td>
                             @else
                             <td>Belum Selesai</td>
@@ -85,7 +85,7 @@
 
                         <tr>
                             <td>Disusun Oleh</td>
-                            <td>: {{ strtoupper($data->created_by) }}</td>
+                            <td>: {{ucwords($data->createdBy['name'])}}</td>
                         </tr>
 
                         <tr>
@@ -113,13 +113,6 @@
                             <td>Perihal</td>
                             <td>: {{ $data->perihal }}</td>
                         </tr>
-
-                        @if($data['checker'])
-                        <tr>
-                            <td>Checker</td>
-                            <td>: {{$data->checkerUser['name']}}</td>
-                        </tr>
-                        @endif
 
                         @if($data['pesan_disposisi'])
                         <tr>
