@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\SuratMasuk;
 use Illuminate\Support\Facades\Auth;
+use App\Models\SatuanKerja;
 
 class SuratKeluarController extends Controller
 {
@@ -19,7 +20,7 @@ class SuratKeluarController extends Controller
         $mails = SuratMasuk::All();
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        
+
         $datas = [
             'title' => 'Surat Keluar',
             'users' => $user,
@@ -36,7 +37,17 @@ class SuratKeluarController extends Controller
      */
     public function create()
     {
-        //
+        $id = Auth::id();
+        $user = User::where('id', $id)->first();
+        $satuanKerja = SatuanKerja::all();
+
+        $datas = [
+            'title' => 'Tambah Surat',
+            'satuanKerjas' => $satuanKerja,
+            'users' => $user
+        ];
+
+        return view('suratKeluar.create', $datas);
     }
 
     /**
