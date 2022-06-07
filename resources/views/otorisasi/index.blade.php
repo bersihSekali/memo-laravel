@@ -393,7 +393,11 @@
                 {{method_field('DELETE')}}
               
                 <div class="mb-3">
-                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                  <input class="form-control" type="file" id="lampiran" name="lampiran">
+                </div>
+                
+                <div class="my-3">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
                 </div>
               
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -413,7 +417,11 @@
                 {{method_field('DELETE')}}
               
                 <div class="mb-3">
-                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                  <input class="form-control" type="file" id="lampiran" name="lampiran">
+                </div>
+
+                <div class="my-3">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
                 </div>
               
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -431,7 +439,11 @@
                 {{method_field('POST')}}
 
                 <div class="mb-3">
-                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                  <input class="form-control" type="file" id="lampiran" name="lampiran">
+                </div>
+
+                <div class="my-3">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
                 </div>
 
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -448,7 +460,11 @@
                 {{method_field('DELETE')}}
               
                 <div class="mb-3">
-                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                  <input class="form-control" type="file" id="lampiran" name="lampiran">
+                </div>
+
+                <div class="my-3">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
                 </div>
               
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -469,7 +485,11 @@
                 {{method_field('POST')}}
 
                 <div class="mb-3">
-                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                  <input class="form-control" type="file" id="lampiran" name="lampiran">
+                </div>
+
+                <div class="my-3">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
                 </div>
 
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -486,7 +506,11 @@
                 {{method_field('DELETE')}}
               
                 <div class="mb-3">
-                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                  <input class="form-control" type="file" id="lampiran" name="lampiran">
+                </div>
+
+                <div class="my-3">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
                 </div>
               
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -505,7 +529,11 @@
               {{method_field('POST')}}
 
               <div class="mb-3">
-                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+              
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
               </div>
 
               <button type="submit" class="btn btn-danger w-100">Tolak</button>

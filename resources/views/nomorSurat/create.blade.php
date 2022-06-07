@@ -49,7 +49,7 @@
 
                 <div class="col-sm-6 mb-3">
                     <label for="departemen_tujuan" class="form-label">Department Tujuan</label>
-                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="departemen_tujuan" id="departemen_tujuan">
+                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="departemen_tujuan" id="departemen_tujuan" required>
                         <option value=""> ---- </option>
                     </select>
                 </div>
@@ -86,8 +86,8 @@
                         <option value="" selected> ---- </option>
                         @foreach ($penggantis as $pengganti)
                             @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
-                                @if ($pengganti->satuan_kerja ==1)
-                                    <option value="{{$pengganti['id']}}">{{ strtoupper($pengganti['name']) }}</option>
+                                @if ($pengganti->satuan_kerja == 1)
+                                    <option value="{{$pengganti['id']}}">{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
                                 @endif
                             @endif
                         @endforeach
@@ -97,11 +97,7 @@
 
             <div class="mb-3">
                 <label for="lampiran" class="form-label">Lampiran</label>
-                @if ($users->level == 15)
-                    <input class="form-control" type="file" id="lampiran" name="lampiran" required>
-                @else
-                    <input class="form-control" type="file" id="lampiran" name="lampiran">  
-                @endif
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Simpan</button>

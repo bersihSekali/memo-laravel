@@ -62,7 +62,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:255|unique:users',
             'satuan_kerja' => 'required',
-            'password' => 'required|min:6|max:255',
+            'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'level' => 'required'
         ]);
 

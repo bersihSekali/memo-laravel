@@ -47,6 +47,7 @@ class CreateSuratMasuksTable extends Migration
             $table->string('lampiran')->nullable();
 
             $table->string('pesan_disposisi')->nullable();
+            $table->string('pesan_tolak')->nullable();
             $table->datetime('tanggal_sk')->nullable();
             $table->datetime('tanggal_dep')->nullable();
             $table->unsignedBigInteger('status')->default(1);

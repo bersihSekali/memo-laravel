@@ -33,7 +33,7 @@
     <div class="card shadow mb-4">
         <div class="card-body py-3">
             @if(session()->has('success'))
-            <div class="alert alert-success mt-3" role="alert" id="success-alert">
+            <div class="alert alert-success mt-3" role="alert" id="success-alert" style="display: none">
                 {{ session('success') }}
             </div>
             @endif
@@ -137,6 +137,13 @@
                                 <td>Perihal</td>
                                 <td>: {{ $data->perihal }}</td>
                             </tr>
+
+                            @if ($data->status == 0)
+                                <tr>
+                                    <td>Catatan</td>
+                                    <td>: {{ $data->pesan_tolak }}</td>
+                                </tr>
+                            @endif
 
                             <tr>
                                 <td>Status</td>
@@ -255,5 +262,14 @@
           </div>
         </div>
     </div>
-@endforeach       
+@endforeach   
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#success-alert').show(1000).delay(3000);
+        $('#success-alert').hide(2000);
+    });
+</script>
 @endsection
