@@ -21,14 +21,13 @@
                             <th scope="col">No.</th>
                             <th scope="col">Asal</th>
                             <th scope="col">Perihal</th>
-                            @if($users['level'] >= 3)
-                            <th scope="col">Disposisi</th>
-                            @endif
-                            <th scope="col">Status</th>
+                            @if($users->levelTable['golongan'] <= 6) <th scope="col">Disposisi</th>
+                                @endif
+                                <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if($users['level'] == 2)
+                        @if($users->levelTable['golongan'] == 7)
                         @foreach($datas as $data)
                         <tr class="{{ ($data['status'] == 3 ? 'table-bold' : 'table-light') }}" id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                             <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
@@ -128,11 +127,11 @@
                     </table>
                 </div>
             </div>
-            @if ($data['status'] == 3 && $users['level'] == 2)
+            @if ($data['status'] == 3 && $users->levelTable['golongan'] == 7)
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['id'] }}">Teruskan ke Kepala Departemen</button>
             </div>
-            @elseif ($users['level'] == 3)
+            @elseif ($users->levelTable['golongan'] == 6)
             <div class="modal-footer">
                 <form action="/forward/{{$data['id']}}/edit" method="post">
                     @csrf
@@ -161,7 +160,7 @@
                 @csrf
                 {{method_field('PUT')}}
                 <div class="modal-body">
-                    @if ($users['level'] == 2)
+                    @if ($users->levelTable['golongan'] == 7)
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="disposisiCheckbox">
                         <label class="form-check-label" for="flexCheckDefault">

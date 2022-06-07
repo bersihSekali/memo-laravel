@@ -17,14 +17,21 @@ class SuratKeluarController extends Controller
      */
     public function index()
     {
-        $mails = SuratMasuk::All();
         $id = Auth::id();
-        $user = User::where('id', $id)->first();
+        $user = User::find($id);
+
+        if ($user->levelTable['golongan'] == 7) {
+            $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->latest()->get();
+        } else {
+            $mails = SuratMasuk::where('created_by', $id)
+                ->latest()->get();
+        }
 
         $datas = [
             'title' => 'Surat Keluar',
             'users' => $user,
-            'datas' => $mails
+            'mails' => $mails
         ];
 
         return view('suratKeluar.index', $datas);
@@ -58,7 +65,32 @@ class SuratKeluarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'created_by' => 'required',
+            'nomor_surat' => 'required',
+            'satuan_kerja_asal' => 'required',
+            'satuan_kerja_tujuan' => 'required',
+            'perihal' => 'required',
+            'lampiran' => 'mimes:pdf'
+        ]);
+        $validated['departemen_tujuan'] = $request->departemen_tujuan;
+
+        // get file and store
+        if ($request->file('lampiran')) {
+            $file = $request->file('lampiran');
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        }
+
+        $create = SuratMasuk::create($validated);
+
+        if (!$create) {
+            return redirect('/suratKeluar/create')->with('error', 'Pembuatan surat gagal');
+        }
+
+        return redirect('/suratKeluar')->with('success', 'Pembuatan surat berhasil');
     }
 
     /**

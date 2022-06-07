@@ -22,15 +22,15 @@ class SuratMasukController extends Controller
         $id = Auth::id();
         $user = User::find($id);
 
-        if ($user['level'] == 2) {
+        if ($user->levelTable['golongan'] == 7) {
             $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                 ->where('status', '>=', 3)
                 ->latest()->get();
-        } elseif ($user['level'] == 3) {
+        } elseif ($user->levelTable['golongan'] == 6) {
             $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                 ->where('status', '>=', 4)
                 ->latest()->get();
-        } elseif ($user['level'] >= 4) {
+        } elseif ($user->levelTable['golongan'] >= 4) {
             $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
             $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                 ->where('status', '>=', 5)
@@ -110,12 +110,12 @@ class SuratMasukController extends Controller
         if (!$update) {
             return redirect('/suratMasuk')->with('error', 'Data not Found');
         }
-        if ($user['level'] == 2) {
+        if ($user->levelTable['golongan'] == 7) {
             $update->tanggal_sk = date("Y-m-d");
             $update->status = 4;
             $update->pesan_disposisi = $request['pesan_disposisi'];
             $update->save();
-        } elseif ($user['level'] == 3) {
+        } elseif ($user->levelTable['golongan'] == 6) {
             $update->tanggal_dep = date("Y-m-d");
             $update->status = 5;
             $update->save();

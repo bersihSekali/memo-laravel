@@ -9,7 +9,7 @@
         </div>
         @endif
 
-        <form action="/nomorSurat" method="post" enctype="multipart/form-data">
+        <form action="/suratKeluar" method="post" enctype="multipart/form-data">
             @csrf
 
             <div class="form-group mb-3">
@@ -19,7 +19,7 @@
             <div class="form-group mb-3">
                 <div class="col-sm-6">
                     <label for="nomorSurat" class="form-label">Nomor Surat</label>
-                    <input type="text" class="form-control" id="nomorSurat">
+                    <input type="text" class="form-control" id="nomorSurat" name="nomor_surat">
                 </div>
             </div>
 

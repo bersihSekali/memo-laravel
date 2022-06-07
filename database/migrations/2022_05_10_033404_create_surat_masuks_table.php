@@ -33,7 +33,7 @@ class CreateSuratMasuksTable extends Migration
             $table->unsignedBigInteger('satuan_kerja_asal');
             $table->unsignedBigInteger('departemen_asal')->nullable();
             $table->unsignedBigInteger('satuan_kerja_tujuan');
-            $table->unsignedBigInteger('departemen_tujuan');
+            $table->unsignedBigInteger('departemen_tujuan')->nullable();
 
             $table->foreign('satuan_kerja_asal')->references('id')->on('satuan_kerjas');
             $table->foreign('departemen_asal')->references('id')->on('departemens');

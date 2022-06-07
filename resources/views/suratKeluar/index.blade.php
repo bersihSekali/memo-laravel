@@ -26,27 +26,51 @@
         <div class="card shadow mb-4">
             <div class="card-body py-3">
                 <div class="table-responsive">
-                    <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
+                    <table id="tabel-data" class="table table-bordered table-hover" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">No.</th>
-                                <th scope="col">Asal</th>
-                                <th scope="col">Tujuan</th>
-                                <th scope="col">Perihal</th>
+                                <th class="fs-4" scope="col" width="10%">Tanggal</th>
+                                <th class="fs-4" scope="col">Asal</th>
+                                <th class="fs-4" scope="col">Tujuan</th>
+                                <th class="fs-4" scope="col">Perihal</th>
+                                <th class="fs-4" scope="col">PIC</th>
+                                <th class="fs-4" scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($datas as $data)
-                            @if (($data->satuanKerjaAsal['satuan_kerja'] == $users->satuanKerja['satuan_kerja']) && ($data->nomor_surat != ''))
-                            <tr>
-                                <td class="align-top">{{$data['created_at']}}</td>
-                                <td class="align-top">{{$data['nomor_surat']}}</td>
-                                <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
-                                <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
-                                <td class="align-top">{{$data['perihal']}}</td>
+                            @foreach($mails as $data)
+                            <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
+                                <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
+                                <td class="align-top">
+                                    @if ($data->departemen_asal == '')
+                                    {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                                    @else
+                                    {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
+                                    @endif
+                                </td>
+                                <td class="align-top">
+                                    @if ($data->departemen_tujuan == '')
+                                    {{ $data->satuanKerjaTujuan['satuan_kerja'] }}
+                                    @else
+                                    {{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}
+                                    @endif
+                                <td class="align-top">{{ $data->perihal }}</td>
+                                <td class="align-top">{{ strtoupper($data->createdBy['name'] )}} </td>
+                                <td class="align-top">
+                                    {{-- Setuju --}}
+                                    @if ($data->status == 3)
+                                    <span class="badge bg-success">Disetujui</span>
+
+                                    {{-- Ditolak antar departemen --}}
+                                    @elseif ($data->status == 0)
+                                    <span class="badge bg-warning">Ditolak</span>
+
+                                    {{-- Pending --}}
+                                    @else
+                                    <span class="badge bg-secondary">Pending</span>
+                                    @endif
+                                </td>
                             </tr>
-                            @endif
                             @endforeach
                         </tbody>
                     </table>
