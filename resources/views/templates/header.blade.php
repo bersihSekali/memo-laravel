@@ -84,7 +84,7 @@
                     Registrasi Surat
                   </a>
                   
-                  @if ($users->level != 15)
+                  @if ($users->levelTable->golongan >4)
                     <a class="dropdown-item" href="/otorisasi">
                       Otorisasi Surat
                     </a>

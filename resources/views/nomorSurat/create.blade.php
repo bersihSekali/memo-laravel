@@ -60,6 +60,41 @@
                 <textarea class="form-control" aria-label="With textarea" name="perihal" required id="perihal" required></textarea>
             </div>
 
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="pejabat_pengganti" name="pejabat_pengganti">
+                <label class="form-check-label" for="pejabat_pengganti">
+                    Pejabat Pengganti
+                </label>
+            </div>
+
+            <div class="form-group row" id="otor_pengganti" name="otor_pengganti" style="display: none">
+                <div class="col-sm-6 mb-3">
+                    <label for="tunjuk_otor1_by" class="form-label">Otor 1 Pengganti</label>
+                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by" id="tunjuk_otor1_by">
+                        <option value="" selected> ---- </option>
+                        @foreach ($penggantis as $pengganti)
+                            @if ($pengganti->levelTable->golongan == 7)
+                                <option value="{{$pengganti['id']}}">Kepala {{ $pengganti->satuanKerja->satuan_kerja }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-sm-6 mb-3">
+                    <label for="tunjuk_otor2_by" class="form-label">Otor 2 Pengganti</label>
+                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor2_by" id="tunjuk_otor2_by">
+                        <option value="" selected> ---- </option>
+                        @foreach ($penggantis as $pengganti)
+                            @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
+                                @if ($pengganti->satuan_kerja ==1)
+                                    <option value="{{$pengganti['id']}}">{{ strtoupper($pengganti['name']) }}</option>
+                                @endif
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
             <div class="mb-3">
                 <label for="lampiran" class="form-label">Lampiran</label>
                 @if ($users->level == 15)
@@ -88,6 +123,10 @@
                     jQuery('#departemen_tujuan').html(result)
                 }
             });
+        });
+
+        $('#pejabat_pengganti').click(function() {
+            $('#otor_pengganti').toggle();
         });
     });
 </script>

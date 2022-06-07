@@ -13,6 +13,8 @@ class SuratMasuk extends Model
     protected $fillable = [
         'otor2_by',
         'otor1_by',
+        'otor2_by_pengganti',
+        'otor1_by_pengganti',
         'created_by',
         'nomor_surat',
         'perihal',
@@ -65,9 +67,19 @@ class SuratMasuk extends Model
         return $this->belongsTo(User::class, 'otor2_by');
     }
 
+    public function otor2ByPengganti()
+    {
+        return $this->belongsTo(User::class, 'otor2_by_pengganti');
+    }
+
     public function otor1By()
     {
         return $this->belongsTo(User::class, 'otor1_by');
+    }
+
+    public function otor1ByPengganti()
+    {
+        return $this->belongsTo(User::class, 'otor1_by_pengganti');
     }
 
     public function checkerUser()

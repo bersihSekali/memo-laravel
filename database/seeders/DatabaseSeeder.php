@@ -175,6 +175,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
+            'name' => 'james',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '1',
+            'departemen' => '1',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
             'name' => 'yudhi',
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '1',
@@ -207,6 +215,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
+            'name' => 'riyadi',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '1',
+            'departemen' => '2',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
             'name' => 'kertayuga',
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '1',
@@ -233,6 +249,14 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'ariefin',
             'level' => '6', // Kepala Departemen
+            'satuan_kerja' => '1',
+            'departemen' => '3',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'thor',
+            'level' => '7', // Senior officer
             'satuan_kerja' => '1',
             'departemen' => '3',
             'password' => hash::make('asdasd')
@@ -278,6 +302,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
+            'name' => 'ragnarok',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '2',
+            'departemen' => '4',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
             'name' => 'githa',
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '2',
@@ -303,6 +335,14 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'afta',
             'level' => '6', // Kepala Departemen
+            'satuan_kerja' => '2',
+            'departemen' => '5',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'komo',
+            'level' => '7', // Senior officer
             'satuan_kerja' => '2',
             'departemen' => '5',
             'password' => hash::make('asdasd')
@@ -348,6 +388,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
+            'name' => 'bulan',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '3',
+            'departemen' => '6',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
             'name' => 'lennon',
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '3',
@@ -374,6 +422,14 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'freddy',
             'level' => '6', // Kepala Departemen
+            'satuan_kerja' => '3',
+            'departemen' => '7',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'matahari',
+            'level' => '7', // Senior officer
             'satuan_kerja' => '3',
             'departemen' => '7',
             'password' => hash::make('asdasd')
@@ -419,6 +475,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
+            'name' => 'bintang',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '4',
+            'departemen' => '8',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
             'name' => 'saturnus',
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '4',
@@ -445,6 +509,14 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'pluto',
             'level' => '6', // Kepala Departemen
+            'satuan_kerja' => '4',
+            'departemen' => '9',
+            'password' => hash::make('asdasd')
+        ]);
+
+        User::create([
+            'name' => 'axio',
+            'level' => '7', // Senior officer
             'satuan_kerja' => '4',
             'departemen' => '9',
             'password' => hash::make('asdasd')

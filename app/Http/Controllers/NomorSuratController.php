@@ -45,11 +45,13 @@ class NomorSuratController extends Controller
         $id = Auth::id();
         $user = User::where('id', $id)->first();
         $satuanKerja = SatuanKerja::all();
+        $pengganti = User::all();
 
         $datas = [
             'title' => 'Tambah Surat',
             'satuanKerjas' => $satuanKerja,
-            'users' => $user
+            'users' => $user,
+            'penggantis' => $pengganti
         ];
 
         return view('nomorSurat.create', $datas);
@@ -72,6 +74,8 @@ class NomorSuratController extends Controller
             'lampiran' => 'mimes:pdf'
         ]);
         $validated['departemen_asal'] = $request->departemen_asal;
+        $validated['otor2_by_pengganti'] = $request->tunjuk_otor2_by;
+        $validated['otor1_by_pengganti'] = $request->tunjuk_otor1_by;
 
         // get file and store
         if ($request->file('lampiran')) {

@@ -18,13 +18,22 @@
                 </a>
             </div>
         </div>
+        @else
+        <div class="col-12 col-md-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <a href="#" class="btn btn-primary d-none d-sm-inline-block">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Tambah Surat
+                </a>
+            </div>
+        </div>
         @endif
     </div>
 
     <div class="card shadow mb-4">
         <div class="card-body py-3">
             @if(session()->has('success'))
-            <div class="alert alert-success mt-3" role="alert">
+            <div class="alert alert-success mt-3" role="alert" id="success-alert">
                 {{ session('success') }}
             </div>
             @endif
@@ -63,7 +72,7 @@
                                 
                                 {{-- Ditolak antar departemen --}}
                                 @elseif ($data->status == 0)
-                                    <span class="badge bg-warning">Ditolak</span>
+                                    <span class="badge bg-danger">Ditolak</span>
                                 
                                 {{-- Pending --}}
                                 @else
@@ -180,7 +189,7 @@
                                     @elseif ($data->status == 0)
                                         {{-- rejected otor2_by --}}
                                         @if ($data->otor1_by == 0)
-                                            <span class="badge bg-warning">
+                                            <span class="badge bg-danger">
                                                 Ditolak {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                                             </span>
                                         
@@ -189,7 +198,7 @@
                                             <span class="badge bg-success">
                                                 Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                                             </span>
-                                            <span class="badge bg-warning">
+                                            <span class="badge bg-danger">
                                                 Ditolak {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
                                             </span>
                                         @endif
@@ -205,11 +214,9 @@
                     </div>
                 </div>
 
-                @if ($data->status == 0)
-                    <div class="modal-footer">
-                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$data['id']}}">Hapus</button>
-                    </div>
-                @endif
+                <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$data['id']}}">Hapus</button>
+                </div>
             </div>
         </div>
     </div>
@@ -248,5 +255,5 @@
           </div>
         </div>
     </div>
-@endforeach             
+@endforeach       
 @endsection
