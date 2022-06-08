@@ -78,19 +78,26 @@
             <div class="dropdown-menu">
               <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
+                  @if ($users->satuan_kerja == 1)
                   <a class="dropdown-item" href="/nomorSurat">
                     Registrasi Surat
                   </a>
-                  
-                  @if ($users->levelTable->golongan >4)
-                    <a class="dropdown-item" href="/otorisasi">
-                      Otorisasi Surat
-                    </a>
-                  @endif
 
+                  @if ($users->levelTable->golongan >4)
+                  <a class="dropdown-item" href="/otorisasi">
+                    Otorisasi Surat
+                  </a>
+                  @endif
+                  @else
                   <a class="dropdown-item" href="/suratKeluar">
                     Surat Keluar
                   </a>
+                  @if ($users->levelTable->golongan >4)
+                  <a class="dropdown-item" href="/otor">
+                    Otorisasi Surat
+                  </a>
+                  @endif
+                  @endif
                 </div>
               </div>
           </li>

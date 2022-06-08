@@ -14,6 +14,7 @@ use App\Http\Controllers\DisposisiController;
 use App\Http\Controllers\CheckerDisposisiController;
 use App\Http\Controllers\GenerateLaporanController;
 use App\Http\Controllers\ForwardController;
+use App\Http\Controllers\OtorisasiBaruController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,7 @@ Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
 Route::post('otorisasi/approvedOtorSatu/{id}', [OtorisasiSuratController::class, 'approvedOtorSatu'])->middleware('auth');
 Route::post('otorisasi/disApprovedOtorSatu/{id}', [OtorisasiSuratController::class, 'disApprovedOtorSatu'])->middleware('auth');
 Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth');
+Route::resource('otor', OtorisasiBaruController::class)->middleware('auth');
 Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth');
 Route::resource('suratKeluar', SuratKeluarController::class)->middleware('auth');
 Route::resource('laporan', GenerateLaporanController::class)->middleware('auth');

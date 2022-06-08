@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TujuanDepartemen;
 use Illuminate\Http\Request;
-use App\Models\SuratKeluar;
 
-class CheckerDisposisiController extends Controller
+class TujuanDepartemenController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class CheckerDisposisiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\TujuanDepartemen  $tujuanDepartemen
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(TujuanDepartemen $tujuanDepartemen)
     {
         //
     }
@@ -52,10 +52,10 @@ class CheckerDisposisiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\TujuanDepartemen  $tujuanDepartemen
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(TujuanDepartemen $tujuanDepartemen)
     {
         //
     }
@@ -64,32 +64,21 @@ class CheckerDisposisiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\TujuanDepartemen  $tujuanDepartemen
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, TujuanDepartemen $tujuanDepartemen)
     {
-        $update = SuratKeluar::find($id);
-        if (!$update) {
-            return redirect('/disposisi')->with('error', 'Data not Found');
-        }
-        $update->checker_disposisi = $request['checker_disposisi'];
-
-        $update->save();
-
-        if (!$update) {
-            return redirect('/disposisi')->with('error', 'Update Failed');
-        }
-        return redirect('/disposisi')->with('success', 'Update Success');
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\TujuanDepartemen  $tujuanDepartemen
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(TujuanDepartemen $tujuanDepartemen)
     {
         //
     }

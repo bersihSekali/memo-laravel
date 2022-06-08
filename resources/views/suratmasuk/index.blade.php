@@ -127,11 +127,14 @@
                     </table>
                 </div>
             </div>
-            @if ($data['status'] == 3 && $users->levelTable['golongan'] == 7)
+            @if ($users->levelTable['golongan'] == 7)
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['id'] }}">Teruskan ke Kepala Departemen</button>
+                <button type="submit" class="btn btn-primary {{$data['status'] == 3? 'disabled' : ''}}" data-bs-toggle="modal" data-bs-target="#modalDisposisi-{{ $data['id'] }}">Disposisi</button>
+                @if ($data['status'] == 3)
+                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['id'] }}">Tandai Sudah Dibaca</button>
+                @endif
             </div>
-            @elseif ($users->levelTable['golongan'] == 6)
+            @elseif ($users->levelTable['golongan'] >= 6)
             <div class="modal-footer">
                 <form action="/forward/{{$data['id']}}/edit" method="post">
                     @csrf
@@ -153,18 +156,53 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalSelesaiLabel">Selesaikan Memo Masuk</h5>
+                <h5 class="modal-title" id="modalSelesaiLabel">Apakah anda yakin?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="/suratMasuk/{{$data['id']}}" method="post">
                 @csrf
                 {{method_field('PUT')}}
                 <div class="modal-body">
-                    @if ($users->levelTable['golongan'] == 7)
+                    <p>Klik tombol Lanjut untuk menandai pesan sebagai telah dibaca.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" type="submit">Lanjut</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+@foreach ($datas as $data)
+<div class="modal fade" id="modalDisposisi-{{ $data['id'] }}" tabindex="-1" aria-labelledby="modalDisposisiLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSelesaiLabel">Disposisikan Memo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/suratMasuk/{{$data['id']}}" method="post">
+                @csrf
+                {{method_field('PUT')}}
+                <div class="modal-body">
+                    @if ($users->levelTable['golongan'] == 7 && $data['tanggal_disposisi'])
+                    @if (!$data['departemen_tujuan'])
+                    <div class="form-group mb-3">
+                        <label for="departemen_tujuan" class="form-label ">Departemen</label>
+                        <select class="form-select mb-3" aria-label=".form-select-sm example" name="departemen_tujuan" id="departemen_tujuan">
+                            <option selected> ---- </option>
+                            @foreach($departemenDisposisi as $item)
+                            <option value="{{$item['id']}}">{{$item['departemen']}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="disposisiCheckbox">
                         <label class="form-check-label" for="flexCheckDefault">
-                            Teruskan dengan disposisi
+                            Isi Pesan Disposisi
                         </label>
                     </div>
                     <div class="form-group mb-3" id="formPesan" style="display:none">

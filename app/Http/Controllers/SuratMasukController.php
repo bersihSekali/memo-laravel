@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SuratMasuk;
+use App\Models\SuratKeluar;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -23,16 +23,16 @@ class SuratMasukController extends Controller
         $user = User::find($id);
 
         if ($user->levelTable['golongan'] == 7) {
-            $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+            $data = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                 ->where('status', '>=', 3)
                 ->latest()->get();
         } elseif ($user->levelTable['golongan'] == 6) {
-            $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+            $data = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                 ->where('status', '>=', 4)
                 ->latest()->get();
         } elseif ($user->levelTable['golongan'] >= 4) {
             $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
-            $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+            $data = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                 ->where('status', '>=', 5)
                 ->whereIn('id', $memoId)
                 ->latest()->get();
@@ -40,12 +40,14 @@ class SuratMasukController extends Controller
 
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
+        $departemenDisposisi = Departemen::where('satuan_kerja', $user['satuan_kerja'])->get();
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
             'datas' => $data,
             'users' => $user,
             'satuanKerja' => $satuanKerja,
-            'departemen' => $departemen
+            'departemen' => $departemen,
+            'departemenDisposisi' => $departemenDisposisi
 
         ]);
     }
@@ -76,10 +78,10 @@ class SuratMasukController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SuratMasuk  $suratMasuk
+     * @param  \App\Models\SuratKeluar  $suratKeluar
      * @return \Illuminate\Http\Response
      */
-    public function show(SuratMasuk $suratMasuk)
+    public function show(SuratKeluar $suratKeluar)
     {
         //
     }
@@ -87,10 +89,10 @@ class SuratMasukController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\SuratMasuk  $suratMasuk
+     * @param  \App\Models\SuratKeluar  $suratKeluar
      * @return \Illuminate\Http\Response
      */
-    public function edit(SuratMasuk $suratMasuk)
+    public function edit(SuratKeluar $suratKeluar)
     {
         //
     }
@@ -99,28 +101,26 @@ class SuratMasukController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SuratMasuk  $suratMasuk
+     * @param  \App\Models\SuratKeluar  $suratKeluar
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $idUser = Auth::id();
         $user = User::find($idUser);
-        $update = SuratMasuk::find($id);
+        $update = SuratKeluar::find($id);
         if (!$update) {
             return redirect('/suratMasuk')->with('error', 'Data not Found');
         }
         if ($user->levelTable['golongan'] == 7) {
             $update->tanggal_sk = date("Y-m-d");
             $update->status = 4;
-            $update->pesan_disposisi = $request['pesan_disposisi'];
             $update->save();
         } elseif ($user->levelTable['golongan'] == 6) {
             $update->tanggal_dep = date("Y-m-d");
             $update->status = 5;
             $update->save();
         }
-
         if (!$update) {
             return redirect('/suratMasuk')->with('error', 'Update Failed');
         }
@@ -130,10 +130,10 @@ class SuratMasukController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SuratMasuk  $suratMasuk
+     * @param  \App\Models\SuratKeluar  $suratKeluar
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SuratMasuk $suratMasuk)
+    public function destroy(SuratKeluar $suratKeluar)
     {
         //
     }

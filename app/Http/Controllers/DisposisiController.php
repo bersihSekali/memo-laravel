@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\SuratMasuk;
+use App\Models\SuratKeluar;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\SatuanKerja;
@@ -21,7 +21,7 @@ class DisposisiController extends Controller
         $id = Auth::id();
         $user = User::find($id);
         $checker = User::latest()->get();
-        $data = SuratMasuk::where('satuan_kerja_tujuan_disposisi', $user['satuan_kerja'])->where('status', 1)->latest()->get();
+        $data = SuratKeluar::where('satuan_kerja_tujuan_disposisi', $user['satuan_kerja'])->where('status', 1)->latest()->get();
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
         return view('disposisi/index', [
@@ -100,7 +100,7 @@ class DisposisiController extends Controller
 
         $validated['lampiran_disposisi'] = $request->file('lampiran_disposisi')->storeAs('lampiran_disposisi', $fileName);
 
-        SuratMasuk::where('id', $id)->update([
+        SuratKeluar::where('id', $id)->update([
             'tanggal_disposisi' => $validated['tanggal_disposisi'],
             'satuan_kerja_tujuan_disposisi' => $validated['satuan_kerja_tujuan_disposisi'],
             'departemen_tujuan_disposisi' => $validated['departemen_tujuan_disposisi'],
@@ -113,7 +113,7 @@ class DisposisiController extends Controller
 
     public function selesai($id)
     {
-        $update = SuratMasuk::find($id);
+        $update = SuratKeluar::find($id);
         if (!$update) {
             return redirect('/disposisi')->with('error', 'Data not Found');
         }

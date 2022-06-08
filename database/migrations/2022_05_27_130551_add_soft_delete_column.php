@@ -13,7 +13,7 @@ class AddSoftDeleteColumn extends Migration
      */
     public function up()
     {
-        Schema::table('surat_masuks', function (Blueprint $table) {
+        Schema::table('surat_keluars', function (Blueprint $table) {
             $table->string('deleted_by')->nullable();
             $table->softDeletes();
         });
@@ -26,7 +26,7 @@ class AddSoftDeleteColumn extends Migration
      */
     public function down()
     {
-        Schema::table('surat_masuks', function (Blueprint $table) {
+        Schema::table('surat_keluars', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
     }
