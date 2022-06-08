@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\SuratMasuk;
+use App\Models\SuratKeluar;
 
 class CheckerController extends Controller
 {
@@ -69,7 +69,7 @@ class CheckerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $update = SuratMasuk::find($id);
+        $update = SuratKeluar::find($id);
         if (!$update) {
             return redirect('/suratMasuk')->with('error', 'Data not Found');
         }

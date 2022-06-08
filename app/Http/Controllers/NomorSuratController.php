@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\SuratMasuk;
+use App\Models\SuratKeluar;
 use App\Models\User;
 use App\Models\SatuanKerja;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +22,7 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->latest()->get();
+        $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)->latest()->get();
 
         $datas = [
             'title' => 'Daftar Semua Surat',
@@ -86,7 +86,7 @@ class NomorSuratController extends Controller
             $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         }
 
-        $create = SuratMasuk::create($validated);
+        $create = SuratKeluar::create($validated);
 
         if (!$create) {
             return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal');
@@ -103,7 +103,7 @@ class NomorSuratController extends Controller
      */
     public function show($id)
     {
-        $mails = SuratMasuk::find($id);
+        $mails = SuratKeluar::find($id);
         $datas = [
             'title' => 'Detil Surat',
             'datas' => $mails
@@ -145,7 +145,7 @@ class NomorSuratController extends Controller
         $user_id = Auth::id();
         $user = User::where('id', $user_id)->first();
 
-        $datas = SuratMasuk::find($id);
+        $datas = SuratKeluar::find($id);
         $update[] = $datas['deleted_by'] = $user->name;
 
         Storage::delete($datas->lampiran);
@@ -192,7 +192,7 @@ class NomorSuratController extends Controller
         $id = Auth::id();
         $user = User::where('id', $id)->first();
 
-        $mails = SuratMasuk::onlyTrashed()->get();
+        $mails = SuratKeluar::onlyTrashed()->get();
 
         $datas = [
             'users' => $user,
@@ -204,11 +204,11 @@ class NomorSuratController extends Controller
 
     public function hapusPermanen() // Force Delete
     {
-        $datas = SuratMasuk::onlyTrashed()->get();
+        $datas = SuratKeluar::onlyTrashed()->get();
         foreach ($datas as $data) {
             Storage::delete($data->lampiran);
         }
-        SuratMasuk::whereNotNull('deleted_at')->forceDelete();
+        SuratKeluar::whereNotNull('deleted_at')->forceDelete();
 
         return redirect('/nomorSurat/suratHapus')->with('success', 'Surat berhasil dibersihkan');
     }
@@ -217,7 +217,7 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratMasuk::withTrashed()->get();
+        $mails = SuratKeluar::withTrashed()->get();
 
         $datas = [
             'users' => $user,

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\SuratMasuk;
+use App\Models\SuratKeluar;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SatuanKerja;
 
@@ -21,10 +21,10 @@ class SuratKeluarController extends Controller
         $user = User::find($id);
 
         if ($user->levelTable['golongan'] == 7) {
-            $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->latest()->get();
         } else {
-            $mails = SuratMasuk::where('created_by', $id)
+            $mails = SuratKeluar::where('created_by', $id)
                 ->latest()->get();
         }
 
@@ -69,11 +69,10 @@ class SuratKeluarController extends Controller
             'created_by' => 'required',
             'nomor_surat' => 'required',
             'satuan_kerja_asal' => 'required',
-            'satuan_kerja_tujuan' => 'required',
+            'tujuan' => 'required',
             'perihal' => 'required',
             'lampiran' => 'mimes:pdf'
         ]);
-        $validated['departemen_tujuan'] = $request->departemen_tujuan;
 
         // get file and store
         if ($request->file('lampiran')) {
@@ -84,7 +83,7 @@ class SuratKeluarController extends Controller
             $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         }
 
-        $create = SuratMasuk::create($validated);
+        $create = SuratKeluar::create($validated);
 
         if (!$create) {
             return redirect('/suratKeluar/create')->with('error', 'Pembuatan surat gagal');

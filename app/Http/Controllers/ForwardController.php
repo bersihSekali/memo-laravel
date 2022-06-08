@@ -6,7 +6,7 @@ use App\Models\Forward;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\SuratMasuk;
+use App\Models\SuratKeluar;
 
 class ForwardController extends Controller
 {
@@ -62,7 +62,7 @@ class ForwardController extends Controller
     {
         $idUser = Auth::id();
         $user = User::find($idUser);
-        $edit = SuratMasuk::find($id);
+        $edit = SuratKeluar::find($id);
 
         if ($user->levelTable['golongan'] == 7) {
             $forwarded = Forward::where('memo_id', $edit['id'])->get();
@@ -106,7 +106,7 @@ class ForwardController extends Controller
             'forward' => 'required'
         ]);
 
-        $update = SuratMasuk::find($id);
+        $update = SuratKeluar::find($id);
         if (!$update) {
             return redirect('/suratMasuk')->with('error', 'Data not Found');
         }

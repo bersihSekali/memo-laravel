@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\SuratMasuk;
+use App\Models\SuratKeluar;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -16,16 +16,16 @@ class HomeController extends Controller
         // All Summary
         // Golongan 7
         if ($user->levelTable->golongan == 7) {
-            $needApprovePengganti = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+            $needApprovePengganti = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('otor1_by_pengganti', $user->id)
                 ->latest();
-            $needApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+            $needApprove = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('status', 2)
                 ->union($needApprovePengganti)->count();
-            $approvedAntarSatker = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+            $approvedAntarSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
                 ->where('status', 3)->count();
-            $approvedAntarDepartemen = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+            $approvedAntarDepartemen = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
                 ->where('status', 3)->count();
         }

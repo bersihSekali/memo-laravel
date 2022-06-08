@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Models\SuratMasuk;
+use App\Models\SuratKeluar;
 use App\Models\User;
 
 class OtorisasiSuratController extends Controller
@@ -22,14 +22,14 @@ class OtorisasiSuratController extends Controller
 
         // Officer, kepala bidang, kepala operasi cabang, kepala cabang pembantu golongan 5
         if ($user->levelTable->golongan == 5) {
-            $pengganti2 = SuratMasuk::where('otor2_by_pengganti', $user->id)
+            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
                 ->where('status', 1)
                 ->latest();
-            $pengganti1 = SuratMasuk::where('otor1_by_pengganti', $user->id)
+            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
                 ->where('status', 2)
                 ->union($pengganti2)
                 ->latest();
-            $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('departemen_asal', $user->departemen)
                 ->where('status', 1)
                 ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
@@ -39,16 +39,16 @@ class OtorisasiSuratController extends Controller
 
         // Kepala departemen, golongan 6
         elseif (($user->levelTable->golongan == 6) && ($user->level == 6)) {
-            $pengganti = SuratMasuk::where('otor2_by_pengganti', $user->id)
+            $pengganti = SuratKeluar::where('otor2_by_pengganti', $user->id)
                 ->orWhere('otor1_by_pengganti', $user->id)
                 ->latest();
             // antar departemen sebagai otor1_by
-            $antarDepartemen = SuratMasuk::where('departemen_asal', $user->departemen)
+            $antarDepartemen = SuratKeluar::where('departemen_asal', $user->departemen)
                 ->where('status', 2)
                 ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
                 ->latest();
             // antar satuan kerja sebagai otor2_by
-            $mails = SuratMasuk::whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
+            $mails = SuratKeluar::whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
                 ->where('status', 1)
                 ->union($antarDepartemen)
                 ->latest()->get();
@@ -56,26 +56,26 @@ class OtorisasiSuratController extends Controller
 
         // Senior officer
         elseif (($user->levelTable->golongan == 6) && ($user->level == 7)) {
-            $pengganti2 = SuratMasuk::where('otor2_by_pengganti', $user->id)
+            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
                 ->latest();
-            $pengganti1 = SuratMasuk::where('otor1_by_pengganti', $user->id)
+            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
                 ->union($pengganti2)
                 ->latest();
             // antar departemen sebagai otor2_by
-            $antarDepartemen2 = SuratMasuk::where('departemen_asal', $user->departemen)
+            $antarDepartemen2 = SuratKeluar::where('departemen_asal', $user->departemen)
                 ->where('status', 1)
                 ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
                 ->union($pengganti1)
                 ->latest();
             // antar departemen sebagai otor1_by
-            $antarDepartemen1 = SuratMasuk::where('departemen_asal', $user->departemen)
+            $antarDepartemen1 = SuratKeluar::where('departemen_asal', $user->departemen)
                 ->where('status', 2)
                 ->where('otor2_by', '!=', $user->id)
                 ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
                 ->union($antarDepartemen2)
                 ->latest();
             // antar satuan kerja sebagai otor2_by
-            $mails = SuratMasuk::whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
+            $mails = SuratKeluar::whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
                 ->where('status', 1)
                 ->union($antarDepartemen1)
                 ->latest()->get();
@@ -83,10 +83,10 @@ class OtorisasiSuratController extends Controller
 
         // Kepala satuan kerja
         elseif ($user->levelTable->golongan == 7) {
-            $pengganti = SuratMasuk::where('otor1_by_pengganti', $user->id)
+            $pengganti = SuratKeluar::where('otor1_by_pengganti', $user->id)
                 ->latest();
             // Antar satuan kerja sebagai otor1_by
-            $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('status', 2)
                 ->whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
                 ->union($pengganti)
@@ -157,7 +157,7 @@ class OtorisasiSuratController extends Controller
         $user_id = Auth::id();
         $user = User::where('id', $user_id)->first();
 
-        $datas = SuratMasuk::find($id);
+        $datas = SuratKeluar::find($id);
 
         // Update tanggal otor
         $update[] = $datas['tanggal_otor2'] = date("Y-m-d H:i:s");
@@ -203,7 +203,7 @@ class OtorisasiSuratController extends Controller
         $user_id = Auth::id();
         $user = User::where('id', $user_id)->first();
 
-        $datas = SuratMasuk::find($id);
+        $datas = SuratKeluar::find($id);
         // Update otor status
         $update[] = $datas['status'] = '0';
 
@@ -252,7 +252,7 @@ class OtorisasiSuratController extends Controller
         $user_id = Auth::id();
         $user = User::where('id', $user_id)->first();
 
-        $datas = SuratMasuk::find($id);
+        $datas = SuratKeluar::find($id);
         // Update otor status
         $update[] = $datas['status'] = '3';
 
@@ -279,12 +279,12 @@ class OtorisasiSuratController extends Controller
         //     $datas['no_urut'] = $no_urut;
         // }
 
-        $lastSuratMasuk = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
+        $lastSuratKeluar = SuratKeluar::where('departemen_asal', $datas->departemen_asal)
             ->latest()->first();
-        if ($lastSuratMasuk == '') {
+        if ($lastSuratKeluar == '') {
             $datas->no_urut = 1;
         } else {
-            $temp = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
+            $temp = SuratKeluar::where('departemen_asal', $datas->departemen_asal)
                 ->max('no_urut');
             $no_urut = $temp + 1;
             $datas->no_urut = $no_urut;
@@ -328,7 +328,7 @@ class OtorisasiSuratController extends Controller
         $user_id = Auth::id();
         $user = User::where('id', $user_id)->first();
 
-        $datas = SuratMasuk::find($id);
+        $datas = SuratKeluar::find($id);
         // Update otor status
         $update[] = $datas['status'] = '0';
 

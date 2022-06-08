@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\SuratMasuk;
+use App\Models\SuratKeluar;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SatuanKerja;
@@ -55,86 +55,86 @@ class GenerateLaporanController extends Controller
 
         if ($validated['jenis'] == 'masuk') {
             if ($user['level'] == 2) {
-                $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                $data = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                     ->where('status', '>=', 3)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
-                $countBelumSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                $countBelumSelesai = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                     ->where('status', 3)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
-                $countSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                $countSelesai = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                     ->where('status', '>', 3)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
             } elseif ($user['level'] == 3) {
-                $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                $data = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                     ->where('status', '>=', 4)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
-                $countBelumSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                $countBelumSelesai = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                     ->where('status', 4)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
-                $countSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                $countSelesai = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                     ->where('status', '>', 4)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
             } elseif ($user['level'] >= 4) {
                 $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
-                $data = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                $data = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                     ->where('status', '>=', 5)
                     ->whereIn('id', $memoId)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
-                $countBelumSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                $countBelumSelesai = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                     ->where('status', 5)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
-                $countSelesai = SuratMasuk::where('satuan_kerja_tujuan', $user['satuan_kerja'])
+                $countSelesai = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
                     ->where('status', '>', 5)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
             }
         } elseif ($validated['jenis'] == 'keluar') {
             if ($user['level'] == 2) {
-                $data = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                $data = SuratKeluar::where('satuan_kerja_asal', $user['satuan_kerja'])
                     ->where('status', '>=', 3)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
-                $countBelumSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                $countBelumSelesai = SuratKeluar::where('satuan_kerja_asal', $user['satuan_kerja'])
                     ->where('status', 3)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
-                $countSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                $countSelesai = SuratKeluar::where('satuan_kerja_asal', $user['satuan_kerja'])
                     ->where('status', '>', 3)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
             } elseif ($user['level'] == 3) {
-                $data = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                $data = SuratKeluar::where('satuan_kerja_asal', $user['satuan_kerja'])
                     ->where('status', '>=', 4)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
-                $countBelumSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                $countBelumSelesai = SuratKeluar::where('satuan_kerja_asal', $user['satuan_kerja'])
                     ->where('status', 4)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
-                $countSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                $countSelesai = SuratKeluar::where('satuan_kerja_asal', $user['satuan_kerja'])
                     ->where('status', '>', 4)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
             } elseif ($user['level'] >= 4) {
                 $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
-                $data = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                $data = SuratKeluar::where('satuan_kerja_asal', $user['satuan_kerja'])
                     ->where('status', '>=', 5)
                     ->whereIn('id', $memoId)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->get();
-                $countBelumSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                $countBelumSelesai = SuratKeluar::where('satuan_kerja_asal', $user['satuan_kerja'])
                     ->where('status', 5)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
-                $countSelesai = SuratMasuk::where('satuan_kerja_asal', $user['satuan_kerja'])
+                $countSelesai = SuratKeluar::where('satuan_kerja_asal', $user['satuan_kerja'])
                     ->where('status', '>', 5)
                     ->whereBetween('created_at', [$validated['tanggalmulai'], $validated['tanggalakhir']])
                     ->latest()->count();
