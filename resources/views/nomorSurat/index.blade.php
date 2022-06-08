@@ -18,6 +18,7 @@
                 </a>
             </div>
         </div>
+        
         @else
         <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="btn-list">
@@ -33,7 +34,7 @@
     <div class="card shadow mb-4">
         <div class="card-body py-3">
             @if(session()->has('success'))
-            <div class="alert alert-success mt-3" role="alert" id="success-alert" style="display: none">
+            <div class="alert alert-success" role="alert" id="success-alert" style="display: none">
                 {{ session('success') }}
             </div>
             @endif

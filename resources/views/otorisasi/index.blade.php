@@ -8,7 +8,7 @@
     <div class="card shadow mb-4">
       <div class="card-body py-3">
         @if(session()->has('success'))
-            <div class="alert alert-success mt-3" role="alert">
+            <div class="alert alert-success" role="alert" id="success-alert" style="display: none">
                 {{ session('success') }}
             </div>
         @endif
@@ -41,80 +41,6 @@
                   <td class="align-top">{{ strtoupper($data->createdBy['name']) }} </td>
                 </tr>
               @endforeach
-              {{-- @foreach ($datas as $data) --}}
-                {{-- Kepala bidang, kepala operasi cabang, kepala cabang pembantu, officer --}}
-                {{-- @if ($users->levelTable->golongan == 5) --}}
-                  {{-- Surat antar departemen sebagai otor2_by --}}
-                  {{-- @if (($data->status == 1) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
-                    <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
-                      <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-                      <td class="align-top">
-                        @if ($data->departemen_asal == '')
-                            {{ $data->satuanKerjaAsal['satuan_kerja'] }}
-                        @else
-                            {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
-                        @endif
-                      </td>
-                      <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
-                      <td class="align-top">{{ $data->perihal }}</td>
-                      <td class="align-top">{{ strtoupper($data->createdBy['name']) }} </td>
-                    </tr>
-                  @endif --}}
-                
-                {{-- Kepala cabang, kepala departemen, senior officer --}}
-                {{-- @elseif ($users->levelTable->golongan == 6) --}}
-                  {{-- Surat antar departemen sebagai otor1_by --}}
-                  {{-- @if (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan) && ($data->otor2_by != $users->id))
-                    <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
-                      <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-                      <td class="align-top">
-                        @if ($data->departemen_asal == '')
-                            {{ $data->satuanKerjaAsal['satuan_kerja'] }}
-                        @else
-                            {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
-                        @endif
-                      </td>
-                      <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
-                      <td class="align-top">{{ $data->perihal }}</td>
-                      <td class="align-top">{{ strtoupper($data->createdBy['name']) }} </td>
-                    </tr> --}}
-
-                  {{-- Surat antar satuan kerja sebagai otor2_by --}}
-                  {{-- @elseif (($data->status == 1) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
-                    <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
-                      <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-                      <td class="align-top">
-                        @if ($data->departemen_asal == '')
-                            {{ $data->satuanKerjaAsal['satuan_kerja'] }}
-                        @else
-                            {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
-                        @endif
-                      </td>
-                      <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
-                      <td class="align-top">{{ $data->perihal }}</td>
-                      <td class="align-top">{{ strtoupper($data->createdBy['name']) }} </td>
-                    </tr>
-                  @endif --}}
-                
-                {{-- Kepala divisi, kepala satuan kerja, kepala unit kerja --}}
-                {{-- @elseif ($users->levelTable->golongan == 7)
-                  @if (($data->status == 2) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
-                    <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
-                      <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-                      <td class="align-top">
-                        @if ($data->departemen_asal == '')
-                            {{ $data->satuanKerjaAsal['satuan_kerja'] }}
-                        @else
-                            {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
-                        @endif
-                      </td>
-                      <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
-                      <td class="align-top">{{ $data->perihal }}</td>
-                      <td class="align-top">{{ strtoupper($data->createdBy['name']) }} </td>
-                    </tr>
-                  @endif
-                @endif
-              @endforeach --}}
             </tbody>
           </table>
         </div>
@@ -277,6 +203,21 @@
                 <button type="submit" class="btn btn-success w-100">Setujui</button>
               </form>
             </div>
+          @elseif (($data->status == 1) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
+            <div class="modal-body text-center py-4">
+              <h3>Apakah yakin ingin menyetujui?</h3>
+              <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+              <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+                @csrf
+                {{method_field('PUT')}}
+
+                <div class="mb-3">
+                  <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Setujui</button>
+              </form>
+            </div>
           @endif
         
         {{-- Senior officer --}}
@@ -417,7 +358,7 @@
                 </div>
                 
                 <div class="my-3">
-                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
                 </div>
               
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -441,7 +382,7 @@
                 </div>
 
                 <div class="my-3">
-                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
                 </div>
               
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -463,7 +404,7 @@
                 </div>
 
                 <div class="my-3">
-                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
                 </div>
 
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -484,7 +425,7 @@
                 </div>
 
                 <div class="my-3">
-                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
                 </div>
               
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -509,7 +450,7 @@
                 </div>
 
                 <div class="my-3">
-                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
                 </div>
 
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -530,7 +471,7 @@
                 </div>
 
                 <div class="my-3">
-                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
                 </div>
               
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -553,7 +494,7 @@
               </div>
               
               <div class="my-3">
-                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
               </div>
 
               <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -564,4 +505,13 @@
     </div>
   </div>
   @endforeach
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <script>
+    $(document).ready(function() {
+        $('#success-alert').show(1000).delay(1000);
+        $('#success-alert').hide(1000);
+    });
+  </script>
 @endsection
