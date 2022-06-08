@@ -81,11 +81,11 @@
                   <a class="dropdown-item" href="/nomorSurat">
                     Registrasi Surat
                   </a>
-
-                  @if ($users->level != 15)
-                  <a class="dropdown-item" href="/otorisasi">
-                    Otorisasi Surat
-                  </a>
+                  
+                  @if ($users->levelTable->golongan >4)
+                    <a class="dropdown-item" href="/otorisasi">
+                      Otorisasi Surat
+                    </a>
                   @endif
 
                   <a class="dropdown-item" href="/suratKeluar">

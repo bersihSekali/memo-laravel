@@ -18,10 +18,14 @@ class CreateSuratMasuksTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('otor2_by')->nullable();
             $table->unsignedBigInteger('otor1_by')->nullable();
+            $table->unsignedBigInteger('otor2_by_pengganti')->nullable();
+            $table->unsignedBigInteger('otor1_by_pengganti')->nullable();
             $table->unsignedBigInteger('created_by');
 
             $table->foreign('otor2_by')->references('id')->on('users');
             $table->foreign('otor1_by')->references('id')->on('users');
+            $table->foreign('otor2_by_pengganti')->references('id')->on('users');
+            $table->foreign('otor1_by_pengganti')->references('id')->on('users');
             $table->foreign('created_by')->references('id')->on('users');
 
             $table->datetime('tanggal_otor2')->nullable();
@@ -43,6 +47,7 @@ class CreateSuratMasuksTable extends Migration
             $table->string('lampiran')->nullable();
 
             $table->string('pesan_disposisi')->nullable();
+            $table->string('pesan_tolak')->nullable();
             $table->datetime('tanggal_sk')->nullable();
             $table->datetime('tanggal_dep')->nullable();
             $table->unsignedBigInteger('status')->default(1);
