@@ -29,6 +29,7 @@ class OtorisasiSuratController extends Controller
                 ->where('status', 2)
                 ->union($pengganti2)
                 ->latest();
+            // antar departemen sebagai otor2_by
             $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('departemen_asal', $user->departemen)
                 ->where('status', 1)
@@ -39,13 +40,18 @@ class OtorisasiSuratController extends Controller
 
         // Kepala departemen, golongan 6
         elseif (($user->levelTable->golongan == 6) && ($user->level == 6)) {
-            $pengganti = SuratMasuk::where('otor2_by_pengganti', $user->id)
-                ->orWhere('otor1_by_pengganti', $user->id)
+            $pengganti2 = SuratMasuk::where('otor2_by_pengganti', $user->id)
+                ->where('otor2_by', 0)
+                ->latest();
+            $pengganti1 = SuratMasuk::where('otor1_by_pengganti', $user->id)
+                ->where('otor1_by', 0)
+                ->union($pengganti2)
                 ->latest();
             // antar departemen sebagai otor1_by
             $antarDepartemen = SuratMasuk::where('departemen_asal', $user->departemen)
                 ->where('status', 2)
                 ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
+                ->union($pengganti1)
                 ->latest();
             // antar satuan kerja sebagai otor2_by
             $mails = SuratMasuk::whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
@@ -57,8 +63,10 @@ class OtorisasiSuratController extends Controller
         // Senior officer
         elseif (($user->levelTable->golongan == 6) && ($user->level == 7)) {
             $pengganti2 = SuratMasuk::where('otor2_by_pengganti', $user->id)
+                ->where('otor2_by', 0)
                 ->latest();
             $pengganti1 = SuratMasuk::where('otor1_by_pengganti', $user->id)
+                ->where('otor1_by', 0)
                 ->union($pengganti2)
                 ->latest();
             // antar departemen sebagai otor2_by
@@ -84,6 +92,7 @@ class OtorisasiSuratController extends Controller
         // Kepala satuan kerja
         elseif ($user->levelTable->golongan == 7) {
             $pengganti = SuratMasuk::where('otor1_by_pengganti', $user->id)
+                ->where('otor1_by', 0)
                 ->latest();
             // Antar satuan kerja sebagai otor1_by
             $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
@@ -163,7 +172,16 @@ class OtorisasiSuratController extends Controller
         $update[] = $datas['tanggal_otor2'] = date("Y-m-d H:i:s");
 
         // Update otor_by 
-        $datas['otor2_by'] = $user->id;
+        if ($datas->otor2_by_pengganti) {
+            if ($datas->otor2_by_pengganti != $user->id) {
+                $datas->otor2_by_pengganti = null;
+                $datas['otor2_by'] = $user->id;
+            } else {
+                $datas['otor2_by'] = $user->id;
+            }
+        } else {
+            $datas['otor2_by'] = $user->id;
+        }
         array_push($update, $datas['otor2_by']);
 
         // Nomor surat antar departemen
@@ -220,7 +238,16 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['tanggal_otor2']);
 
         // Update otor_by 
-        $datas['otor2_by'] = $user->id;
+        if ($datas->otor2_by_pengganti) {
+            if ($datas->otor2_by_pengganti != $user->id) {
+                $datas->otor2_by_pengganti = null;
+                $datas['otor2_by'] = $user->id;
+            } else {
+                $datas['otor2_by'] = $user->id;
+            }
+        } else {
+            $datas['otor2_by'] = $user->id;
+        }
         array_push($update, $datas['otor2_by']);
 
         // Update lampiran
@@ -261,7 +288,16 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['tanggal_otor1']);
 
         // Update otor_by 
-        $datas['otor1_by'] = $user->id;
+        if ($datas->otor1_by_pengganti) {
+            if ($datas->otor1_by_pengganti != $user->id) {
+                $datas->otor1_by_pengganti = null;
+                $datas['otor1_by'] = $user->id;
+            } else {
+                $datas['otor1_by'] = $user->id;
+            }
+        } else {
+            $datas['otor1_by'] = $user->id;
+        }
         array_push($update, $datas['otor1_by']);
 
         // Compare latest date with now to reset no_urut
@@ -279,19 +315,47 @@ class OtorisasiSuratController extends Controller
         //     $datas['no_urut'] = $no_urut;
         // }
 
-        $lastSuratMasuk = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
-            ->latest()->first();
-        if ($lastSuratMasuk == '') {
-            $datas->no_urut = 1;
+        // $lastSuratMasuk = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
+        //     ->latest()->first();
+        // if ($lastSuratMasuk == '') {
+        //     $datas->no_urut = 1;
+        // } else {
+        //     $temp = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
+        //         ->max('no_urut');
+        //     $no_urut = $temp + 1;
+        //     $datas->no_urut = $no_urut;
+        // }
+
+        $tahun = date("Y", strtotime($datas['tanggal_otor1']));
+        if ($datas->satuan_kerja_asal == $datas->satuan_kerja_tujuan) {
+            $lastSuratMasuk = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
+                ->latest()->first();
+            if ($lastSuratMasuk == '') {
+                $datas->no_urut = 1;
+            } elseif ($tahun != date("Y", strtotime($datas->tanggal_otor1))) {
+                $datas->no_urut = 1;
+            } else {
+                $temp = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
+                    ->max('no_urut');
+                $no_urut = $temp + 1;
+                $datas->no_urut = $no_urut;
+            }
         } else {
-            $temp = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
-                ->max('no_urut');
-            $no_urut = $temp + 1;
-            $datas->no_urut = $no_urut;
+            $lastSuratMasuk = SuratMasuk::where('satuan_kerja_asal', $datas->satuan_kerja_asal)
+                ->latest()->first();
+            if ($lastSuratMasuk == '') {
+                $datas->no_urut = 1;
+            } elseif ($tahun != date("Y", strtotime($datas->tanggal_otor1))) {
+                $datas->no_urut = 1;
+            } else {
+                $temp = SuratMasuk::where('satuan_kerja_asal', $datas->satuan_kerja_asal)
+                    ->max('no_urut');
+                $no_urut = $temp + 1;
+                $datas->no_urut = $no_urut;
+            }
         }
         array_push($update, $datas->no_urut);
 
-        $tahun = date("Y", strtotime($datas['tanggal_otor1']));
         // Nomor surat antar divisi / satuan kerja
         if ($datas->satuan_kerja_asal != $datas->satuan_kerja_tujuan) {
             $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->satuanKerjaAsal['satuan_kerja'] . '/' . $tahun;
@@ -345,7 +409,16 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['tanggal_otor1']);
 
         // Update otor_by 
-        $datas['otor1_by'] = $user->id;
+        if ($datas->otor1_by_pengganti) {
+            if ($datas->otor1_by_pengganti != $user->id) {
+                $datas->otor1_by_pengganti = null;
+                $datas['otor1_by'] = $user->id;
+            } else {
+                $datas['otor1_by'] = $user->id;
+            }
+        } else {
+            $datas['otor1_by'] = $user->id;
+        }
         array_push($update, $datas['otor1_by']);
 
         // Update lampiran
