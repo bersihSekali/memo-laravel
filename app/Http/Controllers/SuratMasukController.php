@@ -40,12 +40,14 @@ class SuratMasukController extends Controller
 
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
+        $departemenDisposisi = Departemen::where('satuan_kerja', $user['satuan_kerja'])->get();
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
             'datas' => $data,
             'users' => $user,
             'satuanKerja' => $satuanKerja,
-            'departemen' => $departemen
+            'departemen' => $departemen,
+            'departemenDisposisi' => $departemenDisposisi
 
         ]);
     }
@@ -113,14 +115,12 @@ class SuratMasukController extends Controller
         if ($user->levelTable['golongan'] == 7) {
             $update->tanggal_sk = date("Y-m-d");
             $update->status = 4;
-            $update->pesan_disposisi = $request['pesan_disposisi'];
             $update->save();
         } elseif ($user->levelTable['golongan'] == 6) {
             $update->tanggal_dep = date("Y-m-d");
             $update->status = 5;
             $update->save();
         }
-
         if (!$update) {
             return redirect('/suratMasuk')->with('error', 'Update Failed');
         }

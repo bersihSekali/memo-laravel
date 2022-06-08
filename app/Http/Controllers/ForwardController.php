@@ -63,17 +63,34 @@ class ForwardController extends Controller
         $idUser = Auth::id();
         $user = User::find($idUser);
         $edit = SuratMasuk::find($id);
-        $forwarded = Forward::where('memo_id', $edit['id'])->get();
-        $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
-        $forward = User::where('departemen', $edit['departemen_tujuan'])->where('level', '>=', 4)->get();
-        return view('forward/edit', [
-            'title' => 'Terusan Memo',
-            'users' => $user,
-            'forwards' => $forward,
-            'forwardeds' => $forwarded,
-            'forwarded_ids' => $forwarded_id,
-            'edits' => $edit
-        ]);
+
+        if ($user->levelTable['golongan'] == 7) {
+            $forwarded = Forward::where('memo_id', $edit['id'])->get();
+            $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
+            $forward = User::where('satuan_kerja', $edit['satuan_kerja_tujuan'])->whereHas('levelTable', function ($q) {
+                $q->where('golongan', 6);
+            })->get();
+            return view('forward/edit', [
+                'title' => 'Terusan Memo',
+                'users' => $user,
+                'forwards' => $forward,
+                'forwardeds' => $forwarded,
+                'forwarded_ids' => $forwarded_id,
+                'edits' => $edit
+            ]);
+        } else {
+            $forwarded = Forward::where('memo_id', $edit['id'])->get();
+            $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
+            $forward = User::where('departemen', $edit['departemen_tujuan'])->where('level', '>=', 4)->get();
+            return view('forward/edit', [
+                'title' => 'Terusan Memo',
+                'users' => $user,
+                'forwards' => $forward,
+                'forwardeds' => $forwarded,
+                'forwarded_ids' => $forwarded_id,
+                'edits' => $edit
+            ]);
+        }
     }
 
     /**
@@ -104,7 +121,7 @@ class ForwardController extends Controller
             }
         }
 
-        return redirect('/forward/' . $id . '/edit')->with('success', 'Update Success');
+        return redirect('forward/' . $id . '/edit')->with('success', 'Update Success');
     }
 
     /**
