@@ -35,23 +35,25 @@
         @csrf
 
         <div class="card-body">
-          @if(session()->has('error'))
-          <div class="alert alert-danger" role="alert">
-            {{ session('error') }}
-          </div>
+          @if ($errors->first())
+            <div class="alert alert-danger">
+              <ul>
+                  @if ($errors->first('name'))
+                    <li>{{ $errors->first('name') }}</li>
+                  @endif
+
+                  @if ($errors->first('password'))
+                    <li>{{ $errors->first('password') }}</li>
+                  @endif
+              </ul>
+            </div>
           @endif
 
           <h2 class="card-title text-center">Registrasi Pengguna Baru <br> Pencatatan Memo Internal BCASyariah</h2>
 
           <div class="mb-2">
             <label class="form-label">Username</label>
-            <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Username" autocomplete="off" required>
-
-            @error('name')
-            <div class="invalid-feedback">
-              {{ $message }}
-            </div>
-            @enderror
+            <input type="text" name="name" id="name" class="form-control" placeholder="Username" autocomplete="off" required>
           </div>
 
           <div class="mb-2">
@@ -59,7 +61,7 @@
             <select class="form-select mb-3" aria-label=".form-select-sm example" name="level" id="level" data-width="100%" required>
               <option selected disabled> ---- </option>
               @foreach ($level as $item)
-              <option value="{{$item['id']}}">{{$item['level']}}</option>
+              <option value="{{ $item->id }}">{{ $item->jabatan }}</option>
               @endforeach
             </select>
           </div>
@@ -84,17 +86,8 @@
           <div class="mb-3">
             <label class="form-label">Password</label>
             <div class="input-group input-group-flat">
-              <input type="password" class="form-control @error('name') is-invalid @enderror" placeholder="Password" autocomplete="off" name="password" required>
-              <span class="input-group-text">
-                <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
-                </a>
-              </span>
+              <input type="password" class="form-control" placeholder="Password" autocomplete="off" name="password" required>
             </div>
-            @error('password')
-            <div class="invalid-feedback">
-              {{ $message }}
-            </div>
-            @enderror
           </div>
 
           <div class="form-footer">

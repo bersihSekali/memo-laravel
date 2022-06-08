@@ -13,7 +13,7 @@
                             <th scope="col">Name</th>
                             <th scope="col">Satuan Kerja</th>
                             <th scope="col">Departemen</th>
-                            <th scope="col">Level</th>
+                            <th scope="col">Jabatan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -22,7 +22,7 @@
                                 <td class="align-top">{{ $data->name}}</td>
                                 <td class="align-top">{{ $data->satuanKerja['satuan_kerja'] }}</td>
                                 <td class="align-top">{{ $data->departemenTable['departemen'] }}</td>
-                                <td class="align-top">{{ strtoupper($data->levelTable['level']) }}</td>
+                                <td class="align-top">{{ strtoupper($data->levelTable->jabatan) }}</td>
                             </tr>
                         @endforeach
                     </tbody>

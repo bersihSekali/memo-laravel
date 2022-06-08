@@ -134,6 +134,26 @@
                             </tr>
 
                             <tr>
+                                @if ($data->otor2_by_pengganti && $data->otor1_by_pengganti)
+                                  <td>Pejabat Pengganti</td>
+                                  <td>
+                                    : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2 <br>
+                                    {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
+                                  </td>
+                                @elseif ($data->otor2_by_pengganti && !$data->otor1_by_pengganti)
+                                  <td>Pejabat Pengganti</td>
+                                  <td>
+                                    : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2
+                                  </td>
+                                @elseif (!$data->otor2_by_pengganti && $data->otor1_by_pengganti)
+                                  <td>Pejabat Pengganti</td>
+                                  <td>
+                                    : {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
+                                  </td>
+                                @endif
+                              </tr>
+
+                            <tr>
                                 <td>Perihal</td>
                                 <td>: {{ $data->perihal }}</td>
                             </tr>
@@ -268,8 +288,8 @@
 
 <script>
     $(document).ready(function() {
-        $('#success-alert').show(1000).delay(3000);
-        $('#success-alert').hide(2000);
+        $('#success-alert').show(1000).delay(1000);
+        $('#success-alert').hide(1000);
     });
 </script>
 @endsection

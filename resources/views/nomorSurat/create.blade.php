@@ -68,13 +68,27 @@
             </div>
 
             <div class="form-group row" id="otor_pengganti" name="otor_pengganti" style="display: none">
-                <div class="col-sm-6 mb-3">
+                <div class="col-sm-6 mb-3" name="pengganti_antar_satuan_kerja" id="pengganti_antar_satuan_kerja" style="display: none;">
                     <label for="tunjuk_otor1_by" class="form-label">Otor 1 Pengganti</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by" id="tunjuk_otor1_by">
-                        <option value="" selected> ---- </option>
+                        <option value=""> ---- </option>
                         @foreach ($penggantis as $pengganti)
                             @if ($pengganti->levelTable->golongan == 7)
                                 <option value="{{$pengganti['id']}}">Kepala {{ $pengganti->satuanKerja->satuan_kerja }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-sm-6 mb-3" name="pengganti_antar_departemen" id="pengganti_antar_departemen" style="display: none;">
+                    <label for="tunjuk_otor1_by" class="form-label">Otor 1 Pengganti</label>
+                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by" id="tunjuk_otor1_by">
+                        <option value=""> ---- </option>
+                        @foreach ($penggantis as $pengganti)
+                            @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
+                                @if ($pengganti->satuan_kerja == 1)
+                                    <option value="{{$pengganti['id']}}">{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
+                                @endif
                             @endif
                         @endforeach
                     </select>
@@ -87,7 +101,11 @@
                         @foreach ($penggantis as $pengganti)
                             @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
                                 @if ($pengganti->satuan_kerja == 1)
-                                    <option value="{{$pengganti['id']}}">{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
+                                    @if ($pengganti->level == 6)
+                                        <option value="{{ $pengganti['id']}}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
+                                    @else
+                                        <option value="{{ $pengganti['id']}}">{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
+                                    @endif
                                 @endif
                             @endif
                         @endforeach
@@ -109,8 +127,9 @@
 
 <script>
     jQuery(document).ready(function() {
+        var skid
         jQuery('#satuan_kerja_tujuan').change(function() {
-            var skid = jQuery(this).val();
+            skid = jQuery(this).val();
             jQuery.ajax({
                 url: '/getSatuanKerja',
                 type: 'post',
@@ -122,7 +141,14 @@
         });
 
         $('#pejabat_pengganti').click(function() {
+            var sktid = $('#satuan_kerja_asal').val();
             $('#otor_pengganti').toggle();
+            
+            if (skid != sktid) {
+                $('#pengganti_antar_satuan_kerja').show();
+            } else {
+                $('#pengganti_antar_departemen').show();
+            }
         });
     });
 </script>

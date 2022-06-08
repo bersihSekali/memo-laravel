@@ -265,19 +265,31 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['otor1_by']);
 
         // Compare latest date with now to reset no_urut
-        $lastSuratMasuk = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+        // $lastSuratMasuk = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+        //     ->latest()->first();
+        // $nowDate = date("Y-m-d H:i:s");
+        // if ($lastSuratMasuk == '') {
+        //     $datas['no_urut'] = 1;
+        // } else if (date("Y", strtotime($nowDate)) != date("Y", strtotime($lastSuratMasuk->created_at))) {
+        //     $datas['no_urut'] = 1;
+        // } else {
+        //     $mails = SuratMasuk::whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
+        //         ->max('no_urut');
+        //     $no_urut = $mails + 1;
+        //     $datas['no_urut'] = $no_urut;
+        // }
+
+        $lastSuratMasuk = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
             ->latest()->first();
-        $nowDate = date("Y-m-d H:i:s");
         if ($lastSuratMasuk == '') {
-            $datas['no_urut'] = 1;
-        } else if (date("Y", strtotime($nowDate)) != date("Y", strtotime($lastSuratMasuk->created_at))) {
-            $datas['no_urut'] = 1;
+            $datas->no_urut = 1;
         } else {
-            $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->max('no_urut');
-            $no_urut = $mails + 1;
-            $datas['no_urut'] = $no_urut;
+            $temp = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
+                ->max('no_urut');
+            $no_urut = $temp + 1;
+            $datas->no_urut = $no_urut;
         }
-        array_push($update, $datas['no_urut']);
+        array_push($update, $datas->no_urut);
 
         $tahun = date("Y", strtotime($datas['tanggal_otor1']));
         // Nomor surat antar divisi / satuan kerja

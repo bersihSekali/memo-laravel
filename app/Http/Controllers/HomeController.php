@@ -13,139 +13,27 @@ class HomeController extends Controller
         $id = Auth::id();
         $user = User::where('id', $id)->first();
 
-        // // All Summary
-        switch (true) {
-                // Home admin
-            case ($user->level == 1):
-                $countTotal = SuratMasuk::withTrashed()->count();
-                $countTrashed = SuratMasuk::onlyTrashed()->count();
-                $datas = [
-                    'title' => 'Pencatatan Memo',
-                    'countTotal' => $countTotal,
-                    'countTrashed' => $countTrashed,
-                    'users' => $user
-                ];
-                return view('templates.home', $datas);
-
-                // Home Kepala Satuan Kerja, Kepala Divisi, Kepala Cabang
-            case (($user->level >= 2) && ($user->level <= 15)):
-                $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
-                $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->whereRaw('satuan_kerja_asal != satuan_kerja_tujuan') // Antar Divisi
-                    ->where('status', 2)
-                    ->count();
-                $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->where('nomor_surat', '!=', '')
-                    ->count();
-                $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->where('status', 0)
-                    ->count();
-                $datas = [
-                    'title' => 'Pencatatan Memo',
-                    'countTotal' => $countTotal,
-                    'countNeedApprove' => $countNeedApprove,
-                    'countApproved' => $countAprroved,
-                    'countRejected' => $countRejected,
-                    'users' => $user
-                ];
-                return view('templates.home', $datas);
+        // All Summary
+        // Golongan 7
+        if ($user->levelTable->golongan == 7) {
+            $needApprovePengganti = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->where('otor1_by_pengganti', $user->id)
+                ->latest();
+            $needApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->where('status', 2)
+                ->union($needApprovePengganti)->count();
+            $approvedAntarSatker = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
+                ->where('status', 3)->count();
+            $approvedAntarDepartemen = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
+                ->where('status', 3)->count();
         }
-        // switch ($user->level) {
-        //     case 1: // Home Admin
-        //         $countTotal = SuratMasuk::withTrashed()->count();
-        //         $countTrashed = SuratMasuk::onlyTrashed()->count();
-        //         $datas = [
-        //             'title' => 'Pencatatan Memo',
-        //             'countTotal' => $countTotal,
-        //             'countTrashed' => $countTrashed,
-        //             'users' => $user
-        //         ];
-        //         return view('templates.home', $datas);
 
-        //     case 2: // Home Kepala Satuan Kerja
-        //         $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
-        //         $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->whereRaw('satuan_kerja_asal != satuan_kerja_tujuan') // Antar Divisi
-        //             ->where('status', 2)
-        //             ->count();
-        //         $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->where('nomor_surat', '!=', '')
-        //             ->count();
-        //         $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->where('status', 0)
-        //             ->count();
-        //         $datas = [
-        //             'title' => 'Pencatatan Memo',
-        //             'countTotal' => $countTotal,
-        //             'countNeedApprove' => $countNeedApprove,
-        //             'countApproved' => $countAprroved,
-        //             'countRejected' => $countRejected,
-        //             'users' => $user
-        //         ];
-        //         return view('templates.home', $datas);
+        $datas = [
+            'users' => $user
+        ];
 
-        //     case 3: // Home Kepala Departemen
-        //         $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
-        //         $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->where('status', 1)
-        //             ->count();
-        //         $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->where('nomor_surat', '!=', '')
-        //             ->count();
-        //         $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->where('status', 0)
-        //             ->count();
-        //         $datas = [
-        //             'title' => 'Pencatatan Memo',
-        //             'countTotal' => $countTotal,
-        //             'countNeedApprove' => $countNeedApprove,
-        //             'countApproved' => $countAprroved,
-        //             'countRejected' => $countRejected,
-        //             'users' => $user
-        //         ];
-        //         return view('templates.home', $datas);
-
-        //     case 4: // Home Senior Officer
-        //         $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
-        //         $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->where('status', 1)
-        //             ->count();
-        //         $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->where('nomor_surat', '!=', '')
-        //             ->count();
-        //         $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->where('status', 0)
-        //             ->count();
-        //         $datas = [
-        //             'title' => 'Pencatatan Memo',
-        //             'countTotal' => $countTotal,
-        //             'countNeedApprove' => $countNeedApprove,
-        //             'countApproved' => $countAprroved,
-        //             'countRejected' => $countRejected,
-        //             'users' => $user
-        //         ];
-        //         return view('templates.home', $datas);
-
-        //     case 5: // Home Officer
-        //         $countTotal = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->count();
-        //         $countNeedApprove = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->where('status', 1)
-        //             ->count();
-        //         $countAprroved = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->where('nomor_surat', '!=', '')
-        //             ->count();
-        //         $countRejected = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-        //             ->where('status', 0)
-        //             ->count();
-        //         $datas = [
-        //             'title' => 'Pencatatan Memo',
-        //             'countTotal' => $countTotal,
-        //             'countNeedApprove' => $countNeedApprove,
-        //             'countApproved' => $countAprroved,
-        //             'countRejected' => $countRejected,
-        //             'users' => $user
-        //         ];
-        //         return view('templates.home', $datas);
-        //     default:
+        return view('templates.home', $datas);
     }
 }
