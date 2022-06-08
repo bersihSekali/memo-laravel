@@ -156,14 +156,14 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'klin',
             'level' => '1',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
             'name' => 'agusta',
             'level' => '2', // Kepala Satuan Kerja
             'satuan_kerja' => '1',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -171,7 +171,15 @@ class DatabaseSeeder extends Seeder
             'level' => '6', // Kepala Departemen
             'satuan_kerja' => '1',
             'departemen' => '1',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
+        ]);
+
+        User::create([
+            'name' => 'james',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '1',
+            'departemen' => '1',
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -179,7 +187,7 @@ class DatabaseSeeder extends Seeder
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '1',
             'departemen' => '1',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -187,7 +195,7 @@ class DatabaseSeeder extends Seeder
             'level' => '12', // Kepala Bagian
             'satuan_kerja' => '1',
             'departemen' => '1',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -195,7 +203,7 @@ class DatabaseSeeder extends Seeder
             'level' => '15', // Staff
             'satuan_kerja' => '1',
             'departemen' => '1',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -203,7 +211,15 @@ class DatabaseSeeder extends Seeder
             'level' => '6', // Kepala Departemen
             'satuan_kerja' => '1',
             'departemen' => '2',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
+        ]);
+
+        User::create([
+            'name' => 'riyadi',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '1',
+            'departemen' => '2',
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -211,7 +227,7 @@ class DatabaseSeeder extends Seeder
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '1',
             'departemen' => '2',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -219,7 +235,7 @@ class DatabaseSeeder extends Seeder
             'level' => '12', // Kepala Bagian
             'satuan_kerja' => '1',
             'departemen' => '2',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -227,7 +243,7 @@ class DatabaseSeeder extends Seeder
             'level' => '15', // Staff
             'satuan_kerja' => '1',
             'departemen' => '2',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -235,7 +251,15 @@ class DatabaseSeeder extends Seeder
             'level' => '6', // Kepala Departemen
             'satuan_kerja' => '1',
             'departemen' => '3',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
+        ]);
+
+        User::create([
+            'name' => 'thor',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '1',
+            'departemen' => '3',
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -243,7 +267,7 @@ class DatabaseSeeder extends Seeder
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '1',
             'departemen' => '3',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -251,7 +275,7 @@ class DatabaseSeeder extends Seeder
             'level' => '12', // Kepala Bagian
             'satuan_kerja' => '1',
             'departemen' => '3',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -259,14 +283,14 @@ class DatabaseSeeder extends Seeder
             'level' => '15', // Staff
             'satuan_kerja' => '1',
             'departemen' => '3',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
             'name' => 'alzuhri',
             'level' => '2', // Kepala Satuan Kerja
             'satuan_kerja' => '2',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -274,7 +298,15 @@ class DatabaseSeeder extends Seeder
             'level' => '6', // Kepala Departemen
             'satuan_kerja' => '2',
             'departemen' => '4',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
+        ]);
+
+        User::create([
+            'name' => 'ragnarok',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '2',
+            'departemen' => '4',
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -282,7 +314,7 @@ class DatabaseSeeder extends Seeder
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '2',
             'departemen' => '4',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -290,14 +322,14 @@ class DatabaseSeeder extends Seeder
             'level' => '12', // Kepala Bagian
             'satuan_kerja' => '2',
             'departemen' => '4',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
             'name' => 'muhammad',
             'level' => '15',
             'satuan_kerja' => '2', // Staff
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -305,7 +337,15 @@ class DatabaseSeeder extends Seeder
             'level' => '6', // Kepala Departemen
             'satuan_kerja' => '2',
             'departemen' => '5',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
+        ]);
+
+        User::create([
+            'name' => 'komo',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '2',
+            'departemen' => '5',
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -313,7 +353,7 @@ class DatabaseSeeder extends Seeder
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '2',
             'departemen' => '5',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -321,7 +361,7 @@ class DatabaseSeeder extends Seeder
             'level' => '12', // Kepala Bagian
             'satuan_kerja' => '2',
             'departemen' => '5',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -329,14 +369,14 @@ class DatabaseSeeder extends Seeder
             'level' => '15', // Staff
             'satuan_kerja' => '2',
             'departemen' => '5',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
             'name' => 'septiawan',
             'level' => '2', // Kepala Satuan Kerja
             'satuan_kerja' => '3',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -344,7 +384,15 @@ class DatabaseSeeder extends Seeder
             'level' => '6', // Kepala Departemen
             'satuan_kerja' => '3',
             'departemen' => '6',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
+        ]);
+
+        User::create([
+            'name' => 'bulan',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '3',
+            'departemen' => '6',
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -352,7 +400,7 @@ class DatabaseSeeder extends Seeder
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '3',
             'departemen' => '6',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -360,7 +408,7 @@ class DatabaseSeeder extends Seeder
             'level' => '12', // Kepala Bagian
             'satuan_kerja' => '3',
             'departemen' => '6',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -368,7 +416,7 @@ class DatabaseSeeder extends Seeder
             'level' => '15', // Staff
             'satuan_kerja' => '3',
             'departemen' => '6',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -376,7 +424,15 @@ class DatabaseSeeder extends Seeder
             'level' => '6', // Kepala Departemen
             'satuan_kerja' => '3',
             'departemen' => '7',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
+        ]);
+
+        User::create([
+            'name' => 'matahari',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '3',
+            'departemen' => '7',
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -384,7 +440,7 @@ class DatabaseSeeder extends Seeder
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '3',
             'departemen' => '7',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -392,7 +448,7 @@ class DatabaseSeeder extends Seeder
             'level' => '12', // Kepala Bagian
             'satuan_kerja' => '3',
             'departemen' => '7',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -400,14 +456,14 @@ class DatabaseSeeder extends Seeder
             'level' => '15', // Staff
             'satuan_kerja' => '3',
             'departemen' => '7',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
             'name' => 'mars',
             'level' => '2', // Kepala Satuan Kerja
             'satuan_kerja' => '4',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -415,7 +471,15 @@ class DatabaseSeeder extends Seeder
             'level' => '6', // Kepala Departemen
             'satuan_kerja' => '4',
             'departemen' => '8',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
+        ]);
+
+        User::create([
+            'name' => 'bintang',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '4',
+            'departemen' => '8',
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -423,7 +487,7 @@ class DatabaseSeeder extends Seeder
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '4',
             'departemen' => '8',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -431,7 +495,7 @@ class DatabaseSeeder extends Seeder
             'level' => '12', // Kepala Bagian
             'satuan_kerja' => '4',
             'departemen' => '8',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -439,7 +503,7 @@ class DatabaseSeeder extends Seeder
             'level' => '15', // Staff
             'satuan_kerja' => '4',
             'departemen' => '8',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -447,7 +511,15 @@ class DatabaseSeeder extends Seeder
             'level' => '6', // Kepala Departemen
             'satuan_kerja' => '4',
             'departemen' => '9',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
+        ]);
+
+        User::create([
+            'name' => 'axio',
+            'level' => '7', // Senior officer
+            'satuan_kerja' => '4',
+            'departemen' => '9',
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -455,7 +527,7 @@ class DatabaseSeeder extends Seeder
             'level' => '8', // Kepala Bidang
             'satuan_kerja' => '4',
             'departemen' => '9',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -463,7 +535,7 @@ class DatabaseSeeder extends Seeder
             'level' => '12', // Kepala Bagian
             'satuan_kerja' => '4',
             'departemen' => '9',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
 
         User::create([
@@ -471,7 +543,7 @@ class DatabaseSeeder extends Seeder
             'level' => '15', // Staff
             'satuan_kerja' => '4',
             'departemen' => '9',
-            'password' => hash::make('asdasd')
+            'password' => hash::make('Syariah@1')
         ]);
     }
 }

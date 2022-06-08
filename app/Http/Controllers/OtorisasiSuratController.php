@@ -19,16 +19,86 @@ class OtorisasiSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
-            ->whereBetween('status', array(0, 3))
-            ->latest()->get();
+
+        // Officer, kepala bidang, kepala operasi cabang, kepala cabang pembantu golongan 5
+        if ($user->levelTable->golongan == 5) {
+            $pengganti2 = SuratMasuk::where('otor2_by_pengganti', $user->id)
+                ->where('status', 1)
+                ->latest();
+            $pengganti1 = SuratMasuk::where('otor1_by_pengganti', $user->id)
+                ->where('status', 2)
+                ->union($pengganti2)
+                ->latest();
+            $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->where('departemen_asal', $user->departemen)
+                ->where('status', 1)
+                ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
+                ->union($pengganti1)
+                ->latest()->get();
+        }
+
+        // Kepala departemen, golongan 6
+        elseif (($user->levelTable->golongan == 6) && ($user->level == 6)) {
+            $pengganti = SuratMasuk::where('otor2_by_pengganti', $user->id)
+                ->orWhere('otor1_by_pengganti', $user->id)
+                ->latest();
+            // antar departemen sebagai otor1_by
+            $antarDepartemen = SuratMasuk::where('departemen_asal', $user->departemen)
+                ->where('status', 2)
+                ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
+                ->latest();
+            // antar satuan kerja sebagai otor2_by
+            $mails = SuratMasuk::whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
+                ->where('status', 1)
+                ->union($antarDepartemen)
+                ->latest()->get();
+        }
+
+        // Senior officer
+        elseif (($user->levelTable->golongan == 6) && ($user->level == 7)) {
+            $pengganti2 = SuratMasuk::where('otor2_by_pengganti', $user->id)
+                ->latest();
+            $pengganti1 = SuratMasuk::where('otor1_by_pengganti', $user->id)
+                ->union($pengganti2)
+                ->latest();
+            // antar departemen sebagai otor2_by
+            $antarDepartemen2 = SuratMasuk::where('departemen_asal', $user->departemen)
+                ->where('status', 1)
+                ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
+                ->union($pengganti1)
+                ->latest();
+            // antar departemen sebagai otor1_by
+            $antarDepartemen1 = SuratMasuk::where('departemen_asal', $user->departemen)
+                ->where('status', 2)
+                ->where('otor2_by', '!=', $user->id)
+                ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
+                ->union($antarDepartemen2)
+                ->latest();
+            // antar satuan kerja sebagai otor2_by
+            $mails = SuratMasuk::whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
+                ->where('status', 1)
+                ->union($antarDepartemen1)
+                ->latest()->get();
+        }
+
+        // Kepala satuan kerja
+        elseif ($user->levelTable->golongan == 7) {
+            $pengganti = SuratMasuk::where('otor1_by_pengganti', $user->id)
+                ->latest();
+            // Antar satuan kerja sebagai otor1_by
+            $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->where('status', 2)
+                ->whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
+                ->union($pengganti)
+                ->latest()->get();
+        }
 
         $datas = [
             'title' => 'Daftar Otorisasi Surat',
             'datas' => $mails,
             'users' => $user
         ];
-
+        // dd($datas);
         return view('otorisasi.index', $datas);
     }
 
@@ -137,6 +207,10 @@ class OtorisasiSuratController extends Controller
         // Update otor status
         $update[] = $datas['status'] = '0';
 
+        // Update pesan tolak
+        $datas['pesan_tolak'] = $request->pesan_tolak;
+        array_push($update, $datas['pesan_tolak']);
+
         // Hapus nomor urut
         $datas['no_urut'] = 0;
         array_push($update, $datas['no_urut']);
@@ -155,12 +229,14 @@ class OtorisasiSuratController extends Controller
         }
 
         // get file and store
-        $file = $request->file('lampiran');
-        $originalFileName = $file->getClientOriginalName();
-        $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-        $fileName = date("YmdHis") . '_' . $fileName;
-        $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
-        array_push($update, $datas['lampiran']);
+        if ($request->file('lampiran')) {
+            $file = $request->file('lampiran');
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+            array_push($update, $datas['lampiran']);
+        }
 
         $datas->update($update);
 
@@ -189,19 +265,31 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['otor1_by']);
 
         // Compare latest date with now to reset no_urut
-        $lastSuratMasuk = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+        // $lastSuratMasuk = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)
+        //     ->latest()->first();
+        // $nowDate = date("Y-m-d H:i:s");
+        // if ($lastSuratMasuk == '') {
+        //     $datas['no_urut'] = 1;
+        // } else if (date("Y", strtotime($nowDate)) != date("Y", strtotime($lastSuratMasuk->created_at))) {
+        //     $datas['no_urut'] = 1;
+        // } else {
+        //     $mails = SuratMasuk::whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
+        //         ->max('no_urut');
+        //     $no_urut = $mails + 1;
+        //     $datas['no_urut'] = $no_urut;
+        // }
+
+        $lastSuratMasuk = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
             ->latest()->first();
-        $nowDate = date("Y-m-d H:i:s");
         if ($lastSuratMasuk == '') {
-            $datas['no_urut'] = 1;
-        } else if (date("Y", strtotime($nowDate)) != date("Y", strtotime($lastSuratMasuk->created_at))) {
-            $datas['no_urut'] = 1;
+            $datas->no_urut = 1;
         } else {
-            $mails = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)->max('no_urut');
-            $no_urut = $mails + 1;
-            $datas['no_urut'] = $no_urut;
+            $temp = SuratMasuk::where('departemen_asal', $datas->departemen_asal)
+                ->max('no_urut');
+            $no_urut = $temp + 1;
+            $datas->no_urut = $no_urut;
         }
-        array_push($update, $datas['no_urut']);
+        array_push($update, $datas->no_urut);
 
         $tahun = date("Y", strtotime($datas['tanggal_otor1']));
         // Nomor surat antar divisi / satuan kerja
@@ -244,6 +332,10 @@ class OtorisasiSuratController extends Controller
         // Update otor status
         $update[] = $datas['status'] = '0';
 
+        // Update pesan tolak
+        $datas['pesan_tolak'] = $request->pesan_tolak;
+        array_push($update, $datas['pesan_tolak']);
+
         // Hapus nomor urut
         $datas['no_urut'] = 0;
         array_push($update, $datas['no_urut']);
@@ -262,12 +354,14 @@ class OtorisasiSuratController extends Controller
         }
 
         // get file and store
-        $file = $request->file('lampiran');
-        $originalFileName = $file->getClientOriginalName();
-        $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-        $fileName = date("YmdHis") . '_' . $fileName;
-        $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
-        array_push($update, $datas['lampiran']);
+        if ($request->file('lampiran')) {
+            $file = $request->file('lampiran');
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+            array_push($update, $datas['lampiran']);
+        }
 
         $datas->update($update);
 

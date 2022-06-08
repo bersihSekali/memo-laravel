@@ -26,7 +26,7 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'password' => 'required',
+            'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'
         ]);
 
         if (Auth::attempt($validated)) {
@@ -35,9 +35,7 @@ class AuthController extends Controller
             return redirect()->intended('/');
         }
 
-        return back()->withErrors([
-            'name' => 'The provided credentials do not match our records.',
-        ])->onlyInput('name');
+        return redirect('/login')->with('success', 'Login gagal');
     }
 
     public function registration()
@@ -62,7 +60,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:255|unique:users',
             'satuan_kerja' => 'required',
-            'password' => 'required|min:6|max:255',
+            'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'level' => 'required'
         ]);
 
