@@ -7,6 +7,9 @@ use App\Models\User;
 use App\Models\SuratKeluar;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SatuanKerja;
+use App\Models\Departemen;
+use App\Models\TujuanDepartemen;
+use App\Models\TujuanSatuanKerja;
 
 class SuratKeluarController extends Controller
 {
@@ -46,12 +49,21 @@ class SuratKeluarController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
+        $pengganti = User::all();
+
+        $departemen = Departemen::all();
         $satuanKerja = SatuanKerja::all();
+        $kantorCabang = Departemen::where('grup', 2)->get();
+        $departemenDireksi = Departemen::where('grup', 4)->get();
 
         $datas = [
             'title' => 'Tambah Surat',
             'satuanKerjas' => $satuanKerja,
-            'users' => $user
+            'departemens' => $departemen,
+            'kantorCabangs' => $kantorCabang,
+            'departemenDireksis' => $departemenDireksi,
+            'users' => $user,
+            'penggantis' => $pengganti
         ];
 
         return view('suratKeluar.create', $datas);
@@ -65,14 +77,25 @@ class SuratKeluarController extends Controller
      */
     public function store(Request $request)
     {
+        // mempersiapkan data unit kerja dan cabang
+        $satuanKerja = SatuanKerja::all();
+        $kantorCabang = Departemen::where('grup', 2)->get();
+        $departemenDireksi = Departemen::where('grup', 4)->get();
+
         $validated = $request->validate([
             'created_by' => 'required',
-            'nomor_surat' => 'required',
             'satuan_kerja_asal' => 'required',
-            'tujuan' => 'required',
             'perihal' => 'required',
-            'lampiran' => 'mimes:pdf'
+            'lampiran' => 'mimes:pdf',
         ]);
+        $validated['departemen_asal'] = $request->departemen_asal;
+        $validated['otor2_by_pengganti'] = $request->tunjuk_otor2_by;
+        $validated['otor1_by_pengganti'] = $request->tunjuk_otor1_by;
+
+        //ambil request tujuan
+        $tujuanUnitKerja = $request['tujuan_unit_kerja'];
+        $tujuanDepartemenDireksi = $request['tujuan_departemen_direksi'];
+        $tujuanKantorCabang = $request['tujuan_kantor_cabang'];
 
         // get file and store
         if ($request->file('lampiran')) {
@@ -84,10 +107,63 @@ class SuratKeluarController extends Controller
         }
 
         $create = SuratKeluar::create($validated);
+        //ambil id surat yang baru dibuat
+        $idSurat = $create->id;
 
         if (!$create) {
-            return redirect('/suratKeluar/create')->with('error', 'Pembuatan surat gagal');
+            return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal');
         }
+
+        //tujuan berdasarkan unit kerja
+        if ($tujuanUnitKerja[0] == 'unit_kerja') {
+            foreach ($satuanKerja as $item) {
+                TujuanSatuanKerja::create([
+                    'memo_id' => $idSurat,
+                    'satuan_kerja_id' => $item->id,
+                ]);
+            };
+        } elseif ($tujuanUnitKerja) {
+            foreach ($tujuanUnitKerja as $item) {
+                TujuanSatuanKerja::create([
+                    'memo_id' => $idSurat,
+                    'satuan_kerja_id' => $item,
+                ]);
+            };
+        };
+
+        //tujuan berdasarkan cabang
+        if ($tujuanKantorCabang[0] == 'kantor_cabang') {
+            foreach ($kantorCabang as $item) {
+                TujuanDepartemen::create([
+                    'memo_id' => $idSurat,
+                    'departemen_id' => $item->id,
+                ]);
+            };
+        } elseif ($tujuanKantorCabang) {
+            foreach ($tujuanKantorCabang as $item) {
+                TujuanDepartemen::create([
+                    'memo_id' => $idSurat,
+                    'departemen_id' => $item,
+                ]);
+            };
+        };
+
+        //tujuan berdasarkan departemen di bawah direksi
+        if ($tujuanDepartemenDireksi[0] == 'departemen_direksi') {
+            foreach ($departemenDireksi as $item) {
+                TujuanDepartemen::create([
+                    'memo_id' => $idSurat,
+                    'departemen_id' => $item->id,
+                ]);
+            };
+        } elseif ($tujuanDepartemenDireksi) {
+            foreach ($tujuanDepartemenDireksi as $item) {
+                TujuanDepartemen::create([
+                    'memo_id' => $idSurat,
+                    'departemen_id' => $item,
+                ]);
+            };
+        };
 
         return redirect('/suratKeluar')->with('success', 'Pembuatan surat berhasil');
     }

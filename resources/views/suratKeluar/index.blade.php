@@ -11,7 +11,7 @@
 
         @if ($users->levelTable->golongan < 7) <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="btn-list">
-                <a href="/nomorSurat/create" class="btn btn-primary d-none d-sm-inline-block">
+                <a href="/suratKeluar/create" class="btn btn-primary d-none d-sm-inline-block">
                     <i class="fas fa-plus-circle me-2"></i>
                     Tambah Surat
                 </a>
@@ -20,7 +20,7 @@
     @else
     <div class="col-12 col-md-auto ms-auto d-print-none">
         <div class="btn-list">
-            <a href="#" class="btn btn-primary d-none d-sm-inline-block">
+            <a href="/suratKeluar/create" class="btn btn-primary d-none d-sm-inline-block">
                 <i class="fas fa-plus-circle me-2"></i>
                 Tambah Surat
             </a>

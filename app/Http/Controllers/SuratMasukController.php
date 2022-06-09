@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\SatuanKerja;
 use App\Models\Departemen;
 use App\Models\Forward;
+use App\Models\TujuanDepartemen;
+use App\Models\TujuanSatuanKerja;
 
 class SuratMasukController extends Controller
 {
@@ -22,33 +24,29 @@ class SuratMasukController extends Controller
         $id = Auth::id();
         $user = User::find($id);
 
-        if ($user->levelTable['golongan'] == 7) {
-            $data = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
-                ->where('status', '>=', 3)
-                ->latest()->get();
-        } elseif ($user->levelTable['golongan'] == 6) {
-            $data = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
-                ->where('status', '>=', 4)
-                ->latest()->get();
-        } elseif ($user->levelTable['golongan'] >= 4) {
+        if ($user->levelTable->golongan == 7) {
+            $memoId = TujuanSatuanKerja::where('satuan_kerja_id', $user['satuan_kerja'])->pluck('memo_id')->toArray();
+            $data = SuratKeluar::where('status', 3)->whereIn('id', $memoId)->latest()->get();
+            $pesan = [];
+        } elseif ($user->levelTable->golongan == 6) {
+            $memoId = TujuanDepartemen::where('departemen_id', $user['departemen'])->pluck('memo_id')->toArray();
+            $data = SuratKeluar::where('status', 3)->whereIn('id', $memoId)->latest()->get();
+            $pesan = TujuanDepartemen::where('departemen_id', $user['departemen'])->latest()->get();
+        } elseif ($user->levelTable['golongan'] <= 5) {
             $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
-            $data = SuratKeluar::where('satuan_kerja_tujuan', $user['satuan_kerja'])
-                ->where('status', '>=', 5)
-                ->whereIn('id', $memoId)
-                ->latest()->get();
+            $data = SuratKeluar::whereIn('id', $memoId)->latest()->get();
+            $pesan = [];
         }
 
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
-        $departemenDisposisi = Departemen::where('satuan_kerja', $user['satuan_kerja'])->get();
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
             'datas' => $data,
             'users' => $user,
-            'satuanKerja' => $satuanKerja,
-            'departemen' => $departemen,
-            'departemenDisposisi' => $departemenDisposisi
-
+            'satuanKerjas' => $satuanKerja,
+            'departemens' => $departemen,
+            'pesan' => $pesan,
         ]);
     }
 
