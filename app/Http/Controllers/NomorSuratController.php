@@ -8,6 +8,7 @@ use App\Models\SuratKeluar;
 use App\Models\User;
 use App\Models\SatuanKerja;
 use App\Models\TujuanDepartemen;
+use App\Models\TujuanSatuanKerja;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -74,20 +75,23 @@ class NomorSuratController extends Controller
      */
     public function store(Request $request)
     {
+        $satuanKerja = SatuanKerja::all();
+        $kantorCabang = Departemen::where('grup', 2)->get();
+        $departemenDireksi = Departemen::where('grup', 4)->get();
+
         $validated = $request->validate([
             'created_by' => 'required',
             'satuan_kerja_asal' => 'required',
             'perihal' => 'required',
             'lampiran' => 'mimes:pdf',
-            'tujuan' => 'required'
         ]);
         $validated['departemen_asal'] = $request->departemen_asal;
         $validated['otor2_by_pengganti'] = $request->tunjuk_otor2_by;
         $validated['otor1_by_pengganti'] = $request->tunjuk_otor1_by;
 
-        $tujuan = $validated['tujuan'];
-        unset($validated['tujuan']);
-        dd($tujuan);
+        $tujuanUnitKerja = $request['tujuan_unit_kerja'];
+        $tujuanDepartemenDireksi = $request['tujuan_departemen_direksi'];
+        $tujuanKantorCabang = $request['tujuan_kantor_cabang'];
 
         // get file and store
         if ($request->file('lampiran')) {
@@ -100,9 +104,20 @@ class NomorSuratController extends Controller
 
         $create = SuratKeluar::create($validated);
 
+        $idSurat = $create->id;
+
         if (!$create) {
             return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal');
         }
+
+        if ($tujuanUnitKerja[0] == 'unit_kerja') {
+            foreach ($satuanKerja as $item) {
+                $create = TujuanSatuanKerja::create([
+                    'memo_id' => $idSurat,
+                    'satuan_kerja_id' => $item->id,
+                ]);
+            }
+        };
 
         return redirect('/nomorSurat')->with('success', 'Pembuatan surat berhasil');
     }

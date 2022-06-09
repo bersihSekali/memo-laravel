@@ -20,10 +20,10 @@ class CreateTujuanDepartemensTable extends Migration
             $table->unsignedBigInteger('departemen_id');
             $table->foreign('departemen_id')->references('id')->on('departemens');
             $table->foreign('memo_id')->references('id')->on('surat_keluars');
-            $table->boolean('status_baca');
-            $table->date('tanggal_baca');
-            $table->string('pesan_disposisi');
-            $table->date('tanggal_disposisi');
+            $table->boolean('status_baca')->nullable();
+            $table->date('tanggal_baca')->nullable();
+            $table->string('pesan_disposisi')->nullable();
+            $table->date('tanggal_disposisi')->nullable();
         });
     }
 

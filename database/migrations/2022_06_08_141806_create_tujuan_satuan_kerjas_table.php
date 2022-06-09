@@ -20,10 +20,10 @@ class CreateTujuanSatuanKerjasTable extends Migration
             $table->unsignedBigInteger('satuan_kerja_id');
             $table->foreign('satuan_kerja_id')->references('id')->on('satuan_kerjas');
             $table->foreign('memo_id')->references('id')->on('surat_keluars');
-            $table->boolean('status_baca');
-            $table->date('tanggal_baca');
-            $table->string('pesan_disposisi');
-            $table->date('tanggal_disposisi');
+            $table->boolean('status_baca')->nullable();
+            $table->date('tanggal_baca')->nullable();
+            $table->string('pesan_disposisi')->nullable();
+            $table->date('tanggal_disposisi')->nullable();
         });
     }
 

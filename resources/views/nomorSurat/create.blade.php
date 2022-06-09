@@ -52,24 +52,52 @@
 
             {{-- Input tujuan --}}
             <div class="form-group mb-3 formulir" style="display: none">
-                <label for="tujuan" class="form-label">Tujuan</label>
-                <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan[]" id="tujuan" multiple="multiple">
-                    <optgroup label="Unit Kerja">
-                        <option id="unit_kerja" value="unit_kerja">Seluruh Unit Kerja</option>
-                        @foreach ($satuanKerjas as $satuanKerja)
-                        <option class="opsi_unit_kerja" value="{{ $satuanKerja->id }}">{{ $satuanKerja->satuan_kerja }}</option>
-                        @endforeach
-                        @foreach ($departemenDireksis as $departemenDireksi)
-                        <option class="opsi_unit_kerja" value="{{ $departemenDireksi->id }}">{{ $departemenDireksi->departemen }}</option>
-                        @endforeach
-                    </optgroup>
-                    <optgroup label="Kantor Cabang">
-                        <option id="kantor_cabang" value="kantor_cabang">Seluruh Kantor Cabang</option>
-                        @foreach ($kantorCabangs as $kantorCabang)
-                        <option class="opsi_kantor_cabang" value="{{ $kantorCabang->id }}">{{ $kantorCabang->departemen }}</option>
-                        @endforeach
-                    </optgroup>
-                </select>
+                <label for="tujuan" class="form-label mb-3">Tujuan</label>
+                <div class="row justify-content-end">
+                    <div class="row mb-2">
+                        <label for="">Unit Kerja</label>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col">
+                            <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan_unit_kerja[]" id="tujuan_unit_kerja" multiple="multiple">
+                                <option id="unit_kerja" value="unit_kerja">Seluruh Unit Kerja</option>
+                                @foreach ($satuanKerjas as $satuanKerja)
+                                <option class="opsi_unit_kerja" value="huhu">{{ $satuanKerja->satuan_kerja }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="row my-2">
+                        <label for="">Departemen Satu Tingkat di Bawah Direksi</label>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col">
+                            <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan_departemen_direksi[]" id="tujuan_departemen_direksi" multiple="multiple">
+                                <option id="departemen_direksi" value="departemen_direksi">Seluruh Departemen di Bawah Direksi</option>
+                                @foreach ($departemenDireksis as $departemenDireksi)
+                                <option class="opsi_departemen_direksi" value="{{ $departemenDireksi->id }}">{{ $departemenDireksi->departemen }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="row my-2">
+                        <label for="">Unit Layanan</label>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan_kantor_cabang[]" id="tujuan_kantor_cabang" multiple="multiple">
+                                <option id="kantor_cabang" value="kantor_cabang">Seluruh Kantor Cabang</option>
+                                @foreach ($kantorCabangs as $kantorCabang)
+                                <option class="opsi_kantor_cabang" value="{{ $kantorCabang->id }}">{{ $kantorCabang->departemen }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {{-- Input perihal --}}
@@ -177,13 +205,28 @@
 
         });
 
-        $('#tujuan').change(function() {
+        $('#tujuan_satuan_kerja').select2({
+            placeholder: "Select a state",
+            allowClear: true
+        })
+
+        $('#tujuan_unit_kerja').change(function() {
             if ($('#unit_kerja').is(':selected')) {
                 $('.opsi_unit_kerja').attr('disabled', 'disabled')
                 $(".opsi_unit_kerja").prop("selected", false)
             } else {
                 $('.opsi_unit_kerja').removeAttr('disabled')
             }
+        });
+        $('#tujuan_departemen_direksi').change(function() {
+            if ($('#departemen_direksi').is(':selected')) {
+                $('.opsi_departemen_direksi').attr('disabled', 'disabled')
+                $(".opsi_departemen_direksi").prop("selected", false)
+            } else {
+                $('.opsi_departemen_direksi').removeAttr('disabled')
+            }
+        });
+        $('#tujuan_kantor_cabang').change(function() {
             if ($('#kantor_cabang').is(':selected')) {
                 $('.opsi_kantor_cabang').attr('disabled', 'disabled')
                 $('.opsi_kantor_cabang').prop("selected", false)
@@ -191,7 +234,6 @@
                 $('.opsi_kantor_cabang').removeAttr('disabled')
             }
         });
-
     });
 </script>
 @endsection
