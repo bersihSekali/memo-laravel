@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Departemen;
+use App\Models\Grup;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -20,62 +21,111 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
+        Grup::create([
+            'nama_grup' => 'Unit Kerja'
+        ]);
+
+        Grup::create([
+            'nama_grup' => 'Kantor Cabang'
+        ]);
+
+        Grup::create([
+            'nama_grup' => 'Departemen'
+        ]);
+
+        Grup::create([
+            'nama_grup' => 'Departemen Satu Tingkat di Bawah Direksi'
+        ]);
+
         SatuanKerja::create([
-            'satuan_kerja' => 'SKTILOG'
+            'satuan_kerja' => 'SKTILOG',
+            'grup' => '1'
         ]);
         SatuanKerja::create([
-            'satuan_kerja' => 'SKAI'
+            'satuan_kerja' => 'SKAI',
+            'grup' => '1'
         ]);
         SatuanKerja::create([
-            'satuan_kerja' => 'SKHSDM'
+            'satuan_kerja' => 'SKHSDM',
+            'grup' => '1'
         ]);
         SatuanKerja::create([
-            'satuan_kerja' => 'SBK'
+            'satuan_kerja' => 'SBK',
+            'grup' => '1'
         ]);
 
         Departemen::create([
             'satuan_kerja' => '1',
-            'departemen' => 'LOGISTIK'
+            'departemen' => 'LOGISTIK',
+            'grup' => '3'
         ]);
 
         Departemen::create([
             'satuan_kerja' => '1',
-            'departemen' => 'SISTEM PROSEDUR & PENDUKUNG OPERASI'
+            'departemen' => 'SISTEM PROSEDUR & PENDUKUNG OPERASI',
+            'grup' => '3'
         ]);
 
         Departemen::create([
             'satuan_kerja' => '1',
-            'departemen' => 'PENGEMBANGAN TEKNOLOGI INFORMASI'
+            'departemen' => 'PENGEMBANGAN TEKNOLOGI INFORMASI',
+            'grup' => '3'
         ]);
 
         Departemen::create([
             'satuan_kerja' => '2',
-            'departemen' => 'AUDIT INTERNAL'
+            'departemen' => 'AUDIT INTERNAL',
+            'grup' => '3'
         ]);
 
         Departemen::create([
             'satuan_kerja' => '2',
-            'departemen' => 'AUDIT TEKNOLOGI INFORMASI'
+            'departemen' => 'AUDIT TEKNOLOGI INFORMASI',
+            'grup' => '3'
         ]);
 
         Departemen::create([
             'satuan_kerja' => '3',
-            'departemen' => 'DEPARTEMEN SDM'
+            'departemen' => 'DEPARTEMEN SDM',
+            'grup' => '3'
         ]);
 
         Departemen::create([
             'satuan_kerja' => '3',
-            'departemen' => 'DEPARTEMEN HUKUM'
+            'departemen' => 'DEPARTEMEN HUKUM',
+            'grup' => '3'
         ]);
 
         Departemen::create([
             'satuan_kerja' => '4',
-            'departemen' => 'DEPARTEMEN KOMUNIKASI DAN KESEKTRETARIATAN PERUSAHAAN'
+            'departemen' => 'DEPARTEMEN KOMUNIKASI DAN KESEKTRETARIATAN PERUSAHAAN',
+            'grup' => '3'
         ]);
 
         Departemen::create([
             'satuan_kerja' => '4',
-            'departemen' => 'DEPARTEMEN PENDUKUNG BISNIS'
+            'departemen' => 'DEPARTEMEN PENDUKUNG BISNIS',
+            'grup' => '3'
+        ]);
+
+        Departemen::create([
+            'departemen' => 'Kantor Cabang Jatinegara',
+            'grup' => '2'
+        ]);
+
+        Departemen::create([
+            'departemen' => 'Kantor Cabang Surabaya',
+            'grup' => '2'
+        ]);
+
+        Departemen::create([
+            'departemen' => 'Manajemen Risiko',
+            'grup' => '4'
+        ]);
+
+        Departemen::create([
+            'departemen' => 'Kepatuhan',
+            'grup' => '4'
         ]);
 
         Level::create([

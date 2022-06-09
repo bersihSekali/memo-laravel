@@ -15,9 +15,13 @@ class Departemen extends Migration
     {
         Schema::create('departemens', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('satuan_kerja');
+            $table->unsignedBigInteger('satuan_kerja')->nullable();
             $table->foreign('satuan_kerja')->references('id')->on('satuan_kerjas');
             $table->string('departemen')->unique();
+
+            $table->unsignedBigInteger('grup')->nullable();
+            $table->foreign('grup')->references('id')->on('grups');
+
             $table->timestamps();
         });
     }

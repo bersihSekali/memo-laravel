@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Departemen;
 use Illuminate\Http\Request;
 use App\Models\SuratKeluar;
 use App\Models\User;
 use App\Models\SatuanKerja;
+use App\Models\TujuanDepartemen;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -44,12 +46,19 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $satuanKerja = SatuanKerja::all();
         $pengganti = User::all();
+
+        $departemen = Departemen::all();
+        $satuanKerja = SatuanKerja::all();
+        $kantorCabang = Departemen::where('grup', 2)->get();
+        $departemenDireksi = Departemen::where('grup', 4)->get();
 
         $datas = [
             'title' => 'Tambah Surat',
             'satuanKerjas' => $satuanKerja,
+            'departemens' => $departemen,
+            'kantorCabangs' => $kantorCabang,
+            'departemenDireksis' => $departemenDireksi,
             'users' => $user,
             'penggantis' => $pengganti
         ];
@@ -71,11 +80,15 @@ class NomorSuratController extends Controller
             'satuan_kerja_tujuan' => 'required',
             'departemen_tujuan' => 'required',
             'perihal' => 'required',
-            'lampiran' => 'mimes:pdf'
+            'lampiran' => 'mimes:pdf',
+            'tujuan' => 'required'
         ]);
         $validated['departemen_asal'] = $request->departemen_asal;
         $validated['otor2_by_pengganti'] = $request->tunjuk_otor2_by;
         $validated['otor1_by_pengganti'] = $request->tunjuk_otor1_by;
+
+        $tujuan = $validated['tujuan'];
+        unset($validated['tujuan']);
 
         // get file and store
         if ($request->file('lampiran')) {

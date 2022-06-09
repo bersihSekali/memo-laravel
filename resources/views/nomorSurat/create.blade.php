@@ -23,12 +23,12 @@
             <div class="form-group mb-3">
                 <div class="form-selectgroup">
                     <label class="form-selectgroup-item">
-                      <input type="radio" name="tipe-surat" value="1" class="form-selectgroup-input">
-                      <span class="form-selectgroup-label">Internal</span>
+                        <input type="radio" name="tipe-surat" value="1" class="form-selectgroup-input">
+                        <span class="form-selectgroup-label">Internal</span>
                     </label>
                     <label class="form-selectgroup-item">
-                      <input type="radio" name="tipe-surat" value="2" class="form-selectgroup-input">
-                      <span class="form-selectgroup-label">Eksternal</span>
+                        <input type="radio" name="tipe-surat" value="2" class="form-selectgroup-input">
+                        <span class="form-selectgroup-label">Eksternal</span>
                     </label>
                 </div>
             </div>
@@ -54,10 +54,21 @@
             <div class="form-group mb-3 formulir" style="display: none">
                 <label for="tujuan" class="form-label">Tujuan</label>
                 <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan" id="tujuan" multiple="multiple">
-                    <option value=""> ---- </option>
-                    @foreach ($satuanKerjas as $satuanKerja)
-                        <option value="{{ $satuanKerja->id }}">{{ $satuanKerja->satuan_kerja }}</option>
-                    @endforeach
+                    <optgroup label="Unit Kerja">
+                        <option id="unit_kerja" value="unit_kerja">Seluruh Unit Kerja</option>
+                        @foreach ($satuanKerjas as $satuanKerja)
+                        <option class="opsi_unit_kerja" value="{{ $satuanKerja->id }}">{{ $satuanKerja->satuan_kerja }}</option>
+                        @endforeach
+                        @foreach ($departemenDireksis as $departemenDireksi)
+                        <option class="opsi_unit_kerja" value="{{ $departemenDireksi->id }}">{{ $departemenDireksi->departemen }}</option>
+                        @endforeach
+                    </optgroup>
+                    <optgroup label="Kantor Cabang">
+                        <option id="kantor_cabang" value="kantor_cabang">Seluruh Kantor Cabang</option>
+                        @foreach ($kantorCabangs as $kantorCabang)
+                        <option class="opsi_kantor_cabang" value="{{ $kantorCabang->id }}">{{ $kantorCabang->departemen }}</option>
+                        @endforeach
+                    </optgroup>
                 </select>
             </div>
 
@@ -82,9 +93,9 @@
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
                         <option value=""> ---- </option>
                         @foreach ($penggantis as $pengganti)
-                            @if ($pengganti->levelTable->golongan == 7)
-                                <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
-                            @endif
+                        @if ($pengganti->levelTable->golongan == 7)
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        @endif
                         @endforeach
                     </select>
                 </div>
@@ -94,15 +105,15 @@
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
                         <option value=""> ---- </option>
                         @foreach ($penggantis as $pengganti)
-                            @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
-                                @if ($pengganti->satuan_kerja == 1)
-                                    @if ($pengganti->level == 6)
-                                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
-                                    @else
-                                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
-                                    @endif
-                                @endif
-                            @endif
+                        @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
+                        @if ($pengganti->satuan_kerja == 1)
+                        @if ($pengganti->level == 6)
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
+                        @else
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
+                        @endif
+                        @endif
+                        @endif
                         @endforeach
                     </select>
                 </div>
@@ -112,15 +123,15 @@
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor2_by" id="tunjuk_otor2_by">
                         <option value="" selected> ---- </option>
                         @foreach ($penggantis as $pengganti)
-                            @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
-                                @if ($pengganti->satuan_kerja == 1)
-                                    @if ($pengganti->level == 6)
-                                        <option value="{{ $pengganti['id']}}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
-                                    @else
-                                        <option value="{{ $pengganti['id']}}">{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
-                                    @endif
-                                @endif
-                            @endif
+                        @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
+                        @if ($pengganti->satuan_kerja == 1)
+                        @if ($pengganti->level == 6)
+                        <option value="{{ $pengganti['id']}}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
+                        @else
+                        <option value="{{ $pengganti['id']}}">{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
+                        @endif
+                        @endif
+                        @endif
                         @endforeach
                     </select>
                 </div>
@@ -141,7 +152,7 @@
 
 <script>
     $(document).ready(function() {
-        $(".form-selectgroup-input").change(function(){
+        $(".form-selectgroup-input").change(function() {
             var tipe = $(".form-selectgroup-input:checked").val();
             if (tipe == 1) {
                 $('.formulir').show(1000)
@@ -160,10 +171,25 @@
                 $('#pengganti_antar_departemen').hide();
             }
         });
-        
+
         $('#pejabat_pengganti').click(function() {
             $('#otor_pengganti').toggle();
-            
+
+        });
+
+        $('#tujuan').change(function() {
+            if ($('#unit_kerja').is(':selected')) {
+                $('.opsi_unit_kerja').attr('disabled', 'disabled')
+                $(".opsi_unit_kerja").prop("selected", false)
+            } else {
+                $('.opsi_unit_kerja').removeAttr('disabled')
+            }
+            if ($('#kantor_cabang').is(':selected')) {
+                $('.opsi_kantor_cabang').attr('disabled', 'disabled')
+                $('.opsi_kantor_cabang').prop("selected", false)
+            } else {
+                $('.opsi_kantor_cabang').removeAttr('disabled')
+            }
         });
 
     });
