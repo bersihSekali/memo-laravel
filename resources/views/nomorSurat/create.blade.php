@@ -53,7 +53,7 @@
             {{-- Input tujuan --}}
             <div class="form-group mb-3 formulir" style="display: none">
                 <label for="tujuan" class="form-label">Tujuan</label>
-                <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan" id="tujuan" multiple="multiple">
+                <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan[]" id="tujuan" multiple="multiple">
                     <optgroup label="Unit Kerja">
                         <option id="unit_kerja" value="unit_kerja">Seluruh Unit Kerja</option>
                         @foreach ($satuanKerjas as $satuanKerja)

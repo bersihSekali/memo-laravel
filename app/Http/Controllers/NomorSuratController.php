@@ -77,8 +77,6 @@ class NomorSuratController extends Controller
         $validated = $request->validate([
             'created_by' => 'required',
             'satuan_kerja_asal' => 'required',
-            'satuan_kerja_tujuan' => 'required',
-            'departemen_tujuan' => 'required',
             'perihal' => 'required',
             'lampiran' => 'mimes:pdf',
             'tujuan' => 'required'
@@ -89,6 +87,7 @@ class NomorSuratController extends Controller
 
         $tujuan = $validated['tujuan'];
         unset($validated['tujuan']);
+        dd($tujuan);
 
         // get file and store
         if ($request->file('lampiran')) {
