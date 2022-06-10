@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\BidangCabang;
+use App\Models\Cabang;
 use App\Models\Departemen;
 use App\Models\Grup;
 use Illuminate\Database\Seeder;
@@ -41,16 +43,29 @@ class DatabaseSeeder extends Seeder
             'satuan_kerja' => 'SKTILOG',
             'grup' => '1'
         ]);
+
         SatuanKerja::create([
             'satuan_kerja' => 'SKAI',
             'grup' => '1'
         ]);
+
         SatuanKerja::create([
             'satuan_kerja' => 'SKHSDM',
             'grup' => '1'
         ]);
+
         SatuanKerja::create([
             'satuan_kerja' => 'SBK',
+            'grup' => '1'
+        ]);
+
+        SatuanKerja::create([
+            'satuan_kerja' => 'CABANG JABODETABEK',
+            'grup' => '1'
+        ]);
+
+        SatuanKerja::create([
+            'satuan_kerja' => 'CABANG NON JABODETABEK',
             'grup' => '1'
         ]);
 
@@ -109,16 +124,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Departemen::create([
-            'departemen' => 'Kantor Cabang Jatinegara',
-            'grup' => '2'
-        ]);
-
-        Departemen::create([
-            'departemen' => 'Kantor Cabang Surabaya',
-            'grup' => '2'
-        ]);
-
-        Departemen::create([
             'departemen' => 'Manajemen Risiko',
             'grup' => '4'
         ]);
@@ -127,6 +132,178 @@ class DatabaseSeeder extends Seeder
             'departemen' => 'Kepatuhan',
             'grup' => '4'
         ]);
+
+        $jabodetabek = array(
+            'JATINEGARA', 'MANGGA DUA', 'SAMANHUDI', 'SUNTER',
+        );
+
+        $nonJabodetabek = array(
+            'BANDA ACEH', 'BANDUNG', 'LAMPUNG', 'MEDAN', 'PALEMBANG', 'PANAKKUKANG', 'SEMARANG',
+            'SOLO', 'SURABAYA', 'YOGYAKARTA'
+        );
+
+        foreach ($jabodetabek as $item) {
+            Cabang::create([
+                'cabang' => $item,
+                'satuan_kerja_id' => 5
+            ]);
+        };
+
+        foreach ($nonJabodetabek as $item) {
+            Cabang::create([
+                'cabang' => $item,
+                'satuan_kerja_id' => 6
+            ]);
+        };
+
+        $jatinegara = array(
+            'CABANG JATINEGARA', 'KCP DEPOK', 'KCP CILEUNGSI', 'ULS CIMANGGIS', 'ULS MARGONDA DEPOK',
+            'ULS BOGOR', 'ULS GUDANG PELURU', 'ULS PONDOK INDAH', 'ULS PASAR MINGGU'
+        );
+
+        foreach ($jatinegara as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 1
+            ]);
+        };
+
+        $manggaDua = array(
+            'CABANG MANGGA DUA', 'KCP CILEDUG', 'KCP CIPUTAT', 'ULS TANAH ABANG', 'ULS BINTARO UTAMA',
+            'ULS MELAWAI', 'ULS KEMANG MANSION'
+        );
+
+        foreach ($manggaDua as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 2
+            ]);
+        };
+
+        $samanhudi = array(
+            'CABANG SAMANHUDI', 'KCP KENARI', 'KCP PASAR ANYAR TANGERANG', 'ULS TANGERANG',
+            'ULS PLUTI KENCANA', 'ULS PURI INDAH', 'ULS BINTARO'
+        );
+
+        foreach ($samanhudi as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 3
+            ]);
+        };
+
+        $sunter = array(
+            'CABANG SUNTER', 'KCP KELAPA GADING', 'KCP BEKASI', 'KCP PASAR KRANJI BEKASI',
+            'KCP PONDOK GEDE', 'KCP CIKARANG SELATAN', 'ULS JUANDA BEKASI', 'ULS TANJUNG PRIOK'
+        );
+
+        foreach ($sunter as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 4
+            ]);
+        };
+
+        $bandaAceh = array(
+            'CABANG BANDA ACEH', 'KCP LHOKSEUMAWE', 'ULS BIREUEN'
+        );
+
+        foreach ($bandaAceh as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 5
+            ]);
+        };
+
+        $bandung = array(
+            'CABANG BANDUNG', 'ULS BUAH BATU', 'ULS KOTA BARU PARAHYANGAN', 'ULS DAGO'
+        );
+
+        foreach ($bandung as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 6
+            ]);
+        };
+
+        BidangCabang::create([
+            'bidang' => 'CABANG LAMPUNG',
+            'cabang_id' => 7
+        ]);
+
+        $medan = array(
+            'CABANG MEDAN', 'ULS SETIABUDI MEDAN'
+        );
+
+        foreach ($medan as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 8
+            ]);
+        };
+
+        $palembang = array(
+            'CABANG PALEMBANG', 'ULS SUDIRMAN PALEMBANG', 'ULS AHMAD RIVAI'
+        );
+
+        foreach ($palembang as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 9
+            ]);
+        };
+
+        BidangCabang::create([
+            'bidang' => 'CABANG PANAKKUKANG',
+            'cabang_id' => 10
+        ]);
+
+        $semarang = array(
+            'CABANG SEMARANG', 'ULS PEMUDA', 'ULS KUDUS', 'ULS MAJAPAHIT'
+        );
+
+        foreach ($semarang as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 11
+            ]);
+        };
+
+        $solo = array(
+            'CABANG SOLO', 'ULS SLAMET TIYADI', 'ULS SINGOSAREN', 'ULS SRAGEN'
+        );
+
+        foreach ($solo as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 12
+            ]);
+        };
+
+        $surabaya = array(
+            'CABANG SURABAYA', 'KCP MALANG', 'KCP KEDIRI', 'KCP PASURUAN', 'KCP BANYUWANGI',
+            'ULS VETERAN', 'ULS DARMO', 'ULS GEDANGAN', 'ULS SEPANJANG', 'ULS PERAK BARAT',
+            'ULS SIDOARJO', 'ULS PONDOK CHANDRA', 'ULS PANDAAN', 'ULS GRESIK', 'ULS MOJOKERTO',
+            'ULS KAPAS KRAMPUNG', 'ULS KEPANJEN', 'ULS TAMAN PONDOK INDAH'
+        );
+
+        foreach ($surabaya as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 13
+            ]);
+        };
+
+        $yogyakarta = array(
+            'CABANG YOGYAKARTA', 'ULS SUDIRMAN YOGYAKARTA'
+        );
+
+        foreach ($yogyakarta as $item) {
+            BidangCabang::create([
+                'bidang' => $item,
+                'cabang_id' => 14
+            ]);
+        };
 
         Level::create([
             'jabatan' => 'Admin',

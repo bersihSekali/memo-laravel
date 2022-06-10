@@ -45,7 +45,6 @@
                         <tr>
                             <th class="fs-4" scope="col" width="10%">Tanggal</th>
                             <th class="fs-4" scope="col">Asal</th>
-                            <th class="fs-4" scope="col">Tujuan</th>
                             <th class="fs-4" scope="col">Perihal</th>
                             <th class="fs-4" scope="col">PIC</th>
                             <th class="fs-4" scope="col">Status</th>
@@ -63,7 +62,6 @@
                                     {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
                                 @endif
                             </td>
-                            <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                             <td class="align-top">{{ $data->perihal }}</td>
                             <td class="align-top">{{ strtoupper($data->createdBy['name'] )}} </td>
                             <td class="align-top">
@@ -130,8 +128,22 @@
                             </tr>
                             
                             <tr>
-                                <td>Tujuan</td>
-                                <td>: {{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
+                                <td class="align-top">Tujuan</td>
+                                <td>
+                                    {{-- Tujuan departemen --}}
+                                    @foreach ($tujuanDepartemens as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            : {{ $item->tujuanDepartemen->departemen }} <br>
+                                        @endif
+                                    @endforeach
+
+                                    {{-- Tujuan satuan kerja --}}
+                                    @foreach ($tujuanSatkers as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                                        @endif
+                                    @endforeach
+                                </td>
                             </tr>
 
                             <tr>

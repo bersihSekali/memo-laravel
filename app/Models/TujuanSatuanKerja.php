@@ -17,4 +17,9 @@ class TujuanSatuanKerja extends Model
         'pesan_disposisi',
         'tanggal_disposisi'
     ];
+
+    public function tujuanSatuanKerja()
+    {
+        return $this->belongsTo(SatuanKerja::class, 'satuan_kerja_id');
+    }
 }

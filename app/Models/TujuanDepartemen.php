@@ -17,4 +17,9 @@ class TujuanDepartemen extends Model
         'pesan_disposisi',
         'tanggal_disposisi'
     ];
+
+    public function tujuanDepartemen()
+    {
+        return $this->belongsTo(Departemen::class, 'departemen_id');
+    }
 }

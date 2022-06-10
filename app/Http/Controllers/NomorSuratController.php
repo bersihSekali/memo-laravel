@@ -25,15 +25,28 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)->latest()->get();
+        $satuanKerja = SatuanKerja::all()->count();
+        $departemen = Departemen::all()->count();
+        $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+            ->latest()->get();
+
+        // Untuk view column tujuan
+        $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+            ->pluck('id')->toArray();
+        $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+        $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
 
         $datas = [
             'title' => 'Daftar Semua Surat',
             'datas' => $mails,
+            'satuanKerjas' => $satuanKerja,
+            'departemens' => $departemen,
+            'tujuanDepartemens' => $tujuanDepartemen,
+            'tujuanSatkers' => $tujuanSatker,
             'users' => $user
         ];
-
-        // dd($datas);
 
         return view('nomorSurat.index', $datas);
     }
