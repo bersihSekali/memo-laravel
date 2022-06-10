@@ -129,7 +129,7 @@
             </div>
             @if ($users->levelTable['golongan'] == 7)
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['id'] }}">Selesaikan</button>
+                <a class="btn btn-success" href="/tujuanDepartemen/{{$data['id']}}/edit">Selesaikan</a>
             </div>
             @elseif ($users->levelTable['golongan'] >= 6)
             <div class="modal-footer">
@@ -159,7 +159,7 @@
                 <div class="modal-body">
                     <div class="form-group mb-3">
                         <label for="departemen_tujuan" class="form-label ">Teruskan ke:</label>
-                        <select class="form-select mb-3" aria-label=".form-select-sm example" name="departemen_tujuan[]" id="departemen_tujuan" multiple="multiple">
+                        <select class="form-select on-modal mb-3" aria-label=".form-select-sm example" name="departemen_tujuan[]" id="departemen_tujuan" multiple="multiple">
                             @foreach($departemens as $item)
                             @if($item->satuan_kerja == $users->satuan_kerja)
                             <option value="{{$item['id']}}">{{$item['departemen']}}</option>
