@@ -131,7 +131,7 @@
                                         <span class="badge bg-secondary">Pending</span>
                                     
                                     {{-- approved otor2_by antar departemen --}}
-                                    @elseif (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+                                    @elseif (($data->status == 2) && ($data->internal == 1))
                                         <span class="badge bg-success">
                                             Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                                         </span>

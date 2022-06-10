@@ -43,6 +43,7 @@ class CreateSuratKeluarsTable extends Migration
 
             $table->string('lampiran')->nullable();
             $table->string('pesan_tolak')->nullable();
+            $table->unsignedBigInteger('internal');
 
             $table->unsignedBigInteger('status')->default(1);
         });

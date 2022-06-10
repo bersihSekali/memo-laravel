@@ -23,11 +23,11 @@
             <div class="form-group mb-3">
                 <div class="form-selectgroup">
                     <label class="form-selectgroup-item">
-                        <input type="radio" name="tipe-surat" value="1" class="form-selectgroup-input">
+                        <input type="radio" name="tipe_surat" value="1" class="form-selectgroup-input">
                         <span class="form-selectgroup-label">Internal</span>
                     </label>
                     <label class="form-selectgroup-item">
-                        <input type="radio" name="tipe-surat" value="2" class="form-selectgroup-input">
+                        <input type="radio" name="tipe_surat" value="2" class="form-selectgroup-input">
                         <span class="form-selectgroup-label">Eksternal</span>
                     </label>
                 </div>
@@ -53,8 +53,8 @@
             {{-- Input tujuan --}}
             <div class="form-group mb-3 formulir" style="display: none">
                 <label for="tujuan" class="form-label mb-3">Tujuan</label>
-                <div class="row justify-content-end">
-                    <div class="row mb-2">
+                <div class="row justify-content-end tujuan-eksternal" style="display: none">
+                    <div class="row">
                         <label for="">Unit Kerja</label>
                     </div>
                     <div class="row justify-content-end">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-end">
+                <div class="row justify-content-end tujuan-eksternal" style="display: none">
                     <div class="row my-2">
                         <label for="">Departemen Satu Tingkat di Bawah Direksi</label>
                     </div>
@@ -83,8 +83,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-end">
-                    <div class="row my-2">
+                <div class="row justify-content-end tujuan-eksternal" style="display: none">
+                    <div class="row mb-2">
                         <label for="">Unit Layanan</label>
                     </div>
                     <div class="row">
@@ -93,6 +93,23 @@
                                 <option id="kantor_cabang" value="kantor_cabang">Seluruh Kantor Cabang</option>
                                 @foreach ($kantorCabangs as $kantorCabang)
                                 <option class="opsi_kantor_cabang" value="{{ $kantorCabang->id }}">{{ $kantorCabang->departemen }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-end tujuan-internal" style="display: none">
+                    <div class="row">
+                        <label for="">Departemen Internal</label>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan_internal[]" id="tujuan_internal" multiple="multiple">
+                                <option id="internal" value="internal">Seluruh Internal</option>
+                                @foreach ($departemens as $departemen)
+                                    @if ($departemen->satuan_kerja == 1)
+                                        <option class="opsi_departemen" value="{{ $departemen->id }}">{{ $departemen->departemen }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -183,26 +200,26 @@
         $(".form-selectgroup-input").change(function() {
             var tipe = $(".form-selectgroup-input:checked").val();
             if (tipe == 1) {
+                $('.tujuan-eksternal').hide(500)
+                $('.tujuan-internal').show(1000)
                 $('.formulir').show(1000)
-                $('#internal').show(1000)
                 $('#eksternal').hide(500)
+                $('#internal').show(1000)
+                $('#pengganti_antar_departemen').show()
+                $('#pengganti_antar_satuan_kerja').hide()
             } else {
+                $('.tujuan-eksternal').show(1000)
+                $('.tujuan-internal').hide(500)
                 $('.formulir').show(1000)
                 $('#internal').show(1000)
                 $('#eksternal').show(500)
-            }
-            if (tipe == 1) {
-                $('#pengganti_antar_departemen').show();
-                $('#pengganti_antar_satuan_kerja').hide();
-            } else {
-                $('#pengganti_antar_satuan_kerja').show();
-                $('#pengganti_antar_departemen').hide();
+                $('#pengganti_antar_satuan_kerja').show()
+                $('#pengganti_antar_departemen').hide()
             }
         });
 
         $('#pejabat_pengganti').click(function() {
             $('#otor_pengganti').toggle();
-
         });
 
         $('#tujuan_satuan_kerja').select2({

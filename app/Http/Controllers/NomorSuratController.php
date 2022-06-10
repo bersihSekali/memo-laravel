@@ -78,6 +78,8 @@ class NomorSuratController extends Controller
         $satuanKerja = SatuanKerja::all();
         $kantorCabang = Departemen::where('grup', 2)->get();
         $departemenDireksi = Departemen::where('grup', 4)->get();
+        // Departemen internal STL
+        $departemenInternal = Departemen::where('satuan_kerja', 1)->get();
 
         $validated = $request->validate([
             'created_by' => 'required',
@@ -88,10 +90,12 @@ class NomorSuratController extends Controller
         $validated['departemen_asal'] = $request->departemen_asal;
         $validated['otor2_by_pengganti'] = $request->tunjuk_otor2_by;
         $validated['otor1_by_pengganti'] = $request->tunjuk_otor1_by;
+        $validated['internal'] = $request->tipe_surat;
 
-        $tujuanUnitKerja = $request['tujuan_unit_kerja'];
-        $tujuanDepartemenDireksi = $request['tujuan_departemen_direksi'];
-        $tujuanKantorCabang = $request['tujuan_kantor_cabang'];
+        $tujuanUnitKerja = $request->tujuan_unit_kerja;
+        $tujuanDepartemenDireksi = $request->tujuan_departemen_direksi;
+        $tujuanKantorCabang = $request->tujuan_kantor_cabang;
+        $tujuanInternal = $request->tujuan_internal;
 
         // get file and store
         if ($request->file('lampiran')) {
@@ -106,13 +110,48 @@ class NomorSuratController extends Controller
 
         $idSurat = $create->id;
 
+        // Seluruh tujuan internal
+        if ($tujuanInternal[0] == 'internal') {
+            foreach ($departemenInternal as $item) {
+                TujuanDepartemen::create([
+                    'memo_id' => $idSurat,
+                    'departemen_id' => $item->id
+                ]);
+            }
+        } elseif ($tujuanInternal != null) {
+            foreach ($tujuanInternal as $item) {
+                TujuanDepartemen::create([
+                    'memo_id' => $idSurat,
+                    'departemen_id' => $item
+                ]);
+            }
+        }
+
+        // Seluruh tujuan kantor cabang
+        if ($tujuanKantorCabang[0] == 'kantor_cabang') {
+            foreach ($kantorCabang as $item) {
+                TujuanDepartemen::create([
+                    'memo_id' => $idSurat,
+                    'departemen_id' => $item->id
+                ]);
+            }
+        } elseif ($tujuanKantorCabang != null) {
+            foreach ($tujuanKantorCabang as $item) {
+                TujuanDepartemen::create([
+                    'memo_id' => $idSurat,
+                    'departemen_id' => $item
+                ]);
+            }
+        }
+
+        // Return gagal simpan
         if (!$create) {
             return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal');
         }
 
         if ($tujuanUnitKerja[0] == 'unit_kerja') {
             foreach ($satuanKerja as $item) {
-                $create = TujuanSatuanKerja::create([
+                TujuanSatuanKerja::create([
                     'memo_id' => $idSurat,
                     'satuan_kerja_id' => $item->id,
                 ]);

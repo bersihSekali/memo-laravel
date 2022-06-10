@@ -32,7 +32,6 @@ class OtorisasiBaruController extends Controller
             $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('departemen_asal', $user->departemen)
                 ->where('status', 1)
-                ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
                 ->union($pengganti1)
                 ->latest()->get();
         }
@@ -45,11 +44,9 @@ class OtorisasiBaruController extends Controller
             // antar departemen sebagai otor1_by
             $antarDepartemen = SuratKeluar::where('departemen_asal', $user->departemen)
                 ->where('status', 2)
-                ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
                 ->latest();
             // antar satuan kerja sebagai otor2_by
-            $mails = SuratKeluar::whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
-                ->where('status', 1)
+            $mails = SuratKeluar::where('status', 1)
                 ->union($antarDepartemen)
                 ->latest()->get();
         }
@@ -64,19 +61,16 @@ class OtorisasiBaruController extends Controller
             // antar departemen sebagai otor2_by
             $antarDepartemen2 = SuratKeluar::where('departemen_asal', $user->departemen)
                 ->where('status', 1)
-                ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
                 ->union($pengganti1)
                 ->latest();
             // antar departemen sebagai otor1_by
             $antarDepartemen1 = SuratKeluar::where('departemen_asal', $user->departemen)
                 ->where('status', 2)
                 ->where('otor2_by', '!=', $user->id)
-                ->whereRaw('satuan_kerja_asal = satuan_kerja_tujuan')
                 ->union($antarDepartemen2)
                 ->latest();
             // antar satuan kerja sebagai otor2_by
-            $mails = SuratKeluar::whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
-                ->where('status', 1)
+            $mails = SuratKeluar::where('status', 1)
                 ->union($antarDepartemen1)
                 ->latest()->get();
         }
@@ -88,7 +82,6 @@ class OtorisasiBaruController extends Controller
             // Antar satuan kerja sebagai otor1_by
             $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('status', 2)
-                ->whereRaw('satuan_kerja_asal != satuan_kerja_tujuan')
                 ->union($pengganti)
                 ->latest()->get();
         }

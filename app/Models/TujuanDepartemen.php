@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class TujuanDepartemen extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'memo_id',
+        'departemen_id',
+        'status_baca',
+        'tanggal_baca',
+        'pesan_disposisi',
+        'tanggal_disposisi'
+    ];
 }

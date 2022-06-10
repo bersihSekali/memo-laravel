@@ -133,7 +133,7 @@
             {{-- Kepala bidang, kepala operasi cabang, kepala cabang pembantu, officer --}}
             @if ($users->levelTable->golongan == 5)
             {{-- Surat antar departemen --}}
-            @if (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+            @if (($data->status == 2) && ($data->internal == 1))
             <td>Disetujui Oleh</td>
             <td>:
               <span class="badge bg-success">
@@ -148,7 +148,7 @@
             {{-- Kepala cabang, kepala departemen, senior officer --}}
             @elseif ($users->levelTable->golongan == 6)
             {{-- Surat antar departemen --}}
-            @if (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+            @if (($data->status == 2) && ($data->internal == 1))
             <td>Disetujui Oleh</td>
             <td>:
               <span class="badge bg-success">
@@ -163,7 +163,7 @@
             {{-- Kepala divisi, kepala satuan kerja, kepala unit kerja --}}
             @elseif ($users->levelTable->golongan == 7)
             {{-- Surat antar departemen --}}
-            @if (($data->status == 2) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
+            @if (($data->status == 2) && ($data->internal == 2))
             <td>Disetujui Oleh</td>
             <td>:
               <span class="badge bg-success">
@@ -203,7 +203,7 @@
       {{-- Kepala bidang, kepala operasi cabang, kepala cabang pembantu, officer --}}
       @if ($users->levelTable->golongan == 5)
       {{-- Surat antar departemen sebagai otor2_by --}}
-      @if (($data->status == 1) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+      @if (($data->status == 1) && ($data->internal == 1))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
@@ -223,7 +223,7 @@
       {{-- Senior officer --}}
       @elseif (($users->levelTable->golongan == 6) && ($users->level == 7))
       {{-- Surat antar departemen sebagai otor2_by --}}
-      @if (($data->status == 1) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+      @if (($data->status == 1) && ($data->internal == 1))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
@@ -240,7 +240,7 @@
       </div>
 
       {{-- Surat antar departemen sebagai otor1_by --}}
-      @elseif (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan) && ($data->otor2_by != $users->id))
+      @elseif (($data->status == 2) && ($data->internal == 1) && ($data->otor2_by != $users->id))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
@@ -258,7 +258,7 @@
       </div>
 
       {{-- Surat antar satuan kerja sebagai otor2_by --}}
-      @elseif (($data->status == 1) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
+      @elseif (($data->status == 1) && ($data->internal == 2))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
@@ -278,7 +278,7 @@
       {{-- Kepala departemen --}}
       @elseif (($users->levelTable->golongan == 6) && ($users->level == 6))
       {{-- Surat antar departemen sebagai otor1_by --}}
-      @if (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+      @if (($data->status == 2) && ($data->internal == 1))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
@@ -296,7 +296,7 @@
       </div>
 
       {{-- Surat antar satuan kerja sebagai otor2_by --}}
-      @elseif (($data->status == 1) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
+      @elseif (($data->status == 1) && ($data->internal == 2))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
@@ -345,7 +345,7 @@
       {{-- Kepala bidang, kepala operasi cabang, kepala cabang pembantu, officer --}}
       @if ($users->levelTable->golongan == 5)
       {{-- Rejected Surat antar departemen sebagai otor2_by --}}
-      @if (($data->status == 1) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+      @if (($data->status == 1) && ($data->internal == 1))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
@@ -369,7 +369,7 @@
       {{-- Senior officer --}}
       @elseif (($users->levelTable->golongan == 6) && ($users->level == 7))
       {{-- Rejected Surat antar departemen sebagai otor2_by --}}
-      @if (($data->status == 1) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+      @if (($data->status == 1) && ($data->internal == 1))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
@@ -390,7 +390,7 @@
       </div>
 
       {{-- Rejected surat antar departemen sebagai otor1_by --}}
-      @elseif (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan) && ($data->otor2_by != $users->id))
+      @elseif (($data->status == 2) && ($data->internal == 2) && ($data->otor2_by != $users->id))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
@@ -412,7 +412,7 @@
       </div>
 
       {{-- Surat antar satuan kerja sebagai otor2_by --}}
-      @elseif (($data->status == 1) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
+      @elseif (($data->status == 1) && ($data->internal == 2))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
@@ -436,7 +436,7 @@
       {{-- Kepala departemen --}}
       @elseif (($users->levelTable->golongan == 6) && ($users->level == 6))
       {{-- Rejected surat antar departemen sebagai otor1_by --}}
-      @if (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
+      @if (($data->status == 2) && ($data->internal == 1))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
@@ -458,7 +458,7 @@
       </div>
 
       {{-- Surat antar satuan kerja sebagai otor2_by --}}
-      @elseif (($data->status == 1) && ($data->satuan_kerja_asal != $data->satuan_kerja_tujuan))
+      @elseif (($data->status == 1) && ($data->internal == 2))
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>

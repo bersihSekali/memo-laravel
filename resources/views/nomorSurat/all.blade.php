@@ -119,7 +119,7 @@
                                     {{-- approved otor2_by --}}
                                     @elseif ($data->status == 2)
                                         {{-- Antar departemen --}}
-                                        @if ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan)
+                                        @if ($data->internal == 1)
                                             <span class="badge bg-success">
                                                 Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                                             </span>
@@ -139,7 +139,7 @@
                                     
                                     {{-- approved otor1_by --}}
                                     @elseif ($data->status == 3)
-                                        @if ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan)
+                                        @if ($data->internal == 1)
                                             <span class="badge bg-success">
                                                 Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                                             </span>

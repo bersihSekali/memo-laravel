@@ -24,6 +24,7 @@ class SuratKeluar extends Model
         'tanggal_otor2',
         'tanggal_otor1',
         'status',
+        'internal',
         'no_urut'
     ];
 
