@@ -77,7 +77,7 @@
                             <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan_departemen_direksi[]" id="tujuan_departemen_direksi" multiple="multiple">
                                 <option id="departemen_direksi" value="departemen_direksi">Seluruh Departemen di Bawah Direksi</option>
                                 @foreach ($departemenDireksis as $departemenDireksi)
-                                <option class="opsi_departemen_direksi" value="{{ $departemenDireksi->id }}">{{ $departemenDireksi->departemen }}</option>
+                                    <option class="opsi_departemen_direksi" value="{{ $departemenDireksi->id }}">{{ $departemenDireksi->departemen }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -90,9 +90,17 @@
                     <div class="row">
                         <div class="col">
                             <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan_kantor_cabang[]" id="tujuan_kantor_cabang" multiple="multiple">
-                                <option id="kantor_cabang" value="kantor_cabang">Seluruh Kantor Cabang</option>
-                                @foreach ($kantorCabangs as $kantorCabang)
-                                <option class="opsi_kantor_cabang" value="{{ $kantorCabang->id }}">{{ $kantorCabang->departemen }}</option>
+                                <option id="kantor_cabang" value="kantor_cabang">SELURUH KANTOR CABANG</option>
+                                @foreach ($cabangs as $cabang)
+                                    @if ($cabang->id == 1)
+                                        @continue
+                                    @endif
+                                    <option class="opsi_kantor_cabang_besar" value="S{{ $cabang->id }}">{{ $cabang->cabang }}</option>
+                                    @foreach ($bidangCabangs as $bidang)
+                                        @if ($bidang->cabang_id == $cabang->id)
+                                            <option class="opsi_kantor_bidang" value="{{ $bidang->id }}">- {{ $bidang->bidang }}</option>
+                                        @endif
+                                    @endforeach
                                 @endforeach
                             </select>
                         </div>
@@ -245,10 +253,13 @@
         });
         $('#tujuan_kantor_cabang').change(function() {
             if ($('#kantor_cabang').is(':selected')) {
-                $('.opsi_kantor_cabang').attr('disabled', 'disabled')
-                $('.opsi_kantor_cabang').prop("selected", false)
+                $('.opsi_kantor_cabang_besar').attr('disabled', 'disabled')
+                $('.opsi_kantor_cabang_besar').prop("selected", false)
+                $('.opsi_kantor_bidang').attr('disabled', 'disabled')
+                $('.opsi_kantor_bidang').prop("selected", false)
             } else {
-                $('.opsi_kantor_cabang').removeAttr('disabled')
+                $('.opsi_kantor_cabang_besar').removeAttr('disabled')
+                $('.opsi_kantor_bidang').removeAttr('disabled')
             }
         });
     });

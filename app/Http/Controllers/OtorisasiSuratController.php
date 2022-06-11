@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\Models\SuratKeluar;
+use App\Models\TujuanDepartemen;
+use App\Models\TujuanKantorCabang;
+use App\Models\TujuanSatuanKerja;
 use App\Models\User;
+
 
 class OtorisasiSuratController extends Controller
 {
@@ -20,6 +24,16 @@ class OtorisasiSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
+
+        // Untuk view column tujuan
+        $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+            ->pluck('id')->toArray();
+        $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+        $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+        $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
 
         // Officer, kepala bidang, kepala operasi cabang, kepala cabang pembantu golongan 5
         if ($user->levelTable->golongan == 5) {
@@ -88,7 +102,7 @@ class OtorisasiSuratController extends Controller
                 ->latest();
             // antar satuan kerja sebagai otor2_by
             $mails = SuratKeluar::where('status', 1)
-                ->where('internal', 1)
+                ->where('internal', 2)
                 ->union($antarDepartemen1)
                 ->latest()->get();
         }
@@ -110,6 +124,9 @@ class OtorisasiSuratController extends Controller
         $datas = [
             'title' => 'Daftar Otorisasi Surat',
             'datas' => $mails,
+            'tujuanDepartemens' => $tujuanDepartemen,
+            'tujuanSatkers' => $tujuanSatker,
+            'tujuanCabangs' => $tujuanCabangs,
             'users' => $user
         ];
         // dd($datas);

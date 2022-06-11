@@ -18,15 +18,18 @@ class CreateTujuanKantorCabangsTable extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('memo_id');
-            $table->unsignedBigInteger('cabang_id');
+            $table->unsignedBigInteger('cabang_id')->nullable();
+            $table->unsignedBigInteger('bidang_id')->nullable();
+            $table->boolean('all_flag');
 
             $table->foreign('memo_id')->references('id')->on('surat_keluars');
             $table->foreign('cabang_id')->references('id')->on('cabangs');
+            $table->foreign('bidang_id')->references('id')->on('bidang_cabangs');
 
-            $table->integer('status_baca');
-            $table->date('tanggal_baca');
-            $table->string('pesan_disposisi');
-            $table->date('tanggal_disposisi');
+            $table->integer('status_baca')->nullable();
+            $table->date('tanggal_baca')->nullable();
+            $table->string('pesan_disposisi')->nullable();
+            $table->date('tanggal_disposisi')->nullable();
         });
     }
 

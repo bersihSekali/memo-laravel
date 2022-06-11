@@ -44,10 +44,10 @@
                     <thead>
                         <tr>
                             <th class="fs-4" scope="col" width="10%">Tanggal</th>
-                            <th class="fs-4" scope="col">Asal</th>
+                            <th class="fs-4" scope="col" width="20%">Asal</th>
                             <th class="fs-4" scope="col">Perihal</th>
-                            <th class="fs-4" scope="col">PIC</th>
-                            <th class="fs-4" scope="col">Status</th>
+                            <th class="fs-4" scope="col" width="10%">PIC</th>
+                            <th class="fs-4" scope="col" width="8%">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,12 +102,12 @@
                     <div class="table-responsive">
                         <table id="tabel-data" style="width:100%">
                             <tr>
-                                <td>Tanggal Registrasi</td>
+                                <td width="20%">Tanggal Registrasi</td>
                                 <td>: {{ $data->created_at }}</td>
                             </tr>
 
                             <tr>
-                                <td>Nomor Surat</td>
+                                <td width="20%">Nomor Surat</td>
                                 <td>: 
                                     @if (!$data->nomor_surat)
                                         Setujui surat terlebih dahulu
@@ -118,18 +118,38 @@
                             </tr>
 
                             <tr>
-                                <td>PIC</td>
+                                <td width="20%">Pembuat</td>
                                 <td>: {{ strtoupper($data->createdBy['name']) }}</td>
                             </tr>
                             
                             <tr>
-                                <td>Asal</td>
+                                <td width="20%">Asal</td>
                                 <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
                             </tr>
                             
                             <tr>
-                                <td class="align-top">Tujuan</td>
+                                <td class="align-top" width="20%">Tujuan</td>
                                 <td>
+                                    {{-- Tujuan kantor cabang --}}
+                                    @foreach ($tujuanCabangs as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            @if (($item->all_flag == true) && ($item->bidang_id == null) && ($item->cabang_id ==1))
+                                                : SELURUH KANTOR CABANG
+                                            @elseif ($item->cabang_id != null)
+                                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
+                                            @endif
+                                        @endif
+                                    @endforeach
+
+                                    {{-- Tujuan kantor bidang --}}
+                                    @foreach ($tujuanCabangs as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            @if ($item->bidang_id != null)
+                                                : {{ $item->tujuanBidang->bidang }} <br>
+                                            @endif
+                                        @endif
+                                    @endforeach
+
                                     {{-- Tujuan departemen --}}
                                     @foreach ($tujuanDepartemens as $item)
                                         @if ($item->memo_id == $data->id)
@@ -148,18 +168,18 @@
 
                             <tr>
                                 @if ($data->otor2_by_pengganti && $data->otor1_by_pengganti)
-                                  <td>Pejabat Pengganti</td>
+                                  <td width="20%">Pejabat Pengganti</td>
                                   <td>
                                     : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2 <br>
                                     {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
                                   </td>
                                 @elseif ($data->otor2_by_pengganti && !$data->otor1_by_pengganti)
-                                  <td>Pejabat Pengganti</td>
+                                  <td width="20%">Pejabat Pengganti</td>
                                   <td>
                                     : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2
                                   </td>
                                 @elseif (!$data->otor2_by_pengganti && $data->otor1_by_pengganti)
-                                  <td>Pejabat Pengganti</td>
+                                  <td width="20%">Pejabat Pengganti</td>
                                   <td>
                                     : {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
                                   </td>
@@ -167,19 +187,19 @@
                               </tr>
 
                             <tr>
-                                <td>Perihal</td>
+                                <td class="align-top" width="20%">Perihal</td>
                                 <td>: {{ $data->perihal }}</td>
                             </tr>
 
                             @if ($data->status == 0)
                                 <tr>
-                                    <td>Catatan</td>
+                                    <td width="20%">Catatan</td>
                                     <td>: {{ $data->pesan_tolak }}</td>
                                 </tr>
                             @endif
 
                             <tr>
-                                <td>Status</td>
+                                <td width="20%">Status</td>
                                 <td>
                                     : @if ($data->status == 1)
                                         <span class="badge bg-secondary">Pending</span>
@@ -246,7 +266,7 @@
                                 </td>
                             </tr>
 
-                            <tr>
+                            <tr width="20%">
                                 <td>Lampiran</td>
                                 <td>: <a href="/storage/{{ $data['lampiran'] }}" target="_blank"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
                             </tr>

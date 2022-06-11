@@ -134,7 +134,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $jabodetabek = array(
-            'JATINEGARA', 'MANGGA DUA', 'SAMANHUDI', 'SUNTER',
+            'SELURUH KANTOR CABANG', 'JATINEGARA', 'MANGGA DUA', 'SAMANHUDI', 'SUNTER',
         );
 
         $nonJabodetabek = array(
@@ -164,7 +164,7 @@ class DatabaseSeeder extends Seeder
         foreach ($jatinegara as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 1
+                'cabang_id' => 2
             ]);
         };
 
@@ -176,7 +176,7 @@ class DatabaseSeeder extends Seeder
         foreach ($manggaDua as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 2
+                'cabang_id' => 3
             ]);
         };
 
@@ -188,7 +188,7 @@ class DatabaseSeeder extends Seeder
         foreach ($samanhudi as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 3
+                'cabang_id' => 4
             ]);
         };
 
@@ -200,7 +200,7 @@ class DatabaseSeeder extends Seeder
         foreach ($sunter as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 4
+                'cabang_id' => 5
             ]);
         };
 
@@ -211,7 +211,7 @@ class DatabaseSeeder extends Seeder
         foreach ($bandaAceh as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 5
+                'cabang_id' => 6
             ]);
         };
 
@@ -222,13 +222,13 @@ class DatabaseSeeder extends Seeder
         foreach ($bandung as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 6
+                'cabang_id' => 7
             ]);
         };
 
         BidangCabang::create([
             'bidang' => 'CABANG LAMPUNG',
-            'cabang_id' => 7
+            'cabang_id' => 8
         ]);
 
         $medan = array(
@@ -238,7 +238,7 @@ class DatabaseSeeder extends Seeder
         foreach ($medan as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 8
+                'cabang_id' => 9
             ]);
         };
 
@@ -249,13 +249,13 @@ class DatabaseSeeder extends Seeder
         foreach ($palembang as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 9
+                'cabang_id' => 10
             ]);
         };
 
         BidangCabang::create([
             'bidang' => 'CABANG PANAKKUKANG',
-            'cabang_id' => 10
+            'cabang_id' => 11
         ]);
 
         $semarang = array(
@@ -265,7 +265,7 @@ class DatabaseSeeder extends Seeder
         foreach ($semarang as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 11
+                'cabang_id' => 12
             ]);
         };
 
@@ -276,7 +276,7 @@ class DatabaseSeeder extends Seeder
         foreach ($solo as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 12
+                'cabang_id' => 13
             ]);
         };
 
@@ -290,7 +290,7 @@ class DatabaseSeeder extends Seeder
         foreach ($surabaya as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 13
+                'cabang_id' => 14
             ]);
         };
 
@@ -301,7 +301,7 @@ class DatabaseSeeder extends Seeder
         foreach ($yogyakarta as $item) {
             BidangCabang::create([
                 'bidang' => $item,
-                'cabang_id' => 14
+                'cabang_id' => 15
             ]);
         };
 
