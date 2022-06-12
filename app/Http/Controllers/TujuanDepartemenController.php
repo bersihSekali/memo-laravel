@@ -65,6 +65,7 @@ class TujuanDepartemenController extends Controller
         $idUser = Auth::id();
         $user = User::find($idUser);
 
+
         //cek memo
         $tujuanSatker = TujuanSatuanKerja::where('satuan_kerja_id', $user['satuan_kerja'])->pluck('memo_id')->toArray();
         if (!in_array($id, $tujuanSatker)) {
@@ -72,13 +73,18 @@ class TujuanDepartemenController extends Controller
         }
 
         $edit = SuratKeluar::where('id', $id)->first();
-        $departemen = Departemen::where('satuan_kerja', $user->satuan_kerja)->get();
+
+        $forwarded = TujuanDepartemen::where('memo_id', $edit['id'])->get();
+        $forwarded_id = TujuanDepartemen::where('memo_id', $edit['id'])->pluck('departemen_id')->toArray();
+        $forward = Departemen::where('satuan_kerja', $user->satuan_kerja)->get();
 
         return view('tujuanDepartemen/edit', [
             'title' => 'Teruskan ke Departemen',
             'users' => $user,
             'edits' => $edit,
-            'departemens' => $departemen
+            'forwardeds' => $forwarded,
+            'forwarded_ids' => $forwarded_id,
+            'forwards' => $forward,
         ]);
     }
 
@@ -106,9 +112,6 @@ class TujuanDepartemenController extends Controller
         $datas = TujuanSatuanKerja::find($tujuanSatkerId->id);
         $update[] = $datas['tanggal_baca'] = date('Y-m-d');
         $datas['status_baca'] = 1;
-        $datas['pesan_disposisi'] = "haha";
-        array_push($update, $datas['pesan_disposisi']);
-
         $datas->update($update);
 
         //tujuan departemen
@@ -116,6 +119,7 @@ class TujuanDepartemenController extends Controller
             TujuanDepartemen::create([
                 'memo_id' => $id,
                 'departemen_id' => $item,
+                'pesan_disposisi' => $validated['pesan_disposisi']
             ]);
         };
 

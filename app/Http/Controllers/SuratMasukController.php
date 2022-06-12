@@ -25,19 +25,18 @@ class SuratMasukController extends Controller
         $user = User::find($id);
 
         if ($user->levelTable->golongan == 7) {
-            $memoId = TujuanSatuanKerja::where('satuan_kerja_id', $user['satuan_kerja'])->pluck('memo_id')->toArray();
-            $data = SuratKeluar::where('status', 3)->whereIn('id', $memoId)->latest()->get();
-            $pesan = [];
+            $data = SuratKeluar::with('tujuanSatker')
+                ->join('tujuan_satuan_kerjas', 'surat_keluars.id', '=', 'tujuan_satuan_kerjas.memo_id')
+                ->where('satuan_kerja_id', $user['satuan_kerja'])->latest('tujuan_satuan_kerjas.created_at')->get();
         } elseif ($user->levelTable->golongan == 6) {
-            $memoId = TujuanDepartemen::where('departemen_id', $user['departemen'])->pluck('memo_id')->toArray();
-            $data = SuratKeluar::where('status', 3)->whereIn('id', $memoId)->latest()->get();
-            $pesan = TujuanDepartemen::where('departemen_id', $user['departemen'])->latest()->get();
+            $data = SuratKeluar::with('tujuanDepartemen')
+                ->join('tujuan_departemens', 'surat_keluars.id', '=', 'tujuan_departemens.memo_id')
+                ->where('departemen_id', $user['departemen'])->latest('tujuan_departemens.created_at')->get();
         } elseif ($user->levelTable['golongan'] <= 5) {
             $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
             $data = SuratKeluar::whereIn('id', $memoId)->latest()->get();
             $pesan = [];
         }
-
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
         return view('suratmasuk/index', [
@@ -46,7 +45,6 @@ class SuratMasukController extends Controller
             'users' => $user,
             'satuanKerjas' => $satuanKerja,
             'departemens' => $departemen,
-            'pesan' => $pesan,
         ]);
     }
 

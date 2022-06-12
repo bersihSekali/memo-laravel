@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\SuratKeluar;
+use App\Models\TujuanDepartemen;
+use Illuminate\Database\Schema\Builder;
 
 class ForwardController extends Controller
 {
@@ -62,35 +64,30 @@ class ForwardController extends Controller
     {
         $idUser = Auth::id();
         $user = User::find($idUser);
-        $edit = SuratKeluar::find($id);
 
-        if ($user->levelTable['golongan'] == 7) {
-            $forwarded = Forward::where('memo_id', $edit['id'])->get();
-            $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
-            $forward = User::where('satuan_kerja', $edit['satuan_kerja_tujuan'])->whereHas('levelTable', function ($q) {
-                $q->where('golongan', 6);
-            })->get();
-            return view('forward/edit', [
-                'title' => 'Terusan Memo',
-                'users' => $user,
-                'forwards' => $forward,
-                'forwardeds' => $forwarded,
-                'forwarded_ids' => $forwarded_id,
-                'edits' => $edit
-            ]);
-        } else {
-            $forwarded = Forward::where('memo_id', $edit['id'])->get();
-            $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
-            $forward = User::where('departemen', $edit['departemen_tujuan'])->where('level', '>=', 4)->get();
-            return view('forward/edit', [
-                'title' => 'Terusan Memo',
-                'users' => $user,
-                'forwards' => $forward,
-                'forwardeds' => $forwarded,
-                'forwarded_ids' => $forwarded_id,
-                'edits' => $edit
-            ]);
+
+        //cek memo
+        $tujuanDepartemen = TujuanDepartemen::where('departemen_id', $user['departemen'])->pluck('memo_id')->toArray();
+        if (!in_array($id, $tujuanDepartemen)) {
+            dd('tidak ditemukan');
         }
+
+        $edit = SuratKeluar::where('id', $id)->first();
+
+        $forwarded = Forward::where('memo_id', $edit['id'])->get();
+        $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
+        $forward = User::where('departemen', $user->departemen)->whereHas('levelTable', function ($query) {
+            $query->where('golongan', '<', '6');
+        })->get();
+
+        return view('forward/edit', [
+            'title' => 'Teruskan',
+            'users' => $user,
+            'edits' => $edit,
+            'forwardeds' => $forwarded,
+            'forwarded_ids' => $forwarded_id,
+            'forwards' => $forward,
+        ]);
     }
 
     /**

@@ -61,4 +61,14 @@ class SuratKeluar extends Model
     {
         return $this->belongsTo(User::class, 'otor1_by_pengganti');
     }
+
+    public function tujuanSatker()
+    {
+        return $this->belongsTo(TujuanSatuanKerja::class);
+    }
+
+    public function tujuanDepartemen()
+    {
+        return $this->belongsTo(TujuanSatuanKerja::class);
+    }
 }
