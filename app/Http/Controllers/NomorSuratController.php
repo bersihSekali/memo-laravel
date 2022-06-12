@@ -16,10 +16,15 @@ use App\Models\TujuanSatuanKerja;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Telegram\Bot\Api;
 
 
 class NomorSuratController extends Controller
 {
+    public function __construct()
+    {
+        $this->telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
+    }
     /**
      * Display a listing of the resource.
      *
@@ -206,6 +211,12 @@ class NomorSuratController extends Controller
                 ]);
             }
         };
+
+        // Kirim notifikasi via telegram
+        $this->telegram->sendMessage([
+            'chat_id' => '986550971',
+            'text' => 'Memo baru dengan perihal ' . strtoupper($validated['perihal']) . ' telah dibuat'
+        ]);
 
         return redirect('/nomorSurat')->with('success', 'Pembuatan surat berhasil');
     }
