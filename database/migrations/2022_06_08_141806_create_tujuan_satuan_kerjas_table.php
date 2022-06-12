@@ -22,8 +22,6 @@ class CreateTujuanSatuanKerjasTable extends Migration
             $table->foreign('memo_id')->references('id')->on('surat_keluars');
             $table->boolean('status_baca')->nullable();
             $table->date('tanggal_baca')->nullable();
-            $table->string('pesan_disposisi')->nullable();
-            $table->date('tanggal_disposisi')->nullable();
         });
     }
 

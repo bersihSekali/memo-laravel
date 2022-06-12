@@ -16,6 +16,7 @@ use App\Http\Controllers\GenerateLaporanController;
 use App\Http\Controllers\ForwardController;
 use App\Http\Controllers\OtorisasiBaruController;
 use App\Http\Controllers\TujuanDepartemenController;
+use App\Models\TujuanDepartemen;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,11 +56,12 @@ Route::post('otorisasi/approvedOtorSatu/{id}', [OtorisasiSuratController::class,
 Route::post('otorisasi/disApprovedOtorSatu/{id}', [OtorisasiSuratController::class, 'disApprovedOtorSatu'])->middleware('auth');
 Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth');
 Route::resource('otor', OtorisasiBaruController::class)->middleware('auth');
-Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth');
+Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth')->name('index', 'suratMasuk');
 Route::resource('suratKeluar', SuratKeluarController::class)->middleware('auth');
 Route::resource('laporan', GenerateLaporanController::class)->middleware('auth');
 
 Route::resource('forward', ForwardController::class)->middleware('auth');
+Route::post('tujuanDepartemen/selesaikan/{id}', [TujuanDepartemenController::class, 'selesaikan'])->middleware('auth');
 Route::resource('tujuanDepartemen', TujuanDepartemenController::class)->middleware('auth');
 
 Route::resource('checker', CheckerController::class)->middleware('auth');

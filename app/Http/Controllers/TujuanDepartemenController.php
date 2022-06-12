@@ -65,11 +65,14 @@ class TujuanDepartemenController extends Controller
         $idUser = Auth::id();
         $user = User::find($idUser);
 
-
         //cek memo
         $tujuanSatker = TujuanSatuanKerja::where('satuan_kerja_id', $user['satuan_kerja'])->pluck('memo_id')->toArray();
         if (!in_array($id, $tujuanSatker)) {
             dd('tidak ditemukan');
+        }
+        $tujuanSatkerById = TujuanSatuanKerja::where('satuan_kerja_id', $user['satuan_kerja'])->where('memo_id', $id)->first();
+        if (!$tujuanSatkerById->status_baca) {
+            dd('surat belum dibaca');
         }
 
         $edit = SuratKeluar::where('id', $id)->first();
@@ -105,6 +108,24 @@ class TujuanDepartemenController extends Controller
             'pesan_disposisi' => 'required',
         ]);
 
+        //tujuan departemen
+        foreach ($validated['departemen_tujuan'] as $item) {
+            TujuanDepartemen::create([
+                'memo_id' => $id,
+                'departemen_id' => $item,
+                'pesan_disposisi' => $validated['pesan_disposisi'],
+                'tanggal_disposisi' => date('Y-m-d')
+            ]);
+        };
+
+        return redirect()->back()->with('success', 'Update data success!');
+    }
+
+    public function selesaikan(Request $request, $id)
+    {
+        $idUser = Auth::id();
+        $user = User::find($idUser);
+
         //update tujuan satuan kerja
         $tujuanSatkerId = TujuanSatuanKerja::where('satuan_kerja_id', $user->satuan_kerja)
             ->where('memo_id', $id)->first();
@@ -114,16 +135,7 @@ class TujuanDepartemenController extends Controller
         $datas['status_baca'] = 1;
         $datas->update($update);
 
-        //tujuan departemen
-        foreach ($validated['departemen_tujuan'] as $item) {
-            TujuanDepartemen::create([
-                'memo_id' => $id,
-                'departemen_id' => $item,
-                'pesan_disposisi' => $validated['pesan_disposisi']
-            ]);
-        };
-
-        return redirect('/suratMasuk')->with('success', 'Update data success!');
+        return redirect('tujuanDepartemen/' . $id . '/edit')->with('success', 'Surat telah ditandai sebagai telah dibaca, silakan masukkan disposisi jika diperlukan.');
     }
 
     /**

@@ -143,9 +143,15 @@
                 </div>
             </div>
             @if ($users->levelTable['golongan'] == 7)
+            @if (!$data->status_baca)
             <div class="modal-footer">
-                <a class="btn btn-success" href="/tujuanDepartemen/{{$data['memo_id']}}/edit">Selesaikan</a>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
             </div>
+            @else
+            <div class="modal-footer">
+                <a class="btn btn-secondary" href="/tujuanDepartemen/{{$data['memo_id']}}/edit">Disposisi</a>
+            </div>
+            @endif
             @elseif ($users->levelTable['golongan'] >= 6)
             <div class="modal-footer">
                 <a class="btn btn-success" href="/forward/{{$data['memo_id']}}/edit">Selesaikan</a>
@@ -168,29 +174,17 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             @if ($users->levelTable['golongan'] == 7)
-            <form action="/tujuanDepartemen/{{$data['id']}}" method="post">
+            <form action="/tujuanDepartemen/selesaikan/{{$data['memo_id']}}" method="post">
                 @csrf
-                {{method_field('PUT')}}
+                {{method_field('POST')}}
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <label for="departemen_tujuan" class="form-label ">Teruskan ke:</label>
-                        <select class="form-select on-modal mb-3" aria-label=".form-select-sm example" name="departemen_tujuan[]" id="departemen_tujuan" multiple="multiple">
-                            @foreach($departemens as $item)
-                            @if($item->satuan_kerja == $users->satuan_kerja)
-                            <option value="{{$item['id']}}">{{$item['departemen']}}</option>
-                            @endif
-                            @endforeach
-                        </select>
+                        <p>Apakah anda yakin ingin menandai pesan sebagai telah dibaca?</p>
                     </div>
-                    <div class="form-group mb-3" id="formPesan">
-                        <label for="disposisi" class="form-label">Pesan Disposisi</label>
-                        <input type="text" class="form-control" id="pesan_disposisi" name="pesan_disposisi">
-                    </div>
-                    <p>Pesan akan ditandai sebagai telah dibaca.</p>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
-                    <button class="btn btn-primary" type="submit">Selesaikan</button>
+                    <button class="btn btn-primary" type="submit">Yakin</button>
                 </div>
             </form>
             @endif
