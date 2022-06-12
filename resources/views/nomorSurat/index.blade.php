@@ -9,7 +9,7 @@
             </h2>
         </div>
 
-        @if ($users->levelTable->golongan < 7)
+        @if ($users->satuan_kerja == 1)
         <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="btn-list">
                 <a href="/nomorSurat/create" class="btn btn-primary d-none d-sm-inline-block">
@@ -46,7 +46,7 @@
                             <th class="fs-4" scope="col" width="10%">Tanggal</th>
                             <th class="fs-4" scope="col" width="20%">Asal</th>
                             <th class="fs-4" scope="col">Perihal</th>
-                            <th class="fs-4" scope="col" width="10%">PIC</th>
+                            <th class="fs-4" scope="col" width="10%">Pembuat</th>
                             <th class="fs-4" scope="col" width="8%">Status</th>
                         </tr>
                     </thead>

@@ -77,7 +77,7 @@
           </div>
 
           <div class="mb-3" id="input_departemen">
-            <label for="departemen" class="form-label">Department</label>
+            <label for="departemen" class="form-label">Departemen</label>
             <select class="form-select mb-3" aria-label=".form-select-sm example" name="departemen" id="departemen" data-width="100%">
               <option selected disabled> ---- </option>
             </select>

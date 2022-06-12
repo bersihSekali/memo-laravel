@@ -29,8 +29,8 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $satuanKerja = SatuanKerja::all()->count();
-        $departemen = Departemen::all()->count();
+        // $satuanKerja = SatuanKerja::all()->count();
+        // $departemen = Departemen::all()->count();
         $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
             ->latest()->get();
 
@@ -47,8 +47,6 @@ class NomorSuratController extends Controller
         $datas = [
             'title' => 'Daftar Semua Surat',
             'datas' => $mails,
-            'satuanKerjas' => $satuanKerja,
-            'departemens' => $departemen,
             'tujuanDepartemens' => $tujuanDepartemen,
             'tujuanSatkers' => $tujuanSatker,
             'tujuanCabangs' => $tujuanCabangs,
@@ -322,8 +320,18 @@ class NomorSuratController extends Controller
     public function hapusPermanen() // Force Delete
     {
         $datas = SuratKeluar::onlyTrashed()->get();
+
         foreach ($datas as $data) {
             Storage::delete($data->lampiran);
+
+            // Hapus child tujuan cabang
+            TujuanKantorCabang::where('memo_id', $data->id)->forceDelete();
+
+            // Hapus tujuan departemen
+            TujuanDepartemen::where('memo_id', $data->id)->forceDelete();
+
+            // Hapus tujuan satuan kerja
+            TujuanSatuanKerja::where('memo_id', $data->id)->forceDelete();
         }
         SuratKeluar::whereNotNull('deleted_at')->forceDelete();
 
@@ -334,10 +342,23 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratKeluar::withTrashed()->get();
+        $mails = SuratKeluar::withTrashed()->latest()->get();
+
+        // Untuk view column tujuan
+        $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+            ->pluck('id')->toArray();
+        $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+        $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+        $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
 
         $datas = [
             'users' => $user,
+            'tujuanDepartemens' => $tujuanDepartemen,
+            'tujuanSatkers' => $tujuanSatker,
+            'tujuanCabangs' => $tujuanCabangs,
             'datas' => $mails
         ];
 

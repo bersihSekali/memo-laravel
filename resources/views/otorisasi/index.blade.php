@@ -263,7 +263,7 @@
                   </div>
 
                   <div class="my-3">
-                    <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
+                    <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
                   </div>
 
                   <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -287,7 +287,7 @@
                 </div>
 
                 <div class="my-3">
-                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
                 </div>
 
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -309,7 +309,7 @@
                   </div>
 
                   <div class="my-3">
-                    <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
+                    <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
                   </div>
 
                   <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -330,7 +330,7 @@
                   </div>
 
                   <div class="my-3">
-                    <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
+                    <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
                   </div>
 
                   <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -355,7 +355,7 @@
                   </div>
 
                   <div class="my-3">
-                    <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
+                    <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
                   </div>
 
                   <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -376,7 +376,7 @@
                   </div>
 
                   <div class="my-3">
-                    <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
+                    <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
                   </div>
 
                   <button type="submit" class="btn btn-danger w-100">Tolak</button>
@@ -399,7 +399,7 @@
                 </div>
 
                 <div class="my-3">
-                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off">
+                  <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
                 </div>
 
                 <button type="submit" class="btn btn-danger w-100">Tolak</button>

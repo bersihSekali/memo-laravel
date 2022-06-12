@@ -16,6 +16,7 @@ class SuratKeluar extends Model
         'otor2_by_pengganti',
         'otor1_by_pengganti',
         'created_by',
+        'deleted_by',
         'nomor_surat',
         'perihal',
         'satuan_kerja_asal',
@@ -41,6 +42,11 @@ class SuratKeluar extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function deletedBy()
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
     }
 
     public function otor2By()
