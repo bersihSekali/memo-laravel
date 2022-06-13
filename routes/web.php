@@ -16,7 +16,6 @@ use App\Http\Controllers\GenerateLaporanController;
 use App\Http\Controllers\ForwardController;
 use App\Http\Controllers\OtorisasiBaruController;
 use App\Http\Controllers\TujuanDepartemenController;
-use App\Models\TujuanDepartemen;
 
 /*
 |--------------------------------------------------------------------------

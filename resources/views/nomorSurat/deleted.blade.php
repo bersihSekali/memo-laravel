@@ -12,7 +12,7 @@
         <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="btn-list">
                 <a href="/nomorSurat/hapusPermanen" class="btn btn-danger d-none d-sm-inline-block">
-                    <i class="fa-solid fa-dumpster-fire"></i>
+                    <i class="fas fa-dumpster-fire"></i>
                     Hapus Permanen
                 </a>
             </div>
@@ -26,11 +26,10 @@
                     <thead>
                         <tr>
                             <th class="fs-4" scope="col" width="10%">Tanggal</th>
-                            <th class="fs-4" scope="col">Asal</th>
-                            <th class="fs-4" scope="col">Tujuan</th>
+                            <th class="fs-4" scope="col" width="20%">Asal</th>
                             <th class="fs-4" scope="col">Perihal</th>
-                            <th class="fs-4" scope="col">PIC</th>
-                            <th class="fs-4" scope="col">Status</th>
+                            <th class="fs-4" scope="col" width="10%">Pembuat</th>
+                            <th class="fs-4" scope="col" width="8%">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,7 +43,6 @@
                                     {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
                                 @endif
                             </td>
-                            <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
                             <td class="align-top">{{ $data->perihal }}</td>
                             <td class="align-top">{{ strtoupper($data->createdBy['name'] )}} </td>
                             <td class="align-top">
@@ -84,17 +82,12 @@
                     <div class="table-responsive">
                         <table id="tabel-data" style="width:100%">
                             <tr>
-                                <td>Tanggal Registrasi</td>
+                                <td width="20%">Tanggal Registrasi</td>
                                 <td>: {{ $data->created_at }}</td>
                             </tr>
 
                             <tr>
-                                <td>Tanggal Hapus</td>
-                                <td>: {{ $data->deleted_at }} by {{ strtoupper($data->deleted_by) }}</td>
-                            </tr>
-
-                            <tr>
-                                <td>Nomor Surat</td>
+                                <td width="20%">Nomor Surat</td>
                                 <td>: 
                                     @if (!$data->nomor_surat)
                                         Setujui surat terlebih dahulu
@@ -105,74 +98,164 @@
                             </tr>
 
                             <tr>
-                                <td>PIC</td>
-                                <td>: {{ strtoupper($data->created_by) }}</td>
+                                <td width="20%">Pembuat</td>
+                                <td>: {{ strtoupper($data->createdBy['name']) }}</td>
                             </tr>
                             
                             <tr>
-                                <td>Asal</td>
+                                <td width="20%">Asal</td>
                                 <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
                             </tr>
                             
                             <tr>
-                                <td>Tujuan</td>
-                                <td>: {{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
-                            </tr>
-
-                            <tr>
-                                <td>Perihal</td>
-                                <td>: {{ $data->perihal }}</td>
-                            </tr>
-
-                            <tr>
-                                <td>Status</td>
+                                <td class="align-top" width="20%">Tujuan</td>
                                 <td>
-                                    : @if ($data->status == 1)
-                                        <span class="badge bg-secondary">Pending</span>
-                                    
-                                    {{-- approved otor2_by antar departemen --}}
-                                    @elseif (($data->status == 2) && ($data->satuan_kerja_asal == $data->satuan_kerja_tujuan))
-                                        <span class="badge bg-success">
-                                            Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                        </span>
+                                    {{-- Tujuan kantor cabang --}}
+                                    @foreach ($tujuanCabangs as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            @if (($item->all_flag == true) && ($item->bidang_id == null) && ($item->cabang_id ==1))
+                                                : SELURUH KANTOR CABANG
+                                            @elseif ($item->cabang_id != null)
+                                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
+                                            @endif
+                                        @endif
+                                    @endforeach
 
-                                    {{-- approved otor2_by antar satuan kerja --}}
-                                    @elseif ($data->status == 2)
-                                        <span class="badge bg-success">
-                                            Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                        </span>
-                                        <span class="badge bg-secondary">
-                                            Pending KaSat
-                                        </span>
-                                    
-                                    {{-- Disapprove otor2_by --}}
-                                    @elseif (($data->status == 0) && ($data->otor1_by == ''))
-                                        <span class="badge bg-warning">
-                                            Ditolak {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                        </span>
-                                    
-                                    {{-- approved otor2_by otor1_by --}}
-                                    @elseif ($data->status == 3)
-                                        <span class="badge bg-success">
-                                            Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                        </span> <br>
+                                    {{-- Tujuan kantor bidang --}}
+                                    @foreach ($tujuanCabangs as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            @if ($item->bidang_id != null)
+                                                : {{ $item->tujuanBidang->bidang }} <br>
+                                            @endif
+                                        @endif
+                                    @endforeach
 
-                                        <span class="badge bg-success">
-                                            Disetujui {{ strtoupper($data->otor1_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
-                                        </span>
+                                    {{-- Tujuan departemen --}}
+                                    @foreach ($tujuanDepartemens as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            : {{ $item->tujuanDepartemen->departemen }} <br>
+                                        @endif
+                                    @endforeach
 
-                                    {{-- approved otor2_by disapproved otor1_by --}}
-                                    @elseif (($data->status == 0) && ($data->otor1_by != ''))
-                                        <span class="badge bg-success">
-                                            Disetujui {{ strtoupper($data->otor2_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }} <br>
-                                        </span> <br>
-                                        <span class="badge bg-warning">Ditolak {{ strtoupper($data->otor1_by) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
-                                        </span>
-                                    @endif
+                                    {{-- Tujuan satuan kerja --}}
+                                    @foreach ($tujuanSatkers as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                                        @endif
+                                    @endforeach
                                 </td>
                             </tr>
 
                             <tr>
+                                @if ($data->otor2_by_pengganti && $data->otor1_by_pengganti)
+                                  <td width="20%">Pejabat Pengganti</td>
+                                  <td>
+                                    : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2 <br>
+                                    {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
+                                  </td>
+                                @elseif ($data->otor2_by_pengganti && !$data->otor1_by_pengganti)
+                                  <td width="20%">Pejabat Pengganti</td>
+                                  <td>
+                                    : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2
+                                  </td>
+                                @elseif (!$data->otor2_by_pengganti && $data->otor1_by_pengganti)
+                                  <td width="20%">Pejabat Pengganti</td>
+                                  <td>
+                                    : {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
+                                  </td>
+                                @endif
+                              </tr>
+
+                            <tr>
+                                <td class="align-top" width="20%">Perihal</td>
+                                <td>: {{ $data->perihal }}</td>
+                            </tr>
+
+                            @if ($data->status == 0)
+                                <tr>
+                                    <td width="20%">Catatan</td>
+                                    <td>: {{ $data->pesan_tolak }}</td>
+                                </tr>
+                            @endif
+
+                            <tr>
+                                <td width="20%">Status</td>
+                                <td>
+                                    : @if ($data->status == 1)
+                                        <span class="badge bg-secondary">Pending</span>
+                                    
+                                    {{-- approved otor2_by --}}
+                                    @elseif ($data->status == 2)
+                                        {{-- Antar departemen --}}
+                                        @if ($data->internal == 1)
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                            <span class="badge bg-secondary">
+                                                Pending Kadep
+                                            </span>
+
+                                        {{-- Antar satuan kerja --}}
+                                        @else
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                            <span class="badge bg-secondary">
+                                                Pending Kasat
+                                            </span>
+                                        @endif
+                                    
+                                    {{-- approved otor1_by --}}
+                                    @elseif ($data->status == 3)
+                                        @if ($data->internal == 1)
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
+                                            </span>
+
+                                        {{-- Antar satuan kerja --}}
+                                        @else
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
+                                            </span>
+                                        @endif
+                                    
+                                    {{-- rejected --}}
+                                    @elseif ($data->status == 0)
+                                        {{-- rejected otor2_by --}}
+                                        @if ($data->otor1_by == 0)
+                                            <span class="badge bg-danger">
+                                                Ditolak {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                        
+                                        {{-- rejected otor1_by --}}
+                                        @else
+                                            <span class="badge bg-success">
+                                                Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                                            </span>
+                                            <span class="badge bg-danger">
+                                                Ditolak {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
+                                            </span>
+                                        @endif
+                                    @endif
+                                </td>
+                            </tr>
+
+                            <tr width="20%">
+                                <td>Status Hapus</td>
+                                <td>: 
+                                    <span class="badge bg-danger">
+                                        Dihapus oleh {{ strtoupper($data->deletedBy->name) }} at {{ date("Y-m-d", strtotime($data->deleted_at)) }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr width="20%">
                                 <td>Lampiran</td>
                                 <td>: <a href="/storage/{{ $data['lampiran'] }}" target="_blank"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
                             </tr>

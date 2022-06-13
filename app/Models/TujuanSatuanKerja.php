@@ -15,4 +15,9 @@ class TujuanSatuanKerja extends Model
         'status_baca',
         'tanggal_baca'
     ];
+
+    public function tujuanSatuanKerja()
+    {
+        return $this->belongsTo(SatuanKerja::class, 'satuan_kerja_id');
+    }
 }

@@ -48,7 +48,7 @@
                 <tbody>
                     @foreach($forwardeds as $item)
                     <tr>
-                        <td>{{$item->namaDepartemen['departemen']}}</td>
+                        <td>{{$item->tujuanDepartemen['departemen']}}</td>
                         <td>{{$item->pesan_disposisi}}</td>
                     </tr>
                     @endforeach
