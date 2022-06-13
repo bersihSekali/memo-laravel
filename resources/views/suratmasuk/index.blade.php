@@ -17,13 +17,16 @@
                 <table id="tabel-data" class="table table-bordered table-hover" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th scope="col" width="10%">Tanggal</th>
-                            <th scope="col">No.</th>
-                            <th scope="col">Asal</th>
-                            <th scope="col">Perihal</th>
-                            @if($users->levelTable['golongan'] <= 6) <th scope="col">Disposisi</th>
+                            @if($users->levelTable['golongan'] == 7)
+                            <th scope="col" width="10%">Tanggal Surat</th>
+                            @elseif($users->levelTable['golongan'] <= 6) <th scope="col" width="10%">Tanggal Masuk</th>
                                 @endif
-                                <th scope="col">Status</th>
+                                <th scope="col">No.</th>
+                                <th scope="col">Asal</th>
+                                <th scope="col">Perihal</th>
+                                @if($users->levelTable['golongan'] <= 6) <th scope="col">Pesan Disposisi</th>
+                                    @endif
+                                    <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,7 +35,13 @@
                         <tr class="{{ ($data['status_baca'] == 1 ? 'table-light' : 'table-bold') }}" id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['memo_id']}}" style="cursor: pointer;">
                             <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
                             <td class="align-top">{{$data['nomor_surat']}}</td>
-                            <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
+                            <td class="align-top">
+                                @if ($data->departemen_asal)
+                                {{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}
+                                @else
+                                {{$data->satuanKerjaAsal['satuan_kerja']}}
+                                @endif
+                            </td>
                             <td class="align-top">{{$data['perihal']}}</td>
                             @if($data['status_baca'] == 1)
                             <td>Selesai pada {{date('Y-m-d', strtotime($data['tanggal_baca']))}}</td>
@@ -44,9 +53,15 @@
                         @elseif($users->levelTable['golongan'] == 6)
                         @foreach($datas as $data)
                         <tr class="{{ ($data['status_baca'] == 1 ? 'table-light' : 'table-bold') }}" id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['memo_id']}}" style="cursor: pointer;">
-                            <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
+                            <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_disposisi']))}}</td>
                             <td class="align-top">{{$data['nomor_surat']}}</td>
-                            <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
+                            <td class="align-top">
+                                @if ($data->departemen_asal)
+                                {{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}
+                                @else
+                                {{$data->satuanKerjaAsal['satuan_kerja']}}
+                                @endif
+                            </td>
                             <td class="align-top">{{$data['perihal']}}</td>
                             <td class="align-top">{{$data['pesan_disposisi']}}</td>
                             @if($data['status_baca'] == 1)
@@ -58,14 +73,20 @@
                         @endforeach
                         @else
                         @foreach($datas as $data)
-                        <tr class="{{ ($data['status'] == 4 ? 'table-bold' : 'table-light') }}" id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['memo_id']}}" style="cursor: pointer;">
-                            <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
+                        <tr class="{{ ($data['status_baca'] == 1 ? 'table-light' : 'table-bold') }}" id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['memo_id']}}" style="cursor: pointer;">
+                            <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_disposisi']))}}</td>
                             <td class="align-top">{{$data['nomor_surat']}}</td>
-                            <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
+                            <td class="align-top">
+                                @if ($data->departemen_asal)
+                                {{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}
+                                @else
+                                {{$data->satuanKerjaAsal['satuan_kerja']}}
+                                @endif
+                            </td>
                             <td class="align-top">{{$data['perihal']}}</td>
                             <td class="align-top">{{$data['pesan_disposisi']}}</td>
-                            @if($data['tanggal_dep'])
-                            <td>Selesai pada {{date('Y-m-d', strtotime($data['tanggal_dep']))}}</td>
+                            @if($data['status_baca'] == 1)
+                            <td>Selesai pada {{date('Y-m-d', strtotime($data['tanggal_disposisi']))}}</td>
                             @else
                             <td>Belum Selesai</td>
                             @endif
@@ -163,7 +184,11 @@
             </div>
             @endif
             @elseif ($users->levelTable['golongan'] < 6) <div class="modal-footer">
-                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['id'] }}">Coba</button>
+                @if (!$data->status_baca)
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
+                </div>
+                @endif
         </div>
         @endif
     </div>
@@ -207,7 +232,20 @@
                     <button class="btn btn-primary" type="submit">Yakin</button>
                 </div>
             </form>
-            @endif
+            @elseif ($users->levelTable['golongan'] < 6) <form action="/forward/baca/{{$data['memo_id']}}" method="post">
+                @csrf
+                {{method_field('POST')}}
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <p>Apakah anda yakin ingin menandai pesan sebagai telah dibaca?</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" type="submit">Yakin</button>
+                </div>
+                </form>
+                @endif
         </div>
     </div>
 </div>

@@ -138,6 +138,23 @@ class ForwardController extends Controller
         return redirect('forward/' . $id . '/edit')->with('success', 'Surat telah ditandai sebagai telah dibaca, silakan teruskan memo jika diperlukan.');
     }
 
+    public function baca(Request $request, $id)
+    {
+        $idUser = Auth::id();
+        $user = User::find($idUser);
+
+        //update tujuan user
+        $forwardId = Forward::where('user_id', $user->id)
+            ->where('memo_id', $id)->first();
+
+        $datas = Forward::find($forwardId->id);
+        $update[] = $datas['tanggal_baca'] = date('Y-m-d');
+        $datas['status_baca'] = 1;
+        $datas->update($update);
+
+        return redirect('/suratMasuk')->with('success', 'Surat telah ditandai sebagai telah dibaca.');
+    }
+
     /**
      * Remove the specified resource from storage.
      *
