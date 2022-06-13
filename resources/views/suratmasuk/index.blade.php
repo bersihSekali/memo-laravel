@@ -44,9 +44,9 @@
                             </td>
                             <td class="align-top">{{$data['perihal']}}</td>
                             @if($data['status_baca'] == 1)
-                            <td>Selesai pada {{date('Y-m-d', strtotime($data['tanggal_baca']))}}</td>
+                            <td><span class="badge bg-success me-1"></span>Selesai</td>
                             @else
-                            <td>Belum Selesai</td>
+                            <td><span class="badge bg-warning me-1"></span>Belum Selesai</td>
                             @endif
                         </tr>
                         @endforeach
@@ -65,9 +65,9 @@
                             <td class="align-top">{{$data['perihal']}}</td>
                             <td class="align-top">{{$data['pesan_disposisi']}}</td>
                             @if($data['status_baca'] == 1)
-                            <td>Selesai pada {{date('Y-m-d', strtotime($data['tanggal_baca']))}}</td>
+                            <td><span class="badge bg-success me-1"></span>Selesai</td>
                             @else
-                            <td>Belum Selesai</td>
+                            <td><span class="badge bg-warning me-1"></span>Belum Selesai</td>
                             @endif
                         </tr>
                         @endforeach
@@ -86,9 +86,9 @@
                             <td class="align-top">{{$data['perihal']}}</td>
                             <td class="align-top">{{$data['pesan_disposisi']}}</td>
                             @if($data['status_baca'] == 1)
-                            <td>Selesai pada {{date('Y-m-d', strtotime($data['tanggal_disposisi']))}}</td>
+                            <td><span class="badge bg-success me-1"></span>Selesai</td>
                             @else
-                            <td>Belum Selesai</td>
+                            <td><span class="badge bg-warning me-1"></span>Belum Selesai</td>
                             @endif
                         </tr>
                         @endforeach
@@ -114,7 +114,7 @@
                 <div class="table-responsive">
                     <table id="tabel-data" style="width:100%">
                         <tr>
-                            <td>Tanggal Registrasi</td>
+                            <td width="20%">Tanggal Registrasi</td>
                             <td>: {{ $data->created_at }}</td>
                         </tr>
 
@@ -147,6 +147,11 @@
                         <tr>
                             <td>Perihal</td>
                             <td>: {{ $data->perihal }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Dibaca pada</td>
+                            <td>: {{date('Y-m-d', strtotime($data['tanggal_baca']))}}</td>
                         </tr>
 
                         @if($data['pesan_disposisi'])
