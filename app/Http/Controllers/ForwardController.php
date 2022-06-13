@@ -65,23 +65,24 @@ class ForwardController extends Controller
         $idUser = Auth::id();
         $user = User::find($idUser);
 
-
         //cek memo
         $tujuanDepartemen = TujuanDepartemen::where('departemen_id', $user['departemen'])->pluck('memo_id')->toArray();
         if (!in_array($id, $tujuanDepartemen)) {
             dd('tidak ditemukan');
+        }
+        $tujuanDepartemenById = TujuanDepartemen::where('departemen_id', $user['departemen'])->where('memo_id', $id)->first();
+        if (!$tujuanDepartemenById->status_baca) {
+            dd('surat belum dibaca');
         }
 
         $edit = SuratKeluar::where('id', $id)->first();
 
         $forwarded = Forward::where('memo_id', $edit['id'])->get();
         $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
-        $forward = User::where('departemen', $user->departemen)->whereHas('levelTable', function ($query) {
-            $query->where('golongan', '<', '6');
-        })->get();
+        $forward = User::where('departemen', $user->departemen)->get();
 
         return view('forward/edit', [
-            'title' => 'Teruskan',
+            'title' => 'Teruskan ke Departemen',
             'users' => $user,
             'edits' => $edit,
             'forwardeds' => $forwarded,
@@ -99,26 +100,42 @@ class ForwardController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $idUser = Auth::id();
+        $user = User::find($idUser);
+
         $validated = $request->validate([
-            'forward' => 'required'
+            'user_tujuan' => 'required',
+            'pesan_disposisi' => 'required',
         ]);
 
-        $update = SuratKeluar::find($id);
-        if (!$update) {
-            return redirect('/suratMasuk')->with('error', 'Data not Found');
-        }
-
-        foreach ($validated['forward'] as $user) {
-            $create = Forward::create([
-                'user_id' => $user,
-                'memo_id' => $id
+        //isi tabel forward
+        foreach ($validated['user_tujuan'] as $item) {
+            Forward::create([
+                'memo_id' => $id,
+                'user_id' => $item,
+                'pesan_disposisi' => $validated['pesan_disposisi'],
+                'tanggal_disposisi' => date('Y-m-d')
             ]);
-            if (!$create) {
-                return redirect('/suratMasuk/index')->with('error', 'Gagal meneruskan !');
-            }
-        }
+        };
 
-        return redirect('forward/' . $id . '/edit')->with('success', 'Update Success');
+        return redirect()->back()->with('success', 'Update data success!');
+    }
+
+    public function selesaikan(Request $request, $id)
+    {
+        $idUser = Auth::id();
+        $user = User::find($idUser);
+
+        //update tujuan departemen
+        $tujuanDepartemenId = TujuanDepartemen::where('departemen_id', $user->departemen)
+            ->where('memo_id', $id)->first();
+
+        $datas = TujuanDepartemen::find($tujuanDepartemenId->id);
+        $update[] = $datas['tanggal_baca'] = date('Y-m-d');
+        $datas['status_baca'] = 1;
+        $datas->update($update);
+
+        return redirect('forward/' . $id . '/edit')->with('success', 'Surat telah ditandai sebagai telah dibaca, silakan teruskan memo jika diperlukan.');
     }
 
     /**

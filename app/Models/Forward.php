@@ -11,7 +11,11 @@ class Forward extends Model
 
     protected $fillable = [
         'user_id',
-        'memo_id'
+        'memo_id',
+        'status_baca',
+        'tanggal_baca',
+        'pesan_disposisi',
+        'tanggal_disposisi'
     ];
 
     public function users()

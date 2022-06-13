@@ -60,6 +60,7 @@ Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth')->
 Route::resource('suratKeluar', SuratKeluarController::class)->middleware('auth');
 Route::resource('laporan', GenerateLaporanController::class)->middleware('auth');
 
+Route::post('forward/selesaikan/{id}', [ForwardController::class, 'selesaikan'])->middleware('auth');
 Route::resource('forward', ForwardController::class)->middleware('auth');
 Route::post('tujuanDepartemen/selesaikan/{id}', [TujuanDepartemenController::class, 'selesaikan'])->middleware('auth');
 Route::resource('tujuanDepartemen', TujuanDepartemenController::class)->middleware('auth');

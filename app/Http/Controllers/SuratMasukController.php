@@ -27,15 +27,15 @@ class SuratMasukController extends Controller
         if ($user->levelTable->golongan == 7) {
             $data = SuratKeluar::with('tujuanSatker')
                 ->join('tujuan_satuan_kerjas', 'surat_keluars.id', '=', 'tujuan_satuan_kerjas.memo_id')
-                ->where('satuan_kerja_id', $user['satuan_kerja'])->latest('tujuan_satuan_kerjas.created_at')->get();
+                ->where('satuan_kerja_id', $user['satuan_kerja'])->where('status', 3)->latest('tujuan_satuan_kerjas.created_at')->get();
         } elseif ($user->levelTable->golongan == 6) {
             $data = SuratKeluar::with('tujuanDepartemen')
                 ->join('tujuan_departemens', 'surat_keluars.id', '=', 'tujuan_departemens.memo_id')
-                ->where('departemen_id', $user['departemen'])->latest('tujuan_departemens.created_at')->get();
+                ->where('departemen_id', $user['departemen'])->where('status', 3)->latest('tujuan_departemens.created_at')->get();
         } elseif ($user->levelTable['golongan'] <= 5) {
-            $memoId = Forward::where('user_id', $user['id'])->pluck('memo_id')->toArray();
-            $data = SuratKeluar::whereIn('id', $memoId)->latest()->get();
-            $pesan = [];
+            $data = SuratKeluar::with('forward')
+                ->join('forwards', 'surat_keluars.id', '=', 'forwards.memo_id')
+                ->where('user_id', $id)->where('status', 3)->latest('forwards.created_at')->get();
         }
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();

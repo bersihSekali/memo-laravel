@@ -13,8 +13,6 @@ class TujuanSatuanKerja extends Model
         'satuan_kerja_id',
         'memo_id',
         'status_baca',
-        'tanggal_baca',
-        'pesan_disposisi',
-        'tanggal_disposisi'
+        'tanggal_baca'
     ];
 }

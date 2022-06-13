@@ -71,4 +71,9 @@ class SuratKeluar extends Model
     {
         return $this->belongsTo(TujuanSatuanKerja::class);
     }
+
+    public function forward()
+    {
+        return $this->belongsTo(Forward::class);
+    }
 }

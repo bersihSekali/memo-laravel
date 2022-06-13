@@ -153,9 +153,15 @@
             </div>
             @endif
             @elseif ($users->levelTable['golongan'] >= 6)
+            @if (!$data->status_baca)
             <div class="modal-footer">
-                <a class="btn btn-success" href="/forward/{{$data['memo_id']}}/edit">Selesaikan</a>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
             </div>
+            @else
+            <div class="modal-footer">
+                <a class="btn btn-secondary" href="/forward/{{$data['memo_id']}}/edit">Terusan</a>
+            </div>
+            @endif
             @elseif ($users->levelTable['golongan'] < 6) <div class="modal-footer">
                 <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['id'] }}">Coba</button>
         </div>
@@ -175,6 +181,20 @@
             </div>
             @if ($users->levelTable['golongan'] == 7)
             <form action="/tujuanDepartemen/selesaikan/{{$data['memo_id']}}" method="post">
+                @csrf
+                {{method_field('POST')}}
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <p>Apakah anda yakin ingin menandai pesan sebagai telah dibaca?</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" type="submit">Yakin</button>
+                </div>
+            </form>
+            @elseif ($users->levelTable['golongan'] == 6)
+            <form action="/forward/selesaikan/{{$data['memo_id']}}" method="post">
                 @csrf
                 {{method_field('POST')}}
                 <div class="modal-body">

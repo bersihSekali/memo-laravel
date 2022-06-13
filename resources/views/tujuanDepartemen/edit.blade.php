@@ -77,11 +77,10 @@
                     <label for="disposisi" class="form-label">Pesan Disposisi</label>
                     <input type="text" class="form-control" id="pesan_disposisi" name="pesan_disposisi">
                 </div>
-                <p class="badge bg-warning">Pesan akan ditandai sebagai telah dibaca.</p>
             </div>
             <div class="modal-footer">
                 <a class="btn btn-secondary" href="{{route('suratMasuk')}}">Kembali ke Surat Masuk</a>
-                <button class="btn btn-primary" type="submit">Selesaikan</button>
+                <button class="btn btn-primary" type="submit">Kirim</button>
             </div>
         </form>
     </div>

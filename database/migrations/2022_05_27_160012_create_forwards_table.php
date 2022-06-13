@@ -20,6 +20,10 @@ class CreateForwardsTable extends Migration
             $table->unsignedBigInteger('memo_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('memo_id')->references('id')->on('surat_keluars');
+            $table->boolean('status_baca')->nullable();
+            $table->date('tanggal_baca')->nullable();
+            $table->string('pesan_disposisi')->nullable();
+            $table->date('tanggal_disposisi')->nullable();
         });
     }
 
