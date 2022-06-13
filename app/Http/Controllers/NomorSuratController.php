@@ -101,6 +101,7 @@ class NomorSuratController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         $satuanKerja = SatuanKerja::all();
         $cabang = Cabang::all();
         $bidangCabang = BidangCabang::all();
@@ -118,8 +119,40 @@ class NomorSuratController extends Controller
         $validated['otor1_by_pengganti'] = $request->tunjuk_otor1_by;
         $validated['internal'] = $request->tipe_surat;
 
+        if ($$validated['internal'] == 1) {
+            if ($validated['otor2_by_pengganti'] != null) {
+                $pengganti2 = User::where('id', $validated['otor2_by_pengganti'])
+                    ->latest();
+            }
+
+            if ($validated['otor1_by_pengganti'] != null) {
+                $pengganti1 = User::where('id', $validated['otor1_by_pengganti'])
+                    ->latest();
+            }
+
+            $korespodensi = User::where('departemen', $validated['departemen_asal'])
+                ->whereBetween('level', [6, 8])
+                ->union($pengganti2)
+                ->union($pengganti1)
+                ->latest()->get();
+        } elseif ($validated['internal'] == 2) {
+            if ($validated['otor2_by_pengganti'] != null) {
+                $pengganti2 = User::where('id', $validated['otor2_by_pengganti'])
+                    ->latest();
+            }
+
+            if ($validated['otor1_by_pengganti'] != null) {
+                $pengganti1 = User::where('id', $validated['otor1_by_pengganti'])
+                    ->latest();
+            }
+            $korespodensi = User::where('satuan_kerja', $validated['satuan_kerja_asal'])
+                ->whereBetween('level', [6, 8])
+                ->union($pengganti2)
+                ->union($pengganti1)
+                ->latest()->get();
+        }
+
         $tujuanUnitKerja = $request->tujuan_unit_kerja;
-        // $tujuanDepartemenDireksi = $request->tujuan_departemen_direksi;
         $tujuanKantorCabang = $request->tujuan_kantor_cabang;
         $tujuanInternal = $request->tujuan_internal;
 
@@ -141,22 +174,22 @@ class NomorSuratController extends Controller
 
         $idSurat = $create->id;
 
-        // // Seluruh tujuan internal
-        // if ($tujuanInternal[0] == 'internal') {
-        //     foreach ($departemenInternal as $item) {
-        //         TujuanDepartemen::create([
-        //             'memo_id' => $idSurat,
-        //             'departemen_id' => $item->id
-        //         ]);
-        //     }
-        // } elseif ($tujuanInternal != null) {
-        //     foreach ($tujuanInternal as $item) {
-        //         TujuanDepartemen::create([
-        //             'memo_id' => $idSurat,
-        //             'departemen_id' => $item
-        //         ]);
-        //     }
-        // }
+        // Seluruh tujuan internal
+        if ($tujuanInternal[0] == 'internal') {
+            foreach ($departemenInternal as $item) {
+                TujuanDepartemen::create([
+                    'memo_id' => $idSurat,
+                    'departemen_id' => $item->id
+                ]);
+            }
+        } elseif ($tujuanInternal != null) {
+            foreach ($tujuanInternal as $item) {
+                TujuanDepartemen::create([
+                    'memo_id' => $idSurat,
+                    'departemen_id' => $item
+                ]);
+            }
+        }
 
         $cabangBesar = array();
         $bidang = array();
@@ -213,10 +246,14 @@ class NomorSuratController extends Controller
         };
 
         // Kirim notifikasi via telegram
-        $this->telegram->sendMessage([
-            'chat_id' => '986550971',
-            'text' => 'Memo baru dengan perihal ' . strtoupper($validated['perihal']) . ' telah dibuat'
-        ]);
+        foreach ($korespodensi as $item) {
+            if ($item->id_telegram != null) {
+                $this->telegram->sendMessage([
+                    'chat_id' => $request->id_telegram,
+                    'text' => 'Memo baru dengan perihal ' . strtoupper($validated['perihal']) . ' telah dibuat'
+                ]);
+            }
+        }
 
         return redirect('/nomorSurat')->with('success', 'Pembuatan surat berhasil');
     }

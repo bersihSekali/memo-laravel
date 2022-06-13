@@ -17,6 +17,7 @@
                 <label for="created_by" class="form-label ">Pembuat</label>
                 <input type="text" class="form-control" autocomplete="off" value="{{ strtoupper($users->name) }}" readonly>
                 <input type="hidden" class="form-control" id="created_by" name="created_by" value="{{ $users->id }}" readonly>
+                <input type="hidden" class="form-control" id="id_telegram" name="id_telegram" value="{{ $users->id_telegram }}" readonly>
             </div>
 
             {{-- Input departemen asal / satuan kerja asal --}}
@@ -64,23 +65,6 @@
                                 <option id="unit_kerja" value="unit_kerja">Seluruh Unit Kerja</option>
                                 @foreach ($satuanKerjas as $satuanKerja)
                                 <option class="opsi_unit_kerja" value="huhu">{{ $satuanKerja->satuan_kerja }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Tujuan departemen satu tingkat dibawah direksi --}}
-                <div class="row justify-content-end tujuan-eksternal" style="display: none">
-                    <div class="row mt-2">
-                        <label for="">Departemen Satu Tingkat di Bawah Direksi</label>
-                    </div>
-                    <div class="row justify-content-end">
-                        <div class="col">
-                            <select class="form-select" aria-label=".form-select-sm example" name="tujuan_departemen_direksi[]" id="tujuan_departemen_direksi" multiple="multiple">
-                                <option id="departemen_direksi" value="departemen_direksi">Seluruh Departemen di Bawah Direksi</option>
-                                @foreach ($departemenDireksis as $departemenDireksi)
-                                    <option class="opsi_departemen_direksi" value="{{ $departemenDireksi->id }}">{{ $departemenDireksi->departemen }}</option>
                                 @endforeach
                             </select>
                         </div>
