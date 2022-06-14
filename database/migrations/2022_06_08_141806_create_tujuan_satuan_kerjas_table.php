@@ -18,6 +18,7 @@ class CreateTujuanSatuanKerjasTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('memo_id');
             $table->unsignedBigInteger('satuan_kerja_id');
+            $table->boolean('all_flag');
             $table->foreign('satuan_kerja_id')->references('id')->on('satuan_kerjas');
             $table->foreign('memo_id')->references('id')->on('surat_keluars');
             $table->boolean('status_baca')->nullable();

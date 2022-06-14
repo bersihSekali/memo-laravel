@@ -25,14 +25,14 @@
                 <div class="col-sm-6 mb-3">
                     <label for="satuan_kerja_asal" class="form-label">Satuan Kerja Asal</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="satuan_kerja_asal" id="satuan_kerja_asal">
-                        <option selected value="{{ $users->satuan_kerja}}"> {{ $users->satuanKerja['satuan_kerja'] }} </option>
+                        <option selected value="{{ $users->satuan_kerja}}"> {{ $users->satuanKerja['inisial'] }} </option>
                     </select>
                 </div>
 
                 <div class="col-sm-6 mb-3" style="{{($users->levelTable->golongan == 7) ? 'display: none' : ''}}">
                     <label for="departemen_asal" class="form-label">Department Asal</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="departemen_asal" id="departemen_asal">
-                        <option value="{{ $users->departemen }}"> {{ $users->departemenTable['departemen'] }} </option>
+                        <option value="{{ $users->departemen }}"> {{ $users->departemenTable['inisial'] }} </option>
                     </select>
                 </div>
             </div>
@@ -64,7 +64,11 @@
                             <select class="form-select" aria-label=".form-select-sm example" name="tujuan_unit_kerja[]" id="tujuan_unit_kerja" multiple="multiple">
                                 <option id="unit_kerja" value="unit_kerja">Seluruh Unit Kerja</option>
                                 @foreach ($satuanKerjas as $satuanKerja)
-                                <option class="opsi_unit_kerja" value="{{ $satuanKerja->id }}">{{ $satuanKerja->satuan_kerja }}</option>
+                                    @if ($satuanKerja->id == 1)
+                                        @continue
+                                    @endif
+
+                                    <option class="opsi_unit_kerja" value="{{ $satuanKerja->id }}">{{ $satuanKerja->inisial }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -74,22 +78,24 @@
                 {{-- Tujuan unit layanan --}}
                 <div class="row justify-content-end tujuan-eksternal" style="display: none">
                     <div class="row mt-2">
-                        <label for="">Unit Layanan</label>
+                        <label for="">Kantor Cabang / Unit Layanan</label>
                     </div>
                     <div class="row">
                         <div class="col">
                             <select class="form-select" aria-label=".form-select-sm example" name="tujuan_kantor_cabang[]" id="tujuan_kantor_cabang" multiple="multiple">
                                 <option id="kantor_cabang" value="kantor_cabang">SELURUH KANTOR CABANG</option>
                                 @foreach ($cabangs as $cabang)
-                                @if ($cabang->id == 1)
-                                @continue
-                                @endif
-                                <option class="opsi_kantor_cabang_besar" value="S{{ $cabang->id }}">{{ $cabang->cabang }}</option>
-                                @foreach ($bidangCabangs as $bidang)
-                                @if ($bidang->cabang_id == $cabang->id)
-                                <option class="opsi_kantor_bidang" value="{{ $bidang->id }}">- {{ $bidang->bidang }}</option>
-                                @endif
-                                @endforeach
+                                    @if ($cabang->id == 1)
+                                        @continue
+                                    @endif
+
+                                    <option class="opsi_kantor_cabang_besar" id="cabang-besar" value="S{{ $cabang->id }}">{{ $cabang->cabang }}</option>
+
+                                    @foreach ($bidangCabangs as $bidang)
+                                        @if ($bidang->cabang_id == $cabang->id)
+                                            <option class="opsi_kantor_bidang" value="{{ $bidang->id }}">- {{ $bidang->bidang }}</option>
+                                        @endif
+                                    @endforeach
                                 @endforeach
                             </select>
                         </div>
@@ -106,9 +112,9 @@
                             <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan_internal[]" id="tujuan_internal" multiple="multiple">
                                 <option id="internal" value="internal">Seluruh Internal</option>
                                 @foreach ($departemens as $departemen)
-                                @if ($departemen->satuan_kerja == 1)
-                                <option class="opsi_departemen" value="{{ $departemen->id }}">{{ $departemen->departemen }}</option>
-                                @endif
+                                    @if ($departemen->satuan_kerja == 2)
+                                        <option class="opsi_departemen" value="{{ $departemen->id }}">{{ $departemen->inisial }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -137,9 +143,9 @@
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
                         <option value=""> ---- </option>
                         @foreach ($penggantis as $pengganti)
-                        @if ($pengganti->levelTable->golongan == 7)
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
-                        @endif
+                            @if ($pengganti->levelTable->golongan == 7)
+                            <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>

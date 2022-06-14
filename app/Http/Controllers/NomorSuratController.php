@@ -10,21 +10,15 @@ use App\Models\SuratKeluar;
 use App\Models\User;
 use App\Models\SatuanKerja;
 use App\Models\TujuanDepartemen;
-use App\Models\TujuanKantorBidang;
 use App\Models\TujuanKantorCabang;
 use App\Models\TujuanSatuanKerja;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Telegram\Bot\Api;
 
 
 class NomorSuratController extends Controller
 {
-    public function __construct()
-    {
-        $this->telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
-    }
     /**
      * Display a listing of the resource.
      *
@@ -34,8 +28,6 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        // $satuanKerja = SatuanKerja::all()->count();
-        // $departemen = Departemen::all()->count();
         $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
             ->latest()->get();
 
@@ -102,9 +94,6 @@ class NomorSuratController extends Controller
     public function store(Request $request)
     {
         $satuanKerja = SatuanKerja::all();
-        $cabang = Cabang::all();
-        $bidangCabang = BidangCabang::all();
-        // $departemenDireksi = Departemen::where('grup', 4)->get();
         $departemenInternal = Departemen::where('satuan_kerja', 1)->get();
 
         $validated = $request->validate([
@@ -118,39 +107,6 @@ class NomorSuratController extends Controller
         $validated['otor1_by_pengganti'] = $request->tunjuk_otor1_by;
         $validated['internal'] = $request->tipe_surat;
 
-        if ($validated['internal'] == 1) {
-            if ($validated['otor2_by_pengganti'] != null) {
-                $pengganti2 = User::where('id', $validated['otor2_by_pengganti'])
-                    ->latest();
-            }
-
-            if ($validated['otor1_by_pengganti'] != null) {
-                $pengganti1 = User::where('id', $validated['otor1_by_pengganti'])
-                    ->latest();
-            }
-
-            $korespodensi = User::where('departemen', $validated['departemen_asal'])
-                ->whereBetween('level', [6, 8])
-                // ->union($pengganti2)
-                // ->union($pengganti1)
-                ->latest()->get();
-        } elseif ($validated['internal'] == 2) {
-            if ($validated['otor2_by_pengganti'] != null) {
-                $pengganti2 = User::where('id', $validated['otor2_by_pengganti'])
-                    ->latest();
-            }
-
-            if ($validated['otor1_by_pengganti'] != null) {
-                $pengganti1 = User::where('id', $validated['otor1_by_pengganti'])
-                    ->latest();
-            }
-            $korespodensi = User::where('satuan_kerja', $validated['satuan_kerja_asal'])
-                ->whereBetween('level', [6, 8])
-                // ->union($pengganti2)
-                // ->union($pengganti1)
-                ->latest()->get();
-        }
-
         $tujuanUnitKerja = $request->tujuan_unit_kerja;
         $tujuanKantorCabang = $request->tujuan_kantor_cabang;
         $tujuanInternal = $request->tujuan_internal;
@@ -163,7 +119,8 @@ class NomorSuratController extends Controller
             $fileName = date("YmdHis") . '_' . $fileName;
             $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         }
-
+        // dd($tujuanUnitKerja);
+        // dd(count($tujuanUnitKerja));
 
         $create = SuratKeluar::create($validated);
         // Return gagal simpan
@@ -175,35 +132,37 @@ class NomorSuratController extends Controller
 
         // Seluruh tujuan internal
         if ($tujuanInternal[0] == 'internal') {
-            foreach ($departemenInternal as $item) {
-                TujuanDepartemen::create([
-                    'memo_id' => $idSurat,
-                    'departemen_id' => $item->id
-                ]);
-            }
-        } elseif ($tujuanInternal != null) {
-            foreach ($tujuanInternal as $item) {
-                TujuanDepartemen::create([
-                    'memo_id' => $idSurat,
-                    'departemen_id' => $item
-                ]);
+            TujuanDepartemen::create([
+                'memo_id' => $idSurat,
+                'departemen_id' => 1,
+                'all_flag' => 1
+            ]);
+        } else {
+            if ($tujuanInternal != null) {
+                foreach ($tujuanInternal as $item) {
+                    TujuanDepartemen::create([
+                        'memo_id' => $idSurat,
+                        'departemen_id' => $item,
+                        'all_flag' => 0
+                    ]);
+                }
             }
         }
 
         $cabangBesar = array();
         $bidang = array();
-        foreach ($tujuanKantorCabang as $item) {
-            if (substr($item, 0, 1) == 'S') {
-                $item = ltrim($item, $item[0]);
-                array_push($cabangBesar, $item);
-            } elseif ($item == 'kantor_cabang') {
-                continue;
-            } else {
-                array_push($bidang, $item);
+        if ($tujuanKantorCabang != null) {
+            foreach ($tujuanKantorCabang as $item) {
+                if (substr($item, 0, 1) == 'S') {
+                    $item = ltrim($item, $item[0]);
+                    array_push($cabangBesar, $item);
+                } elseif ($item == 'kantor_cabang') {
+                    continue;
+                } else {
+                    array_push($bidang, $item);
+                }
             }
         }
-        // dd($tujuanKantorCabang);
-        // dd($cabangBesar);
 
         // Seluruh tujuan kantor cabang
         if ($tujuanKantorCabang[0] == 'kantor_cabang') {
@@ -235,34 +194,23 @@ class NomorSuratController extends Controller
             }
         }
 
+        // Tujuan unit kerja
         if ($tujuanUnitKerja[0] == 'unit_kerja') {
-            foreach ($satuanKerja as $item) {
-                TujuanSatuanKerja::create([
-                    'memo_id' => $idSurat,
-                    'satuan_kerja_id' => $item->id,
-                ]);
-            }
-        };
-
-        if (count($tujuanUnitKerja) != 0) {
-            foreach ($tujuanUnitKerja as $item) {
-                TujuanSatuanKerja::create([
-                    'memo_id' => $idSurat,
-                    'satuan_kerja_id' => $item,
-                ]);
-            }
-        };
-
-
-        // Kirim notifikasi via telegram
-        // foreach ($korespodensi as $item) {
-        // if ($item->id_telegram != null) {
-        $this->telegram->sendMessage([
-            'chat_id' => 986550971,
-            'text' => 'Memo baru dengan perihal ' . strtoupper($validated['perihal']) . ' telah dibuat'
-        ]);
-        //     }
-        // }
+            TujuanSatuanKerja::create([
+                'memo_id' => $idSurat,
+                'satuan_kerja_id' => 1,
+                'all_flag' => 1
+            ]);
+        } else {
+            if ($tujuanUnitKerja != null)
+                foreach ($tujuanUnitKerja as $item) {
+                    TujuanSatuanKerja::create([
+                        'memo_id' => $idSurat,
+                        'satuan_kerja_id' => $item,
+                        'all_flag' => 0
+                    ]);
+                }
+        }
 
         return redirect('/nomorSurat')->with('success', 'Pembuatan surat berhasil');
     }

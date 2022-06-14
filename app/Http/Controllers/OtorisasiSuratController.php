@@ -383,9 +383,9 @@ class OtorisasiSuratController extends Controller
 
         // Nomor surat antar divisi / satuan kerja
         if ($datas->internal == 2) {
-            $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->satuanKerjaAsal['satuan_kerja'] . '/' . $tahun;
+            $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->satuanKerjaAsal['inisial'] . '/' . $tahun;
         } else { // Nomor surat antar departemen
-            $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->departemenAsal['departemen'] . '/' . $tahun;
+            $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->departemenAsal['inisial'] . '/' . $tahun;
         }
         $datas['nomor_surat'] = $no_surat;
         array_push($update, $datas['nomor_surat']);

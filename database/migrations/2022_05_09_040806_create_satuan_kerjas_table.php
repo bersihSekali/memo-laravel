@@ -16,6 +16,7 @@ class CreateSatuanKerjasTable extends Migration
         Schema::create('satuan_kerjas', function (Blueprint $table) {
             $table->id();
             $table->string('satuan_kerja');
+            $table->string('inisial')->nullable();
 
             $table->unsignedBigInteger('grup')->nullable();
             $table->foreign('grup')->references('id')->on('grups');
