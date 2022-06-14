@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditTrail;
 use App\Models\BidangCabang;
 use App\Models\Cabang;
 use App\Models\Departemen;
@@ -93,6 +94,8 @@ class NomorSuratController extends Controller
      */
     public function store(Request $request)
     {
+        $id = Auth::id();
+        $user = User::where('id', $id)->first();
         $satuanKerja = SatuanKerja::all();
         $departemenInternal = Departemen::where('satuan_kerja', 1)->get();
 
@@ -119,8 +122,6 @@ class NomorSuratController extends Controller
             $fileName = date("YmdHis") . '_' . $fileName;
             $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         }
-        // dd($tujuanUnitKerja);
-        // dd(count($tujuanUnitKerja));
 
         $create = SuratKeluar::create($validated);
         // Return gagal simpan
@@ -129,6 +130,16 @@ class NomorSuratController extends Controller
         }
 
         $idSurat = $create->id;
+
+        // Update audit trail
+        $audit = [
+            'users' => $user->id,
+            'aktifitas' => 'CRT',
+            'deskripsi' => $idSurat,
+            'url' => $request->url(),
+            'ip_address' => $request->ip()
+        ];
+        storeAudit($audit);
 
         // Seluruh tujuan internal
         if ($tujuanInternal[0] == 'internal') {

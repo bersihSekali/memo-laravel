@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\SuratKeluar;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,10 +20,12 @@ class CreateAuditTrailsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
 
             $table->string('aktifitas');
-            $table->string('deskripsi')->nullable();
+            $table->unsignedBigInteger('deskripsi')->nullable();
+            $table->foreign('deskripsi')->references('id')->on('surat_keluars');
+
             $table->string('url');
             $table->string('ip_address');
-            $table->string('mac_addrress');
+            $table->string('mac_address');
             $table->string('user_agent');
             $table->timestamps();
         });
