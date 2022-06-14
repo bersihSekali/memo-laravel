@@ -41,13 +41,21 @@ class NomorSuratController extends Controller
         $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
             ->latest()->get();
 
+        //untuk cek all flag
+        $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
+        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
+        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
+
         $datas = [
             'title' => 'Daftar Semua Surat',
             'datas' => $mails,
             'tujuanDepartemens' => $tujuanDepartemen,
             'tujuanSatkers' => $tujuanSatker,
             'tujuanCabangs' => $tujuanCabangs,
-            'users' => $user
+            'users' => $user,
+            'seluruhDepartemenMemoIds' => $seluruhDepartemenMemoId,
+            'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
+            'seluruhCabangMemoIds' => $seluruhCabangMemoId,
         ];
 
         return view('nomorSurat.index', $datas);
