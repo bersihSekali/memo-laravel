@@ -77,6 +77,8 @@ class SuratKeluarController extends Controller
      */
     public function store(Request $request)
     {
+        $id = Auth::id();
+        $user = User::where('id', $id)->first();
         // mempersiapkan data unit kerja dan cabang
         $satuanKerja = SatuanKerja::all();
         $kantorCabang = Departemen::where('grup', 2)->get();
@@ -91,6 +93,7 @@ class SuratKeluarController extends Controller
         $validated['departemen_asal'] = $request->departemen_asal;
         $validated['otor2_by_pengganti'] = $request->tunjuk_otor2_by;
         $validated['otor1_by_pengganti'] = $request->tunjuk_otor1_by;
+        $validated['internal'] = 2;
 
         //ambil request tujuan
         $tujuanUnitKerja = $request['tujuan_unit_kerja'];
@@ -117,10 +120,12 @@ class SuratKeluarController extends Controller
         //tujuan berdasarkan unit kerja
         if ($tujuanUnitKerja[0] == 'unit_kerja') {
             foreach ($satuanKerja as $item) {
-                TujuanSatuanKerja::create([
-                    'memo_id' => $idSurat,
-                    'satuan_kerja_id' => $item->id,
-                ]);
+                if ($item != $user->satuan_kerja) {
+                    TujuanSatuanKerja::create([
+                        'memo_id' => $idSurat,
+                        'satuan_kerja_id' => $item->id,
+                    ]);
+                }
             };
         } elseif ($tujuanUnitKerja) {
             foreach ($tujuanUnitKerja as $item) {

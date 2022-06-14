@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BidangCabang;
+use App\Models\Cabang;
 use App\Models\SuratKeluar;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +12,7 @@ use App\Models\SatuanKerja;
 use App\Models\Departemen;
 use App\Models\Forward;
 use App\Models\TujuanDepartemen;
+use App\Models\TujuanKantorCabang;
 use App\Models\TujuanSatuanKerja;
 
 class SuratMasukController extends Controller
@@ -39,12 +42,23 @@ class SuratMasukController extends Controller
         }
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
+
+        //untuk kolom tujuan
+        $tujuanId = $data->pluck('memo_id')->toArray();
+        $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $tujuanId)->get();
+
+        $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $tujuanId)->get();
+        $tujuanCabang = TujuanKantorCabang::whereIn('memo_id', $tujuanId)->get();
+
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
             'datas' => $data,
             'users' => $user,
             'satuanKerjas' => $satuanKerja,
             'departemens' => $departemen,
+            'tujuanSatkers' => $tujuanSatker,
+            'tujuanDepartemens' => $tujuanDepartemen,
+            'tujuanCabangs' => $tujuanCabang,
         ]);
     }
 
