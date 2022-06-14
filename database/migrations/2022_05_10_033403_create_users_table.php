@@ -20,7 +20,6 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('satuan_kerja')->nullable();
             $table->unsignedBigInteger('departemen')->nullable();
             $table->unsignedBigInteger('level')->nullable();
-            $table->integer('id_telegram')->nullable();
 
             $table->foreign('satuan_kerja')->references('id')->on('satuan_kerjas');
             $table->foreign('departemen')->references('id')->on('departemens');

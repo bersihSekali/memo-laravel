@@ -80,9 +80,9 @@
                 <div class="dropdown-menu-column">
                   {{-- Untuk Internal SKTILOG --}}
                   @if ($users->satuan_kerja == 2)
-                  <a class="dropdown-item" href="/nomorSurat">
-                    Registrasi Surat
-                  </a>
+                    <a class="dropdown-item" href="/nomorSurat">
+                      Registrasi Surat
+                    </a>
 
                     {{-- Untuk golongan lebih dari 4 --}}
                     @if ($users->levelTable->golongan > 4)
