@@ -18,6 +18,7 @@ class Departemen extends Migration
             $table->unsignedBigInteger('satuan_kerja')->nullable();
             $table->foreign('satuan_kerja')->references('id')->on('satuan_kerjas');
             $table->string('departemen')->unique();
+            $table->string('inisial')->nullable();
 
             $table->unsignedBigInteger('grup')->nullable();
             $table->foreign('grup')->references('id')->on('grups');

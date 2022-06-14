@@ -23,86 +23,87 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        Grup::create([
-            'nama_grup' => 'Unit Kerja'
-        ]);
+        $grup = array(
+            'Unit Kerja', 'Kantor Kerja', 'Kantor Cabang', 'Departemen',
+            'Departemen Satu Tingkat Dibawah Direksi', 'Fungsi'
+        );
 
-        Grup::create([
-            'nama_grup' => 'Kantor Cabang'
-        ]);
-
-        Grup::create([
-            'nama_grup' => 'Departemen'
-        ]);
-
-        Grup::create([
-            'nama_grup' => 'Departemen Satu Tingkat di Bawah Direksi'
-        ]);
-
-        Grup::create([
-            'nama_grup' => 'Fungsi'
-        ]);
+        for ($i = 0; $i < count($grup); $i++) {
+            Grup::create([
+                'nama_grup' => $grup[$i]
+            ]);
+        }
 
         $satuanKerja = [
-            ['SKTILOG', 1], ['SKAI', 1], ['SKHSDM', 1], ['SBK', 1], ['SKARP', 1], ['SKBRK', 1],
-            ['MANAJEMEN RISIKO', 4], ['SKKPP', 1], ['DIVISI OPERASI', 1], ['PENGURUS BCA SYARIAH', 1],
-            ['KEPATUHAN', 4], ['CABANG JABODETABEK', 1], ['CABANG NON JABODETABEK', 1],
+            // [Satuan kerjam, inisial, grup]
+            ['SELURUH SATUAN KERJA / DIVISI', 'ALL', 1], ['SATUAN KERJA TEKNOLOGI INFORMASI DAN LOGISTIK', 'STL', 1], ['SATUAN KERJA AUDIT INTERNAL', 'SAI', 1],
+            ['SATUAN KERJA HUKUM DAN SUMBER DAYA MANUSIA', 'HSD', 1], ['SATUAN KERJA BISNIS DAN KOMUNIKASI', 'SBK', 1], ['SATUAN KERJA ANALISA RISIKO DAN PEMBIAYAAN', 'ARP', 1],
+            ['SATUAN KERJA KEUANGAN DAN PERENCANAAN PERUSAHAAN', 'SKA', 1],
+            ['DEPARTEMEN MANAJEMEN RISIKO', 'MRK', 4], ['DIVISI OPERASI', 'DOP', 1],
+            ['DEPARTEMEN KEPATUHAN', 'KEP', 4], ['CABANG JABODETABEK', null, 1], ['CABANG NON JABODETABEK', null, 1],
         ];
 
         for ($i = 0; $i < count($satuanKerja); $i++) {
             SatuanKerja::create([
                 'satuan_kerja' => $satuanKerja[$i][0],
-                'grup' => $satuanKerja[$i][1]
+                'inisial' => $satuanKerja[$i][1],
+                'grup' => $satuanKerja[$i][2]
             ]);
         }
 
         $departemen = array(
-            // [satuan keja, nama departemen, grup]
+            // [satuan keja, nama departemen, inisial, grup]
+            // Sluruh satuan kerja internal sktilog
+            [1, 'SELURUH DEPARTEMEN SKTILOG', 'STL-ALL', 1],
             // SKTILOG
-            [1, 'LOGISTIK', 3], [1, 'SISTEM PROSEDUR & PENDUKUNG OPERASI', 3], [1, 'PENGEMBANGAN TEKNOLOGI INFORMASI', 3],
-            [1, 'SEKURITI TEKNOLOGI INFORMASI', 3], [1, 'OPERASI TEKNOLOGI INFORMASI', 5],
+            [2, 'LOGISTIK', 'LOG', 3], [2, 'SISTEM PROSEDUR & PENDUKUNG OPERASI', 'PPO', 3], [2, 'DEPARTEMEN TEKNOLOGI INFORMASI', 'DTI', 3],
+            // [2, 'SEKURITI TEKNOLOGI INFORMASI', 3], [2, 'OPERASI TEKNOLOGI INFORMASI', 5],
 
             // SKAI
-            [2, 'INTERNAL', 3], [2, 'TEKNOLOGI INFORMASI', 3], [2, 'KANTOR PUSAT & ANTI FRAUD', 3],
-            [2, 'KANTOR CABANG', 3],
+            // [3, 'INTERNAL', 3], [3, 'TEKNOLOGI INFORMASI', 3], 
+            [3, 'DEPARTEMEN KANTOR PUSAT & ANTI FRAUD', 'AKP', 3],
+            [3, 'DEPARTEMEN AUDIT KANTOR CABANG DAN INTERNAL CONTROL', 'AKC', 3],
 
             // SKHSDM
-            [3, 'SDM', 3], [3, 'HUKUM', 3], [3, 'BUDAYA PERUSAHAAN DAN LAYANAN', 5],
+            [4, 'DEPARTEMEN SUMBER DAYA MANUSIA', 'SDM', 3], [4, 'DEPARTEMEN HUKUM', 'DHK', 3],
+            // [4, 'BUDAYA PERUSAHAAN DAN LAYANAN', 5],
 
             // SBK
-            [4, 'KOMUNIKASI DAN KESEKRETARIATAN PERUSAHAAN', 3], [4, 'PENDUKUNG BISNIS', 3], [4, 'PENGEMBANGAN BISNIS', 3],
-            [4, 'RISET PEMASARAN DAN PENDAYAGUNAAN DATA WAREHOUSE', 5], [4, 'PENGEMBANGAN DAN PEMBINAAN JARINGAN CABANG', 3],
+            [5, 'DEPARTEMEN KOMUNIKASI DAN KESEKRETARIATAN PERUSAHAAN', 'KSP', 3], [5, 'DEPARTEMEN PENDUKUNG BISNIS', 'PDS', 3], [5, 'DEPARTEMEN PENGEMBANGAN BISNIS', 'PBS', 3],
+            // [5, 'RISET PEMASARAN DAN PENDAYAGUNAAN DATA WAREHOUSE', 5], [5, 'PENGEMBANGAN DAN PEMBINAAN JARINGAN CABANG', 3],
 
             // SKARP
-            [5, 'PENDUKUNG ARP', 5], [5, 'ANALISA PEMBIAYAAN', 5], [5, 'PENILAIAN AGUNAN', 5],
+            [6, 'FUNGSI PENDUKUNG ARP', 'RPD', 5],
+            // [6, 'ANALISA PEMBIAYAAN', 5], [6, 'PENILAIAN AGUNAN', 5],
 
             // SKBRK
-            [6, 'PENGEMBANGAN PRODUK DAN PENGELOLAAN PROSES', 5], [5, 'PENGEMBANGAN DAN LAYANAN BISNIS', 5],
+            // [6, 'PENGEMBANGAN PRODUK DAN PENGELOLAAN PROSES', 5], [5, 'PENGEMBANGAN DAN LAYANAN BISNIS', 5],
 
             // SKKPP
-            [7, 'PERENCANAAN PERUSAHAAN', 5], [7, 'PORTOFOLIO MANAJEMEN', 5], [7, 'BIDANG KEUANGAN PERUSAHAAN', 3],
+            // [7, 'PERENCANAAN PERUSAHAAN', 5], [7, 'PORTOFOLIO MANAJEMEN', 5], [7, 'BIDANG KEUANGAN PERUSAHAAN', 3],
 
             // DIVISI OPERASI
-            [8, 'SENTRA OPERASI PERBANKAN', 3], [8, 'ADMINISTRASI PEMBIAYAAN', 3], [8, 'PENYELAMATAN PEMBIAYAAN', 5]
+            [9, 'DEPARTEMEN SENTRA OPERASI PERBANKAN', 'DSO', 3], [9, 'DEPARTEMEN ADMINISTRASI PEMBIAYAAN', 'ADP', 3], //[9, 'PENYELAMATAN PEMBIAYAAN', 5]
         );
 
         for ($i = 0; $i < count($departemen); $i++) {
             Departemen::create([
                 'satuan_kerja' => $departemen[$i][0],
                 'departemen' => $departemen[$i][1],
-                'grup' => $departemen[$i][2]
+                'inisial' => $departemen[$i][2],
+                'grup' => $departemen[$i][3]
             ]);
         }
 
         $cabang = array(
             // Jabodetabek
-            ['SELURUH KANTOR CABANG', 5], ['JATINEGARA', 5], ['MANGGA DUA', 5],
-            ['SAMANHUDI', 5], ['SUNTER', 5],
+            ['SELURUH KANTOR CABANG', 6], ['JATINEGARA', 6], ['MANGGA DUA', 6],
+            ['SAMANHUDI', 6], ['SUNTER', 6],
 
             // Non jabodetabek
-            ['BANDA ACEH', 6], ['BANDUNG', 6], ['LAMPUNG', 6],
-            ['MEDAN', 6], ['PALEMBANG', 6], ['PANAKKUKANG', 6],
-            ['SEMARANG', 6], ['SOLO', 6], ['SURABAYA', 6], ['YOGYAKARTA', 6]
+            ['BANDA ACEH', 7], ['BANDUNG', 7], ['LAMPUNG', 7],
+            ['MEDAN', 7], ['PALEMBANG', 7], ['PANAKKUKANG', 7],
+            ['SEMARANG', 7], ['SOLO', 7], ['SURABAYA', 7], ['YOGYAKARTA', 7]
         );
 
         for ($i = 0; $i < count($cabang); $i++) {
@@ -194,24 +195,26 @@ class DatabaseSeeder extends Seeder
         }
 
         $user = array(
-            // [name, level, satuan kerja, departemen, id telegram]
-            ['klin', 1, null, null, null], ['agusta', 2, 1, null, null], ['hernandi', 6, 1, 1, 986550971],
-            ['james', 7, 1, 1, null], ['yudhi', 8, 1, 1, 1315801671], ['nur', 12, 1, 1, null],
-            ['bayu', 15, 1, 1, null], ['dathu', 6, 1, 2, null], ['riyadi', 7, 1, 2, null],
-            ['kertayuga', 8, 1, 2, null], ['eka', 12, 1, 2, null], ['prasetyo', 15, 1, 2, null],
-            ['ariefin', 6, 1, 3, null], ['thor', 7, 1, 3, null], ['hatta', 8, 1, 3, 267195734],
-            ['febriansyah', 12, 1, 3, null], ['efrinaldi', 15, 1, 3, null], ['alzuhri', 2, 2, null, null],
-            ['trinandani', 6, 2, 6, null], ['ragnarok', 7, 2, 6, null], ['githa', 8, 2, 6, null],
-            ['refina', 12, 2, 6, null], ['muhammad', 15, 2, 6, null], ['afta', 6, 2, 7, null],
-            ['buddin', 7, 2, 7, null], ['komo', 8, 2, 7, null], ['arsyad', 12, 2, 7, null],
-            ['risky', 15, 2, 7, null], ['septiawan', 2, 3, null, null], ['john', 6, 3, 10, null],
-            ['lennon', 7, 3, 10, null], ['fredy', 8, 3, 10, null], ['mercury', 12, 3, 10, null],
-            ['venus', 15, 3, 10, null], ['bumi', 6, 3, 11, null], ['mars', 7, 3, 11, null],
-            ['jupiter', 8, 3, 11, null], ['saturn', 12, 3, 11, null], ['uranus', 15, 3, 11, null],
-            ['neptunus', 2, 4, null, null], ['pluto', 6, 4, 13, null], ['alda', 7, 4, 13, null],
-            ['tri', 8, 4, 13, null], ['risma', 12, 4, 13, null], ['maharini', 15, 4, 13, null],
-            ['basuki', 6, 4, 14, null], ['cahaya', 7, 4, 14, null], ['bulan', 8, 4, 14, null],
-            ['purnama', 12, 4, 14, null], ['sabit', 15, 4, 14, null]
+            // [name, level, satuan kerja, departemen]
+            ['klin', 1, null, null], ['agusta', 2, 2, null], ['hernandi', 6, 2, 2],
+            ['james', 7, 2, 2], ['yudhi', 8, 2, 2], ['nur', 12, 2, 2],
+            ['bayu', 15, 2, 2], ['dathu', 6, 2, 3], ['riyadi', 7, 2, 3],
+            ['kertayuga', 8, 2, 3], ['eka', 12, 2, 3], ['prasetyo', 15, 2, 3],
+            ['ariefin', 6, 2, 4], ['thor', 7, 2, 4], ['hatta', 8, 2, 4],
+            ['febriansyah', 12, 2, 4], ['efrinaldi', 15, 2, 4], ['alzuhri', 2, 3, null],
+            ['trinandani', 6, 3, 5], ['ragnarok', 7, 3, 5], ['githa', 8, 3, 5],
+            ['refina', 12, 3, 5], ['muhammad', 15, 3, 5], ['afta', 6, 3, 5],
+            ['buddin', 7, 3, 5], ['komo', 8, 3, 5], ['arsyad', 12, 3, 5],
+            ['risky', 15, 3, 5], ['septiawan', 6, 3, 6], ['john', 7, 3, 6],
+            ['lennon', 8, 3, 6], ['fredy', 12, 3, 6], ['mercury', 15, 3, 6],
+            ['venus', 2, 4, 7], ['bumi', 6, 4, 7], ['mars', 7, 4, 7],
+            ['jupiter', 8, 4, 7], ['saturn', 12, 4, 7], ['uranus', 15, 4, 7],
+            ['neptunus', 6, 4, 8], ['pluto', 7, 4, 8], ['alda', 8, 4, 8],
+            ['tri', 12, 4, 8], ['risma', 15, 4, 8], ['maharini', 2, 5, null],
+            ['basuki', 6, 5, 9], ['cahaya', 7, 5, 9], ['bulan', 8, 5, 9],
+            ['purnama', 12, 5, 9], ['sabit', 15, 5, 9], ['padli', 6, 5, 10],
+            ['tito', 7, 5, 10], ['karnavian', 8, 5, 10], ['agus', 12, 5, 10],
+            ['subiyanto', 15, 5, 10]
         );
 
         for ($i = 0; $i < count($user); $i++) {
@@ -220,7 +223,6 @@ class DatabaseSeeder extends Seeder
                 'level' => $user[$i][1],
                 'satuan_kerja' => $user[$i][2],
                 'departemen' => $user[$i][3],
-                'id_telegram' => $user[$i][4],
                 'password' => hash::make('Syariah@1')
             ];
             User::create($data);

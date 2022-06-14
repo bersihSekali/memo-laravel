@@ -12,6 +12,7 @@ class TujuanSatuanKerja extends Model
     protected $fillable = [
         'satuan_kerja_id',
         'memo_id',
+        'all_flag',
         'status_baca',
         'tanggal_baca'
     ];

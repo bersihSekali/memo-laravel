@@ -9,20 +9,10 @@
             </h2>
         </div>
 
-        @if ($users->satuan_kerja == 1)
+        @if ($users->satuan_kerja == 2)
         <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="btn-list">
                 <a href="/nomorSurat/create" class="btn btn-primary d-none d-sm-inline-block">
-                    <i class="fas fa-plus-circle me-2"></i>
-                    Tambah Surat
-                </a>
-            </div>
-        </div>
-        
-        @else
-        <div class="col-12 col-md-auto ms-auto d-print-none">
-            <div class="btn-list">
-                <a href="#" class="btn btn-primary d-none d-sm-inline-block">
                     <i class="fas fa-plus-circle me-2"></i>
                     Tambah Surat
                 </a>
@@ -57,9 +47,9 @@
                             <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
                             <td class="align-top">
                                 @if ($data->departemen_asal == '')
-                                    {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                                    {{ $data->satuanKerjaAsal['internal'] }}
                                 @else
-                                    {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
+                                    {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
                                 @endif
                             </td>
                             <td class="align-top">{{ $data->perihal }}</td>

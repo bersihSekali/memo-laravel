@@ -12,6 +12,7 @@ class TujuanDepartemen extends Model
     protected $fillable = [
         'memo_id',
         'departemen_id',
+        'all_flag',
         'status_baca',
         'tanggal_baca',
         'pesan_disposisi',
