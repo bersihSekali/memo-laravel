@@ -114,13 +114,8 @@
                 <div class="table-responsive">
                     <table id="tabel-data" style="width:100%">
                         <tr>
-                            <td width="20%">Tanggal Registrasi</td>
-                            <td>: {{ $data->created_at }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Disusun Oleh</td>
-                            <td>: {{ucwords($data->createdBy['name'])}}</td>
+                            <td width="20%">Tanggal Surat</td>
+                            <td>: {{ date('Y-m-d', strtotime($data->created_at)) }}</td>
                         </tr>
 
                         <tr>
@@ -129,19 +124,81 @@
                         </tr>
 
                         <tr>
+                            <td>Tanggal Baca</td>
+                            @if ($data['tanggal_baca'])
+                            <td>: {{date('Y-m-d', strtotime($data['tanggal_baca']))}}</td>
+                            @else
+                            <td>: <span class="badge bg-warning">Belum Selesai</span></td>
+                            @endif
+                        </tr>
+
+                        <tr>
                             <td>Nomor Surat</td>
                             <td>: {{ $data->nomor_surat }}</td>
                         </tr>
 
-
                         <tr>
-                            <td>Asal</td>
-                            <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                            <td>Disusun Oleh</td>
+                            <td>: {{strtoupper($data->createdBy['name'])}}</td>
                         </tr>
 
                         <tr>
-                            <td>Tujuan</td>
-                            <td>: {{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
+                            <td>Asal</td>
+                            @if($data->internal == 1)
+                            <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                            @elseif($data->internal ==2)
+                            <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }}</td>
+                            @endif
+                        </tr>
+
+                        <tr>
+                            <td class="align-top" width="20%">Tujuan</td>
+                            <td>
+                                {{-- Tujuan kantor cabang --}}
+                                @if (in_array($data->memo_id, $seluruhCabangMemoIds))
+                                : SELURUH KANTOR LAYANAN <br>
+                                @else
+                                @foreach ($tujuanCabangs as $item)
+                                @if ($item->memo_id == $data->memo_id)
+                                @if ($item->all_flag == true && $item->cabang_id != null)
+                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
+                                @endif
+                                @endif
+                                @endforeach
+                                @endif
+
+                                {{-- Tujuan kantor bidang --}}
+                                @foreach ($tujuanCabangs as $item)
+                                @if ($item->memo_id == $data->memo_id)
+                                @if ($item->bidang_id != null && $item->all_flag!=true)
+                                : {{ $item->tujuanBidang->bidang }} <br>
+                                @endif
+                                @endif
+                                @endforeach
+
+                                {{-- Tujuan departemen --}}
+                                @if (in_array($data->memo_id, $seluruhDepartemenMemoIds))
+                                : SELURUH DEPARTEMEN SKTILOG <br>
+                                @else
+                                @foreach ($tujuanDepartemens as $item)
+                                @if ($item->memo_id == $data->memo_id)
+                                : {{ $item->tujuanDepartemen->departemen }} <br>
+                                @endif
+                                @endforeach
+                                @endif
+
+                                {{-- Tujuan satuan kerja --}}
+                                @if (in_array($data->memo_id, $seluruhSatkerMemoIds))
+                                : SELURUH UNIT KERJA KANTOR PUSAT <br>
+                                @else
+                                @foreach ($tujuanSatkers as $item)
+                                @if ($item->memo_id == $data->memo_id)
+                                : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                                @endif
+                                @endforeach
+                                @endif
+
+                            </td>
                         </tr>
 
                         <tr>
@@ -149,10 +206,6 @@
                             <td>: {{ $data->perihal }}</td>
                         </tr>
 
-                        <tr>
-                            <td>Dibaca pada</td>
-                            <td>: {{date('Y-m-d', strtotime($data['tanggal_baca']))}}</td>
-                        </tr>
 
                         @if($data['pesan_disposisi'])
                         <tr>

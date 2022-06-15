@@ -28,8 +28,13 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
-            ->latest()->get();
+        if ($user->levelTable['golongan'] == 7) {
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->latest()->get();
+        } elseif ($user->levelTable['golongan'] <= 6) {
+            $mails = SuratKeluar::where('departemen_asal', $user->departemen)
+                ->latest()->get();
+        }
 
         // Untuk view column tujuan
         $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
@@ -41,13 +46,21 @@ class NomorSuratController extends Controller
         $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
             ->latest()->get();
 
+        //untuk cek all flag
+        $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
+        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
+        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
+
         $datas = [
             'title' => 'Daftar Semua Surat',
             'datas' => $mails,
             'tujuanDepartemens' => $tujuanDepartemen,
             'tujuanSatkers' => $tujuanSatker,
             'tujuanCabangs' => $tujuanCabangs,
-            'users' => $user
+            'users' => $user,
+            'seluruhDepartemenMemoIds' => $seluruhDepartemenMemoId,
+            'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
+            'seluruhCabangMemoIds' => $seluruhCabangMemoId,
         ];
 
         return view('nomorSurat.index', $datas);
@@ -94,9 +107,12 @@ class NomorSuratController extends Controller
     public function store(Request $request)
     {
         $id = Auth::id();
-        $user = User::where('id', $id)->first();
-        // $satuanKerja = SatuanKerja::all();
-        // $departemenInternal = Departemen::where('satuan_kerja', 1)->get();
+        $user = User::find($id);
+
+        $satuanKerja = SatuanKerja::all();
+        $departemenInternal = Departemen::where('satuan_kerja', 2)->get();
+        $cabang = Cabang::all();
+        $bidangCabang = BidangCabang::all();
 
         $validated = $request->validate([
             'created_by' => 'required',
@@ -145,6 +161,15 @@ class NomorSuratController extends Controller
                 'departemen_id' => 1,
                 'all_flag' => 1
             ]);
+            foreach ($departemenInternal as $item) {
+                if ($item->id != $user->departemen) {
+                    TujuanDepartemen::create([
+                        'memo_id' => $idSurat,
+                        'departemen_id' => $item->id,
+                        'all_flag' => 1
+                    ]);
+                }
+            }
         } else {
             if ($tujuanInternal != null) {
                 foreach ($tujuanInternal as $item) {
@@ -174,11 +199,20 @@ class NomorSuratController extends Controller
 
         // Seluruh tujuan kantor cabang
         if ($tujuanKantorCabang[0] == 'kantor_cabang') {
-            TujuanKantorCabang::create([
-                'memo_id' => $idSurat,
-                'cabang_id' => 1,
-                'all_flag' => 1
-            ]);
+            foreach ($cabang as $item) {
+                TujuanKantorCabang::create([
+                    'memo_id' => $idSurat,
+                    'cabang_id' => $item->id,
+                    'all_flag' => 1
+                ]);
+            }
+            foreach ($bidangCabang as $item) {
+                TujuanKantorCabang::create([
+                    'memo_id' => $idSurat,
+                    'bidang_id' => $item->id,
+                    'all_flag' => 1
+                ]);
+            }
         }
 
         if (count($cabangBesar) != 0) {
@@ -188,6 +222,14 @@ class NomorSuratController extends Controller
                     'cabang_id' => $item,
                     'all_flag' => 1
                 ]);
+                $bidangLoop = BidangCabang::where('cabang_id', $item)->get();
+                foreach ($bidangLoop as $item_bidang) {
+                    TujuanKantorCabang::create([
+                        'memo_id' => $idSurat,
+                        'bidang_id' => $item_bidang->id,
+                        'all_flag' => 1
+                    ]);
+                }
             }
         }
 
@@ -204,11 +246,13 @@ class NomorSuratController extends Controller
 
         // Tujuan unit kerja
         if ($tujuanUnitKerja[0] == 'unit_kerja') {
-            TujuanSatuanKerja::create([
-                'memo_id' => $idSurat,
-                'satuan_kerja_id' => 1,
-                'all_flag' => 1
-            ]);
+            foreach ($satuanKerja as $item) {
+                TujuanSatuanKerja::create([
+                    'memo_id' => $idSurat,
+                    'satuan_kerja_id' => $item->id,
+                    'all_flag' => 1
+                ]);
+            }
         } else {
             if ($tujuanUnitKerja != null)
                 foreach ($tujuanUnitKerja as $item) {

@@ -80,27 +80,27 @@
                 <div class="dropdown-menu-column">
                   {{-- Untuk Internal SKTILOG --}}
                   @if ($users->satuan_kerja == 2)
-                    <a class="dropdown-item" href="/nomorSurat">
-                      Registrasi Surat
-                    </a>
+                  <a class="dropdown-item" href="/nomorSurat">
+                    Registrasi Surat
+                  </a>
 
-                    {{-- Untuk golongan lebih dari 4 --}}
-                    @if ($users->levelTable->golongan > 4)
-                    <a class="dropdown-item" href="/otorisasi">
-                      Otorisasi Surat
-                    </a>
-                    @endif
+                  {{-- Untuk golongan lebih dari 4 --}}
+                  @if ($users->levelTable->golongan > 4)
+                  <a class="dropdown-item" href="/otorisasi">
+                    Otorisasi Surat
+                  </a>
+                  @endif
 
                   @else
-                    <a class="dropdown-item" href="/suratKeluar">
-                      Surat Keluar
-                    </a>
+                  <a class="dropdown-item" href="/suratKeluar">
+                    Surat Keluar
+                  </a>
 
-                    @if ($users->levelTable->golongan >4)
-                    <a class="dropdown-item" href="/otor">
-                      Otorisasi Surat
-                    </a>
-                    @endif
+                  @if ($users->levelTable->golongan >4)
+                  <a class="dropdown-item" href="/otor">
+                    Otorisasi Surat
+                  </a>
+                  @endif
                   @endif
                 </div>
               </div>
