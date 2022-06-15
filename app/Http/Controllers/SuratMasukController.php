@@ -48,7 +48,13 @@ class SuratMasukController extends Controller
         $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $tujuanId)->get();
 
         $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $tujuanId)->get();
-        $tujuanCabang = TujuanKantorCabang::whereIn('memo_id', $tujuanId)->get();
+        $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $tujuanId)->get();
+
+        //untuk cek all flag
+        $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
+        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', $user->satuan_kerja)->pluck('memo_id')->toArray();
+        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', $user->departemen)->pluck('memo_id')->toArray();
+
 
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
@@ -58,7 +64,10 @@ class SuratMasukController extends Controller
             'departemens' => $departemen,
             'tujuanSatkers' => $tujuanSatker,
             'tujuanDepartemens' => $tujuanDepartemen,
-            'tujuanCabangs' => $tujuanCabang,
+            'tujuanCabangs' => $tujuanCabangs,
+            'seluruhDepartemenMemoIds' => $seluruhDepartemenMemoId,
+            'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
+            'seluruhCabangMemoIds' => $seluruhCabangMemoId,
         ]);
     }
 

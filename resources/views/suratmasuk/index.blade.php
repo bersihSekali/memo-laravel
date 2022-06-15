@@ -154,31 +154,49 @@
                         <tr>
                             <td class="align-top" width="20%">Tujuan</td>
                             <td>
+                                {{-- Tujuan kantor cabang --}}
+                                @if (in_array($data->memo_id, $seluruhCabangMemoIds))
+                                : SELURUH KANTOR LAYANAN
+                                @else
+                                @foreach ($tujuanCabangs as $item)
+                                @if ($item->memo_id == $data->memo_id)
+                                @if ($item->all_flag == true && $item->cabang_id != null)
+                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
+                                @endif
+                                @endif
+                                @endforeach
+                                @endif
+
+                                {{-- Tujuan kantor bidang --}}
+                                @foreach ($tujuanCabangs as $item)
+                                @if ($item->memo_id == $data->memo_id)
+                                @if ($item->bidang_id != null && $item->all_flag!=true)
+                                : {{ $item->tujuanBidang->bidang }} <br>
+                                @endif
+                                @endif
+                                @endforeach
+
+                                {{-- Tujuan departemen --}}
+                                @if (in_array($data->memo_id, $seluruhDepartemenMemoIds))
+                                : SELURUH DEPARTEMEN SKTILOG
+                                @else
+                                @foreach ($tujuanDepartemens as $item)
+                                @if ($item->memo_id == $data->memo_id)
+                                : {{ $item->tujuanDepartemen->departemen }} <br>
+                                @endif
+                                @endforeach
+                                @endif
+
                                 {{-- Tujuan satuan kerja --}}
+                                @if (in_array($data->memo_id, $seluruhSatkerMemoIds))
+                                : SELURUH UNIT KERJA KANTOR PUSAT
+                                @else
                                 @foreach ($tujuanSatkers as $item)
                                 @if ($item->memo_id == $data->memo_id)
                                 : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
                                 @endif
                                 @endforeach
-
-                                {{-- Tujuan kantor cabang --}}
-                                @foreach ($tujuanCabangs as $item) @if ($item->memo_id == $data->memo_id)
-                                @if (($item->all_flag == true) && ($item->bidang_id == null) && ($item->cabang_id ==1))
-                                : SELURUH KANTOR CABANG
-                                @elseif ($item->cabang_id != null)
-                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
                                 @endif
-                                @endif
-                                @endforeach
-
-                                {{-- Tujuan kantor bidang --}}
-                                @foreach ($tujuanCabangs as $item)
-                                @if ($item->memo_id == $data->memo_id)
-                                @if ($item->bidang_id != null)
-                                : {{ $item->tujuanBidang->bidang }} <br>
-                                @endif
-                                @endif
-                                @endforeach
 
                             </td>
                         </tr>

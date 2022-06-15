@@ -28,8 +28,16 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
-            ->latest()->get();
+        if ($user->levelTable['golongan'] == 7) {
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->latest()->get();
+        } elseif ($user->levelTable['golongan'] == 6) {
+            $mails = SuratKeluar::where('departemen_asal', $user->departemen)
+                ->latest()->get();
+        } elseif ($user->levelTable['golongan'] < 6) {
+            $mails = SuratKeluar::where('departemen_asal', $user->departemen)
+                ->latest()->get();
+        }
 
         // Untuk view column tujuan
         $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
@@ -145,6 +153,11 @@ class NomorSuratController extends Controller
 
         // Seluruh tujuan internal
         if ($tujuanInternal[0] == 'internal') {
+            TujuanDepartemen::create([
+                'memo_id' => $idSurat,
+                'departemen_id' => 1,
+                'all_flag' => 1
+            ]);
             foreach ($departemenInternal as $item) {
                 if ($item->id != $user->departemen) {
                     TujuanDepartemen::create([
