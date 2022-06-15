@@ -22,11 +22,11 @@
             {{-- No Surat --}}
             <div class="form-group formulir mb-3" style="display: none;">
                 <label for="nomor_surat" class="form-label ">Nomor Surat</label>
-                <input type="text" class="form-control" autocomplete="off">
+                <input type="text" class="form-control" autocomplete="off" name="nomor_surat">
             </div>
 
             {{-- Input departemen / satuan kerja --}}
-            <div class="form-group row formulir" style="display: none">
+            <div class=" form-group row formulir" style="display: none">
                 <div class="col-sm-6 mb-3" id="eksternal">
                     <label for="satuan_kerja_asal" class="form-label">Satuan Kerja Asal</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="satuan_kerja_asal" id="satuan_kerja_asal" style="width: 100%;">
@@ -36,48 +36,50 @@
             </div>
 
             {{-- Input tujuan --}}
-            <div class="form-group mb-3 formulir" style="display: none">
-                <label for="tujuan" class="form-label mb-3">Tujuan</label>
-                <div class="row justify-content-end">
-                    <div class="row mb-2">
+            <div class="form-group mb-3">
+                <label for="tujuan" class="form-label formulir" style="display: none">Tujuan</label>
+                {{-- Tujuan unit kerja --}}
+                <div class="row justify-content-end formulir tujuan-eksternal" style="display: none">
+                    <div class="row">
                         <label for="">Unit Kerja</label>
                     </div>
                     <div class="row justify-content-end">
                         <div class="col">
-                            <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan_unit_kerja[]" id="tujuan_unit_kerja" multiple="multiple" style="width: 100%;">
+                            <select class="form-select" aria-label=".form-select-sm example" name="tujuan_unit_kerja[]" id="tujuan_unit_kerja" multiple="multiple">
                                 <option id="unit_kerja" value="unit_kerja">Seluruh Unit Kerja</option>
                                 @foreach ($satuanKerjas as $satuanKerja)
-                                <option class="opsi_unit_kerja" value="{{ $satuanKerja->id }}">{{ $satuanKerja->satuan_kerja }}</option>
+                                @if ($satuanKerja->id == 1)
+                                @continue
+                                @endif
+
+                                <option class="opsi_unit_kerja" value="{{ $satuanKerja->id }}">{{ $satuanKerja->inisial }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-end">
-                    <div class="row my-2">
-                        <label for="">Departemen Satu Tingkat di Bawah Direksi</label>
-                    </div>
-                    <div class="row justify-content-end">
-                        <div class="col">
-                            <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan_departemen_direksi[]" id="tujuan_departemen_direksi" multiple="multiple" style="width: 100%;">
-                                <option id="departemen_direksi" value="departemen_direksi">Seluruh Departemen di Bawah Direksi</option>
-                                @foreach ($departemenDireksis as $departemenDireksi)
-                                <option class="opsi_departemen_direksi" value="{{ $departemenDireksi->id }}">{{ $departemenDireksi->departemen }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-end">
-                    <div class="row my-2">
-                        <label for="">Unit Layanan</label>
+
+                {{-- Tujuan unit layanan --}}
+                <div class="row justify-content-end formulir tujuan-eksternal" style="display: none">
+                    <div class="row mt-2">
+                        <label for="">Kantor Cabang / Unit Layanan</label>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan_kantor_cabang[]" id="tujuan_kantor_cabang" multiple="multiple" style="width: 100%;">
-                                <option id="kantor_cabang" value="kantor_cabang">Seluruh Kantor Cabang</option>
-                                @foreach ($kantorCabangs as $kantorCabang)
-                                <option class="opsi_kantor_cabang" value="{{ $kantorCabang->id }}">{{ $kantorCabang->departemen }}</option>
+                            <select class="form-select" aria-label=".form-select-sm example" name="tujuan_kantor_cabang[]" id="tujuan_kantor_cabang" multiple="multiple">
+                                <option id="kantor_cabang" value="kantor_cabang">SELURUH KANTOR CABANG</option>
+                                @foreach ($cabangs as $cabang)
+                                @if ($cabang->id == 1)
+                                @continue
+                                @endif
+
+                                <option class="opsi_kantor_cabang_besar" value="S{{ $cabang->id }}">{{ $cabang->cabang }}</option>
+
+                                @foreach ($bidangCabangs as $bidang)
+                                @if ($bidang->cabang_id == $cabang->id)
+                                <option class="opsi_kantor_bidang" value="{{ $bidang->id }}">- {{ $bidang->bidang }}</option>
+                                @endif
+                                @endforeach
                                 @endforeach
                             </select>
                         </div>
