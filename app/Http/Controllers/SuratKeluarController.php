@@ -24,16 +24,8 @@ class SuratKeluarController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        if ($user->levelTable['golongan'] == 7) {
-            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
-                ->latest()->get();
-        } elseif ($user->levelTable['golongan'] == 6) {
-            $mails = SuratKeluar::where('departemen_asal', $user->departemen)
-                ->latest()->get();
-        } elseif ($user->levelTable['golongan'] < 6) {
-            $mails = SuratKeluar::where('departemen_asal', $user->departemen)
-                ->latest()->get();
-        }
+        $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+            ->latest()->get();
 
         // Untuk view column tujuan
         $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
