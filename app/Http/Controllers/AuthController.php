@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditTrail;
 use App\Models\Departemen;
 use App\Models\SatuanKerja;
 use App\Models\Level;

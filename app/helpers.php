@@ -2,6 +2,7 @@
 
 use Jenssegers\Agent\Agent;
 use App\Models\AuditTrail;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
 if (!function_exists("dateWithFormatter")) {
@@ -47,13 +48,14 @@ if (!function_exists("storeAudit")) {
 
         // Ambil mac address
         $macAddr = exec('getmac');
+        $clientIP = request()->ip();
 
         AuditTrail::create([
             'user_id' => $object['users'],
             'aktifitas' => $object['aktifitas'],
             'deskripsi' => $object['deskripsi'],
             'url' => $url,
-            'ip_address' => $object['ip_address'],
+            'ip_address' => $clientIP,
             'mac_address' => $macAddr,
             'user_agent' => $userAgent
         ]);

@@ -228,6 +228,14 @@ class OtorisasiSuratController extends Controller
         if (!$datas) {
             return redirect('/otorisasi')->with('error', 'Update data failed!');
         } else {
+            // Update audit trail
+            $audit = [
+                'users' => $user->id,
+                'aktifitas' => 'config.constants.OTOR2',
+                'deskripsi' => $datas['id']
+            ];
+            storeAudit($audit);
+
             return redirect('/otorisasi')->with('success', 'Update data success!');
         }
     }
@@ -292,6 +300,14 @@ class OtorisasiSuratController extends Controller
         if (!$datas) {
             return redirect('/otorisasi')->with('error', 'Update data failed!');
         } else {
+            // Update audit trail
+            $audit = [
+                'users' => $user->id,
+                'aktifitas' => 'config.constants.REJECT2',
+                'deskripsi' => $datas['id']
+            ];
+            storeAudit($audit);
+
             return redirect('/otorisasi')->with('success', 'Update data success!');
         }
     }
@@ -366,7 +382,6 @@ class OtorisasiSuratController extends Controller
             $lastSuratKeluar = SuratKeluar::where('satuan_kerja_asal', $datas->satuan_kerja_asal)
                 ->where('internal', 2)
                 ->latest()->first();
-            // dd($lastSuratKeluar);
             if ($lastSuratKeluar == '') {
                 $datas->no_urut = 1;
             } elseif ($tahun != date("Y", strtotime($datas->tanggal_otor1))) {
@@ -408,6 +423,14 @@ class OtorisasiSuratController extends Controller
         if (!$datas) {
             return redirect('/otorisasi')->with('error', 'Update data failed!');
         } else {
+            // Update audit trail
+            $audit = [
+                'users' => $user->id,
+                'aktifitas' => 'config.constants.OTOR1',
+                'deskripsi' => $datas['id']
+            ];
+            storeAudit($audit);
+
             return redirect('/otorisasi')->with('success', 'Update data success!');
         }
     }
@@ -466,6 +489,14 @@ class OtorisasiSuratController extends Controller
         if (!$datas) {
             return redirect('/otorisasi')->with('error', 'Update data failed!');
         } else {
+            // Update audit trail
+            $audit = [
+                'users' => $user->id,
+                'aktifitas' => 'config.constants.REJECT1',
+                'deskripsi' => $datas['id']
+            ];
+            storeAudit($audit);
+
             return redirect('/otorisasi')->with('success', 'Update data success!');
         }
     }

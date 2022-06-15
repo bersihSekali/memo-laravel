@@ -12,12 +12,14 @@ class HomeController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
+        $userLog = User::all();
 
         // All Summary
         // Golongan 7
 
         $datas = [
-            'users' => $user
+            'users' => $user,
+            'userLogs' => $userLog
         ];
 
         return view('templates.home', $datas);

@@ -19,7 +19,7 @@ class CreateAuditTrailsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->string('aktifitas');
+            $table->string('aktifitas')->nullable();
             $table->unsignedBigInteger('deskripsi')->nullable();
             $table->foreign('deskripsi')->references('id')->on('surat_keluars');
 

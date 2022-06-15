@@ -18,4 +18,14 @@ class AuditTrail extends Model
         'mac_address',
         'user_agent'
     ];
+
+    public function userID()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function surat()
+    {
+        return $this->belongsTo(SuratKeluar::class, 'deskripsi');
+    }
 }

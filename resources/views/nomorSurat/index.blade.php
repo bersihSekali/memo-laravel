@@ -33,11 +33,11 @@
                 <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th class="fs-4" scope="col" width="10%">Tanggal</th>
-                            <th class="fs-4" scope="col" width="20%">Asal</th>
-                            <th class="fs-4" scope="col">Perihal</th>
-                            <th class="fs-4" scope="col" width="10%">Pembuat</th>
-                            <th class="fs-4" scope="col" width="8%">Status</th>
+                            <th class="fs-4" scope="col" width="10%" style="text-align: center">Tanggal</th>
+                            <th class="fs-4" scope="col" width="20%" style="text-align: center">Asal</th>
+                            <th class="fs-4" scope="col" style="text-align: center">Perihal</th>
+                            <th class="fs-4" scope="col" width="10%" style="text-align: center">Pembuat</th>
+                            <th class="fs-4" scope="col" width="8%" style="text-align: center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
