@@ -101,8 +101,11 @@ class NomorSuratController extends Controller
      */
     public function store(Request $request)
     {
+        $id = Auth::id();
+        $user = User::find($id);
+
         $satuanKerja = SatuanKerja::all();
-        $departemenInternal = Departemen::where('satuan_kerja', 1)->get();
+        $departemenInternal = Departemen::where('satuan_kerja', 2)->get();
         $cabang = Cabang::all();
         $bidangCabang = BidangCabang::all();
 
@@ -143,11 +146,13 @@ class NomorSuratController extends Controller
         // Seluruh tujuan internal
         if ($tujuanInternal[0] == 'internal') {
             foreach ($departemenInternal as $item) {
-                TujuanDepartemen::create([
-                    'memo_id' => $idSurat,
-                    'departemen_id' => $item->id,
-                    'all_flag' => 1
-                ]);
+                if ($item->id != $user->departemen) {
+                    TujuanDepartemen::create([
+                        'memo_id' => $idSurat,
+                        'departemen_id' => $item->id,
+                        'all_flag' => 1
+                    ]);
+                }
             }
         } else {
             if ($tujuanInternal != null) {
