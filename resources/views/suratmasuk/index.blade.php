@@ -156,7 +156,7 @@
                             <td>
                                 {{-- Tujuan kantor cabang --}}
                                 @if (in_array($data->memo_id, $seluruhCabangMemoIds))
-                                : SELURUH KANTOR LAYANAN
+                                : SELURUH KANTOR LAYANAN <br>
                                 @else
                                 @foreach ($tujuanCabangs as $item)
                                 @if ($item->memo_id == $data->memo_id)
@@ -178,7 +178,7 @@
 
                                 {{-- Tujuan departemen --}}
                                 @if (in_array($data->memo_id, $seluruhDepartemenMemoIds))
-                                : SELURUH DEPARTEMEN SKTILOG
+                                : SELURUH DEPARTEMEN SKTILOG <br>
                                 @else
                                 @foreach ($tujuanDepartemens as $item)
                                 @if ($item->memo_id == $data->memo_id)
@@ -189,7 +189,7 @@
 
                                 {{-- Tujuan satuan kerja --}}
                                 @if (in_array($data->memo_id, $seluruhSatkerMemoIds))
-                                : SELURUH UNIT KERJA KANTOR PUSAT
+                                : SELURUH UNIT KERJA KANTOR PUSAT <br>
                                 @else
                                 @foreach ($tujuanSatkers as $item)
                                 @if ($item->memo_id == $data->memo_id)

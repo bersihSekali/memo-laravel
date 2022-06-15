@@ -121,13 +121,31 @@ class OtorisasiSuratController extends Controller
                 ->latest()->get();
         }
 
+        // Untuk view column tujuan
+        $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+            ->pluck('id')->toArray();
+        $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+        $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+        $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+
+        //untuk cek all flag
+        $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
+        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
+        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
+
         $datas = [
             'title' => 'Daftar Otorisasi Surat',
             'datas' => $mails,
             'tujuanDepartemens' => $tujuanDepartemen,
             'tujuanSatkers' => $tujuanSatker,
             'tujuanCabangs' => $tujuanCabangs,
-            'users' => $user
+            'users' => $user,
+            'seluruhDepartemenMemoIds' => $seluruhDepartemenMemoId,
+            'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
+            'seluruhCabangMemoIds' => $seluruhCabangMemoId,
         ];
         // dd($datas);
         return view('otorisasi.index', $datas);
