@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AktivitasController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
@@ -44,13 +45,15 @@ Route::get('/listuser', [AuthController::class, 'listUser'])->middleware('auth')
 Route::get('/registration', [AuthController::class, 'registration'])->middleware('auth');
 Route::post('/registration', [AuthController::class, 'register']);
 
-//Penomoran Surat
+// Penomoran Surat
 Route::get('/nomorSurat/suratHapus', [NomorSuratController::class, 'listSuratHapus'])->middleware('auth');
 Route::get('/nomorSurat/allSurat', [NomorSuratController::class, 'allSurat'])->middleware('auth');
 Route::get('/nomorSurat/hapusPermanen', [NomorSuratController::class, 'hapusPermanen'])->middleware('auth');
 Route::post('/getSatuanKerja', [NomorSuratController::class, 'getSatuanKerja']);
 Route::post('/getLevel', [NomorSuratController::class, 'getLevel']);
 Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
+
+// Otorisasi surat
 Route::post('otorisasi/approvedOtorSatu/{id}', [OtorisasiSuratController::class, 'approvedOtorSatu'])->middleware('auth');
 Route::post('otorisasi/disApprovedOtorSatu/{id}', [OtorisasiSuratController::class, 'disApprovedOtorSatu'])->middleware('auth');
 Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth');
@@ -69,5 +72,8 @@ Route::resource('checker', CheckerController::class)->middleware('auth');
 Route::resource('checkerDisposisi', CheckerDisposisiController::class)->middleware('auth');
 Route::post('disposisi/selesai/{id}', [DisposisiController::class, 'selesai'])->middleware('auth');
 Route::resource('disposisi', DisposisiController::class)->middleware('auth');
+
+// Log aktivitas
+Route::resource('aktivitas', AktivitasController::class)->middleware('auth');
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');

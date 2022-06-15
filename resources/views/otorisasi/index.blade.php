@@ -17,10 +17,10 @@
         <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th class="fs-4" scope="col" width="10%">Tanggal</th>
-              <th class="fs-4" scope="col" width="20%">Asal</th>
-              <th class="fs-4" scope="col">Perihal</th>
-              <th class="fs-4" scope="col" width="10%">PIC</th>
+              <th class="fs-4" scope="col" width="10%" style="text-align: center">Tanggal</th>
+              <th class="fs-4" scope="col" width="20%" style="text-align: center">Asal</th>
+              <th class="fs-4" scope="col" style="text-align: center">Perihal</th>
+              <th class="fs-4" scope="col" width="10%" style="text-align: center">PIC</th>
             </tr>
           </thead>
 
@@ -30,9 +30,9 @@
               <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
               <td class="align-top">
                 @if ($data->departemen_asal == '')
-                {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                {{ $data->satuanKerjaAsal['inisial'] }}
                 @else
-                {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
+                {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
                 @endif
               </td>
               <td class="align-top">{{ $data->perihal }}</td>
@@ -44,6 +44,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 
 @foreach ($datas as $data)

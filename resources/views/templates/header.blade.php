@@ -84,23 +84,23 @@
                     Registrasi Surat
                   </a>
 
-                    {{-- Untuk golongan lebih dari 4 --}}
-                    @if ($users->levelTable->golongan > 4)
-                    <a class="dropdown-item" href="/otorisasi">
-                      Otorisasi Surat
-                    </a>
-                    @endif
+                  {{-- Untuk golongan lebih dari 4 --}}
+                  @if ($users->levelTable->golongan > 4)
+                  <a class="dropdown-item" href="/otorisasi">
+                    Otorisasi Surat
+                  </a>
+                  @endif
 
                   @else
-                    <a class="dropdown-item" href="/suratKeluar">
-                      Surat Keluar
-                    </a>
+                  <a class="dropdown-item" href="/suratKeluar">
+                    Surat Keluar
+                  </a>
 
-                    @if ($users->levelTable->golongan >4)
-                    <a class="dropdown-item" href="/otor">
-                      Otorisasi Surat
-                    </a>
-                    @endif
+                  @if ($users->levelTable->golongan >4)
+                  <a class="dropdown-item" href="/otor">
+                    Otorisasi Surat
+                  </a>
+                  @endif
                   @endif
                 </div>
               </div>
@@ -182,6 +182,15 @@
               </div>
             </div>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="" data-bs-toggle="modal" data-bs-target="#modalAktivitas">
+              <i class="fas fa-skating"></i>
+              <span class="nav-link-title ms-1">
+                Aktivitas
+              </span>
+            </a>
+          </li>
           @endif
         </ul>
       </div>
@@ -223,6 +232,7 @@
   </div>
 </div>
 
+{{-- Modal cetak laporan --}}
 <div class="modal fade" id="modalLaporan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -259,3 +269,66 @@
     </div>
   </div>
 </div>
+
+{{-- Modal Aktivitas --}}
+@if($users->level == 1)
+<div class="modal fade" id="modalAktivitas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Log Aktivitas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/aktivitas" method="post">
+        @csrf
+        {{ method_field('POST') }}
+
+        <div class="modal-body">
+          {{-- Input user --}}
+          <div class="col-sm-6 mb-3 form-user">
+            <label for="user_id" class="form-label">User</label>
+            <select class="form-select mb-3" aria-label=".form-select-sm example" name="user_id" id="user_id">
+              <option value=""> ----- </option>
+              <option value="all">Semua Log</option>
+              @foreach ($datas as $item)
+              <option value="{{ $item->id }}">{{ strtoupper($item->name) }} - {{ strtoupper($item->satuanKerja['inisial']) }} {{ strtoupper($item->departemenTable['inisial']) }}</option>
+              @endforeach
+            </select>
+          </div>
+
+          {{-- Input checkbox --}}
+          <div class="form-group mb-3 form-user">
+            <div class="form-selectgroup">
+              <label class="form-selectgroup-item">
+                <input type="radio" name="tipe_log" value="2" class="form-selectgroup-input">
+                <span class="form-selectgroup-label">Semua</span>
+              </label>
+              <label class="form-selectgroup-item">
+                <input type="radio" name="tipe_log" value="1" class="form-selectgroup-input">
+                <span class="form-selectgroup-label">Periode</span>
+              </label>
+            </div>
+          </div>
+
+          {{-- Input tanggal mulai --}}
+          <div class="form-group mb-3 tanggal" style="display: none">
+            <label for="tanggalmulai" class="form-label">Tanggal Mulai</label>
+            <input type="date" class="form-control" id="tanggalmulai" name="tanggalmulai">
+          </div>
+
+          {{-- Input tanggal akhir --}}
+          <div class="form-group mb-3 tanggal" style="display: none">
+            <label for="tanggalakhir" class="form-label">Tanggal Akhir</label>
+            <input type="date" class="form-control" id="tanggalakhir" name="tanggalakhir">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Lanjut</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+@endif

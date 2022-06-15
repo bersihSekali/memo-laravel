@@ -140,8 +140,6 @@ class NomorSuratController extends Controller
             $fileName = date("YmdHis") . '_' . $fileName;
             $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         }
-        // dd($tujuanUnitKerja);
-        // dd(count($tujuanUnitKerja));
 
         $create = SuratKeluar::create($validated);
         // Return gagal simpan
@@ -150,6 +148,14 @@ class NomorSuratController extends Controller
         }
 
         $idSurat = $create->id;
+
+        // Update audit trail
+        $audit = [
+            'users' => $user->id,
+            'aktifitas' => 'config.constants.CREATE',
+            'deskripsi' => $idSurat
+        ];
+        storeAudit($audit);
 
         // Seluruh tujuan internal
         if ($tujuanInternal[0] == 'internal') {
@@ -322,6 +328,14 @@ class NomorSuratController extends Controller
         $datas['no_urut'] = 0;
         array_push($update, $datas['no_urut']);
 
+        // Update audit trail
+        $audit = [
+            'users' => $user->id,
+            'aktifitas' => 'config.constants.DELETE',
+            'deskripsi' => $datas['id']
+        ];
+        storeAudit($audit);
+
         $datas->update($update);
 
         $datas->delete();
@@ -373,6 +387,8 @@ class NomorSuratController extends Controller
 
     public function hapusPermanen() // Force Delete
     {
+        $user_id = Auth::id();
+        $user = User::where('id', $user_id)->first();
         $datas = SuratKeluar::onlyTrashed()->get();
 
         foreach ($datas as $data) {
@@ -387,6 +403,15 @@ class NomorSuratController extends Controller
             // Hapus tujuan satuan kerja
             TujuanSatuanKerja::where('memo_id', $data->id)->forceDelete();
         }
+
+        // Update audit trail
+        $audit = [
+            'users' => $user->id,
+            'aktifitas' => 'config.constants.FORCE_DELETE',
+            'deskripsi' => null
+        ];
+        storeAudit($audit);
+
         SuratKeluar::whereNotNull('deleted_at')->forceDelete();
 
         return redirect('/nomorSurat/suratHapus')->with('success', 'Surat berhasil dibersihkan');

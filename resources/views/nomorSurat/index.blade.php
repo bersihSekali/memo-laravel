@@ -33,11 +33,11 @@
                 <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th class="fs-4" scope="col" width="10%">Tanggal</th>
-                            <th class="fs-4" scope="col" width="20%">Asal</th>
-                            <th class="fs-4" scope="col">Perihal</th>
-                            <th class="fs-4" scope="col" width="10%">Pembuat</th>
-                            <th class="fs-4" scope="col" width="8%">Status</th>
+                            <th class="fs-4" scope="col" width="10%" style="text-align: center">Tanggal</th>
+                            <th class="fs-4" scope="col" width="20%" style="text-align: center">Asal</th>
+                            <th class="fs-4" scope="col" style="text-align: center">Perihal</th>
+                            <th class="fs-4" scope="col" width="10%" style="text-align: center">Pembuat</th>
+                            <th class="fs-4" scope="col" width="8%" style="text-align: center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +47,7 @@
                             <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
                             <td class="align-top">
                                 @if ($data->departemen_asal == '')
-                                {{ $data->satuanKerjaAsal['internal'] }}
+                                {{ $data->satuanKerjaAsal['inisial'] }}
                                 @else
                                 {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
                                 @endif
@@ -123,7 +123,7 @@
 
                                 {{-- Tujuan kantor cabang --}}
                                 @if (in_array($data->id, $seluruhCabangMemoIds))
-                                : SELURUH KANTOR LAYANAN
+                                : SELURUH KANTOR LAYANAN <br>
                                 @else
                                 @foreach ($tujuanCabangs as $item)
                                 @if ($item->memo_id == $data->id)
@@ -145,7 +145,7 @@
 
                                 {{-- Tujuan departemen --}}
                                 @if (in_array($data->id, $seluruhDepartemenMemoIds))
-                                : SELURUH DEPARTEMEN SKTILOG
+                                : SELURUH DEPARTEMEN SKTILOG <br>
                                 @else
                                 @foreach ($tujuanDepartemens as $item)
                                 @if ($item->memo_id == $data->id)
@@ -156,7 +156,7 @@
 
                                 {{-- Tujuan satuan kerja --}}
                                 @if (in_array($data->id, $seluruhSatkerMemoIds))
-                                : SELURUH UNIT KERJA KANTOR PUSAT
+                                : SELURUH UNIT KERJA KANTOR PUSAT <br>
                                 @else
                                 @foreach ($tujuanSatkers as $item)
                                 @if ($item->memo_id == $data->id)
