@@ -42,34 +42,32 @@
                     </thead>
                     <tbody>
                         @foreach($datas as $data)
-                        @if (($data['satuan_kerja_asal'] == $users['satuan_kerja']))
-                        <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
-                            <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-                            <td class="align-top">
-                                @if ($data->departemen_asal == '')
-                                    {{ $data->satuanKerjaAsal['internal'] }}
-                                @else
-                                    {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
-                                @endif
-                            </td>
-                            <td class="align-top">{{ $data->perihal }}</td>
-                            <td class="align-top">{{ strtoupper($data->createdBy['name'] )}} </td>
-                            <td class="align-top">
-                                {{-- Setuju --}}
-                                @if ($data->status == 3)
-                                    <span class="badge bg-success">Disetujui</span>
-                                
-                                {{-- Ditolak antar departemen --}}
-                                @elseif ($data->status == 0)
-                                    <span class="badge bg-danger">Ditolak</span>
-                                
-                                {{-- Pending --}}
-                                @else
-                                    <span class="badge bg-secondary">Pending</span>
-                                @endif
-                            </td>
-                        </tr>
-                        @endif
+                            <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
+                                <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
+                                <td class="align-top">
+                                    @if ($data->departemen_asal == '')
+                                        {{ $data->satuanKerjaAsal['internal'] }}
+                                    @else
+                                        {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
+                                    @endif
+                                </td>
+                                <td class="align-top">{{ $data->perihal }}</td>
+                                <td class="align-top">{{ strtoupper($data->createdBy['name'] )}} </td>
+                                <td class="align-top">
+                                    {{-- Setuju --}}
+                                    @if ($data->status == 3)
+                                        <span class="badge bg-success">Disetujui</span>
+                                    
+                                    {{-- Ditolak antar departemen --}}
+                                    @elseif ($data->status == 0)
+                                        <span class="badge bg-danger">Ditolak</span>
+                                    
+                                    {{-- Pending --}}
+                                    @else
+                                        <span class="badge bg-secondary">Pending</span>
+                                    @endif
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -264,9 +262,13 @@
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$data['id']}}">Hapus</button>
-                </div>
+                @if ($data->satuan_kerja_asal == $users->satuan_kerja)
+                    @if (($data->departemen_asal == $users->departemen) || ($users->level == 2))
+                        <div class="modal-footer">
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$data['id']}}">Hapus</button>
+                        </div>
+                    @endif
+                @endif
             </div>
         </div>
     </div>

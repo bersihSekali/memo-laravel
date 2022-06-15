@@ -231,7 +231,7 @@ class OtorisasiSuratController extends Controller
             // Update audit trail
             $audit = [
                 'users' => $user->id,
-                'aktifitas' => 'config.constants.OTOR2',
+                'aktifitas' => config('constants.OTOR2'),
                 'deskripsi' => $datas['id']
             ];
             storeAudit($audit);
@@ -303,7 +303,7 @@ class OtorisasiSuratController extends Controller
             // Update audit trail
             $audit = [
                 'users' => $user->id,
-                'aktifitas' => 'config.constants.REJECT2',
+                'aktifitas' => config('constants.REJECT2'),
                 'deskripsi' => $datas['id']
             ];
             storeAudit($audit);
@@ -426,7 +426,7 @@ class OtorisasiSuratController extends Controller
             // Update audit trail
             $audit = [
                 'users' => $user->id,
-                'aktifitas' => 'config.constants.OTOR1',
+                'aktifitas' => config('constants.OTOR1'),
                 'deskripsi' => $datas['id']
             ];
             storeAudit($audit);
@@ -492,7 +492,7 @@ class OtorisasiSuratController extends Controller
             // Update audit trail
             $audit = [
                 'users' => $user->id,
-                'aktifitas' => 'config.constants.REJECT1',
+                'aktifitas' => config('constants.REJECT1'),
                 'deskripsi' => $datas['id']
             ];
             storeAudit($audit);

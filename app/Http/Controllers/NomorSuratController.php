@@ -133,7 +133,7 @@ class NomorSuratController extends Controller
         // Update audit trail
         $audit = [
             'users' => $user->id,
-            'aktifitas' => 'config.constants.CREATE',
+            'aktifitas' => config('constants.CREATE'),
             'deskripsi' => $idSurat
         ];
         storeAudit($audit);
@@ -284,7 +284,7 @@ class NomorSuratController extends Controller
         // Update audit trail
         $audit = [
             'users' => $user->id,
-            'aktifitas' => 'config.constants.DELETE',
+            'aktifitas' => config('constants.DELETE'),
             'deskripsi' => $datas['id']
         ];
         storeAudit($audit);
