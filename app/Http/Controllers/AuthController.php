@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AuditTrail;
 use App\Models\Departemen;
 use App\Models\SatuanKerja;
 use App\Models\Level;
@@ -10,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -32,6 +30,14 @@ class AuthController extends Controller
 
         if (Auth::attempt($validated)) {
             $request->session()->regenerate();
+
+            // Update audit trail
+            $audit = [
+                'users' => Auth::id(),
+                'aktifitas' => config('constants.CREATE'),
+                'deskripsi' => null
+            ];
+            storeAudit($audit);
 
             return redirect()->intended('/');
         }
@@ -94,15 +100,10 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-
-        if (!session()) {
-            $request->session()->invalidate();
-
-            $request->session()->regenerateToken();
-
-            return redirect('/login');
-        }
-
+        $request->session()->invalidate();
         return redirect('/login');
+
+        // $request->session()->regenerateToken();
+
     }
 }

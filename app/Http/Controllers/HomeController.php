@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\SuratKeluar;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // dd($request->session()->all());
         $id = Auth::id();
         $user = User::where('id', $id)->first();
         $userLog = User::all();

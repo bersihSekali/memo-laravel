@@ -218,12 +218,7 @@
             </div>
 
             <div class="col">
-              <form action="/logout" method="post">
-                @csrf
-                <button type="submit" class="btn btn-danger w-100">
-                  Logout
-                </button>
-              </form>
+              <a href="/logout" class="btn btn-danger w-100" style="text-decoration: none">Logout</a>
             </div>
           </div>
         </div>
@@ -290,7 +285,7 @@
               <select class="form-select mb-3" aria-label=".form-select-sm example" name="user_id" id="user_id">
                 <option value=""> ----- </option>
                 <option value="all">Semua Log</option>
-                  @foreach ($datas as $item)
+                  @foreach ($userLogs as $item)
                     <option value="{{ $item->id }}">{{ strtoupper($item->name) }} - {{ strtoupper($item->satuanKerja['inisial']) }} {{ strtoupper($item->departemenTable['inisial']) }}</option>
                   @endforeach
               </select>
