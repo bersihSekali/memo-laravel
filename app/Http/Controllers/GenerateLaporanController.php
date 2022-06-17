@@ -107,6 +107,13 @@ class GenerateLaporanController extends Controller
                 'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
                 'seluruhCabangMemoIds' => $seluruhCabangMemoId,
             ])->setPaper('a4', 'landscape');
+
+            $pdf->output();
+            $dompdf = $pdf->getDomPDF();
+
+            $canvas = $dompdf->get_canvas();
+            $canvas->page_text(740, 560, "Halaman {PAGE_NUM} dari {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
             return $pdf->stream();
         }
     }
