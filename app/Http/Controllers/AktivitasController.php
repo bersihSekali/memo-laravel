@@ -39,23 +39,16 @@ class AktivitasController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
+        $userLog = User::all();
 
         if ($request->user_id == 'all') {
-            $logs = AuditTrail::latest()->get();
-        } elseif ($request->tipe_log == 2) {
-            $logs = AuditTrail::where('id', $request->user_id)
-                ->latest()->get();
-        } elseif ($request->tipe_log == 1) {
-            $logs = AuditTrail::where('id', $request->user_id)
-                ->whereBetween('created_at', $request->tanggalmulai, $request->tanggalakhir)
-                ->latest()->get();
-        } else {
             $logs = AuditTrail::latest()->get();
         }
 
         $datas = [
             'title' => 'Log Aktivitas',
             'users' => $user,
+            'userLogs' => $userLog,
             'datas' => $logs
         ];
 

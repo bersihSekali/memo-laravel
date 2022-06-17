@@ -286,35 +286,12 @@
                 <option value=""> ----- </option>
                 <option value="all">Semua Log</option>
                   @foreach ($userLogs as $item)
+                    @if ($item->level == 1)
+                        @continue
+                    @endif
                     <option value="{{ $item->id }}">{{ strtoupper($item->name) }} - {{ strtoupper($item->satuanKerja['inisial']) }} {{ strtoupper($item->departemenTable['inisial']) }}</option>
                   @endforeach
               </select>
-            </div>
-
-            {{-- Input checkbox --}}
-            <div class="form-group mb-3 form-user">
-              <div class="form-selectgroup">
-                  <label class="form-selectgroup-item">
-                      <input type="radio" name="tipe_log" value="2" class="form-selectgroup-input">
-                      <span class="form-selectgroup-label">Semua</span>
-                  </label>
-                  <label class="form-selectgroup-item">
-                      <input type="radio" name="tipe_log" value="1" class="form-selectgroup-input">
-                      <span class="form-selectgroup-label">Periode</span>
-                  </label>
-              </div>
-            </div>
-
-            {{-- Input tanggal mulai --}}
-            <div class="form-group mb-3 tanggal" style="display: none">
-              <label for="tanggalmulai" class="form-label">Tanggal Mulai</label>
-              <input type="date" class="form-control" id="tanggalmulai" name="tanggalmulai">
-            </div>
-
-            {{-- Input tanggal akhir --}}
-            <div class="form-group mb-3 tanggal" style="display: none">
-              <label for="tanggalakhir" class="form-label">Tanggal Akhir</label>
-              <input type="date" class="form-control" id="tanggalakhir" name="tanggalakhir">
             </div>
           </div>
 
