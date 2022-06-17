@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         // dd($request->session()->all());
         $id = Auth::id();

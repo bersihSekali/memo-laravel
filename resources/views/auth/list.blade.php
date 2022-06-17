@@ -7,13 +7,13 @@
     <div class="card shadow mb-4">
         <div class="card-body py-3">
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Satuan Kerja</th>
                             <th scope="col">Departemen</th>
-                            <th scope="col">Jabatan</th>
+                            <th scope="col" width="18%">Jabatan</th>
                         </tr>
                     </thead>
                     <tbody>

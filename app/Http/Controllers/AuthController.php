@@ -92,7 +92,8 @@ class AuthController extends Controller
         $datas = [
             'title' => 'List User',
             'users' => $user,
-            'datas' => $data
+            'datas' => $data,
+            'userLogs' => $data
         ];
         return view('auth/list', $datas);
     }

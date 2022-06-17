@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/regular.min.css" integrity="sha512-d2x1oQUT6HACW9UlXxWI6XrIBDrEE5z2tit/+kWEdXdVYuift7sm+Q6ucfGWQr1F0+GD9/6eYoYDegw2nm05Vw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/svg-with-js.min.css" integrity="sha512-T+W8aCLi/CrpBhX5eX42Kw0/oGb/cxhQHYsQDIXx7UgK8c0A4CWw+TOQIqNJms1AZHI+6eKE4U1GubeLrguNww==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/v4-shims.min.css" integrity="sha512-fHavkBby/gcFEB2taaBfG0DLdHRGrnvkWQNXVZ5Yb/Fj6LkogecQUd6oyvBVsrWPaHSxs5tNza6LUW/Y6Az9lQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  {{-- CSS tabler --}}
   <link href="{{url('assets/dist/css/tabler.min.css')}}" rel="stylesheet" />
   <link href="{{url('assets/dist/css/tabler-flags.min.css')}}" rel="stylesheet" />
   <link href="{{url('assets/dist/css/tabler-payments.min.css')}}" rel="stylesheet" />
@@ -41,9 +43,18 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
   <!-- Or for RTL support -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+
+  {{-- CSS-loading --}}
+  <link href="{{url('assets/dist/css-loading/square-jelly-box.css')}}" rel="stylesheet" />
+  <link href="{{url('assets/dist/css-loading/loading-style.css')}}" rel="stylesheet" />
 </head>
 
 <body>
+  <div class="la-square-jelly-box la-3x" id="loading-indicator">
+    <div></div>
+    <div></div>
+  </div>
+
   <div class="page">
     @include('templates.header')
 
@@ -56,11 +67,12 @@
     </div>
   </div>
   <!-- Libs JS -->
+  <script src="{{url('assets/dist/js/javascript.js')}}"></script>
   <!-- Tabler Core -->
-  <script src="{{url('assets/dist/js/tabler.min.js')}}" defer></script>
-  <script src="{{url('assets/dist/js/demo.min.js')}}" defer></script>
   <script type="text/javascript" src="{{url('assets/dataTables/datatables.min.js')}}"></script>
   <script src="{{url('assets/dataTables/table.js')}}"></script>
+  <script src="{{url('assets/dist/js/tabler.min.js')}}" defer></script>
+  <script src="{{url('assets/dist/js/demo.min.js')}}" defer></script>
   <script src="{{url('assets/dataTables/tableLaporan.js')}}"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

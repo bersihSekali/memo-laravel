@@ -1,0 +1,14 @@
+.page {
+    display: none;
+}
+
+#loading-indicator {
+    color: #0d6efd;
+    z-index: 99999;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

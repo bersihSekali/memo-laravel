@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    
     <div class="row g-2 align-items-center mb-2">
         <div class="col">
             <h2 class="page-title">
