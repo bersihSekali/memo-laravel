@@ -15,23 +15,29 @@
             {{-- Input pembuat --}}
             <div class="form-group mb-3">
                 <label for="created_by" class="form-label ">Pembuat</label>
-                <input type="text" class="form-control" autocomplete="off" value="{{ strtoupper($users->name) }}" readonly>
-                <input type="hidden" class="form-control" id="created_by" name="created_by" value="{{ $users->id }}" readonly>
-                <input type="hidden" class="form-control" id="id_telegram" name="id_telegram" value="{{ $users->id_telegram }}" readonly>
+                <input type="text" class="form-control" autocomplete="off" value="{{ strtoupper($users->name) }}"
+                    readonly>
+                <input type="hidden" class="form-control" id="created_by" name="created_by" value="{{ $users->id }}"
+                    readonly>
+                <input type="hidden" class="form-control" id="id_telegram" name="id_telegram"
+                    value="{{ $users->id_telegram }}" readonly>
             </div>
 
             {{-- Input departemen asal / satuan kerja asal --}}
             <div class="form-group row">
                 <div class="col-sm-6 mb-3">
                     <label for="satuan_kerja_asal" class="form-label">Satuan Kerja Asal</label>
-                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="satuan_kerja_asal" id="satuan_kerja_asal">
-                        <option selected value="{{ $users->satuan_kerja}}"> {{ $users->satuanKerja['inisial'] }} </option>
+                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="satuan_kerja_asal"
+                        id="satuan_kerja_asal">
+                        <option selected value="{{ $users->satuan_kerja}}"> {{ $users->satuanKerja['inisial'] }}
+                        </option>
                     </select>
                 </div>
 
                 <div class="col-sm-6 mb-3" style="{{($users->levelTable->golongan == 7) ? 'display: none' : ''}}">
                     <label for="departemen_asal" class="form-label">Department Asal</label>
-                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="departemen_asal" id="departemen_asal">
+                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="departemen_asal"
+                        id="departemen_asal">
                         <option value="{{ $users->departemen }}"> {{ $users->departemenTable['inisial'] }} </option>
                     </select>
                 </div>
@@ -61,15 +67,17 @@
                     </div>
                     <div class="row justify-content-end">
                         <div class="col">
-                            <select class="form-select" aria-label=".form-select-sm example" name="tujuan_unit_kerja[]" id="tujuan_unit_kerja" multiple="multiple">
+                            <select class="form-select" aria-label=".form-select-sm example" name="tujuan_unit_kerja[]"
+                                id="tujuan_unit_kerja" multiple="multiple">
                                 <option id="unit_kerja" value="unit_kerja">Seluruh Unit Kerja</option>
                                 @foreach ($satuanKerjas as $satuanKerja)
-                                @if ($satuanKerja->id == 1)
-                                @continue
-                                @endif
+                                    @if ($satuanKerja->id == 1)
+                                        @continue
+                                    @endif
 
-                                <option class="opsi_unit_kerja" value="{{ $satuanKerja->id }}">{{ $satuanKerja->inisial }}</option>
-                                @endforeach
+                                    <option class="opsi_unit_kerja" value="{{ $satuanKerja->id }}">{{ $satuanKerja->inisial
+                                        }}</option>
+                                    @endforeach
                             </select>
                         </div>
                     </div>
@@ -85,17 +93,20 @@
                             <select class="form-select" aria-label=".form-select-sm example" name="tujuan_kantor_cabang[]" id="tujuan_kantor_cabang" multiple="multiple">
                                 <option id="kantor_cabang" value="kantor_cabang">SELURUH KANTOR CABANG</option>
                                 @foreach ($cabangs as $cabang)
-                                @if ($cabang->id == 1)
-                                @continue
-                                @endif
+                                    @if ($cabang->id == 1)
+                                        @continue
+                                    @endif
+                                    <option class="opsi_kantor_cabang_besar" value="S{{ $cabang->id }}">
+                                        {{ $cabang->cabang }}
+                                    </option>
 
-                                <option class="opsi_kantor_cabang_besar" value="S{{ $cabang->id }}">{{ $cabang->cabang }}</option>
-
-                                @foreach ($bidangCabangs as $bidang)
-                                @if ($bidang->cabang_id == $cabang->id)
-                                <option class="opsi_kantor_bidang" value="{{ $bidang->id }}">- {{ $bidang->bidang }}</option>
-                                @endif
-                                @endforeach
+                                    @foreach ($bidangCabangs as $bidang)
+                                        @if ($bidang->cabang_id == $cabang->id)
+                                            <option class="opsi_kantor_bidang" value="{{ $bidang->id }}">- 
+                                                {{ $bidang->bidang }}
+                                            </option>
+                                        @endif
+                                    @endforeach
                                 @endforeach
                             </select>
                         </div>
@@ -109,11 +120,13 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <select class="form-select mb-3" aria-label=".form-select-sm example" name="tujuan_internal[]" id="tujuan_internal" multiple="multiple">
+                            <select class="form-select mb-3" aria-label=".form-select-sm example"
+                                name="tujuan_internal[]" id="tujuan_internal" multiple="multiple">
                                 <option id="internal" value="internal">Seluruh Internal</option>
                                 @foreach ($departemens as $departemen)
                                 @if ($departemen->satuan_kerja == 2)
-                                <option class="opsi_departemen" value="{{ $departemen->id }}">{{ $departemen->inisial }}</option>
+                                <option class="opsi_departemen" value="{{ $departemen->id }}">{{ $departemen->inisial }}
+                                </option>
                                 @endif
                                 @endforeach
                             </select>
@@ -125,12 +138,14 @@
             {{-- Input perihal --}}
             <div class="form-group mb-3 formulir" style="display: none">
                 <label for="perihal" class="form-label ">Perihal</label>
-                <textarea class="form-control" aria-label="With textarea" name="perihal" required id="perihal" required></textarea>
+                <textarea class="form-control" aria-label="With textarea" name="perihal" required id="perihal"
+                    required></textarea>
             </div>
 
             {{-- Input pejabat pengganti --}}
             <div class="form-check formulir" style="display: none">
-                <input class="form-check-input" type="checkbox" value="" id="pejabat_pengganti" name="pejabat_pengganti">
+                <input class="form-check-input" type="checkbox" value="" id="pejabat_pengganti"
+                    name="pejabat_pengganti">
                 <label class="form-check-label" for="pejabat_pengganti">
                     Pejabat Pengganti
                 </label>
@@ -138,50 +153,66 @@
 
             {{-- Input otor pengganti --}}
             <div class="form-group row" id="otor_pengganti" name="otor_pengganti" style="display: none">
-                <div class="col-sm-6 mb-3" name="pengganti_antar_satuan_kerja" id="pengganti_eksternal" style="display: none">
+                <div class="col-sm-6 mb-3" name="pengganti_antar_satuan_kerja" id="pengganti_eksternal"
+                    style="display: none">
                     <label for="tunjuk_otor1_by" class="form-label">Otor 1 Pengganti</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
                         <option value=""> ---- </option>
                         @foreach ($penggantis as $pengganti)
-                        @if ($pengganti->levelTable->golongan == 7)
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
-                        @endif
+                            @if ($pengganti->levelTable->golongan == 7)
+                            <option value="{{ $pengganti['id'] }}">
+                                {{ strtoupper($pengganti->name) }} - KA. {{strtoupper($pengganti->satuanKerja->inisial) }}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
 
-                <div class="col-sm-6 mb-3" name="pengganti_antar_departemen" id="pengganti_internal" style="display: none">
+                <div class="col-sm-6 mb-3" name="pengganti_antar_departemen" id="pengganti_internal"
+                    style="display: none">
                     <label for="tunjuk_otor1_by" class="form-label">Otor 1 Pengganti</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
                         <option value=""> ---- </option>
                         @foreach ($penggantis as $pengganti)
-                        @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
-                        @if ($pengganti->satuan_kerja == 1)
-                        @if ($pengganti->level == 6)
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
-                        @else
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
-                        @endif
-                        @endif
-                        @endif
+                            @if ($pengganti->satuan_kerja == 2)
+                                @if (($pengganti->levelTable->golongan >= 5) && ($pengganti->levelTable->golongan <= 7))
+                                    @if ($pengganti->levelTable->golongan == 7)
+                                        <option value="{{ $pengganti['id'] }}">
+                                        {{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->inisial) }}
+                                        </option>
+                                    @elseif ($pengganti->levelTable->jabatan == 'Kepala Departemen')
+                                        <option value="{{ $pengganti['id'] }}">
+                                            {{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->satuanKerja->inisial) }} | KA. {{ strtoupper($pengganti->departemenTable->inisial) }}
+                                        </option>
+                                    @else 
+                                        <option value="{{ $pengganti['id'] }}">
+                                            {{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->satuanKerja->inisial) }} | {{ strtoupper($pengganti->departemenTable->inisial) }}
+                                        </option>
+                                    @endif
+                                @endif
+                            @endif
                         @endforeach
                     </select>
                 </div>
 
                 <div class="col-sm-6 mb-3">
                     <label for="tunjuk_otor2_by" class="form-label">Otor 2 Pengganti</label>
-                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor2_by" id="tunjuk_otor2_by">
+                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor2_by"
+                        id="tunjuk_otor2_by">
                         <option value="" selected> ---- </option>
                         @foreach ($penggantis as $pengganti)
-                        @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
-                        @if ($pengganti->satuan_kerja == 1)
-                        @if ($pengganti->level == 6)
-                        <option value="{{ $pengganti['id']}}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
-                        @else
-                        <option value="{{ $pengganti['id']}}">{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable->departemen) }}</option>
-                        @endif
-                        @endif
-                        @endif
+                            @if ($pengganti->satuan_kerja == 2)
+                                @if (($pengganti->levelTable->golongan >= 5) && ($pengganti->levelTable->golongan <= 6))
+                                    @if ($pengganti->levelTable->jabatan == 'Kepala Departemen')
+                                        <option value="{{ $pengganti['id'] }}">
+                                            {{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->satuanKerja->inisial) }} | KA. {{ strtoupper($pengganti->departemenTable->inisial) }}
+                                        </option>
+                                    @else 
+                                        <option value="{{ $pengganti['id'] }}">
+                                            {{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->satuanKerja->inisial) }} | {{ strtoupper($pengganti->departemenTable->inisial) }}
+                                        </option>
+                                    @endif
+                                @endif
+                            @endif
                         @endforeach
                     </select>
                 </div>
@@ -198,7 +229,8 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script>
     $(document).ready(function() {

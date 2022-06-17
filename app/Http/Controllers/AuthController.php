@@ -34,7 +34,7 @@ class AuthController extends Controller
             // Update audit trail
             $audit = [
                 'users' => Auth::id(),
-                'aktifitas' => config('constants.CREATE'),
+                'aktifitas' => config('constants.LOGIN'),
                 'deskripsi' => null
             ];
             storeAudit($audit);

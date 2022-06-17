@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'LOGIN'   => 'LIN',
     'CREATE'    => 'CRT',
     'OTOR2'    => 'OT2',
     'OTOR1'    => 'OT1',

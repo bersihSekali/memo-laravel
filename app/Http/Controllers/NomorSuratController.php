@@ -75,7 +75,9 @@ class NomorSuratController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $pengganti = User::all();
+        // $pengganti = User::all();
+        $pengganti = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->get();
 
         $departemen = Departemen::all();
         $satuanKerja = SatuanKerja::all();
