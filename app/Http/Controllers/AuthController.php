@@ -31,14 +31,6 @@ class AuthController extends Controller
         if (Auth::attempt($validated)) {
             $request->session()->regenerate();
 
-            // Update audit trail
-            $audit = [
-                'users' => Auth::id(),
-                'aktifitas' => config('constants.LOGIN'),
-                'deskripsi' => null
-            ];
-            storeAudit($audit);
-
             return redirect()->intended('/');
         }
 
