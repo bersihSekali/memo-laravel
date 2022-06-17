@@ -59,7 +59,7 @@ class GenerateLaporanController extends Controller
                     ->join('tujuan_satuan_kerjas', 'surat_keluars.id', '=', 'tujuan_satuan_kerjas.memo_id')
                     ->where('satuan_kerja_id', $user['satuan_kerja'])
                     ->where('status', 3)
-                    ->whereBetween('tanggal_otor1', [$validated['tanggalmulai'], $validated['tanggalakhir']])
+                    ->whereBetween('tanggal_otor1', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
                     ->latest('tujuan_satuan_kerjas.created_at')->get();
                 $countSelesai = $data->whereNotNull('tanggal_baca')->count();
                 $countBelumSelesai = $data->whereNull('tanggal_baca')->count();
@@ -86,6 +86,26 @@ class GenerateLaporanController extends Controller
             $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
             $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', $user->satuan_kerja)->pluck('memo_id')->toArray();
             $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', $user->departemen)->pluck('memo_id')->toArray();
+        } elseif ($validated['jenis'] == 'keluar') {
+            $id = Auth::id();
+            $user = User::where('id', $id)->first();
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->whereBetween('created_at', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
+                ->latest()->get();
+            $countSelesai = $mails->where('status', 3)->count();
+            $countBelumSelesai = $mails->where('status', '!=', 3)->count();
+
+            // Untuk view column tujuan
+            $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->pluck('id')->toArray();
+            $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $memoIdSatker)
+                ->latest()->get();
+            $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
+                ->latest()->get();
+
+            //untuk cek all flag
+            $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
+            $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
         }
 
         // dompdf
@@ -106,6 +126,27 @@ class GenerateLaporanController extends Controller
                 'seluruhDepartemenMemoIds' => $seluruhDepartemenMemoId,
                 'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
                 'seluruhCabangMemoIds' => $seluruhCabangMemoId,
+            ])->setPaper('a4', 'landscape');
+
+            $pdf->output();
+            $dompdf = $pdf->getDomPDF();
+
+            $canvas = $dompdf->get_canvas();
+            $canvas->page_text(740, 560, "Halaman {PAGE_NUM} dari {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+            return $pdf->stream();
+        } elseif ($validated['jenis'] == 'keluar') {
+            $pdf = PDF::loadView('laporan/download', [
+                'title' => 'Surat Keluar',
+                'requests' => $validated,
+                'datas' => $mails,
+                'tujuanSatkers' => $tujuanSatker,
+                'tujuanCabangs' => $tujuanCabangs,
+                'users' => $user,
+                'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
+                'seluruhCabangMemoIds' => $seluruhCabangMemoId,
+                'countSelesai' => $countSelesai,
+                'countBelumSelesai' => $countBelumSelesai,
             ])->setPaper('a4', 'landscape');
 
             $pdf->output();

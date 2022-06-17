@@ -88,6 +88,12 @@
                     <th scope="col">Tujuan</th>
                     <th scope="col" width="10%">Status</th>
                 </tr>
+                @if ($requests['jenis'] == 'masuk')
+                @if ($countSelesai==0 && $countBelumSelesai==0)
+                <tr>
+                    <td colspan="7" class="text-center">Surat tidak ditemukan untuk rentang tanggal terpilih.</td>
+                </tr>
+                @else
                 @foreach($datas as $data)
                 <tr>
                     <td class="text-center">{{date('Y-m-d', strtotime($data['created_at']))}}</td>
@@ -118,17 +124,6 @@
                         @endif
                         @endforeach
 
-                        {{-- Tujuan departemen --}}
-                        @if (in_array($data->memo_id, $seluruhDepartemenMemoIds))
-                        SELURUH DEPARTEMEN SKTILOG <br>
-                        @else
-                        @foreach ($tujuanDepartemens as $item)
-                        @if ($item->memo_id == $data->memo_id)
-                        {{ $item->tujuanDepartemen->departemen }} <br>
-                        @endif
-                        @endforeach
-                        @endif
-
                         {{-- Tujuan satuan kerja --}}
                         @if (in_array($data->memo_id, $seluruhSatkerMemoIds))
                         SELURUH UNIT KERJA KANTOR PUSAT <br>
@@ -147,7 +142,67 @@
                     @endif
                 </tr>
                 @endforeach
-                </tbody>
+                @endif
+                <!-- if count selesai -->
+                @else
+                <!-- else jenis request -->
+                @if ($countSelesai==0 && $countBelumSelesai==0)
+                <tr>
+                    <td colspan="7" class="text-center">Surat tidak ditemukan untuk rentang tanggal terpilih.</td>
+                </tr>
+                @else
+                @foreach($datas as $data)
+                <tr>
+                    <td class="text-center">{{date('Y-m-d', strtotime($data['created_at']))}}</td>
+                    <td class="text-center">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
+                    <td class="text-center">{{$data['nomor_surat']}}</td>
+                    <td>{{$data['perihal']}}</td>
+                    <td class="text-center">{{$data->satuanKerjaAsal['inisial']}}</td>
+                    <td class="text-center">
+                        {{-- Tujuan satuan kerja --}}
+                        @if (in_array($data->id, $seluruhSatkerMemoIds))
+                        SELURUH UNIT KERJA KANTOR PUSAT <br>
+                        @else
+                        @foreach ($tujuanSatkers as $item)
+                        @if ($item->memo_id == $data->id)
+                        {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                        @endif
+                        @endforeach
+                        @endif
+
+                        {{-- Tujuan kantor cabang --}}
+                        @if (in_array($data->id, $seluruhCabangMemoIds))
+                        SELURUH KANTOR LAYANAN <br>
+                        @else
+                        @foreach ($tujuanCabangs as $item)
+                        @if ($item->memo_id == $data->id)
+                        @if ($item->all_flag == true && $item->cabang_id != null)
+                        CABANG {{ $item->tujuanCabang->cabang }} <br>
+                        @endif
+                        @endif
+                        @endforeach
+                        @endif
+
+                        {{-- Tujuan kantor bidang --}}
+                        @foreach ($tujuanCabangs as $item)
+                        @if ($item->memo_id == $data->id)
+                        @if ($item->bidang_id != null && $item->all_flag!=true)
+                        {{ $item->tujuanBidang->bidang }} <br>
+                        @endif
+                        @endif
+                        @endforeach
+                    </td>
+                    @if($data->tanggal_baca)
+                    <td class="text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_baca']))}}</td>
+                    @else
+                    <td class="text-center">Belum diselesaikan</td>
+                    @endif
+                </tr>
+                @endforeach
+                @endif
+                <!-- if count selesai -->
+                @endif
+                <!-- if jenis request -->
             </table>
             <br>
             <h5>Ringkasan</h5>
