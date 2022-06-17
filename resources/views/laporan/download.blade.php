@@ -3,8 +3,26 @@
 
 <head>
     <style>
+        @page {
+            margin-top: 100px;
+            margin-bottom: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        header {
+            position: fixed;
+            top: -70px;
+            height: 100%;
+            width: 100%;
+            line-height: 35px;
+        }
+
         .logo {
-            width: 150px;
+            width: 200px;
+        }
+
+        table {
+            width: 100%;
         }
 
         table,
@@ -15,9 +33,17 @@
             font-size: x-small;
         }
 
+        th {
+            background-color: whitesmoke;
+        }
+
         th,
         td {
             padding: 15px;
+        }
+
+        .text-center {
+            text-align: center;
         }
 
         .text {
@@ -25,64 +51,169 @@
         }
 
         .author {
-            font-size: 10px;
+            font-size: 12px;
             text-align: right;
+        }
+
+        #judul {
+            margin-top: -20px;
         }
     </style>
 </head>
 
 <body>
-
-    <!-- Page Heading -->
-    <div class="container-fluid">
-        <!-- Page Heading -->
-        <img class="logo" src="{{public_path('assets/img/bcasLogo.png')}}" alt="">
-        <h3 id="judul">Pencatatan Memo {{ucwords($requests['jenis'])}}</h3>
-        <h5 id="tanggal">{{dateWithFormatter($requests['tanggalmulai'])}} s.d. {{dateWithFormatter($requests['tanggalakhir'])}}</h5>
-        <hr>
-        <br>
-        <br>
-        <!-- DataTales Example -->
-        <table id="tabel-laporan" border="0.5" cellspacing="0">
-            <tr>
-                <th scope=" col">Tanggal Surat</th>
+    <header>
+        <img class="logo" src="{{ public_path('assets/img/bcasLogo.png') }}" />
+    </header>
+    <main>
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <p id="judul">PENCATATAN MEMO {{strtoupper($requests['jenis'])}}</p>
+            <p>{{$users->satuanKerja['satuan_kerja']}}</p>
+            <p id="tanggal">{{dateWithFormatter($requests['tanggalmulai'])}} s.d. {{dateWithFormatter($requests['tanggalakhir'])}}</p>
+            <hr>
+            <br>
+            <!-- DataTales Example -->
+            <table id="tabel-laporan" cellspacing="0">
+                <tr>
+                    <th scope=" col" width="10%">Tanggal Surat</th>
+                    @if ($requests['jenis'] == 'masuk')
+                    <th scope="col" width="10%">Tanggal Masuk</th>
+                    @elseif ($requests['jenis'] == 'keluar')
+                    <th scope="col">Tanggal Keluar</th>
+                    @endif
+                    <th scope="col" width="10%">Nomor Surat</th>
+                    <th scope="col">Perihal</th>
+                    <th scope="col" width="10%">Asal</th>
+                    <th scope="col">Tujuan</th>
+                    <th scope="col" width="10%">Status</th>
+                </tr>
                 @if ($requests['jenis'] == 'masuk')
-                <th scope="col">Tanggal Masuk</th>
-                @elseif ($requests['jenis'] == 'keluar')
-                <th scope="col">Tanggal Keluar</th>
-                @endif
-                <th scope="col">Disusun Oleh</th>
-                <th scope="col">Nomor Surat</th>
-                <th scope="col">Perihal</th>
-                <th scope="col">Asal</th>
-                <th scope="col">Tujuan</th>
-                <th scope="col">Status</th>
-            </tr>
-            @foreach($datas as $data)
-            <tr id="data" style="cursor: pointer;">
-                <td class="align-top">{{date('Y-m-d', strtotime($data['created_at']))}}</td>
-                <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
-                <td class="align-top">{{ucwords($data->createdBy['name'])}}</td>
-                <td class="align-top">{{$data['nomor_surat']}}</td>
-                <td class="align-top">{{$data['perihal']}}</td>
-                <td class="align-top">{{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}</td>
-                <td class="align-top">{{ $data->satuanKerjaTujuan['satuan_kerja'] }} | {{ $data->departemenTujuan['departemen'] }}</td>
-                @if($data['status']>1+ $users['level'])
-                <td class="align-top text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_sk']))}}</td>
+                @if ($countSelesai==0 && $countBelumSelesai==0)
+                <tr>
+                    <td colspan="7" class="text-center">Surat tidak ditemukan untuk rentang tanggal terpilih.</td>
+                </tr>
                 @else
-                <td>Belum diselesaikan</td>
+                @foreach($datas as $data)
+                <tr>
+                    <td class="text-center">{{date('Y-m-d', strtotime($data['created_at']))}}</td>
+                    <td class="text-center">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
+                    <td class="text-center">{{$data['nomor_surat']}}</td>
+                    <td>{{$data['perihal']}}</td>
+                    <td class="text-center">{{$data->satuanKerjaAsal['inisial']}}</td>
+                    <td class="text-center">
+                        {{-- Tujuan kantor cabang --}}
+                        @if (in_array($data->memo_id, $seluruhCabangMemoIds))
+                        SELURUH KANTOR LAYANAN <br>
+                        @else
+                        @foreach ($tujuanCabangs as $item)
+                        @if ($item->memo_id == $data->memo_id)
+                        @if ($item->all_flag == true && $item->cabang_id != null)
+                        CABANG {{ $item->tujuanCabang->cabang }} <br>
+                        @endif
+                        @endif
+                        @endforeach
+                        @endif
+
+                        {{-- Tujuan kantor bidang --}}
+                        @foreach ($tujuanCabangs as $item)
+                        @if ($item->memo_id == $data->memo_id)
+                        @if ($item->bidang_id != null && $item->all_flag!=true)
+                        {{ $item->tujuanBidang->bidang }} <br>
+                        @endif
+                        @endif
+                        @endforeach
+
+                        {{-- Tujuan satuan kerja --}}
+                        @if (in_array($data->memo_id, $seluruhSatkerMemoIds))
+                        SELURUH UNIT KERJA KANTOR PUSAT <br>
+                        @else
+                        @foreach ($tujuanSatkers as $item)
+                        @if ($item->memo_id == $data->memo_id)
+                        {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                        @endif
+                        @endforeach
+                        @endif
+                    </td>
+                    @if($data->tanggal_baca)
+                    <td class="text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_baca']))}}</td>
+                    @else
+                    <td class="text-center">Belum diselesaikan</td>
+                    @endif
+                </tr>
+                @endforeach
                 @endif
-            </tr>
-            @endforeach
-            </tbody>
-        </table>
-        <br>
-        <h5>Ringkasan</h5>
-        <p class="text">Surat selesai: {{$countSelesai}}</p>
-        <p class="text">Surat belum selesai: {{$countBelumSelesai}}</p>
-        <hr><br>
-        <p class="author">Dikeluarkan oleh: {{$users->name}}</p>
-    </div>
+                <!-- if count selesai -->
+                @else
+                <!-- else jenis request -->
+                @if ($countSelesai==0 && $countBelumSelesai==0)
+                <tr>
+                    <td colspan="7" class="text-center">Surat tidak ditemukan untuk rentang tanggal terpilih.</td>
+                </tr>
+                @else
+                @foreach($datas as $data)
+                <tr>
+                    <td class="text-center">{{date('Y-m-d', strtotime($data['created_at']))}}</td>
+                    <td class="text-center">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
+                    <td class="text-center">{{$data['nomor_surat']}}</td>
+                    <td>{{$data['perihal']}}</td>
+                    <td class="text-center">{{$data->satuanKerjaAsal['inisial']}}</td>
+                    <td class="text-center">
+                        {{-- Tujuan satuan kerja --}}
+                        @if (in_array($data->id, $seluruhSatkerMemoIds))
+                        SELURUH UNIT KERJA KANTOR PUSAT <br>
+                        @else
+                        @foreach ($tujuanSatkers as $item)
+                        @if ($item->memo_id == $data->id)
+                        {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                        @endif
+                        @endforeach
+                        @endif
+
+                        {{-- Tujuan kantor cabang --}}
+                        @if (in_array($data->id, $seluruhCabangMemoIds))
+                        SELURUH KANTOR LAYANAN <br>
+                        @else
+                        @foreach ($tujuanCabangs as $item)
+                        @if ($item->memo_id == $data->id)
+                        @if ($item->all_flag == true && $item->cabang_id != null)
+                        CABANG {{ $item->tujuanCabang->cabang }} <br>
+                        @endif
+                        @endif
+                        @endforeach
+                        @endif
+
+                        {{-- Tujuan kantor bidang --}}
+                        @foreach ($tujuanCabangs as $item)
+                        @if ($item->memo_id == $data->id)
+                        @if ($item->bidang_id != null && $item->all_flag!=true)
+                        {{ $item->tujuanBidang->bidang }} <br>
+                        @endif
+                        @endif
+                        @endforeach
+                    </td>
+                    @if($data->tanggal_baca)
+                    <td class="text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_baca']))}}</td>
+                    @else
+                    <td class="text-center">Belum diselesaikan</td>
+                    @endif
+                </tr>
+                @endforeach
+                @endif
+                <!-- if count selesai -->
+                @endif
+                <!-- if jenis request -->
+            </table>
+            <br>
+            <h5>Ringkasan</h5>
+            <p class="text">Surat selesai: {{$countSelesai}}</p>
+            <p class="text">Surat belum selesai: {{$countBelumSelesai}}</p>
+            <hr><br>
+            <p class="author">Dikeluarkan oleh: {{$users->name}}</p>
+        </div>
+    </main>
+    <footer></footer>
+    <!-- Page Heading -->
     <!-- /.container-fluid -->
 </body>
 
