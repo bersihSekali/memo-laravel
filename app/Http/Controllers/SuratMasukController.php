@@ -52,9 +52,8 @@ class SuratMasukController extends Controller
 
         //untuk cek all flag
         $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
-        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', $user->satuan_kerja)->pluck('memo_id')->toArray();
-        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', $user->departemen)->pluck('memo_id')->toArray();
-
+        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
+        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
 
         return view('suratmasuk/index', [
             'title' => 'Surat Masuk',
