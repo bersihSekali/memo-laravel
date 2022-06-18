@@ -254,7 +254,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('DELETE')}}
 
@@ -278,7 +278,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('DELETE')}}
 
@@ -300,7 +300,7 @@
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
         <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
 
@@ -321,7 +321,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('DELETE')}}
 
@@ -346,7 +346,7 @@
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
         <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
 
@@ -367,7 +367,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('DELETE')}}
 
@@ -390,7 +390,7 @@
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
         <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
 
@@ -424,7 +424,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('PUT')}}
 
@@ -441,7 +441,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('PUT')}}
 
@@ -461,7 +461,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('PUT')}}
 
@@ -479,7 +479,7 @@
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
         <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
 
@@ -496,7 +496,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('PUT')}}
 
@@ -517,7 +517,7 @@
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
         <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
 
@@ -534,7 +534,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('PUT')}}
 
@@ -553,7 +553,7 @@
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
         <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
 
