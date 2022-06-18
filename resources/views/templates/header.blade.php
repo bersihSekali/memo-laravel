@@ -23,7 +23,7 @@
 
 
       @else
-      <div class="mt-1 small text-muted">{{ strtoupper($users->satuanKerja['satuan_kerja']) }} | {{ strtoupper($users->departemenTable['departemen']) }}</div>
+      <div class="mt-1 small text-muted">{{ strtoupper($users->satuanKerja->inisial) }} | {{ strtoupper($users->departemenTable->inisial) }}</div>
 
       @endif
     </div>

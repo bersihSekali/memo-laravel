@@ -12,7 +12,7 @@ class HomeController extends Controller
     {
         // dd($request->session()->all());
         $id = Auth::id();
-        $user = User::where('id', $id)->first();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')->where('id', $id)->first();
         $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
             ->get();
 

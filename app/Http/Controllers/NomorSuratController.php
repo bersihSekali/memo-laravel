@@ -24,7 +24,7 @@ class NomorSuratController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $id = Auth::id();
         $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
@@ -69,8 +69,6 @@ class NomorSuratController extends Controller
             'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
             'seluruhCabangMemoIds' => $seluruhCabangMemoId,
         ];
-
-        dd($datas);
 
         return view('nomorSurat.index', $datas);
     }
@@ -120,12 +118,13 @@ class NomorSuratController extends Controller
     public function store(Request $request)
     {
         $id = Auth::id();
-        $user = User::find($id);
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $id)->first();
 
-        $satuanKerja = SatuanKerja::all();
-        $departemenInternal = Departemen::where('satuan_kerja', 2)->get();
-        $cabang = Cabang::all();
-        $bidangCabang = BidangCabang::all();
+        $satuanKerja = SatuanKerja::select('id')->get();
+        $departemenInternal = Departemen::select('id', 'satuan_kerja')->where('satuan_kerja', 2)->get();
+        $cabang = Cabang::select('id')->get();
+        $bidangCabang = BidangCabang::select('id')->get();
 
         $validated = $request->validate([
             'created_by' => 'required',
@@ -235,7 +234,7 @@ class NomorSuratController extends Controller
                     'cabang_id' => $item,
                     'all_flag' => 1
                 ]);
-                $bidangLoop = BidangCabang::where('cabang_id', $item)->get();
+                $bidangLoop = BidangCabang::select('id', 'cabang_id')->where('cabang_id', $item)->get();
                 foreach ($bidangLoop as $item_bidang) {
                     TujuanKantorCabang::create([
                         'memo_id' => $idSurat,
