@@ -10,19 +10,19 @@
                 <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Satuan Kerja</th>
-                            <th scope="col">Departemen</th>
-                            <th scope="col" width="18%">Jabatan</th>
+                            <th scope="col" style="text-align: center">Name</th>
+                            <th scope="col" style="text-align: center">Satuan Kerja</th>
+                            <th scope="col" style="text-align: center">Departemen</th>
+                            <th scope="col" style="text-align: center" width="18%">Jabatan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($datas as $data)    
                             <tr>
-                                <td class="align-top">{{ $data->name}}</td>
-                                <td class="align-top">{{ $data->satuanKerja['satuan_kerja'] }}</td>
-                                <td class="align-top">{{ $data->departemenTable['departemen'] }}</td>
-                                <td class="align-top">{{ strtoupper($data->levelTable->jabatan) }}</td>
+                                <td class="align-top" style="text-align: center">{{ $data->name}}</td>
+                                <td class="align-top" style="text-align: center">{{ $data->satuanKerja['inisial'] }}</td>
+                                <td class="align-top" style="text-align: center">{{ $data->departemenTable['inisial'] }}</td>
+                                <td class="align-top" style="text-align: center">{{ strtoupper($data->levelTable->jabatan) }}</td>
                             </tr>
                         @endforeach
                     </tbody>

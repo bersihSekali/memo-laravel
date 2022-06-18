@@ -39,18 +39,15 @@ class AuthController extends Controller
 
     public function registration()
     {
-        $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
-            ->get();
-        $satuanKerja = SatuanKerja::all();
-        $departemen = Departemen::all();
-        $level = Level::all();
+        $satuanKerja = SatuanKerja::select('id', 'satuan_kerja')->get();
+        $departemen = Departemen::select('id', 'satuan_kerja', 'departemen')->get();
+        $level = Level::select('id', 'jabatan')->get();
 
         $datas = [
             'title' => 'registration',
             'judul' => 'registration',
             'satuanKerja' => $satuanKerja,
             'departemen' => $departemen,
-            'userLogs' => $userLog,
             'level' => $level
         ];
         return view('auth/registration', $datas);
@@ -73,15 +70,16 @@ class AuthController extends Controller
         if (!$registration) {
             return redirect('/registration')->with('error', 'Registration failed!');
         } else {
-            return redirect('/login')->with('success', 'Registration success!');
+            return redirect('/listUser')->with('success', 'Registration success!');
         }
     }
 
     public function listUser()
     {
         $id = Auth::id();
-        $user = User::where('id', $id)->first();
-        $data = User::All();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $id)->first();
+        $data = User::select('name', 'satuan_kerja', 'departemen', 'level')->get();
 
         $datas = [
             'title' => 'List User',

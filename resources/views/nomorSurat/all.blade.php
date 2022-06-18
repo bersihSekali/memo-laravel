@@ -102,38 +102,48 @@
                                 <td class="align-top" width="20%">Tujuan</td>
                                 <td>
                                     {{-- Tujuan kantor cabang --}}
-                                    @foreach ($tujuanCabangs as $item)
-                                        @if ($item->memo_id == $data->id)
-                                            @if (($item->all_flag == true) && ($item->bidang_id == null) && ($item->cabang_id ==1))
-                                                : SELURUH KANTOR CABANG
-                                            @elseif ($item->cabang_id != null)
+                                    @if (in_array($data->id, $seluruhCabangMemoIds))
+                                        : SELURUH KANTOR LAYANAN <br>
+                                    @else
+                                        @foreach ($tujuanCabangs as $item)
+                                            @if ($item->memo_id == $data->id)
+                                                @if ($item->all_flag == true && $item->cabang_id != null)
                                                 : CABANG {{ $item->tujuanCabang->cabang }} <br>
+                                                @endif
                                             @endif
-                                        @endif
-                                    @endforeach
+                                        @endforeach
+                                    @endif
 
                                     {{-- Tujuan kantor bidang --}}
                                     @foreach ($tujuanCabangs as $item)
                                         @if ($item->memo_id == $data->id)
-                                            @if ($item->bidang_id != null)
-                                                : {{ $item->tujuanBidang->bidang }} <br>
+                                            @if ($item->bidang_id != null && $item->all_flag!=true)
+                                            : {{ $item->tujuanBidang->bidang }} <br>
                                             @endif
                                         @endif
                                     @endforeach
 
                                     {{-- Tujuan departemen --}}
-                                    @foreach ($tujuanDepartemens as $item)
-                                        @if ($item->memo_id == $data->id)
+                                    @if (in_array($data->id, $seluruhDepartemenMemoIds))
+                                        : SELURUH DEPARTEMEN SKTILOG <br>
+                                    @else
+                                        @foreach ($tujuanDepartemens as $item)
+                                            @if ($item->memo_id == $data->id)
                                             : {{ $item->tujuanDepartemen->departemen }} <br>
-                                        @endif
-                                    @endforeach
+                                            @endif
+                                        @endforeach
+                                    @endif
 
                                     {{-- Tujuan satuan kerja --}}
-                                    @foreach ($tujuanSatkers as $item)
-                                        @if ($item->memo_id == $data->id)
+                                    @if (in_array($data->id, $seluruhSatkerMemoIds))
+                                        : SELURUH UNIT KERJA KANTOR PUSAT <br>
+                                    @else
+                                        @foreach ($tujuanSatkers as $item)
+                                            @if ($item->memo_id == $data->id)
                                             : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
-                                        @endif
-                                    @endforeach
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </td>
                             </tr>
 

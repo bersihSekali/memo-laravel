@@ -18,14 +18,18 @@ class DepartemenController extends Controller
     public function index()
     {
         $id = Auth::id();
-        $user = User::find($id);
-        $satuanKerja = SatuanKerja::all();
-        $departemen = Departemen::all();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $id)->first();
+        $satuanKerja = SatuanKerja::select('id', 'satuan_kerja')->get();
+        $departemen = Departemen::select('id', 'satuan_kerja', 'departemen')->get();
+        $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->get();
         $datas = [
             'title' => 'Daftar Satuan Kerja dan Departemen',
             'users' => $user,
             'satuanKerjas' => $satuanKerja,
-            'departemens' => $departemen
+            'departemens' => $departemen,
+            'userLogs' => $userLog
         ];
         return view('departemen.index', $datas);
     }
@@ -38,12 +42,16 @@ class DepartemenController extends Controller
     public function create()
     {
         $id = Auth::id();
-        $user = User::where('id', $id)->first();
-        $satuanKerja = SatuanKerja::all();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $id)->first();
+        $satuanKerja = SatuanKerja::select('id', 'satuan_kerja')->get();
+        $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->get();
         $datas = [
             'title' => 'Tambah Departemen',
             'users' => $user,
-            'satuanKerja' => $satuanKerja
+            'satuanKerja' => $satuanKerja,
+            'userLogs' => $userLog
         ];
         return view('departemen.create', $datas);
     }
