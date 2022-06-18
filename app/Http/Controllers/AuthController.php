@@ -39,7 +39,8 @@ class AuthController extends Controller
 
     public function registration()
     {
-
+        $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->get();
         $satuanKerja = SatuanKerja::all();
         $departemen = Departemen::all();
         $level = Level::all();
@@ -49,6 +50,7 @@ class AuthController extends Controller
             'judul' => 'registration',
             'satuanKerja' => $satuanKerja,
             'departemen' => $departemen,
+            'userLogs' => $userLog,
             'level' => $level
         ];
         return view('auth/registration', $datas);

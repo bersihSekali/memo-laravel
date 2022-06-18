@@ -38,11 +38,18 @@ class AktivitasController extends Controller
     public function store(Request $request)
     {
         $id = Auth::id();
-        $user = User::where('id', $id)->first();
-        $userLog = User::all();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $id)->first();
+        $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->get();
 
         if ($request->user_id == 'all') {
-            $logs = AuditTrail::latest()->get();
+            $logs = AuditTrail::select('id', 'user_id', 'aktifitas', 'deskripsi', 'ip_address', 'mac_address', 'user_agent', 'created_at')
+                ->latest()->get();
+        } else {
+            $logs = AuditTrail::select('id', 'user_id', 'aktifitas', 'deskripsi', 'ip_address', 'mac_address', 'user_agent', 'created_at')
+                ->where('user_id', $request->user_id)
+                ->latest()->get();
         }
 
         $datas = [

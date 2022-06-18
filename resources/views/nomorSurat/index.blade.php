@@ -46,7 +46,7 @@
                         @if (($data['satuan_kerja_asal'] == $users['satuan_kerja']))
                         <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                             <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-                            <td class="align-top">
+                            <td class="align-top" style="text-align: center">
                                 @if ($data->departemen_asal == '')
                                 {{ $data->satuanKerjaAsal['inisial'] }}
                                 @else
@@ -54,7 +54,7 @@
                                 @endif
                             </td>
                             <td class="align-top">{{ $data->perihal }}</td>
-                            <td class="align-top">{{ strtoupper($data->createdBy['name'] )}} </td>
+                            <td class="align-top" style="text-align: center">{{ strtoupper($data->createdBy['name'] )}} </td>
                             <td class="align-top">
                                 {{-- Setuju --}}
                                 @if ($data->status == 3)
@@ -276,7 +276,6 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
                 @if ($data->satuan_kerja_asal == $users->satuan_kerja)
                     @if (($data->departemen_asal == $users->departemen) || ($users->level == 2))
                         <div class="modal-footer">
@@ -284,10 +283,6 @@
                         </div>
                     @endif
                 @endif
-=======
-            <div class="modal-footer">
-                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$data['id']}}">Hapus</button>
->>>>>>> dev
             </div>
         </div>
     </div>
