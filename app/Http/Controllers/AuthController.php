@@ -7,6 +7,7 @@ use App\Models\SatuanKerja;
 use App\Models\Level;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -34,7 +35,7 @@ class AuthController extends Controller
             return redirect()->intended('/');
         }
 
-        return redirect('/login')->with('success', 'Login gagal');
+        return redirect('/login')->with('error', 'Username / password salah');
     }
 
     public function registration()
