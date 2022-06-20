@@ -7,11 +7,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MemoSentSatker extends Notification
+class MemoSentSatker extends Notification implements ShouldQueue
 {
     use Queueable;
 
     private $datas;
+    private $asal;
+    private $dataMemo;
 
     /**
      * Create a new notification instance.
@@ -21,6 +23,7 @@ class MemoSentSatker extends Notification
     public function __construct($datas)
     {
         $this->dataMemo = $datas;
+        $this->asal = $datas->satuanKerjaAsal['satuan_kerja'];
     }
 
     /**
@@ -43,8 +46,9 @@ class MemoSentSatker extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+            ->subject('Memo Masuk')
             ->line('Anda mendapatkan memo masuk')
-            ->line('Asal: ' . $this->dataMemo->satuanKerjaAsal['satuan_kerja'])
+            ->line('Asal: ' . $this->asal)
             ->line('Perihal: ' . $this->dataMemo->perihal)
             ->action('Cek Surat Masuk', url('/suratMasuk'))
             ->line('Terima kasih!');

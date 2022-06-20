@@ -236,9 +236,9 @@ class OtorisasiBaruController extends Controller
         $datas->update($update);
 
         if (!$datas) {
-            return redirect('/otorisasi')->with('error', 'Update data failed!');
+            return redirect('/otor')->with('error', 'Update data failed!');
         } else {
-            return redirect('/otorisasi')->with('success', 'Update data success!');
+            return redirect('/otor')->with('success', 'Update data success!');
         }
     }
 
@@ -291,9 +291,9 @@ class OtorisasiBaruController extends Controller
         $datas->update($update);
 
         if (!$datas) {
-            return redirect('/otorisasi')->with('error', 'Update data failed!');
+            return redirect('/otor')->with('error', 'Update data failed!');
         } else {
-            return redirect('/otorisasi')->with('success', 'Update data success!');
+            return redirect('/otor')->with('success', 'Update data success!');
         }
     }
 
@@ -349,7 +349,9 @@ class OtorisasiBaruController extends Controller
             $q->where('golongan', 7);
         })->get();
 
-        Notification::route('mail', $mailRecipients)->notify(new MemoSentSatker($datas));
+        foreach ($mailRecipients as $user) {
+            $user->notify(new MemoSentSatker($datas));
+        }
 
         if (!$datas) {
             return redirect('/otor')->with('error', 'Update data failed!');
@@ -401,9 +403,9 @@ class OtorisasiBaruController extends Controller
         $datas->update($update);
 
         if (!$datas) {
-            return redirect('/otorisasi')->with('error', 'Update data failed!');
+            return redirect('/otor')->with('error', 'Update data failed!');
         } else {
-            return redirect('/otorisasi')->with('success', 'Update data success!');
+            return redirect('/otor')->with('success', 'Update data success!');
         }
     }
 }
