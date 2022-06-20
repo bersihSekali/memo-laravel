@@ -83,17 +83,19 @@ class NomorSuratController extends Controller
         $id = Auth::id();
         $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
             ->where('id', $id)->first();
-        // $pengganti = User::all();
         $pengganti = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
             ->get();
 
-        $departemen = Departemen::select('id', 'satuan_kerja', 'inisial', 'grup')->get();
-        $satuanKerja = SatuanKerja::select('id', 'inisial', 'grup')->get();
-        $cabang = Cabang::select('id', 'cabang')->get();
+        $departemen = Departemen::select('id', 'satuan_kerja', 'inisial')
+            ->where('satuan_kerja', 2)->get();
+        $satuanKerja = SatuanKerja::select('id', 'inisial', 'grup')->where('id', '!=', 1)
+            ->where('satuan_kerja', '!=', 'CABANG JABODETABEK')
+            ->where('satuan_kerja', '!=', 'CABANG NON JABODETABEK')->get();
+        $cabang = Cabang::select('id', 'cabang')
+            ->where('id', '!=', 1)->get();
         $bidangCabang = BidangCabang::select('id', 'bidang', 'cabang_id')->get();
         // $kantorCabang = Departemen::where('grup', 2)->get();
-        $departemenDireksi = Departemen::select('id', 'satuan_kerja', 'inisial', 'grup')
-            ->where('grup', 4)->get();
+        // $departemenDireksi = Departemen::select('id', 'satuan_kerja', 'inisial', 'grup')->where('grup', 4)->get();
 
         $datas = [
             'title' => 'Tambah Surat',
@@ -101,7 +103,7 @@ class NomorSuratController extends Controller
             'departemens' => $departemen,
             'cabangs' => $cabang,
             'bidangCabangs' => $bidangCabang,
-            'departemenDireksis' => $departemenDireksi,
+            // 'departemenDireksis' => $departemenDireksi,
             'users' => $user,
             'penggantis' => $pengganti
         ];
@@ -121,7 +123,10 @@ class NomorSuratController extends Controller
         $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
             ->where('id', $id)->first();
 
-        $satuanKerja = SatuanKerja::select('id')->get();
+        $satuanKerja = SatuanKerja::select('id', 'satuan_kerja')
+            ->where('id', '!=', 1)
+            ->where('satuan_kerja', '!=', 'CABANG JABODETABEK')
+            ->where('satuan_kerja', '!=', 'CABANG NON JABODETABEK')->get();
         $departemenInternal = Departemen::select('id', 'satuan_kerja')->where('satuan_kerja', 2)->get();
         $cabang = Cabang::select('id')->get();
         $bidangCabang = BidangCabang::select('id')->get();

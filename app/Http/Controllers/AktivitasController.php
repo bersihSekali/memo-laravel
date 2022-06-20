@@ -45,9 +45,11 @@ class AktivitasController extends Controller
 
         if ($request->user_id == 'all') {
             $logs = AuditTrail::select('id', 'user_id', 'aktifitas', 'deskripsi', 'ip_address', 'mac_address', 'user_agent', 'created_at')
+                ->whereBetween('created_at', [$request->tanggalmulai, date("Y-m-d", strtotime($request->tanggalakhir . "+1 days"))])
                 ->latest()->get();
         } else {
             $logs = AuditTrail::select('id', 'user_id', 'aktifitas', 'deskripsi', 'ip_address', 'mac_address', 'user_agent', 'created_at')
+                ->whereBetween('created_at', [$request->tanggalmulai, date("Y-m-d", strtotime($request->tanggalakhir . "+1 days"))])
                 ->where('user_id', $request->user_id)
                 ->latest()->get();
         }

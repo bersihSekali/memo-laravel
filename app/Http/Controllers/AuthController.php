@@ -25,7 +25,7 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required',
+            'name' => 'required|alpha',
             'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'
         ]);
 
@@ -57,7 +57,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255|unique:users',
+            'name' => 'required|max:255|unique:users|alpha',
             'satuan_kerja' => 'required',
             'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'level' => 'required'

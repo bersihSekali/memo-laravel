@@ -71,10 +71,6 @@
                                 id="tujuan_unit_kerja" multiple="multiple">
                                 <option id="unit_kerja" value="unit_kerja">Seluruh Unit Kerja</option>
                                 @foreach ($satuanKerjas as $satuanKerja)
-                                    @if ($satuanKerja->id == 1)
-                                        @continue
-                                    @endif
-
                                     <option class="opsi_unit_kerja" value="{{ $satuanKerja->id }}">{{ $satuanKerja->inisial
                                         }}</option>
                                     @endforeach
@@ -91,11 +87,8 @@
                     <div class="row">
                         <div class="col">
                             <select class="form-select" aria-label=".form-select-sm example" name="tujuan_kantor_cabang[]" id="tujuan_kantor_cabang" multiple="multiple">
-                                <option id="kantor_cabang" value="kantor_cabang">SELURUH KANTOR CABANG</option>
+                                <option id="kantor_cabang" value="kantor_cabang">SELURUH KANTOR LAYANAN</option>
                                 @foreach ($cabangs as $cabang)
-                                    @if ($cabang->id == 1)
-                                        @continue
-                                    @endif
                                     <option class="opsi_kantor_cabang_besar" value="S{{ $cabang->id }}">
                                         {{ $cabang->cabang }}
                                     </option>
@@ -120,14 +113,11 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <select class="form-select mb-3" aria-label=".form-select-sm example"
+                            <select class="form-select kelas mb-3" aria-label=".form-select-sm example"
                                 name="tujuan_internal[]" id="tujuan_internal" multiple="multiple">
                                 <option id="internal" value="internal">Seluruh Internal</option>
                                 @foreach ($departemens as $departemen)
-                                @if ($departemen->satuan_kerja == 2)
-                                <option class="opsi_departemen" value="{{ $departemen->id }}">{{ $departemen->inisial }}
-                                </option>
-                                @endif
+                                    <option id="{{ $departemen->id }}" class="opsi_departemen" value="{{ $departemen->id }}">{{ $departemen->inisial }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -156,7 +146,7 @@
                 <div class="col-sm-6 mb-3" name="pengganti_antar_satuan_kerja" id="pengganti_eksternal"
                     style="display: none">
                     <label for="tunjuk_otor1_by" class="form-label">Otor 1 Pengganti</label>
-                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
+                    <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
                         <option value=""> ---- </option>
                         @foreach ($penggantis as $pengganti)
                             @if ($pengganti->levelTable->golongan == 7)
@@ -170,7 +160,7 @@
                 <div class="col-sm-6 mb-3" name="pengganti_antar_departemen" id="pengganti_internal"
                     style="display: none">
                     <label for="tunjuk_otor1_by" class="form-label">Otor 1 Pengganti</label>
-                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
+                    <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
                         <option value=""> ---- </option>
                         @foreach ($penggantis as $pengganti)
                             @if ($pengganti->satuan_kerja == 2)
@@ -196,7 +186,7 @@
 
                 <div class="col-sm-6 mb-3">
                     <label for="tunjuk_otor2_by" class="form-label">Otor 2 Pengganti</label>
-                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor2_by"
+                    <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor2_by"
                         id="tunjuk_otor2_by">
                         <option value="" selected> ---- </option>
                         @foreach ($penggantis as $pengganti)
@@ -229,8 +219,7 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script>
     $(document).ready(function() {
@@ -242,17 +231,22 @@
                 $('.tujuan-internal').show(1000)
                 $('#pengganti_eksternal').hide()
                 $('#pengganti_internal').show()
+                $('#kantor_cabang').val(null).trigger('change')
+                $('#unit_kerja').val(null).trigger('change')
             } else {
                 $('.formulir').show(1000).delay(100)
                 $('.tujuan-eksternal').show(1000)
                 $('.tujuan-internal').hide(500)
                 $('#pengganti_internal').hide()
                 $('#pengganti_eksternal').show()
+                $('#tujuan_internal').val(null).trigger('change')
             }
         });
 
         $('#pejabat_pengganti').click(function() {
             $('#otor_pengganti').toggle();
+            $('.otor-pengganti').val(null).trigger('change')
+            $('.otor-pengganti').val(null).trigger('change')
         });
 
         $('#tujuan_satuan_kerja').select2({

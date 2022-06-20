@@ -11,19 +11,19 @@
           <div class="d-none d-xl-block pe-2">
             <div class="text-end">{{ strtoupper($users->name) }}</div>
             {{-- Kepala Satuan Kerja, Kepala Divisi, Kepala Unit Kerja --}}
-            @if (($users->level >= 2) && ($users->level <= 4)) <div class="mt-1 small text-muted">KEPALA {{ $users->satuanKerja->inisial }}
+            @if (($users->level >= 2) && ($users->level <= 4)) <div class="mt-1 small text-muted text-end">KEPALA {{ $users->satuanKerja->inisial }}
           </div>
 
           {{-- Kepala Cabang, Kepala Departemen, Senior Officer, Kepala Bidang, Kepala Bagian, Kepala Operasi Cabang, Officer --}}
-          @elseif (($users->level >= 5) && ($users->level <= 11)) <div class="mt-1 small text-muted">{{ strtoupper($users->satuanKerja->inisial) }} | {{ strtoupper($users->departemenTable->inisial) }}
+          @elseif (($users->level >= 5) && ($users->level <= 11)) <div class="mt-1 small text-muted text-end">{{ strtoupper($users->satuanKerja->inisial) }} | {{ strtoupper($users->departemenTable->inisial) }}
       </div>
 
       @elseif ($users->level == 1)
-      <div class="mt-1 small text-muted">Admin</div>
+      <div class="mt-1 small text-muted text-end">Admin</div>
 
 
       @else
-      <div class="mt-1 small text-muted">{{ strtoupper($users->satuanKerja->inisial) }} | {{ strtoupper($users->departemenTable->inisial) }}</div>
+      <div class="mt-1 small text-muted text-end">{{ strtoupper($users->satuanKerja->inisial) }} | {{ strtoupper($users->departemenTable->inisial) }}</div>
 
       @endif
     </div>
@@ -282,9 +282,9 @@
             {{-- Input user --}}
             <div class="col-sm-6 mb-3 form-user">
               <label for="user_id" class="form-label">User</label>
-              <select class="form-select mb-3" aria-label=".form-select-sm example" name="user_id" id="user_id">
+              <select class="form-select mb-3" aria-label=".form-select-sm example" name="user_id" id="user_id" required>
                 <option value=""> ----- </option>
-                <option value="all">Semua Log</option>
+                <option value="all">Semua User</option>
                   @foreach ($userLogs as $item)
                     @if ($item->level == 1)
                         @continue
@@ -292,6 +292,14 @@
                     <option value="{{ $item->id }}">{{ strtoupper($item->name) }} - {{ strtoupper($item->satuanKerja['inisial']) }} {{ strtoupper($item->departemenTable['inisial']) }}</option>
                   @endforeach
               </select>
+              <div class="col-sm-6 mb-3 form-user">
+                <label for="tanggalmulai" class="form-label">Tanggal Mulai</label>
+                <input type="date" class="form-control" id="tanggalmulai" name="tanggalmulai" required>
+              </div>
+              <div class="col-sm-6 mb-3 form-user">
+                <label for="tanggalakhir" class="form-label">Tanggal Akhir</label>
+                <input type="date" class="form-control" id="tanggalakhir" name="tanggalakhir" required>
+              </div>
             </div>
           </div>
 
