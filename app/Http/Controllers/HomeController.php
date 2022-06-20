@@ -130,22 +130,32 @@ class HomeController extends Controller
                 ->join('forwards', 'surat_keluars.id', '=', 'forwards.memo_id')
                 ->where('user_id', $id)->where('status', 3)->whereYear('tanggal_otor1', date("Y"))->latest('forwards.created_at')->get();
         }
-        $countBelumSelesaiMasuk = $data->whereNull('tanggal_baca')->count();
-        $countSelesaiMasuk = $data->whereNotNull('tanggal_baca')->count();
-        $countTotalMasuk = $data->count();
 
-        $datas = [
-            'users' => $user,
-            'userLogs' => $userLog,
-            'countTotalKeluar' => $countTotalKeluar,
-            'countSelesaiKeluar' => $countSelesaiKeluar,
-            'countBelumSelesaiKeluar' => $countBelumSelesaiKeluar,
-            'countSelesaiMasuk' => $countSelesaiMasuk,
-            'countBelumSelesaiMasuk' => $countBelumSelesaiMasuk,
-            'countTotalMasuk' => $countTotalMasuk,
-            'countOtor' => $countOtor,
-        ];
+        if ($user->levelTable['golongan'] < 99) {
+            $countBelumSelesaiMasuk = $data->whereNull('tanggal_baca')->count();
+            $countSelesaiMasuk = $data->whereNotNull('tanggal_baca')->count();
+            $countTotalMasuk = $data->count();
 
-        return view('templates.home', $datas);
+            $datas = [
+                'users' => $user,
+                'userLogs' => $userLog,
+                'countTotalKeluar' => $countTotalKeluar,
+                'countSelesaiKeluar' => $countSelesaiKeluar,
+                'countBelumSelesaiKeluar' => $countBelumSelesaiKeluar,
+                'countSelesaiMasuk' => $countSelesaiMasuk,
+                'countBelumSelesaiMasuk' => $countBelumSelesaiMasuk,
+                'countTotalMasuk' => $countTotalMasuk,
+                'countOtor' => $countOtor,
+            ];
+
+            return view('templates.home', $datas);
+        } else {
+            $datas = [
+                'users' => $user,
+                'userLogs' => $userLog,
+            ];
+
+            return view('templates.homeAdmin', $datas);
+        }
     }
 }
