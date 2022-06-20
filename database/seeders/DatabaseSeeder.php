@@ -207,7 +207,7 @@ class DatabaseSeeder extends Seeder
             ['buddin', 7, 3, 5], ['komo', 8, 3, 5], ['arsyad', 12, 3, 5],
             ['risky', 15, 3, 5], ['septiawan', 6, 3, 6], ['john', 7, 3, 6],
             ['lennon', 8, 3, 6], ['fredy', 12, 3, 6], ['mercury', 15, 3, 6],
-            ['venus', 2, 4, 7], ['bumi', 6, 4, 7], ['mars', 7, 4, 7],
+            ['venus', 2, 4, null], ['bumi', 6, 4, 7], ['mars', 7, 4, 7],
             ['jupiter', 8, 4, 7], ['saturn', 12, 4, 7], ['uranus', 15, 4, 7],
             ['neptunus', 6, 4, 8], ['pluto', 7, 4, 8], ['alda', 8, 4, 8],
             ['tri', 12, 4, 8], ['risma', 15, 4, 8], ['maharini', 2, 5, null],
@@ -223,7 +223,8 @@ class DatabaseSeeder extends Seeder
                 'level' => $user[$i][1],
                 'satuan_kerja' => $user[$i][2],
                 'departemen' => $user[$i][3],
-                'password' => hash::make('Syariah@1')
+                'password' => hash::make('Syariah@1'),
+                'email' => 'yudhinurb@gmail.com'
             ];
             User::create($data);
         }

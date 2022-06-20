@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->foreign('level')->references('id')->on('levels');
 
             $table->string('password');
+            $table->string('email')->nullable();
             $table->timestamps();
         });
     }

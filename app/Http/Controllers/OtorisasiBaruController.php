@@ -10,6 +10,9 @@ use App\Models\User;
 use App\Models\TujuanDepartemen;
 use App\Models\TujuanSatuanKerja;
 use App\Models\TujuanKantorCabang;
+use App\Notifications\EmailSent;
+use App\Notifications\MemoSentSatker;
+use Illuminate\Support\Facades\Notification;
 
 class OtorisasiBaruController extends Controller
 {
@@ -340,6 +343,13 @@ class OtorisasiBaruController extends Controller
         array_push($update, $datas['lampiran']);
 
         $datas->update($update);
+
+        $satuanKerjaId = TujuanSatuanKerja::where('memo_id', $datas->id)->pluck('satuan_kerja_id')->toArray();
+        $mailRecipients = User::whereIn('satuan_kerja', $satuanKerjaId)->whereHas('levelTable', function ($q) {
+            $q->where('golongan', 7);
+        })->get();
+
+        Notification::route('mail', $mailRecipients)->notify(new MemoSentSatker($datas));
 
         if (!$datas) {
             return redirect('/otor')->with('error', 'Update data failed!');
