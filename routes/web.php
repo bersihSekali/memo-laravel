@@ -56,6 +56,8 @@ Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
 // Otorisasi surat
 Route::post('otorisasi/approvedOtorSatu/{id}', [OtorisasiSuratController::class, 'approvedOtorSatu'])->middleware('auth');
 Route::post('otorisasi/disApprovedOtorSatu/{id}', [OtorisasiSuratController::class, 'disApprovedOtorSatu'])->middleware('auth');
+Route::post('otor/approvedOtorSatu/{id}', [OtorisasiBaruController::class, 'approvedOtorSatu'])->middleware('auth');
+Route::post('otor/disApprovedOtorSatu/{id}', [OtorisasiBaruController::class, 'disApprovedOtorSatu'])->middleware('auth');
 Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth');
 Route::resource('otor', OtorisasiBaruController::class)->middleware('auth');
 Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth')->name('index', 'suratMasuk');

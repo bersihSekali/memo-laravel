@@ -10,6 +10,9 @@ use App\Models\User;
 use App\Models\TujuanDepartemen;
 use App\Models\TujuanSatuanKerja;
 use App\Models\TujuanKantorCabang;
+use App\Notifications\EmailSent;
+use App\Notifications\MemoSentSatker;
+use Illuminate\Support\Facades\Notification;
 
 class OtorisasiBaruController extends Controller
 {
@@ -233,9 +236,9 @@ class OtorisasiBaruController extends Controller
         $datas->update($update);
 
         if (!$datas) {
-            return redirect('/otorisasi')->with('error', 'Update data failed!');
+            return redirect('/otor')->with('error', 'Update data failed!');
         } else {
-            return redirect('/otorisasi')->with('success', 'Update data success!');
+            return redirect('/otor')->with('success', 'Update data success!');
         }
     }
 
@@ -288,9 +291,9 @@ class OtorisasiBaruController extends Controller
         $datas->update($update);
 
         if (!$datas) {
-            return redirect('/otorisasi')->with('error', 'Update data failed!');
+            return redirect('/otor')->with('error', 'Update data failed!');
         } else {
-            return redirect('/otorisasi')->with('success', 'Update data success!');
+            return redirect('/otor')->with('success', 'Update data success!');
         }
     }
 
@@ -326,28 +329,6 @@ class OtorisasiBaruController extends Controller
         //     $datas['no_urut'] = $no_urut;
         // }
 
-        $lastSuratKeluar = SuratKeluar::where('departemen_asal', $datas->departemen_asal)
-            ->latest()->first();
-        if ($lastSuratKeluar == '') {
-            $datas->no_urut = 1;
-        } else {
-            $temp = SuratKeluar::where('departemen_asal', $datas->departemen_asal)
-                ->max('no_urut');
-            $no_urut = $temp + 1;
-            $datas->no_urut = $no_urut;
-        }
-        array_push($update, $datas->no_urut);
-
-        $tahun = date("Y", strtotime($datas['tanggal_otor1']));
-        // Nomor surat antar divisi / satuan kerja
-        if ($datas->satuan_kerja_asal != $datas->satuan_kerja_tujuan) {
-            $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->satuanKerjaAsal['satuan_kerja'] . '/' . $tahun;
-        } else { // Nomor surat antar departemen
-            $no_surat = sprintf("%03d", $datas['no_urut']) . '/MO/' . $datas->departemenAsal['departemen'] . '/' . $tahun;
-        }
-        $datas['nomor_surat'] = $no_surat;
-        array_push($update, $datas['nomor_surat']);
-
         // Update lampiran
         if ($datas->lampiran) {
             Storage::delete($datas->lampiran);
@@ -363,10 +344,19 @@ class OtorisasiBaruController extends Controller
 
         $datas->update($update);
 
+        $satuanKerjaId = TujuanSatuanKerja::where('memo_id', $datas->id)->pluck('satuan_kerja_id')->toArray();
+        $mailRecipients = User::whereIn('satuan_kerja', $satuanKerjaId)->whereHas('levelTable', function ($q) {
+            $q->where('golongan', 7);
+        })->get();
+
+        foreach ($mailRecipients as $user) {
+            $user->notify(new MemoSentSatker($datas));
+        }
+
         if (!$datas) {
-            return redirect('/otorisasi')->with('error', 'Update data failed!');
+            return redirect('/otor')->with('error', 'Update data failed!');
         } else {
-            return redirect('/otorisasi')->with('success', 'Update data success!');
+            return redirect('/otor')->with('success', 'Update data success!');
         }
     }
 
@@ -413,9 +403,9 @@ class OtorisasiBaruController extends Controller
         $datas->update($update);
 
         if (!$datas) {
-            return redirect('/otorisasi')->with('error', 'Update data failed!');
+            return redirect('/otor')->with('error', 'Update data failed!');
         } else {
-            return redirect('/otorisasi')->with('success', 'Update data success!');
+            return redirect('/otor')->with('success', 'Update data success!');
         }
     }
 }
