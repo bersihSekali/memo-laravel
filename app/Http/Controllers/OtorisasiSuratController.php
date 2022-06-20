@@ -23,28 +23,82 @@ class OtorisasiSuratController extends Controller
     public function index()
     {
         $id = Auth::id();
-        $user = User::where('id', $id)->first();
-
-        // Untuk view column tujuan
-        $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
-            ->pluck('id')->toArray();
-        $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-        $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-        $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $id)->first();
 
         // Officer, kepala bidang, kepala operasi cabang, kepala cabang pembantu golongan 5
         if ($user->levelTable->golongan == 5) {
-            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
+            $pengganti2 = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('otor2_by_pengganti', $user->id)
                 ->where('status', 1)
                 ->latest();
-            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
+            $pengganti1 = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('otor1_by_pengganti', $user->id)
                 ->where('status', 2)
                 ->union($pengganti2)
                 ->latest();
-            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+            $mails = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('departemen_asal', $user->departemen)
                 ->where('internal', 1)
                 ->where('status', 1)
@@ -54,23 +108,107 @@ class OtorisasiSuratController extends Controller
 
         // Kepala departemen, golongan 6
         elseif (($user->levelTable->golongan == 6) && ($user->level == 6)) {
-            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
+            $pengganti2 = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('otor2_by_pengganti', $user->id)
                 ->where('otor2_by', null)
                 ->where('status', 1)
                 ->latest();
-            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
+            $pengganti1 = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('otor1_by_pengganti', $user->id)
                 ->where('otor1_by', null)
                 ->where('status', 2)
                 ->union($pengganti2)
                 ->latest();
             // antar departemen sebagai otor1_by
-            $antarDepartemen = SuratKeluar::where('departemen_asal', $user->departemen)
+            $antarDepartemen = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('departemen_asal', $user->departemen)
                 ->where('internal', 1)
                 ->where('status', 2)
                 ->union($pengganti1)
                 ->latest();
             // antar satuan kerja sebagai otor2_by
-            $mails = SuratKeluar::where('internal', 2)
+            $mails = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('internal', 2)
                 ->where('status', 1)
                 ->union($antarDepartemen)
                 ->latest()->get();
@@ -78,30 +216,135 @@ class OtorisasiSuratController extends Controller
 
         // Senior officer
         elseif (($user->levelTable->golongan == 6) && ($user->level == 7)) {
-            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
+            $pengganti2 = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('otor2_by_pengganti', $user->id)
                 ->where('otor2_by', null)
                 ->where('status', 1)
                 ->latest();
-            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
+            $pengganti1 = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('otor1_by_pengganti', $user->id)
                 ->where('otor1_by', null)
                 ->where('status', 2)
                 ->union($pengganti2)
                 ->latest();
             // antar departemen sebagai otor2_by
-            $antarDepartemen2 = SuratKeluar::where('departemen_asal', $user->departemen)
+            $antarDepartemen2 = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('departemen_asal', $user->departemen)
                 ->where('internal', 1)
                 ->where('status', 1)
                 ->union($pengganti1)
                 ->latest();
             // antar departemen sebagai otor1_by
-            $antarDepartemen1 = SuratKeluar::where('departemen_asal', $user->departemen)
+            $antarDepartemen1 = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('departemen_asal', $user->departemen)
                 ->where('internal', 1)
                 ->where('status', 2)
                 ->where('otor2_by', '!=', $user->id)
                 ->union($antarDepartemen2)
                 ->latest();
             // antar satuan kerja sebagai otor2_by
-            $mails = SuratKeluar::where('status', 1)
+            $mails = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('status', 1)
                 ->where('internal', 2)
                 ->union($antarDepartemen1)
                 ->latest()->get();
@@ -109,12 +352,54 @@ class OtorisasiSuratController extends Controller
 
         // Kepala satuan kerja
         elseif ($user->levelTable->golongan == 7) {
-            $pengganti = SuratKeluar::where('otor1_by_pengganti', $user->id)
+            $pengganti = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('otor1_by_pengganti', $user->id)
                 ->where('otor1_by', null)
                 ->where('status', 2)
                 ->latest();
             // Antar satuan kerja sebagai otor1_by
-            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+            $mails = SuratKeluar::select(
+                'id',
+                'created_at',
+                'otor1_by',
+                'otor2_by',
+                'otor1_by_pengganti',
+                'otor2_by_pengganti',
+                'created_by',
+                'tanggal_otor2',
+                'tanggal_otor1',
+                'nomor_surat',
+                'perihal',
+                'satuan_kerja_asal',
+                'departemen_asal',
+                'lampiran',
+                'pesan_tolak',
+                'internal',
+                'status',
+                'deleted_by',
+                'deleted_at'
+            )
+                ->where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('internal', 2)
                 ->where('status', 2)
                 ->union($pengganti)
@@ -122,13 +407,17 @@ class OtorisasiSuratController extends Controller
         }
 
         // Untuk view column tujuan
-        $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+        $memoIdSatker = SuratKeluar::select('id', 'satuan_kerja_asal')
+            ->where('satuan_kerja_asal', $user->satuan_kerja)
             ->pluck('id')->toArray();
-        $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $memoIdSatker)
+        $tujuanDepartemen = TujuanDepartemen::select('id', 'memo_id', 'departemen_id')
+            ->whereIn('memo_id', $memoIdSatker)
             ->latest()->get();
-        $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $memoIdSatker)
+        $tujuanSatker = TujuanSatuanKerja::select('id', 'memo_id', 'satuan_kerja_id')
+            ->whereIn('memo_id', $memoIdSatker)
             ->latest()->get();
-        $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
+        $tujuanCabangs = TujuanKantorCabang::select('id', 'memo_id', 'cabang_id', 'bidang_id')
+            ->whereIn('memo_id', $memoIdSatker)
             ->latest()->get();
 
         //untuk cek all flag
@@ -204,9 +493,31 @@ class OtorisasiSuratController extends Controller
     public function update(Request $request, $id) // Approved by otor 2
     {
         $user_id = Auth::id();
-        $user = User::where('id', $user_id)->first();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $user_id)->first();
 
-        $datas = SuratKeluar::find($id);
+        $datas = SuratKeluar::select(
+            'id',
+            'created_at',
+            'otor1_by',
+            'otor2_by',
+            'otor1_by_pengganti',
+            'otor2_by_pengganti',
+            'created_by',
+            'tanggal_otor2',
+            'tanggal_otor1',
+            'nomor_surat',
+            'perihal',
+            'satuan_kerja_asal',
+            'departemen_asal',
+            'lampiran',
+            'pesan_tolak',
+            'internal',
+            'status',
+            'deleted_by',
+            'deleted_at'
+        )
+            ->find($id);
 
         // Update tanggal otor
         $update[] = $datas['tanggal_otor2'] = date("Y-m-d H:i:s");
@@ -249,7 +560,7 @@ class OtorisasiSuratController extends Controller
             // Update audit trail
             $audit = [
                 'users' => $user->id,
-                'aktifitas' => 'config.constants.OTOR2',
+                'aktifitas' => config('constants.OTOR2'),
                 'deskripsi' => $datas['id']
             ];
             storeAudit($audit);
@@ -267,9 +578,31 @@ class OtorisasiSuratController extends Controller
     public function destroy(Request $request, $id) // Disapproved / Revision by otor 2
     {
         $user_id = Auth::id();
-        $user = User::where('id', $user_id)->first();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $user_id)->first();
 
-        $datas = SuratKeluar::find($id);
+        $datas = SuratKeluar::select(
+            'id',
+            'created_at',
+            'otor1_by',
+            'otor2_by',
+            'otor1_by_pengganti',
+            'otor2_by_pengganti',
+            'created_by',
+            'tanggal_otor2',
+            'tanggal_otor1',
+            'nomor_surat',
+            'perihal',
+            'satuan_kerja_asal',
+            'departemen_asal',
+            'lampiran',
+            'pesan_tolak',
+            'internal',
+            'status',
+            'deleted_by',
+            'deleted_at'
+        )
+            ->find($id);
         // Update otor status
         $update[] = $datas['status'] = 0;
 
@@ -321,7 +654,7 @@ class OtorisasiSuratController extends Controller
             // Update audit trail
             $audit = [
                 'users' => $user->id,
-                'aktifitas' => 'config.constants.REJECT2',
+                'aktifitas' => config('constants.REJECT2'),
                 'deskripsi' => $datas['id']
             ];
             storeAudit($audit);
@@ -333,9 +666,32 @@ class OtorisasiSuratController extends Controller
     public function approvedOtorSatu(Request $request, $id)
     { // Approved by Otor 1
         $user_id = Auth::id();
-        $user = User::where('id', $user_id)->first();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $user_id)->first();
 
-        $datas = SuratKeluar::find($id);
+        $datas = SuratKeluar::select(
+            'id',
+            'created_at',
+            'otor1_by',
+            'otor2_by',
+            'otor1_by_pengganti',
+            'otor2_by_pengganti',
+            'created_by',
+            'tanggal_otor2',
+            'tanggal_otor1',
+            'nomor_surat',
+            'perihal',
+            'no_urut',
+            'satuan_kerja_asal',
+            'departemen_asal',
+            'lampiran',
+            'pesan_tolak',
+            'internal',
+            'status',
+            'deleted_by',
+            'deleted_at'
+        )
+            ->find($id);
         // Update otor status
         $update[] = $datas['status'] = 3;
 
@@ -384,20 +740,23 @@ class OtorisasiSuratController extends Controller
 
         $tahun = date("Y", strtotime($datas['tanggal_otor1']));
         if ($datas->internal == 1) {
-            $lastSuratKeluar = SuratKeluar::where('departemen_asal', $datas->departemen_asal)
+            $lastSuratKeluar = SuratKeluar::select('departemen_asal', 'no_urut')
+                ->where('departemen_asal', $datas->departemen_asal)
                 ->latest()->first();
             if ($lastSuratKeluar == '') {
                 $datas->no_urut = 1;
             } elseif ($tahun != date("Y", strtotime($datas->tanggal_otor1))) {
                 $datas->no_urut = 1;
             } else {
-                $temp = SuratKeluar::where('departemen_asal', $datas->departemen_asal)
+                $temp = SuratKeluar::select('departemen_asal', 'no_urut')
+                    ->where('departemen_asal', $datas->departemen_asal)
                     ->max('no_urut');
                 $no_urut = $temp + 1;
                 $datas->no_urut = $no_urut;
             }
         } else {
-            $lastSuratKeluar = SuratKeluar::where('satuan_kerja_asal', $datas->satuan_kerja_asal)
+            $lastSuratKeluar = SuratKeluar::select('satuan_kerja_asal', 'internal')
+                ->where('satuan_kerja_asal', $datas->satuan_kerja_asal)
                 ->where('internal', 2)
                 ->latest()->first();
             if ($lastSuratKeluar == '') {
@@ -405,7 +764,8 @@ class OtorisasiSuratController extends Controller
             } elseif ($tahun != date("Y", strtotime($datas->tanggal_otor1))) {
                 $datas->no_urut = 1;
             } else {
-                $temp = SuratKeluar::where('satuan_kerja_asal', $datas->satuan_kerja_asal)
+                $temp = SuratKeluar::select('satuan_kerja_asal', 'internal', 'no_urut')
+                    ->where('satuan_kerja_asal', $datas->satuan_kerja_asal)
                     ->where('internal', 2)
                     ->max('no_urut');
                 $no_urut = $temp + 1;
@@ -444,7 +804,7 @@ class OtorisasiSuratController extends Controller
             // Update audit trail
             $audit = [
                 'users' => $user->id,
-                'aktifitas' => 'config.constants.OTOR1',
+                'aktifitas' => config('constants.OTOR1'),
                 'deskripsi' => $datas['id']
             ];
             storeAudit($audit);
@@ -456,9 +816,31 @@ class OtorisasiSuratController extends Controller
     public function disApprovedOtorSatu(Request $request, $id)
     { // Disapproved by Otor 1
         $user_id = Auth::id();
-        $user = User::where('id', $user_id)->first();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $user_id)->first();
 
-        $datas = SuratKeluar::find($id);
+        $datas = SuratKeluar::select(
+            'id',
+            'created_at',
+            'otor1_by',
+            'otor2_by',
+            'otor1_by_pengganti',
+            'otor2_by_pengganti',
+            'created_by',
+            'tanggal_otor2',
+            'tanggal_otor1',
+            'nomor_surat',
+            'perihal',
+            'satuan_kerja_asal',
+            'departemen_asal',
+            'lampiran',
+            'pesan_tolak',
+            'internal',
+            'status',
+            'deleted_by',
+            'deleted_at'
+        )
+            ->find($id);
         // Update otor status
         $update[] = $datas['status'] = 0;
 
@@ -510,7 +892,7 @@ class OtorisasiSuratController extends Controller
             // Update audit trail
             $audit = [
                 'users' => $user->id,
-                'aktifitas' => 'config.constants.REJECT1',
+                'aktifitas' => config('constants.REJECT1'),
                 'deskripsi' => $datas['id']
             ];
             storeAudit($audit);

@@ -24,7 +24,7 @@ class AuditTrail extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function surat()
+    public function suratTable()
     {
         return $this->belongsTo(SuratKeluar::class, 'deskripsi');
     }

@@ -39,14 +39,17 @@
                 <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th class="fs-4" scope="col">Satuan Kerja</th>
-                            <th class="fs-4" scope="col">Departemen</th>
+                            <th class="fs-4" scope="col" style="text-align: center">Satuan Kerja</th>
+                            <th class="fs-4" scope="col" style="text-align: center">Departemen</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($departemens as $departemen)
+                        @if (($departemen->id == 1) || ($departemen->id == 12) || ($departemen->id == 12))
+                            @continue
+                        @endif
                         <tr>
-                            <td class="align-top">{{ $departemen->satuanKerjaTable['satuan_kerja'] }}</td>
+                            <td class="align-top">{{ $departemen->satuanKerjaTable->satuan_kerja }}</td>
                             <td class="align-top">{{ $departemen->departemen }}</td>
                         </tr>
                         @endforeach

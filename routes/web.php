@@ -78,4 +78,5 @@ Route::resource('disposisi', DisposisiController::class)->middleware('auth');
 // Log aktivitas
 Route::resource('aktivitas', AktivitasController::class)->middleware('auth');
 
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
+// Logout
+Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');

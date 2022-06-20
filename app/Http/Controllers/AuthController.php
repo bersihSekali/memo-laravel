@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AuditTrail;
 use App\Models\Departemen;
 use App\Models\SatuanKerja;
 use App\Models\Level;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -26,7 +25,7 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required',
+            'name' => 'required|alpha',
             'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'
         ]);
 
@@ -36,15 +35,14 @@ class AuthController extends Controller
             return redirect()->intended('/');
         }
 
-        return redirect('/login')->with('success', 'Login gagal');
+        return redirect('/login')->with('error', 'Username / password salah');
     }
 
     public function registration()
     {
-
-        $satuanKerja = SatuanKerja::all();
-        $departemen = Departemen::all();
-        $level = Level::all();
+        $satuanKerja = SatuanKerja::select('id', 'satuan_kerja')->get();
+        $departemen = Departemen::select('id', 'satuan_kerja', 'departemen')->get();
+        $level = Level::select('id', 'jabatan')->get();
 
         $datas = [
             'title' => 'registration',
@@ -59,7 +57,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255|unique:users',
+            'name' => 'required|max:255|unique:users|alpha',
             'satuan_kerja' => 'required',
             'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'level' => 'required'
@@ -73,20 +71,22 @@ class AuthController extends Controller
         if (!$registration) {
             return redirect('/registration')->with('error', 'Registration failed!');
         } else {
-            return redirect('/login')->with('success', 'Registration success!');
+            return redirect('/listUser')->with('success', 'Registration success!');
         }
     }
 
     public function listUser()
     {
         $id = Auth::id();
-        $user = User::where('id', $id)->first();
-        $data = User::All();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $id)->first();
+        $data = User::select('name', 'satuan_kerja', 'departemen', 'level')->get();
 
         $datas = [
             'title' => 'List User',
             'users' => $user,
-            'datas' => $data
+            'datas' => $data,
+            'userLogs' => $data
         ];
         return view('auth/list', $datas);
     }
@@ -94,15 +94,10 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-
-        if (!session()) {
-            $request->session()->invalidate();
-
-            $request->session()->regenerateToken();
-
-            return redirect('/login');
-        }
-
+        $request->session()->invalidate();
         return redirect('/login');
+
+        // $request->session()->regenerateToken();
+
     }
 }

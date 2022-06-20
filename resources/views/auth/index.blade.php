@@ -37,6 +37,12 @@
               </div>
             @endif
 
+            @if ($message = Session::get('error'))
+              <div class="alert alert-danger">
+                {{ $message }}
+              </div>
+            @endif
+
             <h2 class="card-title text-center">Selamat Datang <br> Pencatatan Memo Internal BCASyariah</h2>
             
             <div class="mb-3">

@@ -28,7 +28,7 @@
             @foreach ($datas as $data)
             <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
               <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-              <td class="align-top">
+              <td class="align-top" style="text-align: center">
                 @if ($data->departemen_asal == '')
                 {{ $data->satuanKerjaAsal['inisial'] }}
                 @else
@@ -36,7 +36,7 @@
                 @endif
               </td>
               <td class="align-top">{{ $data->perihal }}</td>
-              <td class="align-top">{{ strtoupper($data->createdBy['name']) }} </td>
+              <td class="align-top" style="text-align: center">{{ strtoupper($data->createdBy->name) }} </td>
             </tr>
             @endforeach
           </tbody>
@@ -48,7 +48,7 @@
 </div>
 
 @foreach ($datas as $data)
-<div class="modal modal-blur fade" id="mail-{{$data['id']}}" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modal-blur fade" id="mail-{{$data->id}}" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -77,12 +77,12 @@
 
             <tr>
               <td width="20%">Pembuat</td>
-              <td>: {{ strtoupper($data->createdBy['name']) }}</td>
+              <td>: {{ strtoupper($data->createdBy->name) }}</td>
             </tr>
 
             <tr>
               <td width="20%">Asal</td>
-              <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+              <td>: {{ $data->satuanKerjaAsal->inisial }} | {{ $data->departemenAsal->inisial }}</td>
             </tr>
 
             <tr>
@@ -177,7 +177,7 @@
                 {{-- Antar departemen --}}
                 @if ($data->internal == 1)
                 <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                  Disetujui {{ strtoupper($data->otor2By->name) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                 </span>
                 <span class="badge bg-secondary">
                   Pending Kadep
@@ -186,7 +186,7 @@
                 {{-- Antar satuan kerja --}}
                 @else
                 <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                  Disetujui {{ strtoupper($data->otor2By->name) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                 </span>
                 <span class="badge bg-secondary">
                   Pending Kasat
@@ -197,19 +197,19 @@
                 @elseif ($data->status == 3)
                 @if ($data->internal == 1)
                 <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                  Disetujui {{ strtoupper($data->otor2By->name) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                 </span>
                 <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
+                  Disetujui {{ strtoupper($data->otor1By->name) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
                 </span>
 
                 {{-- Antar satuan kerja --}}
                 @else
                 <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                  Disetujui {{ strtoupper($data->otor2By->name) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                 </span>
                 <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
+                  Disetujui {{ strtoupper($data->otor1By->name) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
                 </span>
                 @endif
 
@@ -218,16 +218,16 @@
                 {{-- rejected otor2_by --}}
                 @if ($data->otor1_by == 0)
                 <span class="badge bg-danger">
-                  Ditolak {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                  Ditolak {{ strtoupper($data->otor2By->name) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                 </span>
 
                 {{-- rejected otor1_by --}}
                 @else
                 <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
+                  Disetujui {{ strtoupper($data->otor2By->name) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
                 </span>
                 <span class="badge bg-danger">
-                  Ditolak {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
+                  Ditolak {{ strtoupper($data->otor1By->name) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
                 </span>
                 @endif
                 @endif
@@ -310,7 +310,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
+        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
         <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
@@ -356,7 +356,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
+        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
         <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
@@ -400,7 +400,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
+        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
         <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
@@ -489,7 +489,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
+        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
         <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
@@ -527,7 +527,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
+        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
         <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
@@ -563,7 +563,7 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
+        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
         <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}

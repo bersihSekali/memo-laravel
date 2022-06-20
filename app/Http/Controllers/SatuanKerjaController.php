@@ -27,10 +27,14 @@ class SatuanKerjaController extends Controller
     public function create()
     {
         $id = Auth::id();
-        $user = User::find($id);
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $id)->first();
+        $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->get();
         $datas = [
             'title' => 'Tambah Satuan Kerja',
-            'users' => $user
+            'users' => $user,
+            'userLogs' => $userLog
         ];
         return view('satuanKerja.create', $datas);
     }

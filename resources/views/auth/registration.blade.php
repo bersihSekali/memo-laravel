@@ -71,7 +71,10 @@
             <select class="form-select mb-3" aria-label=".form-select-sm example" name="satuan_kerja" id="satuan_kerja" data-width="100%" required>
               <option selected disabled> ---- </option>
               @foreach ($satuanKerja as $item)
-              <option value="{{$item['id']}}">{{$item['satuan_kerja']}}</option>
+                @if (($item->id == 1) || ($item->id == 11) || ($item->id == 12))
+                    @continue
+                @endif
+                <option value="{{ $item->id }}">{{ $item->satuan_kerja }}</option>
               @endforeach
             </select>
           </div>
@@ -91,7 +94,7 @@
           </div>
 
           <div class="form-footer">
-            <button type="submit" class="btn btn-primary w-100">Sign in</button>
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
           </div>
         </div>
       </form>

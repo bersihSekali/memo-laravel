@@ -38,24 +38,26 @@ class AktivitasController extends Controller
     public function store(Request $request)
     {
         $id = Auth::id();
-        $user = User::where('id', $id)->first();
+        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->where('id', $id)->first();
+        $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->get();
 
         if ($request->user_id == 'all') {
-            $logs = AuditTrail::latest()->get();
-        } elseif ($request->tipe_log == 2) {
-            $logs = AuditTrail::where('id', $request->user_id)
-                ->latest()->get();
-        } elseif ($request->tipe_log == 1) {
-            $logs = AuditTrail::where('id', $request->user_id)
-                ->whereBetween('created_at', $request->tanggalmulai, $request->tanggalakhir)
+            $logs = AuditTrail::select('id', 'user_id', 'aktifitas', 'deskripsi', 'ip_address', 'mac_address', 'user_agent', 'created_at')
+                ->whereBetween('created_at', [$request->tanggalmulai, date("Y-m-d", strtotime($request->tanggalakhir . "+1 days"))])
                 ->latest()->get();
         } else {
-            $logs = AuditTrail::latest()->get();
+            $logs = AuditTrail::select('id', 'user_id', 'aktifitas', 'deskripsi', 'ip_address', 'mac_address', 'user_agent', 'created_at')
+                ->whereBetween('created_at', [$request->tanggalmulai, date("Y-m-d", strtotime($request->tanggalakhir . "+1 days"))])
+                ->where('user_id', $request->user_id)
+                ->latest()->get();
         }
 
         $datas = [
             'title' => 'Log Aktivitas',
             'users' => $user,
+            'userLogs' => $userLog,
             'datas' => $logs
         ];
 

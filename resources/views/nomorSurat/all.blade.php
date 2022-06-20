@@ -16,27 +16,27 @@
                     <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th class="fs-4" scope="col" width="10%">Tanggal</th>
-                                <th class="fs-4" scope="col" width="20%">Asal</th>
-                                <th class="fs-4" scope="col">Perihal</th>
-                                <th class="fs-4" scope="col" width="10%">Pembuat</th>
-                                <th class="fs-4" scope="col" width="8%">Status</th>
+                                <th class="fs-4" scope="col" style="text-align: center" width="10%">Tanggal</th>
+                                <th class="fs-4" scope="col" style="text-align: center" width="20%">Asal</th>
+                                <th class="fs-4" scope="col" style="text-align: center">Perihal</th>
+                                <th class="fs-4" scope="col" style="text-align: center" width="10%">Pembuat</th>
+                                <th class="fs-4" scope="col" style="text-align: center" width="8%">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($datas as $data)
-                            <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
+                            <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data->id}}" style="cursor: pointer;">
                                 <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
-                                <td class="align-top">
+                                <td class="align-top" style="text-align: center">
                                     @if ($data->departemen_asal == '')
-                                        {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                                        {{ $data->satuanKerjaAsal->inisial }}
                                     @else
-                                        {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}
+                                        {{ $data->satuanKerjaAsal->inisial }} | {{ $data->departemenAsal->inisial }}
                                     @endif
                                 </td>
                                 <td class="align-top">{{ $data->perihal }}</td>
-                                <td class="align-top">{{ strtoupper($data->createdBy['name'] )}} </td>
-                                <td class="align-top">
+                                <td class="align-top" style="text-align: center">{{ strtoupper($data->createdBy['name'] )}} </td>
+                                <td class="align-top" style="text-align: center">
                                     {{-- Setuju --}}
                                     @if ($data->status == 3)
                                         <span class="badge bg-success">Disetujui</span>
@@ -95,45 +95,55 @@
                             
                             <tr>
                                 <td width="20%">Asal</td>
-                                <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                                <td>: {{ $data->satuanKerjaAsal->inisial }} | {{ $data->departemenAsal->inisial }}</td>
                             </tr>
                             
                             <tr>
                                 <td class="align-top" width="20%">Tujuan</td>
                                 <td>
                                     {{-- Tujuan kantor cabang --}}
-                                    @foreach ($tujuanCabangs as $item)
-                                        @if ($item->memo_id == $data->id)
-                                            @if (($item->all_flag == true) && ($item->bidang_id == null) && ($item->cabang_id ==1))
-                                                : SELURUH KANTOR CABANG
-                                            @elseif ($item->cabang_id != null)
+                                    @if (in_array($data->id, $seluruhCabangMemoIds))
+                                        : SELURUH KANTOR LAYANAN <br>
+                                    @else
+                                        @foreach ($tujuanCabangs as $item)
+                                            @if ($item->memo_id == $data->id)
+                                                @if ($item->all_flag == true && $item->cabang_id != null)
                                                 : CABANG {{ $item->tujuanCabang->cabang }} <br>
+                                                @endif
                                             @endif
-                                        @endif
-                                    @endforeach
+                                        @endforeach
+                                    @endif
 
                                     {{-- Tujuan kantor bidang --}}
                                     @foreach ($tujuanCabangs as $item)
                                         @if ($item->memo_id == $data->id)
-                                            @if ($item->bidang_id != null)
-                                                : {{ $item->tujuanBidang->bidang }} <br>
+                                            @if ($item->bidang_id != null && $item->all_flag!=true)
+                                            : {{ $item->tujuanBidang->bidang }} <br>
                                             @endif
                                         @endif
                                     @endforeach
 
                                     {{-- Tujuan departemen --}}
-                                    @foreach ($tujuanDepartemens as $item)
-                                        @if ($item->memo_id == $data->id)
+                                    @if (in_array($data->id, $seluruhDepartemenMemoIds))
+                                        : SELURUH DEPARTEMEN SKTILOG <br>
+                                    @else
+                                        @foreach ($tujuanDepartemens as $item)
+                                            @if ($item->memo_id == $data->id)
                                             : {{ $item->tujuanDepartemen->departemen }} <br>
-                                        @endif
-                                    @endforeach
+                                            @endif
+                                        @endforeach
+                                    @endif
 
                                     {{-- Tujuan satuan kerja --}}
-                                    @foreach ($tujuanSatkers as $item)
-                                        @if ($item->memo_id == $data->id)
+                                    @if (in_array($data->id, $seluruhSatkerMemoIds))
+                                        : SELURUH UNIT KERJA KANTOR PUSAT <br>
+                                    @else
+                                        @foreach ($tujuanSatkers as $item)
+                                            @if ($item->memo_id == $data->id)
                                             : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
-                                        @endif
-                                    @endforeach
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </td>
                             </tr>
 

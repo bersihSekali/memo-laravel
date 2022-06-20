@@ -1,8 +1,8 @@
 @extends('templates.index')
 
 @section('content')
-@if ($users->level == 1)
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+{{-- @if ($users->level == 1)
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script>
     $(document).ready(function() {
@@ -21,8 +21,8 @@
             $('.form-user').toggle();
         });
     });
-</script>
-@endif
+    </script>
+@endif --}}
 
 <?php
 date_default_timezone_set("Asia/Jakarta");
