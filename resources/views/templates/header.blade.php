@@ -282,7 +282,7 @@
             {{-- Input user --}}
             <div class="col-sm-6 mb-3 form-user">
               <label for="user_id" class="form-label">User</label>
-              <select class="form-select mb-3" aria-label=".form-select-sm example" name="user_id" id="user_id" required>
+              <select class="form-select mb-3" aria-label=".form-select-sm example" name="user_id" id="user_id" style="width: 100%" required>
                 <option value=""> ----- </option>
                 <option value="all">Semua User</option>
                   @foreach ($userLogs as $item)

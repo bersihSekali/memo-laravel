@@ -89,13 +89,13 @@
                             <select class="form-select" aria-label=".form-select-sm example" name="tujuan_kantor_cabang[]" id="tujuan_kantor_cabang" multiple="multiple">
                                 <option id="kantor_cabang" value="kantor_cabang">SELURUH KANTOR LAYANAN</option>
                                 @foreach ($cabangs as $cabang)
-                                    <option class="opsi_kantor_cabang_besar" value="S{{ $cabang->id }}">
+                                    <option class="opsi_kantor_cabang_besar besar-{{ $cabang->id }}" value="S{{ $cabang->id }}">
                                         {{ $cabang->cabang }}
                                     </option>
 
                                     @foreach ($bidangCabangs as $bidang)
                                         @if ($bidang->cabang_id == $cabang->id)
-                                            <option class="opsi_kantor_bidang" value="{{ $bidang->id }}">- 
+                                            <option class="opsi_kantor_bidang bidang-{{ $cabang->id }}" value="{{ $bidang->id }}">- 
                                                 {{ $bidang->bidang }}
                                             </option>
                                         @endif
@@ -262,14 +262,7 @@
                 $('.opsi_unit_kerja').removeAttr('disabled')
             }
         });
-        $('#tujuan_departemen_direksi').change(function() {
-            if ($('#departemen_direksi').is(':selected')) {
-                $('.opsi_departemen_direksi').attr('disabled', 'disabled')
-                $(".opsi_departemen_direksi").prop("selected", false)
-            } else {
-                $('.opsi_departemen_direksi').removeAttr('disabled')
-            }
-        });
+
         $('#tujuan_kantor_cabang').change(function() {
             if ($('#kantor_cabang').is(':selected')) {
                 $('.opsi_kantor_cabang_besar').attr('disabled', 'disabled')
@@ -280,7 +273,16 @@
                 $('.opsi_kantor_cabang_besar').removeAttr('disabled')
                 $('.opsi_kantor_bidang').removeAttr('disabled')
             }
+        @foreach ($cabangs as $cabang)
+            if ($('.besar-{{ $cabang->id }}').is(':selected')) {
+                $('.bidang-{{ $cabang->id }}').attr('disabled', 'disabled')
+                $('.bidang-{{ $cabang->id }}').prop('selected', false)
+            } else {
+                $('.bidang-{{ $cabang->id }}').removeAttr('disabled')
+            }
+        @endforeach
         });
+
     });
 </script>
 @endsection
