@@ -33,8 +33,10 @@ class HomeController extends Controller
         $countSelesaiKeluar = $mails->where('status', 3)->count();
         $countBelumSelesaiKeluar = $mails->where('status', '!=', 3)->count();
         //Otor
-        $mails = $this->coba->ambilOtor($user);
-        $countOtor = $mails->count();
+        if ($user->levelTable['golongan'] < 99) {
+            $mails = $this->coba->ambilOtor($user);
+            $countOtor = $mails->count();
+        }
 
         //Surat Masuk
         if ($user->levelTable->golongan == 7) {
