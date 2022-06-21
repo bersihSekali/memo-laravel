@@ -24,11 +24,11 @@ class SuratKeluarController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+        $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)->orWhere('cabang_asal', $user->cabang)
             ->latest()->get();
 
         // Untuk view column tujuan
-        $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+        $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)->orWhere('cabang_asal', $user->cabang)
             ->pluck('id')->toArray();
         $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $memoIdSatker)
             ->latest()->get();
@@ -105,10 +105,11 @@ class SuratKeluarController extends Controller
         $validated = $request->validate([
             'created_by' => 'required',
             'nomor_surat' => 'required',
-            'satuan_kerja_asal' => 'required',
             'perihal' => 'required',
             'lampiran' => 'mimes:pdf',
         ]);
+        $validated['cabang_asal'] = $request->cabang_asal;
+        $validated['satuan_kerja_asal'] = $request->satuan_kerja_asal;
         $validated['otor2_by_pengganti'] = $request->tunjuk_otor2_by;
         $validated['otor1_by_pengganti'] = $request->tunjuk_otor1_by;
         $validated['internal'] = 2;

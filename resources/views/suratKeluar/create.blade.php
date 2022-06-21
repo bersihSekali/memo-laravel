@@ -28,10 +28,17 @@
             {{-- Input departemen / satuan kerja --}}
             <div class=" form-group row formulir" style="display: none">
                 <div class="col-sm-6 mb-3" id="eksternal">
+                    @if ($users->cabang)
+                    <label for="cabang_asal" class="form-label">Kantor Cabang Asal</label>
+                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="cabang_asal" id="cabang_asal" style="width: 100%;">
+                        <option selected value="{{ $users->cabang}}"> {{ $users->cabangTable['cabang'] }} </option>
+                    </select>
+                    @else
                     <label for="satuan_kerja_asal" class="form-label">Satuan Kerja Asal</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="satuan_kerja_asal" id="satuan_kerja_asal" style="width: 100%;">
                         <option selected value="{{ $users->satuan_kerja}}"> {{ $users->satuanKerja['satuan_kerja'] }} </option>
                     </select>
+                    @endif
                 </div>
             </div>
 
@@ -103,11 +110,19 @@
                     <label for="tunjuk_otor1_by" class="form-label">Otor 1 Pengganti</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
                         <option value=""> ---- </option>
+                        @if ($users->cabang)
+                        @foreach ($penggantis as $pengganti)
+                        @if ($pengganti->level == 5 || $pengganti->level == 9 || ($pengganti->departemenTable['inisial'] == 'SBK' && $pengganti->level == 2))
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }}</option>
+                        @endif
+                        @endforeach
+                        @else
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->levelTable->golongan == 7)
                         <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
                         @endif
                         @endforeach
+                        @endif
                     </select>
                 </div>
 
@@ -115,6 +130,13 @@
                     <label for="tunjuk_otor2_by" class="form-label">Otor 2 Pengganti</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor2_by" id="tunjuk_otor2_by">
                         <option value="" selected> ---- </option>
+                        @if ($users->cabang)
+                        @foreach ($penggantis as $pengganti)
+                        @if ($pengganti->level == 5 || $pengganti->level == 9 || $pengganti->level == 10 || $pengganti->level == 12 || $pengganti->level == 13)
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }}</option>
+                        @endif
+                        @endforeach
+                        @else
                         @foreach ($penggantis as $pengganti)
                         @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
                         @if ($pengganti->satuan_kerja == $users->satuan_kerja)
@@ -126,6 +148,7 @@
                         @endif
                         @endif
                         @endforeach
+                        @endif
                     </select>
                 </div>
             </div>

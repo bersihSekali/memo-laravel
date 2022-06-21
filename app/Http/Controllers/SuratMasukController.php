@@ -53,6 +53,7 @@ class SuratMasukController extends Controller
             }
         }
         $satuanKerja = SatuanKerja::all();
+        $cabang = Cabang::all();
         $departemen = Departemen::all();
 
         //untuk kolom tujuan
@@ -73,6 +74,7 @@ class SuratMasukController extends Controller
             'users' => $user,
             'satuanKerjas' => $satuanKerja,
             'departemens' => $departemen,
+            'cabangs' => $cabang,
             'tujuanSatkers' => $tujuanSatker,
             'tujuanDepartemens' => $tujuanDepartemen,
             'tujuanCabangs' => $tujuanCabangs,

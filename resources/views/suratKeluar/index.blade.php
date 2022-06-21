@@ -40,11 +40,14 @@
                     </thead>
                     <tbody>
                         @foreach($datas as $data)
-                        @if (($data['satuan_kerja_asal'] == $users['satuan_kerja']))
                         <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                             <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
                             <td class="align-top">
+                                @if ($data->satuan_kerja_asal)
                                 {{ $data->satuanKerjaAsal['inisial'] }}
+                                @else
+                                CABANG {{ $data->cabangAsal['cabang'] }}
+                                @endif
                             </td>
                             <td class="align-top">{{ $data->perihal }}</td>
                             <td class="align-top">{{ strtoupper($data->createdBy['name'] )}} </td>
@@ -63,7 +66,6 @@
                                 @endif
                             </td>
                         </tr>
-                        @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -108,7 +110,13 @@
 
                         <tr>
                             <td width="20%">Asal</td>
-                            <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }}</td>
+                            <td>
+                                @if ($data->satuan_kerja_asal)
+                                : {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                                @else
+                                : CABANG {{ $data->cabangAsal['cabang'] }}
+                                @endif
+                            </td>
                         </tr>
 
                         <tr>
@@ -127,15 +135,15 @@
 
                                 {{-- Tujuan kantor cabang --}}
                                 @if (in_array($data->id, $seluruhCabangMemoIds))
-                                    : SELURUH KANTOR LAYANAN <br>
+                                : SELURUH KANTOR LAYANAN <br>
                                 @else
-                                    @foreach ($tujuanCabangs as $item)
-                                        @if ($item->memo_id == $data->id)
-                                            @if ($item->all_flag == true && $item->cabang_id != null)
-                                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
-                                            @endif
-                                        @endif
-                                    @endforeach
+                                @foreach ($tujuanCabangs as $item)
+                                @if ($item->memo_id == $data->id)
+                                @if ($item->all_flag == true && $item->cabang_id != null)
+                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
+                                @endif
+                                @endif
+                                @endforeach
                                 @endif
 
                                 {{-- Tujuan kantor bidang --}}

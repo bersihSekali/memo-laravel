@@ -35,10 +35,12 @@ class CreateSuratKeluarsTable extends Migration
             $table->string('perihal');
             $table->unsignedBigInteger('no_urut')->nullable();
 
-            $table->unsignedBigInteger('satuan_kerja_asal');
+            $table->unsignedBigInteger('satuan_kerja_asal')->nullable();
+            $table->unsignedBigInteger('cabang_asal')->nullable();
             $table->unsignedBigInteger('departemen_asal')->nullable();
 
             $table->foreign('satuan_kerja_asal')->references('id')->on('satuan_kerjas');
+            $table->foreign('cabang_asal')->references('id')->on('cabangs');
             $table->foreign('departemen_asal')->references('id')->on('departemens');
 
             $table->string('lampiran')->nullable();

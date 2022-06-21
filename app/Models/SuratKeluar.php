@@ -20,6 +20,7 @@ class SuratKeluar extends Model
         'nomor_surat',
         'perihal',
         'satuan_kerja_asal',
+        'cabang_asal',
         'departemen_asal',
         'lampiran',
         'tanggal_otor2',
@@ -37,6 +38,11 @@ class SuratKeluar extends Model
     public function departemenAsal()
     {
         return $this->belongsTo(Departemen::class, 'departemen_asal');
+    }
+
+    public function cabangAsal()
+    {
+        return $this->belongsTo(Cabang::class, 'cabang_asal');
     }
 
     public function createdBy()

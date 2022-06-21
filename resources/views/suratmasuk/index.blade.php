@@ -82,6 +82,8 @@
                             <td class="align-top">
                                 @if ($data->departemen_asal)
                                 {{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}
+                                @elseif ($data->cabang_asal)
+                                {{$data->cabangAsal['cabang']}}
                                 @else
                                 {{$data->satuanKerjaAsal['satuan_kerja']}}
                                 @endif
