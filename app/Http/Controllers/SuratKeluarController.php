@@ -228,7 +228,7 @@ class SuratKeluarController extends Controller
      */
     public function show($id)
     {
-        //
+        return false;
     }
 
     /**

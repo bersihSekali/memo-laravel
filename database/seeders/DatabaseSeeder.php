@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         $grup = array(
-            'Unit Kerja', 'Kantor Kerja', 'Kantor Cabang', 'Departemen',
+            'Unit Kerja', 'Kantor Cabang Utama', 'Kantor Cabang Pembantu', 'Departemen',
             'Departemen Satu Tingkat Dibawah Direksi', 'Fungsi'
         );
 
@@ -39,8 +39,8 @@ class DatabaseSeeder extends Seeder
             ['SELURUH SATUAN KERJA / DIVISI', 'ALL', 1], ['SATUAN KERJA TEKNOLOGI INFORMASI DAN LOGISTIK', 'STL', 1], ['SATUAN KERJA AUDIT INTERNAL', 'SAI', 1],
             ['SATUAN KERJA HUKUM DAN SUMBER DAYA MANUSIA', 'HSD', 1], ['SATUAN KERJA BISNIS DAN KOMUNIKASI', 'SBK', 1], ['SATUAN KERJA ANALISA RISIKO DAN PEMBIAYAAN', 'ARP', 1],
             ['SATUAN KERJA KEUANGAN DAN PERENCANAAN PERUSAHAAN', 'SKA', 1],
-            ['DEPARTEMEN MANAJEMEN RISIKO', 'MRK', 4], ['DIVISI OPERASI', 'DOP', 1],
-            ['DEPARTEMEN KEPATUHAN', 'KEP', 4], ['CABANG JABODETABEK', null, 1], ['CABANG NON JABODETABEK', null, 1],
+            ['DEPARTEMEN MANAJEMEN RISIKO', 'MRK', 5], ['DIVISI OPERASI', 'DOP', 1],
+            ['DEPARTEMEN KEPATUHAN', 'KEP', 5], ['CABANG JABODETABEK', null, 1], ['CABANG NON JABODETABEK', null, 1],
         ];
 
         for ($i = 0; $i < count($satuanKerja); $i++) {
@@ -56,24 +56,24 @@ class DatabaseSeeder extends Seeder
             // Sluruh satuan kerja internal sktilog
             [1, 'SELURUH DEPARTEMEN SKTILOG', 'STL-ALL', 1],
             // SKTILOG
-            [2, 'LOGISTIK', 'LOG', 3], [2, 'SISTEM PROSEDUR & PENDUKUNG OPERASI', 'PPO', 3], [2, 'DEPARTEMEN TEKNOLOGI INFORMASI', 'DTI', 3],
+            [2, 'LOGISTIK', 'LOG', 4], [2, 'SISTEM PROSEDUR & PENDUKUNG OPERASI', 'PPO', 4], [2, 'DEPARTEMEN TEKNOLOGI INFORMASI', 'DTI', 4],
             // [2, 'SEKURITI TEKNOLOGI INFORMASI', 3], [2, 'OPERASI TEKNOLOGI INFORMASI', 5],
 
             // SKAI
             // [3, 'INTERNAL', 3], [3, 'TEKNOLOGI INFORMASI', 3], 
-            [3, 'DEPARTEMEN KANTOR PUSAT & ANTI FRAUD', 'AKP', 3],
-            [3, 'DEPARTEMEN AUDIT KANTOR CABANG DAN INTERNAL CONTROL', 'AKC', 3],
+            [3, 'DEPARTEMEN KANTOR PUSAT & ANTI FRAUD', 'AKP', 4],
+            [3, 'DEPARTEMEN AUDIT KANTOR CABANG DAN INTERNAL CONTROL', 'AKC', 4],
 
             // SKHSDM
-            [4, 'DEPARTEMEN SUMBER DAYA MANUSIA', 'SDM', 3], [4, 'DEPARTEMEN HUKUM', 'DHK', 3],
+            [4, 'DEPARTEMEN SUMBER DAYA MANUSIA', 'SDM', 4], [4, 'DEPARTEMEN HUKUM', 'DHK', 4],
             // [4, 'BUDAYA PERUSAHAAN DAN LAYANAN', 5],
 
             // SBK
-            [5, 'DEPARTEMEN KOMUNIKASI DAN KESEKRETARIATAN PERUSAHAAN', 'KSP', 3], [5, 'DEPARTEMEN PENDUKUNG BISNIS', 'PDS', 3], [5, 'DEPARTEMEN PENGEMBANGAN BISNIS', 'PBS', 3],
+            [5, 'DEPARTEMEN KOMUNIKASI DAN KESEKRETARIATAN PERUSAHAAN', 'KSP', 4], [5, 'DEPARTEMEN PENDUKUNG BISNIS', 'PDS', 4], [5, 'DEPARTEMEN PENGEMBANGAN BISNIS', 'PBS', 4],
             // [5, 'RISET PEMASARAN DAN PENDAYAGUNAAN DATA WAREHOUSE', 5], [5, 'PENGEMBANGAN DAN PEMBINAAN JARINGAN CABANG', 3],
 
             // SKARP
-            [6, 'FUNGSI PENDUKUNG ARP', 'RPD', 5],
+            [6, 'FUNGSI PENDUKUNG ARP', 'RPD', 6],
             // [6, 'ANALISA PEMBIAYAAN', 5], [6, 'PENILAIAN AGUNAN', 5],
 
             // SKBRK
@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
             // [7, 'PERENCANAAN PERUSAHAAN', 5], [7, 'PORTOFOLIO MANAJEMEN', 5], [7, 'BIDANG KEUANGAN PERUSAHAAN', 3],
 
             // DIVISI OPERASI
-            [9, 'DEPARTEMEN SENTRA OPERASI PERBANKAN', 'DSO', 3], [9, 'DEPARTEMEN ADMINISTRASI PEMBIAYAAN', 'ADP', 3], //[9, 'PENYELAMATAN PEMBIAYAAN', 5]
+            [9, 'DEPARTEMEN SENTRA OPERASI PERBANKAN', 'DSO', 4], [9, 'DEPARTEMEN ADMINISTRASI PEMBIAYAAN', 'ADP', 4], //[9, 'PENYELAMATAN PEMBIAYAAN', 5]
         );
 
         for ($i = 0; $i < count($departemen); $i++) {
@@ -214,7 +214,9 @@ class DatabaseSeeder extends Seeder
             ['basuki', 6, 5, 9], ['cahaya', 7, 5, 9], ['bulan', 8, 5, 9],
             ['purnama', 12, 5, 9], ['sabit', 15, 5, 9], ['padli', 6, 5, 10],
             ['tito', 7, 5, 10], ['karnavian', 8, 5, 10], ['agus', 12, 5, 10],
-            ['subiyanto', 15, 5, 10]
+            ['subiyanto', 15, 5, 10], ['andi', 6, 8, null], ['yoshi', 8, 8, null],
+            ['noya', 11, 8, null], ['samsul', 6, 10, null], ['arif', 8, 10, null],
+            ['ilham', 11, 10, null]
         );
 
         for ($i = 0; $i < count($user); $i++) {
