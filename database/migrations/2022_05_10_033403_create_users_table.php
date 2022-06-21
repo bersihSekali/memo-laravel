@@ -19,10 +19,12 @@ class CreateUsersTable extends Migration
 
             $table->unsignedBigInteger('satuan_kerja')->nullable();
             $table->unsignedBigInteger('departemen')->nullable();
+            $table->unsignedBigInteger('bidang_cabang')->nullable();
             $table->unsignedBigInteger('level')->nullable();
 
             $table->foreign('satuan_kerja')->references('id')->on('satuan_kerjas');
             $table->foreign('departemen')->references('id')->on('departemens');
+            $table->foreign('bidang_cabang')->references('id')->on('bidang_cabangs');
             $table->foreign('level')->references('id')->on('levels');
 
             $table->string('password');

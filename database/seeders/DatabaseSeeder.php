@@ -196,27 +196,35 @@ class DatabaseSeeder extends Seeder
 
         $user = array(
             // [name, level, satuan kerja, departemen]
-            ['klin', 1, null, null], ['agusta', 2, 2, null], ['hernandi', 6, 2, 2],
-            ['james', 7, 2, 2], ['yudhi', 8, 2, 2], ['nur', 12, 2, 2],
-            ['bayu', 15, 2, 2], ['dathu', 6, 2, 3], ['riyadi', 7, 2, 3],
-            ['kertayuga', 8, 2, 3], ['eka', 12, 2, 3], ['prasetyo', 15, 2, 3],
-            ['ariefin', 6, 2, 4], ['thor', 7, 2, 4], ['hatta', 8, 2, 4],
-            ['febriansyah', 12, 2, 4], ['efrinaldi', 15, 2, 4], ['alzuhri', 2, 3, null],
-            ['trinandani', 6, 3, 5], ['ragnarok', 7, 3, 5], ['githa', 8, 3, 5],
-            ['refina', 12, 3, 5], ['muhammad', 15, 3, 5], ['afta', 6, 3, 5],
-            ['buddin', 7, 3, 5], ['komo', 8, 3, 5], ['arsyad', 12, 3, 5],
-            ['risky', 15, 3, 5], ['septiawan', 6, 3, 6], ['john', 7, 3, 6],
-            ['lennon', 8, 3, 6], ['fredy', 12, 3, 6], ['mercury', 15, 3, 6],
-            ['venus', 2, 4, null], ['bumi', 6, 4, 7], ['mars', 7, 4, 7],
-            ['jupiter', 8, 4, 7], ['saturn', 12, 4, 7], ['uranus', 15, 4, 7],
-            ['neptunus', 6, 4, 8], ['pluto', 7, 4, 8], ['alda', 8, 4, 8],
-            ['tri', 12, 4, 8], ['risma', 15, 4, 8], ['maharini', 2, 5, null],
-            ['basuki', 6, 5, 9], ['cahaya', 7, 5, 9], ['bulan', 8, 5, 9],
-            ['purnama', 12, 5, 9], ['sabit', 15, 5, 9], ['padli', 6, 5, 10],
-            ['tito', 7, 5, 10], ['karnavian', 8, 5, 10], ['agus', 12, 5, 10],
-            ['subiyanto', 15, 5, 10], ['andi', 6, 8, null], ['yoshi', 8, 8, null],
-            ['noya', 11, 8, null], ['samsul', 6, 10, null], ['arif', 8, 10, null],
-            ['ilham', 11, 10, null]
+            ['klin', 1, null, null, null], ['agusta', 2, 2, null, null], ['hernandi', 6, 2, 2, null],
+            ['james', 7, 2, 2, null], ['yudhi', 8, 2, 2, null], ['nur', 12, 2, 2, null],
+            ['bayu', 15, 2, 2, null], ['dathu', 6, 2, 3, null], ['riyadi', 7, 2, 3, null],
+            ['kertayuga', 8, 2, 3, null], ['eka', 12, 2, 3, null], ['prasetyo', 15, 2, 3, null],
+            ['ariefin', 6, 2, 4, null], ['thor', 7, 2, 4, null], ['hatta', 8, 2, 4, null],
+            ['febriansyah', 12, 2, 4, null], ['efrinaldi', 15, 2, 4, null], ['alzuhri', 2, 3, null, null],
+            ['trinandani', 6, 3, 5, null], ['ragnarok', 7, 3, 5, null], ['githa', 8, 3, 5, null],
+            ['refina', 12, 3, 5, null], ['muhammad', 15, 3, 5, null], ['afta', 6, 3, 5, null],
+            ['buddin', 7, 3, 5, null], ['komo', 8, 3, 5, null], ['arsyad', 12, 3, 5, null],
+            ['risky', 15, 3, 5, null], ['septiawan', 6, 3, 6, null], ['john', 7, 3, 6, null],
+            ['lennon', 8, 3, 6, null], ['fredy', 12, 3, 6, null], ['mercury', 15, 3, 6, null],
+            ['venus', 2, 4, null, null], ['bumi', 6, 4, 7, null], ['mars', 7, 4, 7, null],
+            ['jupiter', 8, 4, 7, null], ['saturn', 12, 4, 7, null], ['uranus', 15, 4, 7, null],
+            ['neptunus', 6, 4, 8, null], ['pluto', 7, 4, 8, null], ['alda', 8, 4, 8, null],
+            ['tri', 12, 4, 8, null], ['risma', 15, 4, 8, null], ['maharini', 2, 5, null, null],
+            ['basuki', 6, 5, 9, null], ['cahaya', 7, 5, 9, null], ['bulan', 8, 5, 9, null],
+            ['purnama', 12, 5, 9, null], ['sabit', 15, 5, 9, null], ['padli', 6, 5, 10, null],
+            ['tito', 7, 5, 10, null], ['karnavian', 8, 5, 10, null], ['agus', 12, 5, 10, null],
+            ['subiyanto', 15, 5, 10, null], ['andi', 6, 8, null, null], ['yoshi', 8, 8, null, null],
+            ['noya', 11, 8, null, null], ['samsul', 6, 10, null, null], ['arif', 8, 10, null, null],
+            ['ilham', 11, 10, null, null],
+
+            ['burhan', 5, null, null, 1],
+            ['jarot', 10, null, null, 2],
+            ['adit', 13, null, null, 3],
+            ['sopo', 5, null, null, 10],
+            ['jarwo', 10, null, null, 11],
+            ['bambang', 13, null, null, 12],
+
         );
 
         for ($i = 0; $i < count($user); $i++) {
@@ -225,6 +233,7 @@ class DatabaseSeeder extends Seeder
                 'level' => $user[$i][1],
                 'satuan_kerja' => $user[$i][2],
                 'departemen' => $user[$i][3],
+                'bidang_cabang' => $user[$i][4],
                 'password' => hash::make('Syariah@1'),
                 'email' => 'yudhinurb@gmail.com'
             ];
