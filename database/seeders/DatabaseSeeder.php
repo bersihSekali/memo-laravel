@@ -116,60 +116,69 @@ class DatabaseSeeder extends Seeder
         $bidang = array(
             // [Unit layanan, Cabang Utama]
             // Jatinegara
-            ['CABANG JATINEGARA', 2], ['KCP DEPOK', 2], ['KCP CILEUNGSI', 2], ['ULS CIMANGGIS', 2],
-            ['ULS MARGONDA DEPOK', 2], ['ULS BOGOR', 2], ['ULS GUDANG PELURU', 2],
-            ['ULS PONDOK INDAH', 2], ['ULS PASAR MINGGU', 2],
+            ['CABANG JATINEGARA', 2], ['KCP DEPOK', 2], ['KCP CILEUNGSI', 2],
+            // ['ULS CIMANGGIS', 2],
+            // ['ULS MARGONDA DEPOK', 2], ['ULS BOGOR', 2], ['ULS GUDANG PELURU', 2],
+            // ['ULS PONDOK INDAH', 2], ['ULS PASAR MINGGU', 2],
 
             // Mangga dua
             ['CABANG MANGGA DUA', 3], ['KCP CILEDUG', 3], ['KCP CIPUTAT', 3],
-            ['ULS TANAH ABANG', 3], ['ULS BINTARO UTAMA', 3], ['ULS MELAWAI', 3],
-            ['ULS KEMANG MANSION', 3],
+            // ['ULS TANAH ABANG', 3], ['ULS BINTARO UTAMA', 3], ['ULS MELAWAI', 3],
+            // ['ULS KEMANG MANSION', 3],
 
             // Samanhudi
             ['CABANG SAMANHUDI', 4], ['KCP KENARI', 4], ['KCP PASAR ANYAR TANGERANG', 4],
-            ['ULS TANGERANG', 4], ['ULS PLUTI KENCANA', 4], ['ULS PURI INDAH', 4],
-            ['ULS BINTARO', 4],
+            // ['ULS TANGERANG', 4], ['ULS PLUTI KENCANA', 4], ['ULS PURI INDAH', 4],
+            // ['ULS BINTARO', 4],
 
             // Sunter
             ['CABANG SUNTER', 5], ['KCP KELAPA GADING', 5], ['KCP BEKASI', 5],
             ['KCP PASAR KRANJI BEKASI', 5], ['KCP PONDOK GEDE', 5], ['KCP CIKARANG SELATAN', 5],
-            ['ULS JUANDA BEKASI', 5], ['ULS TANJUNG PRIOK', 5],
+            // ['ULS JUANDA BEKASI', 5], ['ULS TANJUNG PRIOK', 5],
 
             // Banda aceh
-            ['CABANG BANDA ACEH', 6], ['KCP LHOKSEUMAWE', 6], ['ULS BIREUEN', 6],
+            ['CABANG BANDA ACEH', 6], ['KCP LHOKSEUMAWE', 6],
+            // , ['ULS BIREUEN', 6],
 
             // Bandung
-            ['CABANG BANDUNG', 7], ['ULS BUAH BATU', 7], ['ULS KOTA BARU PARAHYANGAN', 7],
-            ['ULS DAGO', 7],
+            ['CABANG BANDUNG', 7],
+            // ['ULS BUAH BATU', 7], ['ULS KOTA BARU PARAHYANGAN', 7],
+            // ['ULS DAGO', 7],
 
             // Lampung
             ['CABANG LAMPUNG', 8],
 
             // Medan
-            ['CABANG MEDAN', 9], ['ULS SETIABUDI MEDAN', 9],
+            ['CABANG MEDAN', 9],
+            // ['ULS SETIABUDI MEDAN', 9],
 
             // Palembang
-            ['CABANG PALEMBANG', 10], ['ULS SUDIRMAN PALEMBANG', 10], ['ULS AHMAD RIVAI', 10],
+            ['CABANG PALEMBANG', 10],
+            // ['ULS SUDIRMAN PALEMBANG', 10], ['ULS AHMAD RIVAI', 10],
 
             // Panakkukang
             ['CABANG PANAKKUKANG', 11],
 
             // Semarang
-            ['CABANG SEMARANG', 12], ['ULS PEMUDA', 12], ['ULS KUDUS', 12], ['ULS MAJAPAHIT', 12],
+            ['CABANG SEMARANG', 12],
+            // ['ULS PEMUDA', 12], ['ULS KUDUS', 12], ['ULS MAJAPAHIT', 12],
 
             // Solo
-            ['CABANG SOLO', 13], ['ULS SLAMET TIYADI', 13], ['ULS SINGOSAREN', 13], ['ULS SRAGEN', 13],
+            ['CABANG SOLO', 13],
+            // ['ULS SLAMET TIYADI', 13], ['ULS SINGOSAREN', 13], ['ULS SRAGEN', 13],
 
             // Surabaya
             ['CABANG SURABAYA', 14], ['KCP MALANG', 14], ['KCP KEDIRI', 14],
-            ['KCP PASURUAN', 14], ['KCP BANYUWANGI', 14], ['ULS VETERAN', 14],
-            ['ULS DARMO', 14], ['ULS GEDANGAN', 14], ['ULS SEPANJANG', 14],
-            ['ULS PERAK BARAT', 14], ['ULS SIDOARJO', 14], ['ULS PONDOK CHANDRA', 14],
-            ['ULS PANDAAN', 14], ['ULS GRESIK', 14], ['ULS MOJOKERTO', 14],
-            ['ULS KAPAS KRAMPUNG', 14], ['ULS KEPANJEN', 14], ['ULS TAMAN PONDOK INDAH', 14],
+            ['KCP PASURUAN', 14], ['KCP BANYUWANGI', 14],
+            // ['ULS VETERAN', 14],
+            // ['ULS DARMO', 14], ['ULS GEDANGAN', 14], ['ULS SEPANJANG', 14],
+            // ['ULS PERAK BARAT', 14], ['ULS SIDOARJO', 14], ['ULS PONDOK CHANDRA', 14],
+            // ['ULS PANDAAN', 14], ['ULS GRESIK', 14], ['ULS MOJOKERTO', 14],
+            // ['ULS KAPAS KRAMPUNG', 14], ['ULS KEPANJEN', 14], ['ULS TAMAN PONDOK INDAH', 14],
 
             // Yogyakarta
-            ['CABANG YOGYAKARTA', 15], ['ULS SUDIRMAN YOGYAKARTA', 15]
+            ['CABANG YOGYAKARTA', 15],
+            // ['ULS SUDIRMAN YOGYAKARTA', 15]
         );
 
         for ($i = 0; $i < count($bidang); $i++) {
@@ -196,34 +205,36 @@ class DatabaseSeeder extends Seeder
 
         $user = array(
             // [name, level, satuan kerja, departemen]
-            ['klin', 1, null, null, null], ['agusta', 2, 2, null, null], ['hernandi', 6, 2, 2, null],
-            ['james', 7, 2, 2, null], ['yudhi', 8, 2, 2, null], ['nur', 12, 2, 2, null],
-            ['bayu', 15, 2, 2, null], ['dathu', 6, 2, 3, null], ['riyadi', 7, 2, 3, null],
-            ['kertayuga', 8, 2, 3, null], ['eka', 12, 2, 3, null], ['prasetyo', 15, 2, 3, null],
-            ['ariefin', 6, 2, 4, null], ['thor', 7, 2, 4, null], ['hatta', 8, 2, 4, null],
-            ['febriansyah', 12, 2, 4, null], ['efrinaldi', 15, 2, 4, null], ['alzuhri', 2, 3, null, null],
-            ['trinandani', 6, 3, 5, null], ['ragnarok', 7, 3, 5, null], ['githa', 8, 3, 5, null],
-            ['refina', 12, 3, 5, null], ['muhammad', 15, 3, 5, null], ['afta', 6, 3, 5, null],
-            ['buddin', 7, 3, 5, null], ['komo', 8, 3, 5, null], ['arsyad', 12, 3, 5, null],
-            ['risky', 15, 3, 5, null], ['septiawan', 6, 3, 6, null], ['john', 7, 3, 6, null],
-            ['lennon', 8, 3, 6, null], ['fredy', 12, 3, 6, null], ['mercury', 15, 3, 6, null],
-            ['venus', 2, 4, null, null], ['bumi', 6, 4, 7, null], ['mars', 7, 4, 7, null],
-            ['jupiter', 8, 4, 7, null], ['saturn', 12, 4, 7, null], ['uranus', 15, 4, 7, null],
-            ['neptunus', 6, 4, 8, null], ['pluto', 7, 4, 8, null], ['alda', 8, 4, 8, null],
-            ['tri', 12, 4, 8, null], ['risma', 15, 4, 8, null], ['maharini', 2, 5, null, null],
-            ['basuki', 6, 5, 9, null], ['cahaya', 7, 5, 9, null], ['bulan', 8, 5, 9, null],
-            ['purnama', 12, 5, 9, null], ['sabit', 15, 5, 9, null], ['padli', 6, 5, 10, null],
-            ['tito', 7, 5, 10, null], ['karnavian', 8, 5, 10, null], ['agus', 12, 5, 10, null],
-            ['subiyanto', 15, 5, 10, null], ['andi', 6, 8, null, null], ['yoshi', 8, 8, null, null],
-            ['noya', 11, 8, null, null], ['samsul', 6, 10, null, null], ['arif', 8, 10, null, null],
-            ['ilham', 11, 10, null, null],
+            ['klin', 1, null, null, null, null], ['agusta', 2, 2, null, null, null], ['hernandi', 6, 2, 2, null, null],
+            ['james', 7, 2, 2, null, null], ['yudhi', 8, 2, 2, null, null], ['nur', 12, 2, 2, null, null],
+            ['bayu', 15, 2, 2, null, null], ['dathu', 6, 2, 3, null, null], ['riyadi', 7, 2, 3, null, null],
+            ['kertayuga', 8, 2, 3, null, null], ['eka', 12, 2, 3, null, null], ['prasetyo', 15, 2, 3, null, null],
+            ['ariefin', 6, 2, 4, null, null], ['thor', 7, 2, 4, null, null], ['hatta', 8, 2, 4, null, null],
+            ['febriansyah', 12, 2, 4, null, null], ['efrinaldi', 15, 2, 4, null, null], ['alzuhri', 2, 3, null, null, null],
+            ['trinandani', 6, 3, 5, null, null], ['ragnarok', 7, 3, 5, null, null], ['githa', 8, 3, 5, null, null],
+            ['refina', 12, 3, 5, null, null], ['muhammad', 15, 3, 5, null, null], ['afta', 6, 3, 5, null, null],
+            ['buddin', 7, 3, 5, null, null], ['komo', 8, 3, 5, null, null], ['arsyad', 12, 3, 5, null, null],
+            ['risky', 15, 3, 5, null, null], ['septiawan', 6, 3, 6, null, null], ['john', 7, 3, 6, null, null],
+            ['lennon', 8, 3, 6, null, null], ['fredy', 12, 3, 6, null, null], ['mercury', 15, 3, 6, null, null],
+            ['venus', 2, 4, null, null, null], ['bumi', 6, 4, 7, null, null], ['mars', 7, 4, 7, null, null],
+            ['jupiter', 8, 4, 7, null, null], ['saturn', 12, 4, 7, null, null], ['uranus', 15, 4, 7, null, null],
+            ['neptunus', 6, 4, 8, null, null], ['pluto', 7, 4, 8, null, null], ['alda', 8, 4, 8, null, null],
+            ['tri', 12, 4, 8, null, null], ['risma', 15, 4, 8, null, null], ['maharini', 2, 5, null, null, null],
+            ['basuki', 6, 5, 9, null, null], ['cahaya', 7, 5, 9, null, null], ['bulan', 8, 5, 9, null, null],
+            ['purnama', 12, 5, 9, null, null], ['sabit', 15, 5, 9, null, null], ['padli', 6, 5, 10, null, null],
+            ['tito', 7, 5, 10, null, null], ['karnavian', 8, 5, 10, null, null], ['agus', 12, 5, 10, null, null],
+            ['subiyanto', 15, 5, 10, null, null], ['andi', 6, 8, null, null, null], ['yoshi', 8, 8, null, null, null],
+            ['noya', 11, 8, null, null, null], ['samsul', 6, 10, null, null, null], ['arif', 8, 10, null, null, null],
+            ['ilham', 11, 10, null, null, null],
 
-            ['burhan', 5, null, null, 1],
-            ['jarot', 10, null, null, 2],
-            ['adit', 13, null, null, 3],
-            ['sopo', 5, null, null, 10],
-            ['jarwo', 10, null, null, 11],
-            ['bambang', 13, null, null, 12],
+            ['burhan', 5, 11, null, 2, null],
+            ['jarot', 9, 11, null, 2, null],
+            ['adit', 10, 11, null, 2, 2],
+            ['denis', 12, 11, null, 2, 2],
+            ['sopo', 5, 11, null, 3, null],
+            ['jarwo', 9, 11, null, 3, null],
+            ['bambang', 10, 11, null, 3, 5],
+            ['adel', 12, 11, null, 3, 5],
 
         );
 
@@ -233,7 +244,8 @@ class DatabaseSeeder extends Seeder
                 'level' => $user[$i][1],
                 'satuan_kerja' => $user[$i][2],
                 'departemen' => $user[$i][3],
-                'bidang_cabang' => $user[$i][4],
+                'cabang' => $user[$i][4],
+                'bidang_cabang' => $user[$i][5],
                 'password' => hash::make('Syariah@1'),
                 'email' => 'yudhinurb@gmail.com'
             ];

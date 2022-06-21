@@ -14,13 +14,15 @@
             @if (($users->level >= 2) && ($users->level <= 4)) <div class="mt-1 small text-muted text-end">KEPALA {{ $users->satuanKerja->satuan_kerja }}
           </div>
 
+          @elseif ($users->bidang_cabang)
+          <div class="mt-1 small text-muted text-end">{{ strtoupper($users->bidangCabangTable['bidang']) }}</div>
+
           {{-- Kepala Cabang, Kepala Departemen, Senior Officer, Kepala Bidang, Kepala Bagian, Kepala Operasi Cabang, Officer --}}
-          @elseif (($users->level >= 5) && ($users->level <= 11)) <div class="mt-1 small text-muted text-end">{{ strtoupper($users->satuanKerja->satuan_kerja) }} | {{ strtoupper($users->departemenTable->departemen) }}
+          @elseif (($users->level >= 5) && ($users->level <= 11)) <div class="mt-1 small text-muted text-end">{{ strtoupper($users->satuanKerja['satuan_kerja']) }} | {{ strtoupper($users->departemenTable['departemen']) }}
       </div>
 
       @elseif ($users->level == 1)
       <div class="mt-1 small text-muted text-end">Admin</div>
-
 
       @else
       <div class="mt-1 small text-muted text-end">{{ strtoupper($users->satuanKerja->satuan_kerja) }} | {{ strtoupper($users->departemenTable->departemen) }}</div>
@@ -266,49 +268,49 @@
 </div>
 
 @if ($users->level == 1)
-  {{-- Modal Aktivitas --}}
-  <div class="modal fade" id="modalAktivitas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Log Aktivitas</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form action="/aktivitas" method="post">
-          @csrf
-          {{ method_field('POST') }}
-          
-          <div class="modal-body">
-            {{-- Input user --}}
+{{-- Modal Aktivitas --}}
+<div class="modal fade" id="modalAktivitas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Log Aktivitas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/aktivitas" method="post">
+        @csrf
+        {{ method_field('POST') }}
+
+        <div class="modal-body">
+          {{-- Input user --}}
+          <div class="col-sm-6 mb-3 form-user">
+            <label for="user_id" class="form-label">User</label>
+            <select class="form-select mb-3" aria-label=".form-select-sm example" name="user_id" id="user_id" style="width: 100%" required>
+              <option value=""> ----- </option>
+              <option value="all">Semua User</option>
+              @foreach ($userLogs as $item)
+              @if ($item->level == 1)
+              @continue
+              @endif
+              <option value="{{ $item->id }}">{{ strtoupper($item->name) }} - {{ strtoupper($item->satuanKerja['inisial']) }} {{ strtoupper($item->departemenTable['inisial']) }}</option>
+              @endforeach
+            </select>
             <div class="col-sm-6 mb-3 form-user">
-              <label for="user_id" class="form-label">User</label>
-              <select class="form-select mb-3" aria-label=".form-select-sm example" name="user_id" id="user_id" style="width: 100%" required>
-                <option value=""> ----- </option>
-                <option value="all">Semua User</option>
-                  @foreach ($userLogs as $item)
-                    @if ($item->level == 1)
-                        @continue
-                    @endif
-                    <option value="{{ $item->id }}">{{ strtoupper($item->name) }} - {{ strtoupper($item->satuanKerja['inisial']) }} {{ strtoupper($item->departemenTable['inisial']) }}</option>
-                  @endforeach
-              </select>
-              <div class="col-sm-6 mb-3 form-user">
-                <label for="tanggalmulai" class="form-label">Tanggal Mulai</label>
-                <input type="date" class="form-control" id="tanggalmulai" name="tanggalmulai" required>
-              </div>
-              <div class="col-sm-6 mb-3 form-user">
-                <label for="tanggalakhir" class="form-label">Tanggal Akhir</label>
-                <input type="date" class="form-control" id="tanggalakhir" name="tanggalakhir" required>
-              </div>
+              <label for="tanggalmulai" class="form-label">Tanggal Mulai</label>
+              <input type="date" class="form-control" id="tanggalmulai" name="tanggalmulai" required>
+            </div>
+            <div class="col-sm-6 mb-3 form-user">
+              <label for="tanggalakhir" class="form-label">Tanggal Akhir</label>
+              <input type="date" class="form-control" id="tanggalakhir" name="tanggalakhir" required>
             </div>
           </div>
+        </div>
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-            <button type="submit" class="btn btn-primary">Lanjut</button>
-          </div>
-        </form>
-      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Lanjut</button>
+        </div>
+      </form>
     </div>
   </div>
+</div>
 @endif

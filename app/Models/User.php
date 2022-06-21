@@ -41,6 +41,16 @@ class User extends Authenticatable
         return $this->belongsTo(Level::class, 'level');
     }
 
+    public function cabangTable()
+    {
+        return $this->belongsTo(Cabang::class, 'cabang');
+    }
+
+    public function bidangCabangTable()
+    {
+        return $this->belongsTo(BidangCabang::class, 'bidang_cabang');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
