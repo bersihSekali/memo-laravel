@@ -19,55 +19,41 @@ use Illuminate\Support\Facades\Storage;
 
 class NomorSuratController extends Controller
 {
+    public function __construct()
+    {
+        $this->coba = new SuratKeluar;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $id = Auth::id();
         $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
             ->where('id', $id)->first();
         if ($user->levelTable->golongan == 7) {
-            $mails = SuratKeluar::select('id', 'created_at', 'otor1_by', 'otor2_by', 'otor1_by_pengganti', 'otor2_by_pengganti', 'created_by', 'tanggal_otor2', 'tanggal_otor1', 'nomor_surat', 'perihal', 'satuan_kerja_asal', 'departemen_asal', 'lampiran', 'pesan_tolak', 'internal', 'status', 'deleted_by', 'deleted_at')
-                ->where('satuan_kerja_asal', $user->satuan_kerja)
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->latest()->get();
         } elseif ($user->levelTable->golongan <= 6) {
-            $mails = SuratKeluar::select('id', 'created_at', 'otor1_by', 'otor2_by', 'otor1_by_pengganti', 'otor2_by_pengganti', 'created_by', 'tanggal_otor2', 'tanggal_otor1', 'nomor_surat', 'perihal', 'satuan_kerja_asal', 'departemen_asal', 'lampiran', 'pesan_tolak', 'internal', 'status', 'deleted_by', 'deleted_at')
-                ->where('departemen_asal', $user->departemen)
+            $mails = SuratKeluar::where('departemen_asal', $user->departemen)
                 ->latest()->get();
         }
 
-        // Untuk view column tujuan
-        $memoIdSatker = SuratKeluar::select('id', 'satuan_kerja_asal')
-            ->where('satuan_kerja_asal', $user->satuan_kerja)
-            ->pluck('id')->toArray();
-        $tujuanDepartemen = TujuanDepartemen::select('id', 'memo_id', 'departemen_id')
-            ->whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-        $tujuanSatker = TujuanSatuanKerja::select('id', 'memo_id', 'satuan_kerja_id')
-            ->whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-        $tujuanCabangs = TujuanKantorCabang::select('id', 'memo_id', 'cabang_id', 'bidang_id')
-            ->whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-
-        //untuk cek all flag
-        $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
-        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
-        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
+        //untuk cek all flag, Untuk view column tujuan 
+        $tujuan = $this->coba->columnTujuan($user);
 
         $datas = [
             'title' => 'Daftar Semua Surat',
             'datas' => $mails,
-            'tujuanDepartemens' => $tujuanDepartemen,
-            'tujuanSatkers' => $tujuanSatker,
-            'tujuanCabangs' => $tujuanCabangs,
-            'users' => $user,
-            'seluruhDepartemenMemoIds' => $seluruhDepartemenMemoId,
-            'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
-            'seluruhCabangMemoIds' => $seluruhCabangMemoId,
+            'tujuanDepartemens' => $tujuan['tujuanDepartemen'],
+            'tujuanSatkers' => $tujuan['tujuanSatker'],
+            'tujuanCabangs' => $tujuan['tujuanCabangs'],
+            'seluruhDepartemenMemoIds' => $tujuan['seluruhDepartemenMemoId'],
+            'seluruhSatkerMemoIds' => $tujuan['seluruhSatkerMemoId'],
+            'seluruhCabangMemoIds' => $tujuan['seluruhCabangMemoId'],
+            'users' => $user
         ];
 
         return view('nomorSurat.index', $datas);
@@ -94,8 +80,6 @@ class NomorSuratController extends Controller
         $cabang = Cabang::select('id', 'cabang')
             ->where('id', '!=', 1)->get();
         $bidangCabang = BidangCabang::select('id', 'bidang', 'cabang_id')->get();
-        // $kantorCabang = Departemen::where('grup', 2)->get();
-        // $departemenDireksi = Departemen::select('id', 'satuan_kerja', 'inisial', 'grup')->where('grup', 4)->get();
 
         $datas = [
             'title' => 'Tambah Surat',
@@ -103,7 +87,6 @@ class NomorSuratController extends Controller
             'departemens' => $departemen,
             'cabangs' => $cabang,
             'bidangCabangs' => $bidangCabang,
-            // 'departemenDireksis' => $departemenDireksi,
             'users' => $user,
             'penggantis' => $pengganti
         ];
@@ -128,7 +111,9 @@ class NomorSuratController extends Controller
             ->where('satuan_kerja', '!=', 'CABANG JABODETABEK')
             ->where('satuan_kerja', '!=', 'CABANG NON JABODETABEK')->get();
         $departemenInternal = Departemen::select('id', 'satuan_kerja')->where('satuan_kerja', 2)->get();
-        $cabang = Cabang::select('id')->get();
+        $cabang = Cabang::select('id')
+            ->where('id', '!=', 1)
+            ->get();
         $bidangCabang = BidangCabang::select('id')->get();
 
         $validated = $request->validate([
@@ -223,6 +208,11 @@ class NomorSuratController extends Controller
                     'all_flag' => 1
                 ]);
             }
+            TujuanKantorCabang::create([
+                'memo_id' => $idSurat,
+                'cabang_id' => 1,
+                'all_flag' => 1
+            ]);
             foreach ($bidangCabang as $item) {
                 TujuanKantorCabang::create([
                     'memo_id' => $idSurat,
@@ -270,6 +260,11 @@ class NomorSuratController extends Controller
                     'all_flag' => 1
                 ]);
             }
+            TujuanSatuanKerja::create([
+                'memo_id' => $idSurat,
+                'satuan_kerja_id' => 1,
+                'all_flag' => 1
+            ]);
         } else {
             if ($tujuanUnitKerja != null)
                 foreach ($tujuanUnitKerja as $item) {

@@ -88,77 +88,17 @@ class SuratKeluar extends Model
     {
         // Officer, kepala bidang, kepala operasi cabang, kepala cabang pembantu golongan 5
         if ($user->levelTable->golongan == 5) {
-            $pengganti2 = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('otor2_by_pengganti', $user->id)
+            // sebagai otor2 pengganti
+            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
                 ->where('status', 1)
                 ->latest();
-            $pengganti1 = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('otor1_by_pengganti', $user->id)
+            // sebagai otor1 pengganti
+            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
                 ->where('status', 2)
                 ->union($pengganti2)
                 ->latest();
-            $mails = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('satuan_kerja_asal', $user->satuan_kerja)
+            // sebagai otor 2
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('departemen_asal', $user->departemen)
                 ->where('internal', 1)
                 ->where('status', 1)
@@ -168,107 +108,25 @@ class SuratKeluar extends Model
 
         // Kepala departemen, golongan 6
         elseif (($user->levelTable->golongan == 6) && ($user->level == 6)) {
-            $pengganti2 = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('otor2_by_pengganti', $user->id)
+            // sebagai otor2 pengganti
+            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
                 ->where('otor2_by', null)
                 ->where('status', 1)
                 ->latest();
-            $pengganti1 = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('otor1_by_pengganti', $user->id)
+            // sebagai otor1 pengganti
+            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
                 ->where('otor1_by', null)
                 ->where('status', 2)
                 ->union($pengganti2)
                 ->latest();
             // antar departemen sebagai otor1_by
-            $antarDepartemen = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('departemen_asal', $user->departemen)
+            $antarDepartemen = SuratKeluar::where('departemen_asal', $user->departemen)
                 ->where('internal', 1)
                 ->where('status', 2)
                 ->union($pengganti1)
                 ->latest();
             // antar satuan kerja sebagai otor2_by
-            $mails = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('satuan_kerja_asal', $user->satuan_kerja)
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('internal', 2)
                 ->where('status', 1)
                 ->union($antarDepartemen)
@@ -277,134 +135,32 @@ class SuratKeluar extends Model
 
         // Senior officer
         elseif (($user->levelTable->golongan == 6) && ($user->level == 7)) {
-            $pengganti2 = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('otor2_by_pengganti', $user->id)
+            // sebagai otor2 pengganti
+            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
                 ->where('otor2_by', null)
                 ->where('status', 1)
                 ->latest();
-            $pengganti1 = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('otor1_by_pengganti', $user->id)
+            // sebagai otor1 pengganti
+            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
                 ->where('otor1_by', null)
                 ->where('status', 2)
                 ->union($pengganti2)
                 ->latest();
             // antar departemen sebagai otor2_by
-            $antarDepartemen2 = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('departemen_asal', $user->departemen)
+            $antarDepartemen2 = SuratKeluar::where('departemen_asal', $user->departemen)
                 ->where('internal', 1)
                 ->where('status', 1)
                 ->union($pengganti1)
                 ->latest();
             // antar departemen sebagai otor1_by
-            $antarDepartemen1 = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('departemen_asal', $user->departemen)
+            $antarDepartemen1 = SuratKeluar::where('departemen_asal', $user->departemen)
                 ->where('internal', 1)
                 ->where('status', 2)
                 ->where('otor2_by', '!=', $user->id)
                 ->union($antarDepartemen2)
                 ->latest();
             // antar satuan kerja sebagai otor2_by
-            $mails = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('status', 1)
                 ->where('internal', 2)
                 ->union($antarDepartemen1)
@@ -413,59 +169,52 @@ class SuratKeluar extends Model
 
         // Kepala satuan kerja
         elseif ($user->levelTable->golongan == 7) {
-            $pengganti = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('otor1_by_pengganti', $user->id)
+            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
+                ->where('otor2_by', null)
+                ->where('status', 1)
+                ->latest();
+            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
                 ->where('otor1_by', null)
                 ->where('status', 2)
                 ->latest();
             // Antar satuan kerja sebagai otor1_by
-            $mails = SuratKeluar::select(
-                'id',
-                'created_at',
-                'otor1_by',
-                'otor2_by',
-                'otor1_by_pengganti',
-                'otor2_by_pengganti',
-                'created_by',
-                'tanggal_otor2',
-                'tanggal_otor1',
-                'nomor_surat',
-                'perihal',
-                'satuan_kerja_asal',
-                'departemen_asal',
-                'lampiran',
-                'pesan_tolak',
-                'internal',
-                'status',
-                'deleted_by',
-                'deleted_at'
-            )
-                ->where('satuan_kerja_asal', $user->satuan_kerja)
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('internal', 2)
                 ->where('status', 2)
-                ->union($pengganti)
+                ->union($pengganti1)
                 ->latest()->get();
         }
         return $mails;
+    }
+
+    public function columnTujuan($user)
+    {
+        $memoIdSatker = SuratKeluar::select('id', 'satuan_kerja_asal')
+            ->where('satuan_kerja_asal', $user->satuan_kerja)
+            ->pluck('id')->toArray();
+        $tujuanDepartemen = TujuanDepartemen::select('id', 'memo_id', 'departemen_id', 'all_flag')
+            ->whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+        $tujuanSatker = TujuanSatuanKerja::select('id', 'memo_id', 'satuan_kerja_id', 'all_flag')
+            ->whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+        $tujuanCabangs = TujuanKantorCabang::select('id', 'memo_id', 'cabang_id', 'bidang_id', 'all_flag')
+            ->whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+
+        $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
+        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
+        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
+
+        $tujuan = [
+            'tujuanDepartemen' => $tujuanDepartemen,
+            'tujuanSatker' => $tujuanSatker,
+            'tujuanCabangs' => $tujuanCabangs,
+            'seluruhDepartemenMemoId' => $seluruhDepartemenMemoId,
+            'seluruhSatkerMemoId' => $seluruhSatkerMemoId,
+            'seluruhCabangMemoId' => $seluruhCabangMemoId
+        ];
+
+        return $tujuan;
     }
 }

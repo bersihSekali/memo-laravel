@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container">
-    
     <div class="row g-2 align-items-center mb-2">
         <div class="col">
             <h2 class="page-title">
@@ -50,6 +49,7 @@
                                 @if ($data->departemen_asal == '')
                                 {{ $data->satuanKerjaAsal['inisial'] }}
                                 @else
+                        
                                 {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
                                 @endif
                             </td>
@@ -126,65 +126,65 @@
                                 @if (in_array($data->id, $seluruhCabangMemoIds))
                                 : SELURUH KANTOR LAYANAN <br>
                                 @else
-                                @foreach ($tujuanCabangs as $item)
-                                @if ($item->memo_id == $data->id)
-                                @if ($item->all_flag == true && $item->cabang_id != null)
-                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
-                                @endif
-                                @endif
-                                @endforeach
+                                    @foreach ($tujuanCabangs as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            @if ($item->all_flag == true && $item->cabang_id != null)
+                                            : SELURUH {{ $item->tujuanCabang->cabang }} <br>
+                                            @endif
+                                        @endif
+                                    @endforeach
                                 @endif
 
                                 {{-- Tujuan kantor bidang --}}
                                 @foreach ($tujuanCabangs as $item)
-                                @if ($item->memo_id == $data->id)
-                                @if ($item->bidang_id != null && $item->all_flag!=true)
-                                : {{ $item->tujuanBidang->bidang }} <br>
-                                @endif
-                                @endif
+                                    @if ($item->memo_id == $data->id)
+                                        @if ($item->bidang_id != null && $item->all_flag!=true)
+                                        : {{ $item->tujuanBidang->bidang }} <br>
+                                        @endif
+                                    @endif
                                 @endforeach
 
                                 {{-- Tujuan departemen --}}
                                 @if (in_array($data->id, $seluruhDepartemenMemoIds))
-                                : SELURUH DEPARTEMEN SKTILOG <br>
+                                    : SELURUH DEPARTEMEN SKTILOG <br>
                                 @else
-                                @foreach ($tujuanDepartemens as $item)
-                                @if ($item->memo_id == $data->id)
-                                : {{ $item->tujuanDepartemen->departemen }} <br>
-                                @endif
-                                @endforeach
+                                    @foreach ($tujuanDepartemens as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            : {{ $item->tujuanDepartemen->departemen }} <br>
+                                        @endif
+                                    @endforeach
                                 @endif
 
                                 {{-- Tujuan satuan kerja --}}
                                 @if (in_array($data->id, $seluruhSatkerMemoIds))
-                                : SELURUH UNIT KERJA KANTOR PUSAT <br>
+                                    : SELURUH UNIT KERJA KANTOR PUSAT <br>
                                 @else
-                                @foreach ($tujuanSatkers as $item)
-                                @if ($item->memo_id == $data->id)
-                                : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
-                                @endif
-                                @endforeach
+                                    @foreach ($tujuanSatkers as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                                        @endif
+                                    @endforeach
                                 @endif
                             </td>
                         </tr>
 
                         <tr>
                             @if ($data->otor2_by_pengganti && $data->otor1_by_pengganti)
-                            <td width="20%">Pejabat Pengganti</td>
-                            <td>
-                                : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2 <br>
-                                {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
-                            </td>
+                                <td width="20%">Pejabat Pengganti</td>
+                                <td>
+                                    : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2 <br>
+                                    {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
+                                </td>
                             @elseif ($data->otor2_by_pengganti && !$data->otor1_by_pengganti)
-                            <td width="20%">Pejabat Pengganti</td>
-                            <td>
-                                : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2
-                            </td>
+                                <td width="20%">Pejabat Pengganti</td>
+                                <td>
+                                    : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2
+                                </td>
                             @elseif (!$data->otor2_by_pengganti && $data->otor1_by_pengganti)
-                            <td width="20%">Pejabat Pengganti</td>
-                            <td>
-                                : {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
-                            </td>
+                                <td width="20%">Pejabat Pengganti</td>
+                                <td>
+                                    : {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
+                                </td>
                             @endif
                         </tr>
 
