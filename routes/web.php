@@ -18,8 +18,7 @@ use App\Http\Controllers\ForwardController;
 use App\Http\Controllers\OtorisasiBaruController;
 use App\Http\Controllers\TujuanBidangCabangController;
 use App\Http\Controllers\TujuanDepartemenController;
-use App\Models\TujuanBidangCabang;
-
+use App\Http\Controllers\ForwardCabangController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -72,6 +71,9 @@ Route::resource('forward', ForwardController::class)->middleware('auth');
 Route::post('tujuanDepartemen/selesaikan/{id}', [TujuanDepartemenController::class, 'selesaikan'])->middleware('auth');
 Route::resource('tujuanDepartemen', TujuanDepartemenController::class)->middleware('auth');
 
+Route::post('forwardCabang/selesaikan/{id}', [ForwardCabangController::class, 'selesaikan'])->middleware('auth');
+Route::post('forwardCabang/baca/{id}', [ForwardCabangController::class, 'baca'])->middleware('auth');
+Route::resource('forwardCabang', ForwardCabangController::class)->middleware('auth');
 
 Route::post('cabang/selesaikan/{id}', [TujuanBidangCabangController::class, 'selesaikan'])->middleware('auth');
 Route::resource('cabang', TujuanBidangCabangController::class)->middleware('auth');

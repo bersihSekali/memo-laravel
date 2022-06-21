@@ -240,14 +240,25 @@
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
             </div>
             @else
+            @if ($users->level == 5)
+            <div class="modal-footer">
+                <a class="btn btn-secondary" href="/cabang/{{$data['memo_id']}}/edit">Terusan</a>
+            </div>
+            @else
             <div class="modal-footer">
                 <a class="btn btn-secondary" href="/forward/{{$data['memo_id']}}/edit">Terusan</a>
             </div>
             @endif
+            @endif
+
             @elseif ($users->levelTable['golongan'] < 6) <div class="modal-footer">
                 @if (!$data->status_baca)
                 <div class="modal-footer">
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
+                </div>
+                @elseif ($users->level == 10)
+                <div class="modal-footer">
+                    <a class="btn btn-secondary" href="/forwardCabang/{{$data['memo_id']}}/edit">Terusan</a>
                 </div>
                 @endif
         </div>
@@ -279,7 +290,7 @@
                     <button class="btn btn-primary" type="submit">Yakin</button>
                 </div>
             </form>
-            @elseif ($users->levelTable['golongan'] == 6)
+            @elseif ($users->level == 5)
             <form action="/cabang/selesaikan/{{$data['memo_id']}}" method="post">
                 @csrf
                 {{method_field('POST')}}
@@ -295,6 +306,20 @@
             </form>
             @elseif ($users->levelTable['golongan'] == 6)
             <form action="/forward/selesaikan/{{$data['memo_id']}}" method="post">
+                @csrf
+                {{method_field('POST')}}
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <p>Apakah anda yakin ingin menandai pesan sebagai telah dibaca?</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" type="submit">Yakin</button>
+                </div>
+            </form>
+            @elseif ($users->level == 10)
+            <form action="/forwardCabang/selesaikan/{{$data['memo_id']}}" method="post">
                 @csrf
                 {{method_field('POST')}}
                 <div class="modal-body">

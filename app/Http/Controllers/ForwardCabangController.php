@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Departemen;
-use App\Models\TujuanDepartemen;
+use App\Models\TujuanBidangCabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\SuratKeluar;
-use App\Models\TujuanSatuanKerja;
+use App\Models\Forward;
 
-class TujuanDepartemenController extends Controller
+class ForwardCabangController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -46,10 +45,10 @@ class TujuanDepartemenController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TujuanDepartemen  $tujuanDepartemen
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(TujuanDepartemen $tujuanDepartemen)
+    public function show($id)
     {
         //
     }
@@ -57,7 +56,7 @@ class TujuanDepartemenController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TujuanDepartemen  $tujuanDepartemen
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -66,22 +65,24 @@ class TujuanDepartemenController extends Controller
         $user = User::find($idUser);
 
         //cek memo
-        $tujuanSatker = TujuanSatuanKerja::where('satuan_kerja_id', $user['satuan_kerja'])->pluck('memo_id')->toArray();
-        if (!in_array($id, $tujuanSatker)) {
+        $tujuanBidang = TujuanBidangCabang::where('bidang_id', $user['bidang_cabang'])->pluck('memo_id')->toArray();
+        if (!in_array($id, $tujuanBidang)) {
             dd('tidak ditemukan');
         }
-        $tujuanSatkerById = TujuanSatuanKerja::where('satuan_kerja_id', $user['satuan_kerja'])->where('memo_id', $id)->first();
-        if (!$tujuanSatkerById->status_baca) {
+        $tujuanBidangById = TujuanBidangCabang::where('bidang_id', $user['bidang_cabang'])->where('memo_id', $id)->first();
+        if (!$tujuanBidangById->status_baca) {
             dd('surat belum dibaca');
         }
 
-        $edit = SuratKeluar::where('id', $id)->first();
+        $edit = SuratKeluar::with('tujuanBidangCabang')
+            ->join('tujuan_bidang_cabangs', 'surat_keluars.id', '=', 'tujuan_bidang_cabangs.memo_id')
+            ->where('surat_keluars.id', $id)->first();
 
-        $forwarded = TujuanDepartemen::where('memo_id', $edit['id'])->get();
-        $forwarded_id = TujuanDepartemen::where('memo_id', $edit['id'])->pluck('departemen_id')->toArray();
-        $forward = Departemen::where('satuan_kerja', $user->satuan_kerja)->get();
+        $forwarded = Forward::where('memo_id', $edit['id'])->get();
+        $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
+        $forward = User::where('bidang_cabang', $user->bidang_cabang)->get();
 
-        return view('tujuanDepartemen/edit', [
+        return view('forward/edit', [
             'title' => 'Teruskan ke Departemen',
             'users' => $user,
             'edits' => $edit,
@@ -95,7 +96,7 @@ class TujuanDepartemenController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TujuanDepartemen  $tujuanDepartemen
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -104,18 +105,17 @@ class TujuanDepartemenController extends Controller
         $user = User::find($idUser);
 
         $validated = $request->validate([
-            'departemen_tujuan' => 'required',
+            'user_tujuan' => 'required',
             'pesan_disposisi' => 'required',
         ]);
 
-        //tujuan departemen
-        foreach ($validated['departemen_tujuan'] as $item) {
-            TujuanDepartemen::create([
+        //isi tabel forward
+        foreach ($validated['user_tujuan'] as $item) {
+            Forward::create([
                 'memo_id' => $id,
-                'departemen_id' => $item,
+                'user_id' => $item,
                 'pesan_disposisi' => $validated['pesan_disposisi'],
-                'tanggal_disposisi' => date('Y-m-d'),
-                'all_flag' => 0
+                'tanggal_disposisi' => date('Y-m-d')
             ]);
         };
 
@@ -127,25 +127,25 @@ class TujuanDepartemenController extends Controller
         $idUser = Auth::id();
         $user = User::find($idUser);
 
-        //update tujuan satuan kerja
-        $tujuanSatkerId = TujuanSatuanKerja::where('satuan_kerja_id', $user->satuan_kerja)
+        //update tujuan departemen
+        $tujuanBidangId = TujuanBidangCabang::where('bidang_id', $user->bidang_cabang)
             ->where('memo_id', $id)->first();
 
-        $datas = TujuanSatuanKerja::find($tujuanSatkerId->id);
+        $datas = TujuanBidangCabang::find($tujuanBidangId->id);
         $update[] = $datas['tanggal_baca'] = date('Y-m-d');
         $datas['status_baca'] = 1;
         $datas->update($update);
 
-        return redirect('tujuanDepartemen/' . $id . '/edit')->with('success', 'Surat telah ditandai sebagai telah dibaca, silakan masukkan disposisi jika diperlukan.');
+        return redirect('forwardCabang/' . $id . '/edit')->with('success', 'Surat telah ditandai sebagai telah dibaca, silakan teruskan memo jika diperlukan.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TujuanDepartemen  $tujuanDepartemen
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TujuanDepartemen $tujuanDepartemen)
+    public function destroy($id)
     {
         //
     }

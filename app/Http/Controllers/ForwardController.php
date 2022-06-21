@@ -75,7 +75,9 @@ class ForwardController extends Controller
             dd('surat belum dibaca');
         }
 
-        $edit = SuratKeluar::where('id', $id)->first();
+        $edit = SuratKeluar::with('tujuanDepartemen')
+            ->join('tujuan_departemens', 'surat_keluars.id', '=', 'tujuan_departemens.memo_id')
+            ->where('surat_keluars.id', $id)->first();
 
         $forwarded = Forward::where('memo_id', $edit['id'])->get();
         $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
