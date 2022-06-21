@@ -280,6 +280,20 @@
                 </div>
             </form>
             @elseif ($users->levelTable['golongan'] == 6)
+            <form action="/cabang/selesaikan/{{$data['memo_id']}}" method="post">
+                @csrf
+                {{method_field('POST')}}
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <p>Apakah anda yakin ingin menandai pesan sebagai telah dibaca?</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" type="submit">Yakin</button>
+                </div>
+            </form>
+            @elseif ($users->levelTable['golongan'] == 6)
             <form action="/forward/selesaikan/{{$data['memo_id']}}" method="post">
                 @csrf
                 {{method_field('POST')}}

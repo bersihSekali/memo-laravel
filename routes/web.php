@@ -16,7 +16,9 @@ use App\Http\Controllers\CheckerDisposisiController;
 use App\Http\Controllers\GenerateLaporanController;
 use App\Http\Controllers\ForwardController;
 use App\Http\Controllers\OtorisasiBaruController;
+use App\Http\Controllers\TujuanBidangCabangController;
 use App\Http\Controllers\TujuanDepartemenController;
+use App\Models\TujuanBidangCabang;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +71,10 @@ Route::post('forward/baca/{id}', [ForwardController::class, 'baca'])->middleware
 Route::resource('forward', ForwardController::class)->middleware('auth');
 Route::post('tujuanDepartemen/selesaikan/{id}', [TujuanDepartemenController::class, 'selesaikan'])->middleware('auth');
 Route::resource('tujuanDepartemen', TujuanDepartemenController::class)->middleware('auth');
+
+
+Route::post('cabang/selesaikan/{id}', [TujuanBidangCabangController::class, 'selesaikan'])->middleware('auth');
+Route::resource('cabang', TujuanBidangCabangController::class)->middleware('auth');
 
 Route::resource('checker', CheckerController::class)->middleware('auth');
 Route::resource('checkerDisposisi', CheckerDisposisiController::class)->middleware('auth');
