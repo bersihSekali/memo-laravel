@@ -159,13 +159,13 @@ class SuratKeluarController extends Controller
                     'all_flag' => 1
                 ]);
             }
-            foreach ($bidangCabang as $item) {
-                TujuanKantorCabang::create([
-                    'memo_id' => $idSurat,
-                    'bidang_id' => $item->id,
-                    'all_flag' => 1
-                ]);
-            }
+            // foreach ($bidangCabang as $item) {
+            //     TujuanKantorCabang::create([
+            //         'memo_id' => $idSurat,
+            //         'bidang_id' => $item->id,
+            //         'all_flag' => 1
+            //     ]);
+            // }
         }
 
         if (count($cabangBesar) != 0) {
@@ -175,14 +175,14 @@ class SuratKeluarController extends Controller
                     'cabang_id' => $item,
                     'all_flag' => 1
                 ]);
-                $bidangLoop = BidangCabang::where('cabang_id', $item)->get();
-                foreach ($bidangLoop as $item_bidang) {
-                    TujuanKantorCabang::create([
-                        'memo_id' => $idSurat,
-                        'bidang_id' => $item_bidang->id,
-                        'all_flag' => 1
-                    ]);
-                }
+                // $bidangLoop = BidangCabang::where('cabang_id', $item)->get();
+                // foreach ($bidangLoop as $item_bidang) {
+                //     TujuanKantorCabang::create([
+                //         'memo_id' => $idSurat,
+                //         'bidang_id' => $item_bidang->id,
+                //         'all_flag' => 1
+                //     ]);
+                // }
             }
         }
 

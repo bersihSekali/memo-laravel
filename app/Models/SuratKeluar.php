@@ -79,6 +79,11 @@ class SuratKeluar extends Model
         return $this->belongsTo(TujuanSatuanKerja::class);
     }
 
+    public function tujuanKantorCabang()
+    {
+        return $this->belongsTo(TujuanKantorCabang::class);
+    }
+
     public function forward()
     {
         return $this->belongsTo(Forward::class);
@@ -103,6 +108,33 @@ class SuratKeluar extends Model
                 ->where('internal', 1)
                 ->where('status', 1)
                 ->union($pengganti1)
+                ->latest()->get();
+        }
+
+        //kepala cabang
+        elseif (($user->levelTable->golongan == 6) && ($user->level == 5)) {
+            // sebagai otor2 pengganti
+            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
+                ->where('otor2_by', null)
+                ->where('status', 1)
+                ->latest();
+            // sebagai otor1 pengganti
+            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
+                ->where('otor1_by', null)
+                ->where('status', 2)
+                ->union($pengganti2)
+                ->latest();
+            // antar departemen sebagai otor1_by
+            $antarDepartemen = SuratKeluar::where('departemen_asal', $user->departemen)
+                ->where('internal', 1)
+                ->where('status', 2)
+                ->union($pengganti1)
+                ->latest();
+            // antar satuan kerja sebagai otor2_by
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->where('internal', 2)
+                ->where('status', 1)
+                ->union($antarDepartemen)
                 ->latest()->get();
         }
 
@@ -132,6 +164,7 @@ class SuratKeluar extends Model
                 ->union($antarDepartemen)
                 ->latest()->get();
         }
+
 
         // Senior officer
         elseif (($user->levelTable->golongan == 6) && ($user->level == 7)) {

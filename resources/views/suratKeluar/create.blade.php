@@ -69,13 +69,13 @@
                                     {{ $cabang->cabang }}
                                 </option>
 
-                                @foreach ($bidangCabangs as $bidang)
+                                <!-- @foreach ($bidangCabangs as $bidang)
                                 @if ($bidang->cabang_id == $cabang->id)
                                 <option class="opsi_kantor_bidang bidang-{{ $cabang->id }}" value="{{ $bidang->id }}">-
                                     {{ $bidang->bidang }}
                                 </option>
                                 @endif
-                                @endforeach
+                                @endforeach -->
                                 @endforeach
                             </select>
                         </div>

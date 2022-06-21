@@ -14,8 +14,8 @@
             @if (($users->level >= 2) && ($users->level <= 4)) <div class="mt-1 small text-muted text-end">KEPALA {{ $users->satuanKerja->satuan_kerja }}
           </div>
 
-          @elseif ($users->bidang_cabang)
-          <div class="mt-1 small text-muted text-end">{{ strtoupper($users->bidangCabangTable['bidang']) }}</div>
+          @elseif (($users->cabang) && ($users->level == 5))
+          <div class="mt-1 small text-muted text-end">KEPALA CABANG {{ strtoupper($users->cabangTable['cabang']) }}</div>
 
           {{-- Kepala Cabang, Kepala Departemen, Senior Officer, Kepala Bidang, Kepala Bagian, Kepala Operasi Cabang, Officer --}}
           @elseif (($users->level >= 5) && ($users->level <= 11)) <div class="mt-1 small text-muted text-end">{{ strtoupper($users->satuanKerja['satuan_kerja']) }} | {{ strtoupper($users->departemenTable['departemen']) }}

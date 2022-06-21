@@ -24,7 +24,7 @@
                                 <th scope="col">No.</th>
                                 <th scope="col">Asal</th>
                                 <th scope="col">Perihal</th>
-                                @if($users->levelTable['golongan'] <= 6) <th scope="col">Pesan Disposisi</th>
+                                @if(($users->levelTable['golongan'] <= 6) && ($users->level != 5)) <th scope="col">Pesan Disposisi</th>
                                     @endif
                                     <th scope="col">Status</th>
                         </tr>
@@ -63,7 +63,10 @@
                                 @endif
                             </td>
                             <td class="align-top">{{$data['perihal']}}</td>
+                            @if($users->level ==5)
+                            @else
                             <td class="align-top">{{$data['pesan_disposisi']}}</td>
+                            @endif
                             @if($data['status_baca'] == 1)
                             <td><span class="badge bg-success me-1"></span>Selesai</td>
                             @else
