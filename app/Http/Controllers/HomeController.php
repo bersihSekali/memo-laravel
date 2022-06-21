@@ -56,9 +56,15 @@ class HomeController extends Controller
                     ->where('departemen_id', $user['departemen'])->where('status', 3)->whereYear('tanggal_otor1', date("Y"))->latest('tujuan_departemens.created_at')->get();
             }
         } elseif ($user->levelTable['golongan'] <= 5) {
-            $data = SuratKeluar::with('forward')
-                ->join('forwards', 'surat_keluars.id', '=', 'forwards.memo_id')
-                ->where('user_id', $id)->where('status', 3)->whereYear('tanggal_otor1', date("Y"))->latest('forwards.created_at')->get();
+            if ($user->level == 10) {
+                $data = SuratKeluar::with('tujuanBidangCabang')
+                    ->join('tujuan_bidang_cabangs', 'surat_keluars.id', '=', 'tujuan_bidang_cabangs.memo_id')
+                    ->where('bidang_id', $user['bidang_cabang'])->where('status', 3)->latest('tujuan_bidang_cabangs.created_at')->get();
+            } else {
+                $data = SuratKeluar::with('forward')
+                    ->join('forwards', 'surat_keluars.id', '=', 'forwards.memo_id')
+                    ->where('user_id', $id)->where('status', 3)->whereYear('tanggal_otor1', date("Y"))->latest('forwards.created_at')->get();
+            }
         }
 
         if ($user->levelTable['golongan'] < 99) {
