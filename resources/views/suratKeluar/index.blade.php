@@ -127,15 +127,15 @@
 
                                 {{-- Tujuan kantor cabang --}}
                                 @if (in_array($data->id, $seluruhCabangMemoIds))
-                                : SELURUH KANTOR LAYANAN <br>
+                                    : SELURUH KANTOR LAYANAN <br>
                                 @else
-                                @foreach ($tujuanCabangs as $item)
-                                @if ($item->memo_id == $data->id)
-                                @if ($item->all_flag == true && $item->cabang_id != null)
-                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
-                                @endif
-                                @endif
-                                @endforeach
+                                    @foreach ($tujuanCabangs as $item)
+                                        @if ($item->memo_id == $data->id)
+                                            @if ($item->all_flag == true && $item->cabang_id != null)
+                                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
+                                            @endif
+                                        @endif
+                                    @endforeach
                                 @endif
 
                                 {{-- Tujuan kantor bidang --}}
