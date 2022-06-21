@@ -82,7 +82,7 @@
 
             <tr>
               <td width="20%">Asal</td>
-              <td>: {{ $data->satuanKerjaAsal->inisial }} | {{ $data->departemenAsal->inisial }}</td>
+              <td>: {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}</td>
             </tr>
 
             <tr>
