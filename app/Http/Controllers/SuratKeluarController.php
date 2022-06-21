@@ -64,8 +64,11 @@ class SuratKeluarController extends Controller
         $pengganti = User::all();
 
         $departemen = Departemen::all();
-        $satuanKerja = SatuanKerja::all();
-        $cabang = Cabang::all();
+        $satuanKerja = SatuanKerja::where('id', '!=', 1)
+            ->where('satuan_kerja', '!=', 'CABANG JABODETABEK')
+            ->where('satuan_kerja', '!=', 'CABANG NON JABODETABEK')->get();
+        $cabang = Cabang::select('id', 'cabang')
+            ->where('id', '!=', 1)->get();
         $bidangCabang = BidangCabang::all();
         // $kantorCabang = Departemen::where('grup', 2)->get();
         $departemenDireksi = Departemen::where('grup', 4)->get();
