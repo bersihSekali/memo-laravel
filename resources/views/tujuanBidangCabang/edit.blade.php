@@ -25,7 +25,15 @@
                     <tr class="{{ ($edits['status'] == 3 ? 'table-bold' : 'table-light') }}" id="data">
                         <td class="align-top">{{date('Y-m-d', strtotime($edits['tanggal_otor1']))}}</td>
                         <td class="align-top">{{$edits->nomor_surat}}</td>
-                        <td class="align-top">{{$edits->satuanKerjaAsal['satuan_kerja']}}</td>
+                        <td class="align-top">
+                            @if ($edits->departemen_asal)
+                            {{$edits->satuanKerjaAsal['satuan_kerja']}} | {{$edits->departemenAsal['departemen']}}
+                            @elseif ($edits->cabang_asal)
+                            {{$edits->cabangAsal['cabang']}}
+                            @else
+                            {{$edits->satuanKerjaAsal['satuan_kerja']}}
+                            @endif
+                        </td>
                         <td class="align-top">{{$edits['perihal']}}</td>
                     </tr>
                 </tbody>

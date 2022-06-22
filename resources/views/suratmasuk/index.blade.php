@@ -38,6 +38,8 @@
                             <td class="align-top">
                                 @if ($data->departemen_asal)
                                 {{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}
+                                @elseif ($data->cabang_asal)
+                                {{$data->cabangAsal['cabang']}}
                                 @else
                                 {{$data->satuanKerjaAsal['satuan_kerja']}}
                                 @endif
@@ -58,6 +60,8 @@
                             <td class="align-top">
                                 @if ($data->departemen_asal)
                                 {{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}
+                                @elseif ($data->cabang_asal)
+                                {{$data->cabangAsal['cabang']}}
                                 @else
                                 {{$data->satuanKerjaAsal['satuan_kerja']}}
                                 @endif
@@ -149,11 +153,14 @@
 
                         <tr>
                             <td>Asal</td>
-                            @if($data->internal == 1)
+                            @if ($data->cabang_asal)
+                            <td>: {{$data->cabangAsal['cabang']}}</td>
+                            @elseif($data->internal == 1)
                             <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
                             @elseif($data->internal ==2)
                             <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }}</td>
                             @endif
+
                         </tr>
 
                         <tr>
