@@ -24,8 +24,13 @@ class SuratKeluarController extends Controller
     {
         $id = Auth::id();
         $user = User::where('id', $id)->first();
-        $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)->orWhere('cabang_asal', $user->cabang)
-            ->latest()->get();
+        if ($user->cabang) {
+            $mails = SuratKeluar::where('cabang_asal', $user->cabang)
+                ->latest()->get();
+        } elseif ($user->satuan_kerja) {
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->latest()->get();
+        }
 
         // Untuk view column tujuan
         $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)->orWhere('cabang_asal', $user->cabang)
@@ -154,11 +159,13 @@ class SuratKeluarController extends Controller
         // Seluruh tujuan kantor cabang
         if ($tujuanKantorCabang[0] == 'kantor_cabang') {
             foreach ($cabang as $item) {
-                TujuanKantorCabang::create([
-                    'memo_id' => $idSurat,
-                    'cabang_id' => $item->id,
-                    'all_flag' => 1
-                ]);
+                if ($item->cabang_id != $user->cabang) {
+                    TujuanKantorCabang::create([
+                        'memo_id' => $idSurat,
+                        'cabang_id' => $item->id,
+                        'all_flag' => 1
+                    ]);
+                }
             }
             // foreach ($bidangCabang as $item) {
             //     TujuanKantorCabang::create([
@@ -188,24 +195,26 @@ class SuratKeluarController extends Controller
         }
 
 
-        if (count($bidang) != 0) {
-            foreach ($bidang as $item) {
-                TujuanKantorCabang::create([
-                    'memo_id' => $idSurat,
-                    'bidang_id' => $item,
-                    'all_flag' => 0
-                ]);
-            }
-        }
+        // if (count($bidang) != 0) {
+        //     foreach ($bidang as $item) {
+        //         TujuanKantorCabang::create([
+        //             'memo_id' => $idSurat,
+        //             'bidang_id' => $item,
+        //             'all_flag' => 0
+        //         ]);
+        //     }
+        // }
 
         // Tujuan unit kerja
         if ($tujuanUnitKerja[0] == 'unit_kerja') {
             foreach ($satuanKerja as $item) {
-                TujuanSatuanKerja::create([
-                    'memo_id' => $idSurat,
-                    'satuan_kerja_id' => $item->id,
-                    'all_flag' => 1
-                ]);
+                if ($item->satuan_kerja != $user->satuan_kerja) {
+                    TujuanSatuanKerja::create([
+                        'memo_id' => $idSurat,
+                        'satuan_kerja_id' => $item->id,
+                        'all_flag' => 1
+                    ]);
+                }
             }
         } else {
             if ($tujuanUnitKerja != null)

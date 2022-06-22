@@ -42,6 +42,7 @@ class OtorisasiSuratController extends Controller
             'seluruhSatkerMemoIds' => $tujuan['seluruhSatkerMemoId'],
             'seluruhCabangMemoIds' => $tujuan['seluruhCabangMemoId']
         ];
+        // dd($user);
         return view('otorisasi.index', $datas);
     }
 
@@ -107,18 +108,8 @@ class OtorisasiSuratController extends Controller
         $update[] = $datas['tanggal_otor2'] = date("Y-m-d H:i:s");
 
         // Update otor_by 
-        if ($datas->otor2_by_pengganti) {
-            if ($datas->otor2_by_pengganti != $user->id) {
-                $datas->otor2_by_pengganti = null;
-                $datas['otor2_by'] = $user->id;
-            } else {
-                $datas['otor2_by'] = $user->id;
-            }
-        } else {
-            $datas['otor2_by'] = $user->id;
-        }
+        $datas['otor2_by'] = $user->id;
         array_push($update, $datas['otor2_by']);
-        array_push($update, $datas->otor2_by_pengganti);
 
         // Update status
         $datas['status'] = 2;
@@ -137,6 +128,8 @@ class OtorisasiSuratController extends Controller
         $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
         array_push($update, $datas['lampiran']);
 
+        // dd('stop');
+        // dd($update);
         $datas->update($update);
 
         if (!$datas) {
@@ -183,16 +176,7 @@ class OtorisasiSuratController extends Controller
         array_push($update, $datas['tanggal_otor2']);
 
         // Update otor_by 
-        if ($datas->otor2_by_pengganti) {
-            if ($datas->otor2_by_pengganti != $user->id) {
-                $datas->otor2_by_pengganti = null;
-                $datas['otor2_by'] = $user->id;
-            } else {
-                $datas['otor2_by'] = $user->id;
-            }
-        } else {
-            $datas['otor2_by'] = $user->id;
-        }
+        $datas['otor2_by'] = $user->id;
         array_push($update, $datas['otor2_by']);
 
         // Update lampiran
@@ -241,19 +225,9 @@ class OtorisasiSuratController extends Controller
         $datas['tanggal_otor1'] = date("Y-m-d H:i:s");
         array_push($update, $datas['tanggal_otor1']);
 
-        // Update otor_by 
-        if ($datas->otor1_by_pengganti) {
-            if ($datas->otor1_by_pengganti != $user->id) {
-                $datas->otor1_by_pengganti = null;
-                $datas['otor1_by'] = $user->id;
-            } else {
-                $datas['otor1_by'] = $user->id;
-            }
-        } else {
-            $datas['otor1_by'] = $user->id;
-        }
+        // Update otor_by
+        $datas['otor1_by'] = $user->id;
         array_push($update, $datas['otor1_by']);
-        array_push($update, $datas->otor1_by_pengganti);
 
 
         $tahun = date("Y", strtotime($datas['tanggal_otor1']));
@@ -353,17 +327,8 @@ class OtorisasiSuratController extends Controller
         $datas['tanggal_otor1'] = date("Y-m-d H:i:s");
         array_push($update, $datas['tanggal_otor1']);
 
-        // Update otor_by 
-        if ($datas->otor1_by_pengganti) {
-            if ($datas->otor1_by_pengganti != $user->id) {
-                $datas->otor1_by_pengganti = null;
-                $datas['otor1_by'] = $user->id;
-            } else {
-                $datas['otor1_by'] = $user->id;
-            }
-        } else {
-            $datas['otor1_by'] = $user->id;
-        }
+        // Update otor_by
+        $datas['otor1_by'] = $user->id;
         array_push($update, $datas['otor1_by']);
 
         // Update lampiran

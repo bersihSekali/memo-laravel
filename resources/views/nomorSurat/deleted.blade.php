@@ -9,14 +9,14 @@
             </h2>
         </div>
 
-        <div class="col-12 col-md-auto ms-auto d-print-none">
+        {{-- <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="btn-list">
                 <a href="/nomorSurat/hapusPermanen" class="btn btn-danger d-none d-sm-inline-block">
                     <i class="fas fa-dumpster-fire"></i>
                     Hapus Permanen
                 </a>
             </div>
-        </div>
+        </div> --}}
     </div>
 
     <div class="card shadow mb-4">
@@ -116,7 +116,7 @@
                                             @if (($item->all_flag == true) && ($item->bidang_id == null) && ($item->cabang_id ==1))
                                                 : SELURUH KANTOR CABANG
                                             @elseif ($item->cabang_id != null)
-                                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
+                                                : CABANG {{ $item->tujuanCabang['cabang'] }} <br>
                                             @endif
                                         @endif
                                     @endforeach
@@ -133,14 +133,14 @@
                                     {{-- Tujuan departemen --}}
                                     @foreach ($tujuanDepartemens as $item)
                                         @if ($item->memo_id == $data->id)
-                                            : {{ $item->tujuanDepartemen->departemen }} <br>
+                                            : {{ $item->tujuanDepartemen['departemen'] }} <br>
                                         @endif
                                     @endforeach
 
                                     {{-- Tujuan satuan kerja --}}
                                     @foreach ($tujuanSatkers as $item)
                                         @if ($item->memo_id == $data->id)
-                                            : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                                            : {{ $item->tujuanSatuanKerja['satuan_kerja'] }} <br>
                                         @endif
                                     @endforeach
                                 </td>
@@ -150,18 +150,18 @@
                                 @if ($data->otor2_by_pengganti && $data->otor1_by_pengganti)
                                   <td width="20%">Pejabat Pengganti</td>
                                   <td>
-                                    : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2 <br>
-                                    {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
+                                    : {{ strtoupper($data->otor2ByPengganti['name']) }} sebagai otor 2 <br>
+                                    {{ strtoupper($data->otor1ByPengganti['name']) }} sebagai otor 1
                                   </td>
                                 @elseif ($data->otor2_by_pengganti && !$data->otor1_by_pengganti)
                                   <td width="20%">Pejabat Pengganti</td>
                                   <td>
-                                    : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2
+                                    : {{ strtoupper($data->otor2ByPengganti['name']) }} sebagai otor 2
                                   </td>
                                 @elseif (!$data->otor2_by_pengganti && $data->otor1_by_pengganti)
                                   <td width="20%">Pejabat Pengganti</td>
                                   <td>
-                                    : {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
+                                    : {{ strtoupper($data->otor1ByPengganti['name']) }} sebagai otor 1
                                   </td>
                                 @endif
                               </tr>
@@ -250,7 +250,7 @@
                                 <td>Status Hapus</td>
                                 <td>: 
                                     <span class="badge bg-danger">
-                                        Dihapus oleh {{ strtoupper($data->deletedBy->name) }} at {{ date("Y-m-d", strtotime($data->deleted_at)) }}
+                                        Dihapus oleh {{ strtoupper($data->deletedBy['name']) }} at {{ date("Y-m-d", strtotime($data->deleted_at)) }}
                                     </span>
                                 </td>
                             </tr>

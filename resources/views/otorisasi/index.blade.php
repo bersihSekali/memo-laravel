@@ -116,7 +116,7 @@
                 @else
                 @foreach ($tujuanDepartemens as $item)
                 @if ($item->memo_id == $data->id)
-                : {{ $item->tujuanDepartemen->departemen }} <br>
+                : {{ $item->tujuanDepartemen->inisial }} <br>
                 @endif
                 @endforeach
                 @endif
@@ -127,7 +127,7 @@
                 @else
                 @foreach ($tujuanSatkers as $item)
                 @if ($item->memo_id == $data->id)
-                : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                : {{ $item->tujuanSatuanKerja->inisial }} <br>
                 @endif
                 @endforeach
                 @endif
@@ -260,162 +260,334 @@
 
       {{-- Kepala bidang, kepala operasi cabang, kepala cabang pembantu, officer --}}
       @if ($users->levelTable->golongan == 5)
-      {{-- Rejected Surat antar departemen sebagai otor2_by --}}
-      @if (($data->status == 1) && ($data->internal == 1))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menolak?</h3>
-        <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('DELETE')}}
+        {{-- Rejected Surat antar departemen sebagai otor2_by --}}
+        @if (($data->status == 1) && ($data->internal == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('DELETE')}}
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran">
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
 
-          <div class="my-3">
-            <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+        {{-- Sebagai pengganti otor2_by --}}
+        @elseif (($data->otor2_by_pengganti == $users->id) && ($data->otor2_by == null) && ($data->status == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak sebagai pengganti Tanda tangan dua?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('DELETE')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-danger w-100">Tolak</button>
-        </form>
-      </div>
+        {{-- Sebagai pengganti otor1_by --}}
+        @elseif (($data->otor1_by_pengganti == $users->id) && ($data->otor1_by == null) && ($data->status == 2))
+        <div class="modal-body text-center py-4">
+          <h3>Apakah yakin ingin menolak sebagai pengganti Tanda tangan satu?</h3>
+          <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
+          <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+          <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+            @csrf
+            {{method_field('POST')}}
+
+            <div class="mb-3">
+              <input class="form-control" type="file" id="lampiran" name="lampiran">
+            </div>
+
+            <div class="my-3">
+              <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+            </div>
+
+            <button type="submit" class="btn btn-danger w-100">Tolak</button>
+          </form>
+        </div>
       @endif
 
       {{-- Senior officer --}}
       @elseif (($users->levelTable->golongan == 6) && ($users->level == 7))
-      {{-- Rejected Surat antar departemen sebagai otor2_by --}}
-      @if (($data->status == 1) && ($data->internal == 1))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menolak?</h3>
-        <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('DELETE')}}
+        {{-- Rejected Surat antar departemen sebagai otor2_by --}}
+        @if (($data->status == 1) && ($data->internal == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('DELETE')}}
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran">
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
 
-          <div class="my-3">
-            <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+        {{-- Rejected surat antar departemen sebagai otor1_by --}}
+        @elseif (($data->status == 2) && ($data->internal == 1) && ($data->otor2_by != $users->id))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-danger w-100">Tolak</button>
-        </form>
-      </div>
+        {{-- Surat antar satuan kerja sebagai otor2_by --}}
+        @elseif (($data->status == 1) && ($data->internal != 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('DELETE')}}
 
-      {{-- Rejected surat antar departemen sebagai otor1_by --}}
-      @elseif (($data->status == 2) && ($data->internal == 1) && ($data->otor2_by != $users->id))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menolak?</h3>
-        <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('POST')}}
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran">
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
 
-          <div class="my-3">
-            <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+        {{-- Sebagai pengganti otor2_by --}}
+        @elseif (($data->otor2_by_pengganti == $users->id) && ($data->otor2_by == null) && ($data->status == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak sebagai pengganti Tanda tangan dua?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('DELETE')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
+        
+        {{-- Sebagai pengganti otor1_by --}}
+        @elseif (($data->otor1_by_pengganti == $users->id) && ($data->otor1_by == null) && ($data->status == 2))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak sebagai pengganti Tanda tangan satu?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
 
-          <button type="submit" class="btn btn-danger w-100">Tolak</button>
-        </form>
-      </div>
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
 
-      {{-- Surat antar satuan kerja sebagai otor2_by --}}
-      @elseif (($data->status == 1) && ($data->internal != 1))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menolak?</h3>
-        <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('DELETE')}}
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran">
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
-
-          <div class="my-3">
-            <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
-          </div>
-
-          <button type="submit" class="btn btn-danger w-100">Tolak</button>
-        </form>
-      </div>
-      @endif
+        @endif
 
       {{-- Kepala departemen --}}
       @elseif (($users->levelTable->golongan == 6) && ($users->level == 6))
-      {{-- Surat antar departemen sebagai otor1_by --}}
-      @if (($data->status == 2) && ($data->internal == 1))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menolak?</h3>
-        <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('POST')}}
+        {{-- Surat antar departemen sebagai otor1_by --}}
+        @if (($data->status == 2) && ($data->internal == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran">
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
 
-          <div class="my-3">
-            <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+        {{-- Surat antar satuan kerja sebagai otor2_by --}}
+        @elseif (($data->status == 1) && ($data->internal != 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('DELETE')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
+          </div>
+        
+        {{-- Sebagai pengganti otor2_by --}}
+        @elseif (($data->otor2_by_pengganti == $users->id) && ($data->otor2_by == null) && ($data->status == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak sebagai pengganti Tanda tangan dua?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('DELETE')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-danger w-100">Tolak</button>
-        </form>
-      </div>
+        {{-- Sebagai pengganti otor1_by --}}
+        @elseif (($data->otor1_by_pengganti == $users->id) && ($data->otor1_by == null) && ($data->status == 2))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak sebagai pengganti Tanda tangan satu?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
 
-      {{-- Surat antar satuan kerja sebagai otor2_by --}}
-      @elseif (($data->status == 1) && ($data->internal != 1))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menolak?</h3>
-        <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('DELETE')}}
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran">
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
-
-          <div class="my-3">
-            <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
-          </div>
-
-          <button type="submit" class="btn btn-danger w-100">Tolak</button>
-        </form>
-      </div>
-      @endif
+        @endif
 
       {{-- Kepala divisi, kepala satuan kerja, kepala unit kerja --}}
       @elseif ($users->levelTable->golongan == 7)
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menolak?</h3>
-        <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('POST')}}
+        {{-- Pengganti otor1_by --}}
+        @if (($data->otor1_by_pengganti == $users->id) && ($data->otor1_by == null) && ($data->status == 2))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak sebagai pengganti Tanda tangan satu?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran">
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
+        {{-- Sebagai pengganti otor2_by --}}
+        @elseif (($data->otor2_by_pengganti == $users->id) && ($data->otor2_by == null) && ($data->status == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak sebagai pengganti Tanda tangan dua?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('DELETE')}}
 
-          <div class="my-3">
-            <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
           </div>
+        @else
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menolak?</h3>
+            <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
 
-          <button type="submit" class="btn btn-danger w-100">Tolak</button>
-        </form>
-      </div>
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+              </div>
+
+              <div class="my-3">
+                <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100">Tolak</button>
+            </form>
+          </div>
+        @endif
       @endif
     </div>
   </div>
@@ -430,151 +602,291 @@
 
       {{-- Kepala bidang, kepala operasi cabang, kepala cabang pembantu, officer --}}
       @if ($users->levelTable->golongan == 5)
-      {{-- Surat antar departemen sebagai otor2_by --}}
-      @if (($data->status == 1) && ($data->internal == 1))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menyetujui?</h3>
-        <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('PUT')}}
+        {{-- Surat antar departemen sebagai otor2_by --}}
+        @if (($data->status == 1) && ($data->internal == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('PUT')}}
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-success w-100">Setujui</button>
-        </form>
-      </div>
+        {{-- Surat antar satuan kerja sebagai otor2_by --}}
+        @elseif (($data->status == 1) && ($data->internal != 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('PUT')}}
 
-      {{-- Surat antar satuan kerja sebagai otor2_by --}}
-      @elseif (($data->status == 1) && ($data->internal != 1))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menyetujui?</h3>
-        <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('PUT')}}
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
+          </div>
+        
+        {{-- Pengganti Otor2_by --}}
+        @elseif (($data->otor2_by_pengganti == $users->id) && ($data->otor2_by == null) && ($data->status == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui sebagai pengganti Tanda tangan dua?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('PUT')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-success w-100">Setujui</button>
-        </form>
-      </div>
-      @endif
+        {{-- Pengganti otor1_by --}}
+        @elseif (($data->otor1_by_pengganti == $users->id) && ($data->otor1_by == null) && ($data->status == 2))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui sebagai pengganti Tanda tangan satu?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
+          </div>
+        @endif
 
       {{-- Senior officer --}}
       @elseif (($users->levelTable->golongan == 6) && ($users->level == 7))
-      {{-- Surat antar departemen sebagai otor2_by --}}
-      @if (($data->status == 1) && ($data->internal == 1))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menyetujui?</h3>
-        <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('PUT')}}
+        {{-- Pengganti Otor2_by --}}
+        @if (($data->otor2_by_pengganti == $users->id) && ($data->otor2_by == null) && ($data->status == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui sebagai pengganti Tanda tangan dua?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('PUT')}}
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-success w-100">Setujui</button>
-        </form>
-      </div>
+        {{-- Pengganti otor1_by --}}
+        @elseif (($data->otor1_by_pengganti == $users->id) && ($data->otor1_by == null) && ($data->status == 2))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui sebagai pengganti Tanda tangan satu?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
 
-      {{-- Surat antar departemen sebagai otor1_by --}}
-      @elseif (($data->status == 2) && ($data->internal == 1) && ($data->otor2_by != $users->id))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menyetujui?</h3>
-        <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('POST')}}
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-success w-100">Setujui</button>
-        </form>
-      </div>
+        {{-- Surat antar departemen sebagai otor2_by --}}
+        @elseif (($data->status == 1) && ($data->internal == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('PUT')}}
 
-      {{-- Surat antar satuan kerja sebagai otor2_by --}}
-      @elseif (($data->status == 1) && ($data->internal != 1))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menyetujui?</h3>
-        <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('PUT')}}
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-success w-100">Setujui</button>
-        </form>
-      </div>
-      @endif
+        {{-- Surat antar departemen sebagai otor1_by --}}
+        @elseif (($data->status == 2) && ($data->internal == 1) && ($data->otor2_by != $users->id))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
+          </div>
+
+        {{-- Surat antar satuan kerja sebagai otor2_by --}}
+        @elseif (($data->status == 1) && ($data->internal != 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('PUT')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
+          </div>
+        @endif
 
       {{-- Kepala departemen --}}
       @elseif (($users->levelTable->golongan == 6) && ($users->level == 6))
-      {{-- Surat antar departemen sebagai otor1_by --}}
-      @if (($data->status == 2) && ($data->internal == 1))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menyetujui?</h3>
-        <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('POST')}}
+        {{-- Surat antar departemen sebagai otor1_by --}}
+        @if (($data->status == 2) && ($data->internal == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-success w-100">Setujui</button>
-        </form>
-      </div>
+        {{-- Surat antar satuan kerja sebagai otor2_by --}}
+        @elseif (($data->status == 1) && ($data->internal != 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('PUT')}}
 
-      {{-- Surat antar satuan kerja sebagai otor2_by --}}
-      @elseif (($data->status == 1) && ($data->internal != 1))
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menyetujui?</h3>
-        <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('PUT')}}
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-success w-100">Setujui</button>
-        </form>
-      </div>
-      @endif
+        {{-- Pengganti Otor2_by --}}
+        @elseif (($data->otor2_by_pengganti == $users->id) && ($data->otor2_by == null) && ($data->status == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui sebagai pengganti Tanda tangan dua?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('PUT')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
+          </div>
+
+        {{-- Pengganti otor1_by --}}
+        @elseif (($data->otor1_by_pengganti == $users->id) && ($data->otor1_by == null) && ($data->status == 2))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui sebagai pengganti Tanda tangan satu?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
+          </div>
+        @endif
 
       {{-- Kepala divisi, kepala satuan kerja, kepala unit kerja --}}
       @elseif ($users->levelTable->golongan == 7)
-      <div class="modal-body text-center py-4">
-        <h3>Apakah yakin ingin menyetujui?</h3>
-        <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
-        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
-        <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
-          @csrf
-          {{method_field('POST')}}
+        {{-- Pengganti otor1_by --}}
+        @if (($data->otor1_by_pengganti == $users->id) && ($data->otor1_by == null) && ($data->status == 2))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui sebagai pengganti Tanda tangan satu?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
 
-          <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
           </div>
+        {{-- Pengganti Otor2_by --}}
+        @elseif (($data->otor2_by_pengganti == $users->id) && ($data->otor2_by == null) && ($data->status == 1))
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui sebagai pengganti Tanda tangan dua?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+            <form action="/otorisasi/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('PUT')}}
 
-          <button type="submit" class="btn btn-success w-100">Setujui</button>
-        </form>
-      </div>
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
+          </div>
+        @else
+          <div class="modal-body text-center py-4">
+            <h3>Apakah yakin ingin menyetujui?</h3>
+            <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
+            <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By->name) }} telah menyetujui surat ini</span>
+            <form action="/otorisasi/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+              @csrf
+              {{method_field('POST')}}
+
+              <div class="mb-3">
+                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Setujui</button>
+            </form>
+          </div>
+        @endif
       @endif
     </div>
   </div>

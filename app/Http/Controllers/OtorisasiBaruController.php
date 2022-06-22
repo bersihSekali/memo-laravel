@@ -259,9 +259,9 @@ class OtorisasiBaruController extends Controller
             $q->where('golongan', 7);
         })->get();
 
-        foreach ($mailRecipients as $user) {
-            $user->notify(new MemoSentSatker($datas));
-        }
+        // foreach ($mailRecipients as $user) {
+        //     $user->notify(new MemoSentSatker($datas));
+        // }
 
         if (!$datas) {
             return redirect('/otor')->with('error', 'Update data failed!');
