@@ -25,7 +25,7 @@ class HomeController extends Controller
 
 
         //Surat Keluar
-        $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+        $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)->orWhere('cabang_asal', $user->cabang)
             ->whereYear('created_at', date("Y"))
             ->latest()->get();
         $countTotalKeluar = $mails->count();
