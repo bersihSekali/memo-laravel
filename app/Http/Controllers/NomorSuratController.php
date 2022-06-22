@@ -382,39 +382,24 @@ class NomorSuratController extends Controller
     public function listSuratHapus() // get Surat deleted only
     {
         $id = Auth::id();
-        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
-            ->where('id', $id)->first();
-        $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
-            ->get();
+        $user = User::where('id', $id)->first();
+        $userLog = User::get();
 
-        $mails = SuratKeluar::select('id', 'created_at', 'otor1_by', 'otor2_by', 'otor1_by_pengganti', 'otor2_by_pengganti', 'created_by', 'tanggal_otor2', 'tanggal_otor1', 'nomor_surat', 'perihal', 'satuan_kerja_asal', 'departemen_asal', 'lampiran', 'pesan_tolak', 'internal', 'status', 'deleted_by', 'deleted_at')
-            ->onlyTrashed()->get();
+        $mails = SuratKeluar::onlyTrashed()->get();
 
-        // Untuk view column tujuan
-        $memoIdSatker = SuratKeluar::select('id', 'satuan_kerja_asal')
-            ->pluck('id')->toArray();
-        $tujuanDepartemen = TujuanDepartemen::select('id', 'memo_id', 'departemen_id')
-            ->whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-        $tujuanSatker = TujuanSatuanKerja::select('id', 'memo_id', 'satuan_kerja_id')
-            ->whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-        $tujuanCabangs = TujuanKantorCabang::select('id', 'memo_id', 'cabang_id', 'bidang_id')
-            ->whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-
-        //untuk cek all flag
-        $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
-        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
-        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
+        //untuk cek all flag, Untuk view column tujuan 
+        $tujuan = $this->coba->columnTujuan($user);
 
         $datas = [
             'users' => $user,
             'datas' => $mails,
             'userLogs' => $userLog,
-            'seluruhDepartemenMemoIds' => $seluruhDepartemenMemoId,
-            'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
-            'seluruhCabangMemoIds' => $seluruhCabangMemoId
+            'tujuanDepartemens' => $tujuan['tujuanDepartemen'],
+            'tujuanSatkers' => $tujuan['tujuanSatker'],
+            'tujuanCabangs' => $tujuan['tujuanCabangs'],
+            'seluruhDepartemenMemoIds' => $tujuan['seluruhDepartemenMemoId'],
+            'seluruhSatkerMemoIds' => $tujuan['seluruhSatkerMemoId'],
+            'seluruhCabangMemoIds' => $tujuan['seluruhCabangMemoId']
         ];
 
         return view('nomorSurat.deleted', $datas);
@@ -448,7 +433,7 @@ class NomorSuratController extends Controller
         ];
         storeAudit($audit);
 
-        SuratKeluar::whereNotNull('deleted_at')->forceDelete();
+        SuratKeluar::where('deleted_at', '!=', null)->forceDelete();
 
         return redirect('/nomorSurat/suratHapus')->with('success', 'Surat berhasil dibersihkan');
     }
@@ -463,34 +448,19 @@ class NomorSuratController extends Controller
         $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
             ->get();
 
-        // Untuk view column tujuan
-        $memoIdSatker = SuratKeluar::select('id', 'satuan_kerja_asal')
-            ->pluck('id')->toArray();
-        $tujuanDepartemen = TujuanDepartemen::select('id', 'memo_id', 'departemen_id')
-            ->whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-        $tujuanSatker = TujuanSatuanKerja::select('id', 'memo_id', 'satuan_kerja_id')
-            ->whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-        $tujuanCabangs = TujuanKantorCabang::select('id', 'memo_id', 'cabang_id', 'bidang_id')
-            ->whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-
-        //untuk cek all flag
-        $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
-        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
-        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
+        //untuk cek all flag, Untuk view column tujuan 
+        $tujuan = $this->coba->columnTujuan($user);
 
         $datas = [
             'users' => $user,
-            'tujuanDepartemens' => $tujuanDepartemen,
-            'tujuanSatkers' => $tujuanSatker,
-            'tujuanCabangs' => $tujuanCabangs,
+            'tujuanDepartemens' => $tujuan['tujuanDepartemen'],
+            'tujuanSatkers' => $tujuan['tujuanSatker'],
+            'tujuanCabangs' => $tujuan['tujuanCabangs'],
             'userLogs' => $userLog,
             'datas' => $mails,
-            'seluruhDepartemenMemoIds' => $seluruhDepartemenMemoId,
-            'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
-            'seluruhCabangMemoIds' => $seluruhCabangMemoId,
+            'seluruhDepartemenMemoIds' => $tujuan['seluruhDepartemenMemoId'],
+            'seluruhSatkerMemoIds' => $tujuan['seluruhSatkerMemoId'],
+            'seluruhCabangMemoIds' => $tujuan['seluruhCabangMemoId'],
         ];
 
         return view('nomorSurat.all', $datas);

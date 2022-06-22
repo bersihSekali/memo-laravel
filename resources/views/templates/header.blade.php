@@ -294,11 +294,11 @@
               </select>
               <div class="col-sm-6 mb-3 form-user">
                 <label for="tanggalmulai" class="form-label">Tanggal Mulai</label>
-                <input type="date" class="form-control" id="tanggalmulai" name="tanggalmulai" required>
+                <input type="date" class="form-control" id="tanggalmulai" name="tanggalmulai">
               </div>
               <div class="col-sm-6 mb-3 form-user">
                 <label for="tanggalakhir" class="form-label">Tanggal Akhir</label>
-                <input type="date" class="form-control" id="tanggalakhir" name="tanggalakhir" required>
+                <input type="date" class="form-control" id="tanggalakhir" name="tanggalakhir">
               </div>
             </div>
           </div>

@@ -47,10 +47,9 @@
                             <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
                             <td class="align-top" style="text-align: center">
                                 @if ($data->departemen_asal == '')
-                                {{ $data->satuanKerjaAsal['inisial'] }}
+                                    {{ $data->satuanKerjaAsal['inisial'] }}
                                 @else
-                        
-                                {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
+                                    {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
                                 @endif
                             </td>
                             <td class="align-top">{{ $data->perihal }}</td>
@@ -115,7 +114,7 @@
 
                         <tr>
                             <td width="20%">Asal</td>
-                            <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                            <td>: {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}</td>
                         </tr>
 
                         <tr>
@@ -150,7 +149,7 @@
                                 @else
                                     @foreach ($tujuanDepartemens as $item)
                                         @if ($item->memo_id == $data->id)
-                                            : {{ $item->tujuanDepartemen->departemen }} <br>
+                                            : {{ $item->tujuanDepartemen->inisial }} <br>
                                         @endif
                                     @endforeach
                                 @endif
@@ -161,7 +160,7 @@
                                 @else
                                     @foreach ($tujuanSatkers as $item)
                                         @if ($item->memo_id == $data->id)
-                                            : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                                            : {{ $item->tujuanSatuanKerja->inisial }} <br>
                                         @endif
                                     @endforeach
                                 @endif

@@ -26,7 +26,7 @@
                           <td class="align-top" style="text-align: center">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
                           <td class="align-top">{{ strtoupper($data->userID->name) }}</td>
                           <td class="align-top" style="text-align: center">{{ strtoupper($data->aktifitas) }} </td>
-                          <td class="align-top">{{ strtoupper($data->suratTable->perihal) }}</td>
+                          <td class="align-top">{{ strtoupper($data->suratTable['perihal']) }}</td>
                           <td class="align-top">{{ strtoupper($data->mac_address) }}</td>
                           <td class="align-top" style="text-align: center">{{ strtoupper($data->ip_address) }}</td>
                           <td class="align-top">{{ strtoupper($data->user_agent) }}</td>
