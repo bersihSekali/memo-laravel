@@ -33,7 +33,7 @@ class OtorisasiBaruController extends Controller
         $mails = $this->coba->ambilOtor($user);
 
         // Untuk view column tujuan
-        $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+        $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)->orWhere('cabang_asal', $user->cabang)
             ->pluck('id')->toArray();
         $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $memoIdSatker)
             ->latest()->get();

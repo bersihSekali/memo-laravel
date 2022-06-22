@@ -29,7 +29,11 @@
             <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{ $data['id'] }}" style="cursor: pointer;">
               <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
               <td class="align-top">
+                @if ($data->satuan_kerja_asal)
                 {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                @else
+                CABANG {{ $data->cabangAsal['cabang'] }}
+                @endif
               </td>
               <td class="align-top">{{ $data->perihal }}</td>
               <td class="align-top">{{ strtoupper($data->createdBy['name']) }} </td>
@@ -71,7 +75,11 @@
 
             <tr>
               <td width="20%">Asal</td>
-              <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }}</td>
+              <td>@if ($data->satuan_kerja_asal)
+                : {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                @else
+                : CABANG {{ $data->cabangAsal['cabang'] }}
+                @endif</td>
             </tr>
 
             <tr>
@@ -537,6 +545,27 @@
         <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('PUT')}}
+
+          <div class="mb-3">
+            <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+          </div>
+
+          <button type="submit" class="btn btn-success w-100">Setujui</button>
+        </form>
+      </div>
+      @endif
+
+      {{-- Kepala cabang --}}
+      @elseif (($users->levelTable->golongan == 6) && ($users->level == 5))
+      {{-- Surat antar satuan kerja sebagai otor1_by --}}
+      @if (($data->status == 2) && ($data->internal != 1))
+      <div class="modal-body text-center py-4">
+        <h3>Apakah yakin ingin menyetujui?</h3>
+        <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span><br>
+        <span class="badge bg-success mb-1">Note: {{ strtoupper($data->otor2By['name']) }} telah menyetujui surat ini</span>
+        <form action="/otor/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+          @csrf
+          {{method_field('POST')}}
 
           <div class="mb-3">
             <input class="form-control" type="file" id="lampiran" name="lampiran" required>

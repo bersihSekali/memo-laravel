@@ -102,8 +102,28 @@ class SuratKeluar extends Model
 
     public function ambilOtor($user)
     {
-        // Officer, kepala bidang, kepala operasi cabang, kepala cabang pembantu golongan 5
-        if ($user->levelTable->golongan == 5) {
+        //kepala operasi cabang
+        if (($user->levelTable->golongan == 5) && ($user->level == 9)) {
+            // sebagai otor2 pengganti
+            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
+                ->where('otor2_by', null)
+                ->where('status', 1)
+                ->latest();
+            // sebagai otor1 pengganti
+            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
+                ->where('otor1_by', null)
+                ->where('status', 2)
+                ->union($pengganti2)
+                ->latest();
+            // antar satuan kerja sebagai otor2_by
+            $mails = SuratKeluar::where('cabang_asal', $user->cabang)
+                ->where('internal', 2)
+                ->where('status', 1)
+                ->union($pengganti1)
+                ->latest()->get();
+        }
+        // Officer, kepala bidang, golongan 5
+        elseif ($user->levelTable->golongan == 5) {
             // sebagai otor2 pengganti
             $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
                 ->where('status', 1)
@@ -135,17 +155,11 @@ class SuratKeluar extends Model
                 ->where('status', 2)
                 ->union($pengganti2)
                 ->latest();
-            // antar departemen sebagai otor1_by
-            $antarDepartemen = SuratKeluar::where('departemen_asal', $user->departemen)
-                ->where('internal', 1)
+            // antar satuan kerja sebagai otor2_by
+            $mails = SuratKeluar::where('cabang_asal', $user->cabang)
+                ->where('internal', 2)
                 ->where('status', 2)
                 ->union($pengganti1)
-                ->latest();
-            // antar satuan kerja sebagai otor2_by
-            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
-                ->where('internal', 2)
-                ->where('status', 1)
-                ->union($antarDepartemen)
                 ->latest()->get();
         }
 
