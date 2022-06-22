@@ -122,22 +122,42 @@ class SuratKeluar extends Model
                 ->union($pengganti1)
                 ->latest()->get();
         }
-        // Officer, kepala bidang, golongan 5
-        elseif ($user->levelTable->golongan == 5) {
+
+        // Kepala dep di bawah direksi
+        elseif ($user->levelTable->golongan == 6 && $user->satuanKerja['grup'] == 5) {
+            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
+                ->where('otor2_by', null)
+                ->where('status', 1)
+                ->latest();
+            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
+                ->where('otor1_by', null)
+                ->where('status', 2)
+                ->latest();
+            // Antar satuan kerja sebagai otor1_by
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->where('internal', 2)
+                ->where('status', 2)
+                ->union($pengganti1)
+                ->latest()->get();
+        }
+
+        // Associate officer departemen di bawah direksi
+        elseif ($user->levelTable['golongan'] >= 4 || $user->satuanKerja['grup'] == 5) {
             // sebagai otor2 pengganti
             $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
+                ->where('otor2_by', null)
                 ->where('status', 1)
                 ->latest();
             // sebagai otor1 pengganti
             $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
+                ->where('otor1_by', null)
                 ->where('status', 2)
                 ->union($pengganti2)
                 ->latest();
-            // sebagai otor 2
+            // antar satuan kerja sebagai otor2_by
             $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
-                ->where('departemen_asal', $user->departemen)
-                ->where('internal', 1)
                 ->where('status', 1)
+                ->where('internal', 2)
                 ->union($pengganti1)
                 ->latest()->get();
         }
@@ -159,6 +179,26 @@ class SuratKeluar extends Model
             $mails = SuratKeluar::where('cabang_asal', $user->cabang)
                 ->where('internal', 2)
                 ->where('status', 2)
+                ->union($pengganti1)
+                ->latest()->get();
+        }
+
+        // Officer, kepala bidang, golongan 5
+        elseif ($user->levelTable->golongan == 5) {
+            // sebagai otor2 pengganti
+            $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
+                ->where('status', 1)
+                ->latest();
+            // sebagai otor1 pengganti
+            $pengganti1 = SuratKeluar::where('otor1_by_pengganti', $user->id)
+                ->where('status', 2)
+                ->union($pengganti2)
+                ->latest();
+            // sebagai otor 2
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->where('departemen_asal', $user->departemen)
+                ->where('internal', 1)
+                ->where('status', 1)
                 ->union($pengganti1)
                 ->latest()->get();
         }
@@ -189,7 +229,6 @@ class SuratKeluar extends Model
                 ->union($antarDepartemen)
                 ->latest()->get();
         }
-
 
         // Senior officer
         elseif (($user->levelTable->golongan == 6) && ($user->level == 7)) {

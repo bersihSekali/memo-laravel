@@ -443,7 +443,6 @@
           <button type="submit" class="btn btn-success w-100">Setujui</button>
         </form>
       </div>
-
       {{-- Surat antar satuan kerja sebagai otor2_by --}}
       @elseif (($data->status == 1) && ($data->internal != 1))
       <div class="modal-body text-center py-4">
