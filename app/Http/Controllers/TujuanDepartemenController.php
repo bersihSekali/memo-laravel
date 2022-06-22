@@ -136,7 +136,11 @@ class TujuanDepartemenController extends Controller
         $datas['status_baca'] = 1;
         $datas->update($update);
 
-        return redirect('tujuanDepartemen/' . $id . '/edit')->with('success', 'Surat telah ditandai sebagai telah dibaca, silakan masukkan disposisi jika diperlukan.');
+        if ($user->satuanKerja['grup'] == 5 && $user->levelTable['golongan'] == 6) {
+            return redirect('forward/' . $id . '/edit')->with('success', 'Surat telah ditandai sebagai telah dibaca, silakan teruskan pesan jika diperlukan.');
+        } else {
+            return redirect('tujuanDepartemen/' . $id . '/edit')->with('success', 'Surat telah ditandai sebagai telah dibaca, silakan masukkan pesan disposisi jika diperlukan.');
+        }
     }
 
     /**

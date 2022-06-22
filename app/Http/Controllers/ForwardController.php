@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\SuratKeluar;
 use App\Models\TujuanDepartemen;
+use App\Models\TujuanSatuanKerja;
 use Illuminate\Database\Schema\Builder;
 
 class ForwardController extends Controller
@@ -65,23 +66,41 @@ class ForwardController extends Controller
         $idUser = Auth::id();
         $user = User::find($idUser);
 
-        //cek memo
-        $tujuanDepartemen = TujuanDepartemen::where('departemen_id', $user['departemen'])->pluck('memo_id')->toArray();
-        if (!in_array($id, $tujuanDepartemen)) {
-            dd('tidak ditemukan');
-        }
-        $tujuanDepartemenById = TujuanDepartemen::where('departemen_id', $user['departemen'])->where('memo_id', $id)->first();
-        if (!$tujuanDepartemenById->status_baca) {
-            dd('surat belum dibaca');
-        }
+        if ($user->satuanKerja['grup'] == 5 && $user->levelTable['golongan'] == 6) {
+            //cek memo
+            $tujuanSatker = TujuanSatuanKerja::where('satuan_kerja_id', $user['satuan_kerja'])->pluck('memo_id')->toArray();
+            if (!in_array($id, $tujuanSatker)) {
+                dd('tidak ditemukan');
+            }
+            $tujuanSatkerById = TujuanSatuanKerja::where('satuan_kerja_id', $user['satuan_kerja'])->where('memo_id', $id)->first();
+            if (!$tujuanSatkerById->status_baca) {
+                dd('surat belum dibaca');
+            }
 
-        $edit = SuratKeluar::with('tujuanDepartemen')
-            ->join('tujuan_departemens', 'surat_keluars.id', '=', 'tujuan_departemens.memo_id')
-            ->where('surat_keluars.id', $id)->first();
+            $edit = SuratKeluar::where('id', $id)->first();
 
-        $forwarded = Forward::where('memo_id', $edit['id'])->get();
-        $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
-        $forward = User::where('departemen', $user->departemen)->get();
+            $forwarded = Forward::where('memo_id', $edit['id'])->get();
+            $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
+            $forward = User::where('satuan_kerja', $user->satuan_kerja)->get();
+        } else {
+            //cek memo
+            $tujuanDepartemen = TujuanDepartemen::where('departemen_id', $user['departemen'])->pluck('memo_id')->toArray();
+            if (!in_array($id, $tujuanDepartemen)) {
+                dd('tidak ditemukan');
+            }
+            $tujuanDepartemenById = TujuanDepartemen::where('departemen_id', $user['departemen'])->where('memo_id', $id)->first();
+            if (!$tujuanDepartemenById->status_baca) {
+                dd('surat belum dibaca');
+            }
+
+            $edit = SuratKeluar::with('tujuanDepartemen')
+                ->join('tujuan_departemens', 'surat_keluars.id', '=', 'tujuan_departemens.memo_id')
+                ->where('surat_keluars.id', $id)->first();
+
+            $forwarded = Forward::where('memo_id', $edit['id'])->get();
+            $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
+            $forward = User::where('departemen', $user->departemen)->get();
+        }
 
         return view('forward/edit', [
             'title' => 'Teruskan ke Departemen',

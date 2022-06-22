@@ -24,13 +24,36 @@
                                 <th scope="col">No.</th>
                                 <th scope="col">Asal</th>
                                 <th scope="col">Perihal</th>
-                                @if(($users->levelTable['golongan'] <= 6) && ($users->level != 5)) <th scope="col">Pesan Disposisi</th>
+                                @if ($users->satuanKerja['grup'] == 5 && $users->levelTable['golongan'] == 6)
+                                @elseif(($users->levelTable['golongan'] <= 6) && ($users->level != 5)) <th scope="col">Pesan Disposisi</th>
                                     @endif
                                     <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if($users->levelTable['golongan'] == 7)
+                        @foreach($datas as $data)
+                        <tr class="{{ ($data['status_baca'] == 1 ? 'table-light' : 'table-bold') }}" id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['memo_id']}}" style="cursor: pointer;">
+                            <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
+                            <td class="align-top">{{$data['nomor_surat']}}</td>
+                            <td class="align-top">
+                                @if ($data->departemen_asal)
+                                {{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}
+                                @elseif ($data->cabang_asal)
+                                {{$data->cabangAsal['cabang']}}
+                                @else
+                                {{$data->satuanKerjaAsal['satuan_kerja']}}
+                                @endif
+                            </td>
+                            <td class="align-top">{{$data['perihal']}}</td>
+                            @if($data['status_baca'] == 1)
+                            <td><span class="badge bg-success me-1"></span>Selesai</td>
+                            @else
+                            <td><span class="badge bg-warning me-1"></span>Belum Selesai</td>
+                            @endif
+                        </tr>
+                        @endforeach
+                        @elseif($users->satuanKerja['grup'] == 5 && $users->levelTable['golongan'] == 6)
                         @foreach($datas as $data)
                         <tr class="{{ ($data['status_baca'] == 1 ? 'table-light' : 'table-bold') }}" id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['memo_id']}}" style="cursor: pointer;">
                             <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
@@ -301,6 +324,20 @@
             </form>
             @elseif ($users->level == 5)
             <form action="/cabang/selesaikan/{{$data['memo_id']}}" method="post">
+                @csrf
+                {{method_field('POST')}}
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <p>Apakah anda yakin ingin menandai pesan sebagai telah dibaca?</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" type="submit">Yakin</button>
+                </div>
+            </form>
+            @elseif ($users->satuanKerja['grup'] == 5 && $users->levelTable['golongan'] == 6)
+            <form action="/tujuanDepartemen/selesaikan/{{$data['memo_id']}}" method="post">
                 @csrf
                 {{method_field('POST')}}
                 <div class="modal-body">

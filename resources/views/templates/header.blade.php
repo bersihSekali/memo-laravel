@@ -14,6 +14,9 @@
             @if (($users->level >= 2) && ($users->level <= 4)) <div class="mt-1 small text-muted text-end">KEPALA {{ $users->satuanKerja->satuan_kerja }}
           </div>
 
+          @elseif (($users->satuanKerja['grup'] == 5) && ($users->levelTable['golongan'] == 6))
+          <div class="mt-1 small text-muted text-end">KEPALA {{ strtoupper($users->satuanKerja['satuan_kerja']) }}</div>
+
           @elseif (($users->cabang) && ($users->level == 5))
           <div class="mt-1 small text-muted text-end">KEPALA CABANG {{ strtoupper($users->cabangTable['cabang']) }}</div>
 
