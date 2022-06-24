@@ -142,7 +142,7 @@ class SuratKeluar extends Model
         }
 
         // Associate officer departemen di bawah direksi
-        elseif ($user->levelTable['golongan'] >= 4 || $user->satuanKerja['grup'] == 5) {
+        elseif ($user->levelTable['golongan'] >= 4 && $user->satuanKerja['grup'] == 5) {
             // sebagai otor2 pengganti
             $pengganti2 = SuratKeluar::where('otor2_by_pengganti', $user->id)
                 ->where('otor2_by', null)

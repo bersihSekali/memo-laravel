@@ -34,7 +34,7 @@
                         <option selected value="{{ $users->cabang}}"> {{ $users->cabangTable['cabang'] }} </option>
                     </select>
                     @elseif ($users->satuanKerja['grup'] == 5)
-                    <label for="satuan_kerja_asal" class="form-label">Satuan Kerja Asal</label>
+                    <label for="satuan_kerja_asal" class="form-label">Asal</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="satuan_kerja_asal" id="satuan_kerja_asal" style="width: 100%;">
                         <option selected value="{{ $users->satuan_kerja}}"> {{ $users->satuanKerja['satuan_kerja'] }} </option>
                     </select>
