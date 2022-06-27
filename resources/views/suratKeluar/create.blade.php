@@ -1,6 +1,10 @@
 @extends('templates.index')
 
 @section('content')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
 <div class="row justify-content-center">
     <div class="col-md-6">
         @if(session()->has('error'))
@@ -169,18 +173,35 @@
             </div>
 
             {{-- Input lampiran --}}
+            <textarea id="summernote" name="editordata"></textarea>
             <div class="mb-3 formulir" style="display: none">
                 <label for="lampiran" class="form-label">Lampiran</label>
                 <input class="form-control" type="file" id="lampiran" name="lampiran" required>
             </div>
 
-            <button type="submit" class="btn btn-primary formulir" style="display: none">Simpan</button>
+            <button type="submit" name="lihat" value="lihat" class="btn btn-primary formulir" style="display: none">Lihat Pratinjau</button>
+            <button type="submit" name="simpan" value="simpan" class="btn btn-primary formulir" style="display: none">Simpan</button>
         </form>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
+<script>
+    $('#summernote').summernote({
+        placeholder: 'Hello stand alone ui',
+        tabsize: 2,
+        height: 120,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+    });
+</script>
 <script>
     $(document).ready(function() {
         $('.formulir').show(1000)
@@ -216,6 +237,7 @@
                 $('.opsi_kantor_bidang').prop("selected", false)
             }
         });
+        $('#summernote').summernote();
     });
 </script>
 @endsection
