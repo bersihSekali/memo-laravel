@@ -236,6 +236,7 @@ class SuratKeluarController extends Controller
 
             $validated = $request->validate([
                 'created_by' => 'required',
+                'kriteria' => 'required',
                 'nomor_surat' => 'required',
                 'perihal' => 'required',
                 'lampiran' => 'mimes:pdf',

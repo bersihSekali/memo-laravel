@@ -28,6 +28,19 @@
                 </div>
             </div>
 
+            {{-- Kriteria --}}
+            <div class="form-group formulir mb-3" style="display: none;">
+                <div class="col-md-6">
+                    <label for="kriteria" class="form-label ">Kriteria Informasi</label>
+                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="kriteria" style="width: 100%;">
+                        <option selected disabled> -- Pilih salah satu -- </option>
+                        <option value="INTERNAL BCA SYARIAH"> INTERNAL BCA SYARIAH </option>
+                        <option value="RAHASIA"> RAHASIA </option>
+                        <option value="SANGAT RAHASIA"> SANGAT RAHASIA </option>
+                    </select>
+                </div>
+            </div>
+
             {{-- No Surat --}}
             <div class="form-group formulir mb-3" style="display: none;">
                 <div class="col-md-6">
@@ -117,7 +130,7 @@
                 <div class="col-sm-6 mb-3" name="pengganti_antar_satuan_kerja" id="pengganti_antar_satuan_kerja" style="display: none;">
                     <label for="tunjuk_otor1_by" class="form-label">Tanda Tangan 1</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
-                        <option value=""> ---- </option>
+                        <option selected disabled> -- Pilih salah satu -- </option>
                         @if ($users->cabang)
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->level == 5 || $pengganti->level == 9 || ($pengganti->departemenTable['inisial'] == 'SBK' && $pengganti->level == 2))
@@ -137,7 +150,7 @@
                 <div class="col-sm-6 mb-3">
                     <label for="tunjuk_otor2_by" class="form-label">Tanda Tangan 2</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor2_by" id="tunjuk_otor2_by">
-                        <option value="" selected> ---- </option>
+                        <option selected disabled> -- Pilih salah satu -- </option>
                         @if ($users->cabang)
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->cabang == $users->cabang)
@@ -172,7 +185,9 @@
             </div>
 
             {{-- Input lampiran --}}
-            <textarea id="summernote" name="editordata"></textarea>
+            <div class="mb-3">
+                <textarea id="summernote" name="editordata"></textarea>
+            </div>
 
             <div class="mb-3 formulir" style="display: none">
                 <label for="lampiran" class="form-label">Lampiran</label>

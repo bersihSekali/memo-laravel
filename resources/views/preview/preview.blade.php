@@ -5,7 +5,7 @@
     <style>
         @page {
             margin-top: 120px;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
             margin-left: 80px;
         }
 
@@ -131,7 +131,7 @@
                 <tr>
                     <td>Kriteria Informasi</td>
                     <td>:</td>
-                    <td>INTERNAL BCA SYARIAH</td>
+                    <td>{{$requests['kriteria']}}</td>
                 </tr>
                 <tr>
                     <td>Tanggal</td>
@@ -173,7 +173,7 @@
         <table>
             <tr>
                 <td>{{$requests['nomor_surat']}}</td>
-                <td>INTERNAL BCA SYARIAH</td>
+                <td>{{$requests['kriteria']}}</td>
                 <td></td>
             </tr>
             <tr>
