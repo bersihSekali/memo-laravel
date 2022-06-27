@@ -1,12 +1,15 @@
 @extends('templates.index')
 
 @section('content')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<link href="{{url('assets/vendor/summernote/summernote-bs4.css')}}" rel="stylesheet" />
+<script src="{{url('assets/vendor/summernote/summernote-bs4.js')}}"></script>
 
 <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-10">
         @if(session()->has('error'))
         <div class="alert alert-warning mt-3" role="alert">
             {{ session('error') }}
@@ -18,15 +21,19 @@
 
             {{-- Input pembuat --}}
             <div class="form-group mb-3">
-                <label for="created_by" class="form-label ">Pembuat</label>
-                <input type="text" class="form-control" autocomplete="off" value="{{ strtoupper($users->name) }}" readonly>
-                <input type="hidden" class="form-control" id="created_by" name="created_by" value="{{ $users->id }}" readonly>
+                <div class="col">
+                    <label for="created_by" class="form-label ">Pembuat</label>
+                    <input type="text" class="form-control" autocomplete="off" value="{{ strtoupper($users->name) }}" readonly>
+                    <input type="hidden" class="form-control" id="created_by" name="created_by" value="{{ $users->id }}" readonly>
+                </div>
             </div>
 
             {{-- No Surat --}}
             <div class="form-group formulir mb-3" style="display: none;">
-                <label for="nomor_surat" class="form-label ">Nomor Surat</label>
-                <input type="text" class="form-control" autocomplete="off" name="nomor_surat">
+                <div class="col-md-6">
+                    <label for="nomor_surat" class="form-label ">Nomor Surat</label>
+                    <input type="text" class="form-control" autocomplete="off" name="nomor_surat">
+                </div>
             </div>
 
             {{-- Input departemen / satuan kerja --}}
@@ -105,18 +112,10 @@
                 <textarea class="form-control" aria-label="With textarea" name="perihal" required id="perihal" required></textarea>
             </div>
 
-            {{-- Input pejabat pengganti --}}
-            <div class="form-check formulir" style="display: none">
-                <input class="form-check-input" type="checkbox" value="" id="pejabat_pengganti" name="pejabat_pengganti">
-                <label class="form-check-label" for="pejabat_pengganti">
-                    Pejabat Pengganti
-                </label>
-            </div>
-
             {{-- Input otor pengganti --}}
             <div class="form-group row" id="otor_pengganti" name="otor_pengganti" style="display: none">
                 <div class="col-sm-6 mb-3" name="pengganti_antar_satuan_kerja" id="pengganti_antar_satuan_kerja" style="display: none;">
-                    <label for="tunjuk_otor1_by" class="form-label">Otor 1 Pengganti</label>
+                    <label for="tunjuk_otor1_by" class="form-label">Tanda Tangan 1</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
                         <option value=""> ---- </option>
                         @if ($users->cabang)
@@ -136,7 +135,7 @@
                 </div>
 
                 <div class="col-sm-6 mb-3">
-                    <label for="tunjuk_otor2_by" class="form-label">Otor 2 Pengganti</label>
+                    <label for="tunjuk_otor2_by" class="form-label">Tanda Tangan 2</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor2_by" id="tunjuk_otor2_by">
                         <option value="" selected> ---- </option>
                         @if ($users->cabang)
@@ -174,6 +173,7 @@
 
             {{-- Input lampiran --}}
             <textarea id="summernote" name="editordata"></textarea>
+
             <div class="mb-3 formulir" style="display: none">
                 <label for="lampiran" class="form-label">Lampiran</label>
                 <input class="form-control" type="file" id="lampiran" name="lampiran" required>
@@ -188,16 +188,16 @@
 
 <script>
     $('#summernote').summernote({
-        placeholder: 'Hello stand alone ui',
+        placeholder: 'Isi Memo',
         tabsize: 2,
-        height: 120,
+        height: 400,
         toolbar: [
             ['style', ['style']],
             ['font', ['bold', 'underline', 'clear']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']],
+            ['insert', ['link', 'picture']],
             ['view', ['fullscreen', 'codeview', 'help']]
         ]
     });
@@ -207,10 +207,7 @@
         $('.formulir').show(1000)
         $('#eksternal').show(500)
         $('#pengganti_antar_satuan_kerja').show();
-
-        $('#pejabat_pengganti').click(function() {
-            $('#otor_pengganti').toggle();
-        });
+        $('#otor_pengganti').show(1000);
 
         $('#tujuan_unit_kerja').change(function() {
             if ($('#unit_kerja').is(':selected')) {
@@ -237,7 +234,6 @@
                 $('.opsi_kantor_bidang').prop("selected", false)
             }
         });
-        $('#summernote').summernote();
     });
 </script>
 @endsection

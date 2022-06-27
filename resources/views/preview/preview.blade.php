@@ -177,8 +177,7 @@
                 <td></td>
             </tr>
             <tr>
-                <td>Perihal: <strong>{{$requests['perihal']}}</strong></td>
-                <td>, Sambungan</td>
+                <td colspan="3">Perihal: <strong>{{$requests['perihal']}}</strong>, Sambungan</td>
             </tr>
         </table>
     </header>
