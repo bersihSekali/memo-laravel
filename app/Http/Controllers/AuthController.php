@@ -7,7 +7,6 @@ use App\Models\SatuanKerja;
 use App\Models\Level;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,8 +24,8 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|alpha',
-            'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'
+            'name' => 'required',
+            'password' => 'required'
         ]);
 
         if (Auth::attempt($validated)) {

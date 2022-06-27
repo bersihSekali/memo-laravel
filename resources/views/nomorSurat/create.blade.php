@@ -3,9 +3,9 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-6">
-        @if(session()->has('error'))
+        @if($errors->first())
         <div class="alert alert-warning mt-3" role="alert">
-            {{ session('error') }}
+            {{ $errors->first() }}
         </div>
         @endif
 

@@ -7,6 +7,12 @@
   <!-- DataTales Example -->
   <div class="card shadow mb-4">
     <div class="card-body py-3">
+      @if($errors->first())
+        <div class="alert alert-warning mt-3" role="alert" style="display: none">
+            {{ $errors->first() }}
+        </div>
+      @endif
+
       @if(session()->has('success'))
       <div class="alert alert-success" role="alert" id="success-alert" style="display: none">
         {{ session('success') }}
@@ -897,8 +903,8 @@
 
 <script>
   $(document).ready(function() {
-    $('#success-alert').show(1000).delay(1000);
-    $('#success-alert').hide(1000);
+    $('.alert').show(1000).delay(1000);
+    $('.alert').hide(1000);
   });
 </script>
 @endsection

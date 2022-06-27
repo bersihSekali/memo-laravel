@@ -104,6 +104,10 @@ class OtorisasiSuratController extends Controller
 
         $datas = SuratKeluar::find($id);
 
+        $validated = $request->validate([
+            'lampiran' => 'mimes:pdf',
+        ]);
+
         // Update tanggal otor
         $update[] = $datas['tanggal_otor2'] = date("Y-m-d H:i:s");
 
@@ -160,6 +164,10 @@ class OtorisasiSuratController extends Controller
             ->where('id', $user_id)->first();
 
         $datas = SuratKeluar::find($id);
+        $validated = $request->validate([
+            'lampiran' => 'mimes:pdf',
+        ]);
+
         // Update otor status
         $update[] = $datas['status'] = 0;
 
@@ -218,6 +226,10 @@ class OtorisasiSuratController extends Controller
             ->where('id', $user_id)->first();
 
         $datas = SuratKeluar::find($id);
+        $validated = $request->validate([
+            'lampiran' => 'mimes:pdf',
+        ]);
+
         // Update otor status
         $update[] = $datas['status'] = 3;
 
@@ -312,6 +324,10 @@ class OtorisasiSuratController extends Controller
             ->where('id', $user_id)->first();
 
         $datas = SuratKeluar::find($id);
+        $validated = $request->validate([
+            'lampiran' => 'mimes:pdf',
+        ]);
+
         // Update otor status
         $update[] = $datas['status'] = 0;
 
