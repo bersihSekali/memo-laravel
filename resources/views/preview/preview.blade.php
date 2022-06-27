@@ -11,9 +11,7 @@
 
         main {
             margin-top: 20px;
-            page-break-after: always;
             font-size: small;
-
         }
 
         header {
@@ -22,14 +20,26 @@
             height: 100%;
             width: 100%;
             line-height: 35px;
+            z-index: -2;
         }
 
         footer {
             position: fixed;
+            font-size: small;
             bottom: -860px;
             height: 100%;
             width: 100%;
             line-height: 35px;
+            z-index: -1;
+        }
+
+        .footer {
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            bottom: -875px;
+            color: white;
+            background-color: white;
         }
 
         .footer-text {
@@ -39,9 +49,11 @@
 
         .kop {
             position: fixed;
-            top: -70px;
-            height: 100%;
+            padding-top: 30px;
+            top: -100px;
+            height: 5%;
             width: 100%;
+            background-color: white;
         }
 
         #judul {
@@ -56,6 +68,11 @@
         }
 
         #kepada {
+            margin-bottom: 50px;
+        }
+
+        #isi {
+            font-size: small;
             margin-bottom: 50px;
         }
 
@@ -74,6 +91,9 @@
 </head>
 
 <body>
+    <footer>
+        <p class="footer-text"><i>Bersambung ke halaman berikut</i></p>
+    </footer>
     <main>
         <div class="container-fluid">
             <div class="kop">
@@ -119,7 +139,7 @@
                     <td>{{dateWithFormatter(date('Y-m-d'))}}</td>
                 </tr>
             </table>
-            <div style="font-size:small;">
+            <div id="isi">
                 {!!$requests['isi']!!}
             </div>
             <div>
@@ -144,8 +164,11 @@
                 </table>
             </div>
         </div>
-    </main>
 
+        <div class="footer">
+            <p class="footer-text"><i>Bersambung ke halaman berikut</i></p>
+        </div>
+    </main>
     <header>
         <table>
             <tr>
@@ -159,9 +182,7 @@
             </tr>
         </table>
     </header>
-    <footer>
-        <p class="footer-text"><i>Bersambung ke halaman berikut</i></p>
-    </footer>
+
     <!-- Page Heading -->
     <!-- /.container-fluid -->
 </body>
