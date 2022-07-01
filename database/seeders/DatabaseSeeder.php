@@ -36,11 +36,11 @@ class DatabaseSeeder extends Seeder
 
         $satuanKerja = [
             // [Satuan kerjam, inisial, grup]
-            ['SELURUH SATUAN KERJA / DIVISI', 'ALL', 1], ['SATUAN KERJA TEKNOLOGI INFORMASI DAN LOGISTIK', 'STL', 1], ['SATUAN KERJA AUDIT INTERNAL', 'SAI', 1],
-            ['SATUAN KERJA HUKUM DAN SUMBER DAYA MANUSIA', 'HSD', 1], ['SATUAN KERJA BISNIS DAN KOMUNIKASI', 'SBK', 1], ['SATUAN KERJA ANALISA RISIKO DAN PEMBIAYAAN', 'ARP', 1],
-            ['SATUAN KERJA KEUANGAN DAN PERENCANAAN PERUSAHAAN', 'SKA', 1],
-            ['DEPARTEMEN MANAJEMEN RISIKO', 'MRK', 5], ['DIVISI OPERASI', 'DOP', 1],
-            ['DEPARTEMEN KEPATUHAN', 'KEP', 5], ['CABANG JABODETABEK', null, 1], ['CABANG NON JABODETABEK', null, 1],
+            ['Seluruh Satuan Kerja / Divisi', 'ALL', 1], ['Satuan Kerja Teknologi Informasi dan Logistik', 'STL', 1], ['Satuan Kerja Audit Internal', 'SAI', 1],
+            ['Satuan Kerja Hukum Dan Sumber Daya Manusia', 'HSD', 1], ['Satuan Kerja Bisnis dan Komunikasi', 'SBK', 1], ['Satuan Kerja Analisa Risiko dan Pembiayaan', 'ARP', 1],
+            ['Satuan Kerja Keuangan dan Perencanaan Perusahaan', 'SKA', 1],
+            ['Departemen Manajemen Risiko', 'MRK', 5], ['Divisi Operasi', 'DOP', 1],
+            ['Departemen Kepatuhan', 'KEP', 5], ['Cabang Jabodetabek', Null, 1], ['Cabang Non Jabodetabek', Null, 1],
         ];
 
         for ($i = 0; $i < count($satuanKerja); $i++) {
@@ -54,36 +54,36 @@ class DatabaseSeeder extends Seeder
         $departemen = array(
             // [satuan keja, nama departemen, inisial, grup]
             // Sluruh satuan kerja internal sktilog
-            [1, 'SELURUH DEPARTEMEN SKTILOG', 'STL-ALL', 1],
-            // SKTILOG
-            [2, 'LOGISTIK', 'LOG', 4], [2, 'SISTEM PROSEDUR & PENDUKUNG OPERASI', 'PPO', 4], [2, 'DEPARTEMEN TEKNOLOGI INFORMASI', 'DTI', 4],
-            // [2, 'SEKURITI TEKNOLOGI INFORMASI', 3], [2, 'OPERASI TEKNOLOGI INFORMASI', 5],
+            [1, 'Seluruh Departemen Sktilog', 'STL-ALL', 1],
+            // Sktilog
+            [2, 'Logistik', 'LOG', 4], [2, 'Sistem Prosedur & Pendukung Operasi', 'PPO', 4], [2, 'Departemen Teknologi Informasi', 'DTI', 4],
+            // [2, 'sekuriti Teknologi Informasi', 3], [2, 'operasi Teknologi Informasi', 5],
 
-            // SKAI
-            // [3, 'INTERNAL', 3], [3, 'TEKNOLOGI INFORMASI', 3], 
-            [3, 'DEPARTEMEN KANTOR PUSAT & ANTI FRAUD', 'AKP', 4],
-            [3, 'DEPARTEMEN AUDIT KANTOR CABANG DAN INTERNAL CONTROL', 'AKC', 4],
+            // Skai
+            // [3, 'internal', 3], [3, 'teknologi Informasi', 3], 
+            [3, 'Departemen Kantor Pusat & Anti Fraud', 'AKP', 4],
+            [3, 'Departemen Audit Kantor Cabang dan Internal Control', 'AKC', 4],
 
-            // SKHSDM
-            [4, 'DEPARTEMEN SUMBER DAYA MANUSIA', 'SDM', 4], [4, 'DEPARTEMEN HUKUM', 'DHK', 4],
-            // [4, 'BUDAYA PERUSAHAAN DAN LAYANAN', 5],
+            // Skhsdm
+            [4, 'Departemen Sumber Daya Manusia', 'SDM', 4], [4, 'Departemen Hukum', 'DHK', 4],
+            // [4, 'budaya Perusahaan Dan Layanan', 5],
 
-            // SBK
-            [5, 'DEPARTEMEN KOMUNIKASI DAN KESEKRETARIATAN PERUSAHAAN', 'KSP', 4], [5, 'DEPARTEMEN PENDUKUNG BISNIS', 'PDS', 4], [5, 'DEPARTEMEN PENGEMBANGAN BISNIS', 'PBS', 4],
-            // [5, 'RISET PEMASARAN DAN PENDAYAGUNAAN DATA WAREHOUSE', 5], [5, 'PENGEMBANGAN DAN PEMBINAAN JARINGAN CABANG', 3],
+            // Sbk
+            [5, 'Departemen Komunikasi dan Kesekretariatan Perusahaan', 'KSP', 4], [5, 'Departemen Pendukung Bisnis', 'PDS', 4], [5, 'Departemen Pengembangan Bisnis', 'PBS', 4],
+            // [5, 'riset Pemasaran Dan Pendayagunaan Data Warehouse', 5], [5, 'pengembangan Dan Pembinaan Jaringan Cabang', 3],
 
-            // SKARP
-            [6, 'FUNGSI PENDUKUNG ARP', 'RPD', 6],
-            // [6, 'ANALISA PEMBIAYAAN', 5], [6, 'PENILAIAN AGUNAN', 5],
+            // Skarp
+            [6, 'Fungsi Pendukung Arp', 'RPD', 6],
+            // [6, 'analisa Pembiayaan', 5], [6, 'penilaian Agunan', 5],
 
-            // SKBRK
-            // [6, 'PENGEMBANGAN PRODUK DAN PENGELOLAAN PROSES', 5], [5, 'PENGEMBANGAN DAN LAYANAN BISNIS', 5],
+            // Skbrk
+            // [6, 'pengembangan Produk Dan Pengelolaan Proses', 5], [5, 'pengembangan Dan Layanan Bisnis', 5],
 
-            // SKKPP
-            // [7, 'PERENCANAAN PERUSAHAAN', 5], [7, 'PORTOFOLIO MANAJEMEN', 5], [7, 'BIDANG KEUANGAN PERUSAHAAN', 3],
+            // Skkpp
+            // [7, 'perencanaan Perusahaan', 5], [7, 'portofolio Manajemen', 5], [7, 'bidang Keuangan Perusahaan', 3],
 
-            // DIVISI OPERASI
-            [9, 'DEPARTEMEN SENTRA OPERASI PERBANKAN', 'DSO', 4], [9, 'DEPARTEMEN ADMINISTRASI PEMBIAYAAN', 'ADP', 4], //[9, 'PENYELAMATAN PEMBIAYAAN', 5]
+            // Divisi Operasi
+            [9, 'Departemen Sentra Operasi Perbankan', 'DSO', 4], [9, 'Departemen Administrasi Pembiayaan', 'ADP', 4], //[9, 'penyelamatan Pembiayaan', 5]
         );
 
         for ($i = 0; $i < count($departemen); $i++) {
@@ -97,13 +97,13 @@ class DatabaseSeeder extends Seeder
 
         $cabang = array(
             // Jabodetabek
-            ['SELURUH KANTOR CABANG', 11], ['JATINEGARA', 11], ['MANGGA DUA', 11],
-            ['SAMANHUDI', 11], ['SUNTER', 11],
+            ['Seluruh Kantor Cabang', 11], ['Jatinegara', 11], ['Mangga Dua', 11],
+            ['Samanhudi', 11], ['Sunter', 11],
 
-            // Non jabodetabek
-            ['BANDA ACEH', 12], ['BANDUNG', 12], ['LAMPUNG', 12],
-            ['MEDAN', 12], ['PALEMBANG', 12], ['PANAKKUKANG', 12],
-            ['SEMARANG', 12], ['SOLO', 12], ['SURABAYA', 12], ['YOGYAKARTA', 12]
+            // Non Jabodetabek
+            ['Banda Aceh', 12], ['Bandung', 12], ['Lampung', 12],
+            ['Medan', 12], ['Palembang', 12], ['Panakkukang', 12],
+            ['Semarang', 12], ['Solo', 12], ['Surabaya', 12], ['Yogyakarta', 12]
         );
 
         for ($i = 0; $i < count($cabang); $i++) {
@@ -116,69 +116,69 @@ class DatabaseSeeder extends Seeder
         $bidang = array(
             // [Unit layanan, Cabang Utama]
             // Jatinegara
-            ['CABANG JATINEGARA', 2], ['KCP DEPOK', 2], ['KCP CILEUNGSI', 2],
-            // ['ULS CIMANGGIS', 2],
-            // ['ULS MARGONDA DEPOK', 2], ['ULS BOGOR', 2], ['ULS GUDANG PELURU', 2],
-            // ['ULS PONDOK INDAH', 2], ['ULS PASAR MINGGU', 2],
+            ['Cabang Jatinegara', 2], ['KCP Depok', 2], ['KCP Cileungsi', 2],
+            // ['uls Cimanggis', 2],
+            // ['uls Margonda Depok', 2], ['uls Bogor', 2], ['uls Gudang Peluru', 2],
+            // ['uls Pondok Indah', 2], ['uls Pasar Minggu', 2],
 
-            // Mangga dua
-            ['CABANG MANGGA DUA', 3], ['KCP CILEDUG', 3], ['KCP CIPUTAT', 3],
-            // ['ULS TANAH ABANG', 3], ['ULS BINTARO UTAMA', 3], ['ULS MELAWAI', 3],
-            // ['ULS KEMANG MANSION', 3],
+            // Mangga Dua
+            ['Cabang Mangga Dua', 3], ['KCP Ciledug', 3], ['KCP Ciputat', 3],
+            // ['uls Tanah Abang', 3], ['uls Bintaro Utama', 3], ['uls Melawai', 3],
+            // ['uls Kemang Mansion', 3],
 
             // Samanhudi
-            ['CABANG SAMANHUDI', 4], ['KCP KENARI', 4], ['KCP PASAR ANYAR TANGERANG', 4],
-            // ['ULS TANGERANG', 4], ['ULS PLUTI KENCANA', 4], ['ULS PURI INDAH', 4],
-            // ['ULS BINTARO', 4],
+            ['Cabang Samanhudi', 4], ['KCP Kenari', 4], ['KCP Pasar Anyar Tangerang', 4],
+            // ['uls Tangerang', 4], ['uls Pluti Kencana', 4], ['uls Puri Indah', 4],
+            // ['uls Bintaro', 4],
 
             // Sunter
-            ['CABANG SUNTER', 5], ['KCP KELAPA GADING', 5], ['KCP BEKASI', 5],
-            ['KCP PASAR KRANJI BEKASI', 5], ['KCP PONDOK GEDE', 5], ['KCP CIKARANG SELATAN', 5],
-            // ['ULS JUANDA BEKASI', 5], ['ULS TANJUNG PRIOK', 5],
+            ['Cabang Sunter', 5], ['KCP Kelapa Gading', 5], ['KCP Bekasi', 5],
+            ['KCP Pasar Kranji Bekasi', 5], ['KCP Pondok Gede', 5], ['KCP Cikarang Selatan', 5],
+            // ['uls Juanda Bekasi', 5], ['uls Tanjung Priok', 5],
 
-            // Banda aceh
-            ['CABANG BANDA ACEH', 6], ['KCP LHOKSEUMAWE', 6],
-            // , ['ULS BIREUEN', 6],
+            // Banda Aceh
+            ['Cabang Banda Aceh', 6], ['KCP Lhokseumawe', 6],
+            // , ['uls Bireuen', 6],
 
             // Bandung
-            ['CABANG BANDUNG', 7],
-            // ['ULS BUAH BATU', 7], ['ULS KOTA BARU PARAHYANGAN', 7],
-            // ['ULS DAGO', 7],
+            ['Cabang Bandung', 7],
+            // ['uls Buah Batu', 7], ['uls Kota Baru Parahyangan', 7],
+            // ['uls Dago', 7],
 
             // Lampung
-            ['CABANG LAMPUNG', 8],
+            ['Cabang Lampung', 8],
 
             // Medan
-            ['CABANG MEDAN', 9],
-            // ['ULS SETIABUDI MEDAN', 9],
+            ['Cabang Medan', 9],
+            // ['uls Setiabudi Medan', 9],
 
             // Palembang
-            ['CABANG PALEMBANG', 10],
-            // ['ULS SUDIRMAN PALEMBANG', 10], ['ULS AHMAD RIVAI', 10],
+            ['Cabang Palembang', 10],
+            // ['uls Sudirman Palembang', 10], ['uls Ahmad Rivai', 10],
 
             // Panakkukang
-            ['CABANG PANAKKUKANG', 11],
+            ['Cabang Panakkukang', 11],
 
             // Semarang
-            ['CABANG SEMARANG', 12],
-            // ['ULS PEMUDA', 12], ['ULS KUDUS', 12], ['ULS MAJAPAHIT', 12],
+            ['Cabang Semarang', 12],
+            // ['uls Pemuda', 12], ['uls Kudus', 12], ['uls Majapahit', 12],
 
             // Solo
-            ['CABANG SOLO', 13],
-            // ['ULS SLAMET TIYADI', 13], ['ULS SINGOSAREN', 13], ['ULS SRAGEN', 13],
+            ['Cabang Solo', 13],
+            // ['uls Slamet Tiyadi', 13], ['uls Singosaren', 13], ['uls Sragen', 13],
 
             // Surabaya
-            ['CABANG SURABAYA', 14], ['KCP MALANG', 14], ['KCP KEDIRI', 14],
-            ['KCP PASURUAN', 14], ['KCP BANYUWANGI', 14],
-            // ['ULS VETERAN', 14],
-            // ['ULS DARMO', 14], ['ULS GEDANGAN', 14], ['ULS SEPANJANG', 14],
-            // ['ULS PERAK BARAT', 14], ['ULS SIDOARJO', 14], ['ULS PONDOK CHANDRA', 14],
-            // ['ULS PANDAAN', 14], ['ULS GRESIK', 14], ['ULS MOJOKERTO', 14],
-            // ['ULS KAPAS KRAMPUNG', 14], ['ULS KEPANJEN', 14], ['ULS TAMAN PONDOK INDAH', 14],
+            ['Cabang Surabaya', 14], ['KCP Malang', 14], ['KCP Kediri', 14],
+            ['KCP Pasuruan', 14], ['KCP Banyuwangi', 14],
+            // ['uls Veteran', 14],
+            // ['uls Darmo', 14], ['uls Gedangan', 14], ['uls Sepanjang', 14],
+            // ['uls Perak Barat', 14], ['uls Sidoarjo', 14], ['uls Pondok Chandra', 14],
+            // ['uls Pandaan', 14], ['uls Gresik', 14], ['uls Mojokerto', 14],
+            // ['uls Kapas Krampung', 14], ['uls Kepanjen', 14], ['uls Taman Pondok Indah', 14],
 
             // Yogyakarta
-            ['CABANG YOGYAKARTA', 15],
-            // ['ULS SUDIRMAN YOGYAKARTA', 15]
+            ['Cabang Yogyakarta', 15],
+            // ['uls Sudirman Yogyakarta', 15]
         );
 
         for ($i = 0; $i < count($bidang); $i++) {
@@ -190,7 +190,7 @@ class DatabaseSeeder extends Seeder
 
         $level = array(
             ['admin', 99], ['Kepala Satuan Kerja', 7], ['Kepala Divisi', 7],
-            ['Kepala Unit Kerja', 7], ['Kepala Cabang', 6], ['Kepala departemen', 6],
+            ['Kepala Unit Kerja', 7], ['Kepala Cabang', 6], ['Kepala Departemen', 6],
             ['Senior Officer', 6], ['Kepala Bidang', 5], ['Kepala Operasi Cabang', 5],
             ['Kepala Cabang Pembantu', 5], ['Officer', 5], ['Kepala Bagian', 4],
             ['Kepala ULS A', 4], ['Associate Officer', 4], ['Staff', 3]

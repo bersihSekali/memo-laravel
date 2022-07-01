@@ -19,6 +19,7 @@ use App\Http\Controllers\OtorisasiBaruController;
 use App\Http\Controllers\TujuanBidangCabangController;
 use App\Http\Controllers\TujuanDepartemenController;
 use App\Http\Controllers\ForwardCabangController;
+use App\Http\Controllers\DraftController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -63,6 +64,7 @@ Route::resource('otorisasi', OtorisasiSuratController::class)->middleware('auth'
 Route::resource('otor', OtorisasiBaruController::class)->middleware('auth');
 Route::resource('suratMasuk', SuratMasukController::class)->middleware('auth')->name('index', 'suratMasuk');
 Route::resource('suratKeluar', SuratKeluarController::class)->middleware('auth');
+Route::resource('draft', DraftController::class)->middleware('auth');
 Route::resource('laporan', GenerateLaporanController::class)->middleware('auth');
 
 Route::post('forward/selesaikan/{id}', [ForwardController::class, 'selesaikan'])->middleware('auth');

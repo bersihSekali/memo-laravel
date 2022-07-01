@@ -79,6 +79,15 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a class="nav-link" href="/draft">
+              <i class="fas fa-envelope"></i>
+              <span class="nav-link-title ms-1">
+                Draft
+              </span>
+            </a>
+          </li>
+
           {{-- Untuk semua user --}}
           @if ($users->level != 1)
           <li class="nav-item dropdown">

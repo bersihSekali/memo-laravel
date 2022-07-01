@@ -16,8 +16,9 @@
         </div>
         @endif
 
-        <form action="/suratKeluar" method="post" enctype="multipart/form-data">
+        <form action="/draft/{{$edit['id']}}" method="post" enctype="multipart/form-data">
             @csrf
+            {{method_field('PUT')}}
 
             {{-- Input pembuat --}}
             <div class="form-group mb-3">
@@ -33,10 +34,10 @@
                 <div class="col-md-6">
                     <label for="kriteria" class="form-label ">Kriteria Informasi</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="kriteria" style="width: 100%;">
-                        <option selected disabled> -- Pilih salah satu -- </option>
-                        <option value="INTERNAL BCA SYARIAH"> INTERNAL BCA SYARIAH </option>
-                        <option value="RAHASIA"> RAHASIA </option>
-                        <option value="SANGAT RAHASIA"> SANGAT RAHASIA </option>
+                        <option disabled> -- Pilih salah satu -- </option>
+                        <option value="INTERNAL BCA SYARIAH" {{$edit['kriteria'] == "INTERNAL BCA SYARIAH" ? 'selected' : ''}}> INTERNAL BCA SYARIAH </option>
+                        <option value="RAHASIA" {{$edit['kriteria'] == "RAHASIA" ? 'selected' : ''}}> RAHASIA </option>
+                        <option value="SANGAT RAHASIA" {{$edit['kriteria'] == "SANGAT RAHASIA" ? 'selected' : ''}}> SANGAT RAHASIA </option>
                     </select>
                 </div>
             </div>
@@ -45,7 +46,7 @@
             <div class="form-group formulir mb-3" style="display: none;">
                 <div class="col-md-6">
                     <label for="nomor_surat" class="form-label ">Nomor Surat</label>
-                    <input type="text" class="form-control" autocomplete="off" name="nomor_surat">
+                    <input type="text" class="form-control" autocomplete="off" name="nomor_surat" value="{{$edit['nomor_surat']}}">
                 </div>
             </div>
 
@@ -84,7 +85,7 @@
                             <select class="form-select" aria-label=".form-select-sm example" name="tujuan_unit_kerja[]" id="tujuan_unit_kerja" multiple="multiple">
                                 <option id="unit_kerja" value="unit_kerja">Seluruh Unit Kerja</option>
                                 @foreach ($satuanKerjas as $satuanKerja)
-                                <option class="opsi_unit_kerja" value="{{ $satuanKerja->id }}">{{ $satuanKerja->inisial }}</option>
+                                <option class="opsi_unit_kerja" value="{{ $satuanKerja->id }}" {{ in_array($satuanKerja->id, $tujuanSatkerDrafts) ? 'selected' : '' }}>{{ $satuanKerja->inisial }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -104,14 +105,6 @@
                                 <option class="opsi_kantor_cabang_besar besar-{{ $cabang->id }}" value="S{{ $cabang->id }}">
                                     {{ $cabang->cabang }}
                                 </option>
-
-                                <!-- @foreach ($bidangCabangs as $bidang)
-                                @if ($bidang->cabang_id == $cabang->id)
-                                <option class="opsi_kantor_bidang bidang-{{ $cabang->id }}" value="{{ $bidang->id }}">-
-                                    {{ $bidang->bidang }}
-                                </option>
-                                @endif
-                                @endforeach -->
                                 @endforeach
                             </select>
                         </div>
@@ -122,7 +115,7 @@
             {{-- Input perihal --}}
             <div class="form-group mb-3 formulir" style="display: none">
                 <label for="perihal" class="form-label ">Perihal</label>
-                <textarea class="form-control" aria-label="With textarea" name="perihal" required id="perihal" required></textarea>
+                <textarea class="form-control" aria-label="With textarea" name="perihal" id="perihal" required>{{$edit['perihal']}}</textarea>
             </div>
 
             {{-- Input otor pengganti --}}
@@ -130,17 +123,17 @@
                 <div class="col-sm-6 mb-3" name="pengganti_antar_satuan_kerja" id="pengganti_antar_satuan_kerja" style="display: none;">
                     <label for="tunjuk_otor1_by" class="form-label">Tanda Tangan 1</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
-                        <option selected disabled> -- Pilih salah satu -- </option>
+                        <option disabled> -- Pilih salah satu -- </option>
                         @if ($users->cabang)
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->level == 5 || $pengganti->level == 9 || ($pengganti->departemenTable['inisial'] == 'SBK' && $pengganti->level == 2))
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }}</option>
+                        <option value="{{ $pengganti['id'] }}" {{ $edit['otor1_by'] == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }}</option>
                         @endif
                         @endforeach
                         @else
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->levelTable->golongan == 7)
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        <option value="{{ $pengganti['id'] }}" {{ $edit['otor1_by'] == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
                         @endif
                         @endforeach
                         @endif
@@ -150,12 +143,12 @@
                 <div class="col-sm-6 mb-3">
                     <label for="tunjuk_otor2_by" class="form-label">Tanda Tangan 2</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor2_by" id="tunjuk_otor2_by">
-                        <option selected disabled> -- Pilih salah satu -- </option>
+                        <option disabled> -- Pilih salah satu -- </option>
                         @if ($users->cabang)
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->cabang == $users->cabang)
                         @if ($pengganti->level == 5 || $pengganti->level == 9 || $pengganti->level == 10 || $pengganti->level == 12 || $pengganti->level == 13)
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }}</option>
+                        <option value="{{ $pengganti['id'] }}" {{ $edit['otor2_by'] == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }}</option>
                         @endif
                         @endif
                         @endforeach
@@ -163,7 +156,7 @@
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->satuan_kerja == $users->satuan_kerja)
                         @if ($pengganti->levelTable['golongan'] >= 4)
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }}</option>
+                        <option value="{{ $pengganti['id'] }}" {{ $edit['otor2_by'] == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }}</option>
                         @endif
                         @endif
                         @endforeach
@@ -172,9 +165,9 @@
                         @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
                         @if ($pengganti->satuan_kerja == $users->satuan_kerja)
                         @if ($pengganti->level == 6)
-                        <option value="{{ $pengganti['id']}}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->departemenTable['departemen']) }}</option>
+                        <option value="{{ $pengganti['id']}}" {{ $edit['otor2_by'] == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->departemenTable['departemen']) }}</option>
                         @else
-                        <option value="{{ $pengganti['id']}}">{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable['departemen']) }}</option>
+                        <option value="{{ $pengganti['id']}}" {{ $edit['otor2_by'] == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->departemenTable['departemen']) }}</option>
                         @endif
                         @endif
                         @endif
@@ -186,11 +179,12 @@
 
             {{-- Input lampiran --}}
             <div class="mb-3">
-                <textarea id="summernote" name="editordata"></textarea>
+                <textarea id="summernote" name="editordata">{{$edit['isi']}}</textarea>
             </div>
 
             <div class="mb-3 formulir" style="display: none">
                 <label for="lampiran" class="form-label">Lampiran</label>
+                <a href="/storage/{{ $edit['lampiran'] }}" target="_blank"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran Terunggah</button></a>
                 <input class="form-control" type="file" id="lampiran" name="lampiran">
             </div>
 

@@ -23,8 +23,11 @@ class SuratKeluar extends Model
         'cabang_asal',
         'departemen_asal',
         'lampiran',
+        'kriteria',
+        'isi',
         'tanggal_otor2',
         'tanggal_otor1',
+        'draft',
         'status',
         'internal',
         'no_urut'

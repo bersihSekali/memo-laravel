@@ -13,6 +13,7 @@ use App\Models\TujuanSatuanKerja;
 use App\Models\Cabang;
 use App\Models\BidangCabang;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Redirect;
 
 class SuratKeluarController extends Controller
 {
@@ -245,8 +246,8 @@ class SuratKeluarController extends Controller
             $validated['satuan_kerja_asal'] = $request->satuan_kerja_asal;
             $validated['tujuan_unit_kerja'] = $request->tujuan_unit_kerja;
             $validated['isi'] = $request->editordata;
-            $validated['otor2_by_pengganti'] = $request->tunjuk_otor2_by;
-            $validated['otor1_by_pengganti'] = $request->tunjuk_otor1_by;
+            $validated['otor2_by'] = $request->tunjuk_otor2_by;
+            $validated['otor1_by'] = $request->tunjuk_otor1_by;
             $validated['internal'] = 2;
 
             if ($validated['tujuan_unit_kerja'] == 'unit_kerja') {
@@ -282,6 +283,138 @@ class SuratKeluarController extends Controller
             $canvas->page_text(550, 800, "{PAGE_NUM}/{PAGE_COUNT}", null, 10, array(0, 0, 0));
 
             return $pdf->stream();
+        } else if (isset($_POST['draft'])) {
+            $id = Auth::id();
+            $user = User::find($id);
+
+            $satuanKerja = SatuanKerja::all();
+            $cabang = Cabang::all();
+
+            $validated = $request->validate([
+                'created_by' => 'required',
+                'kriteria' => 'required',
+                'nomor_surat' => 'required',
+                'perihal' => 'required',
+                'lampiran' => 'mimes:pdf',
+            ]);
+            $validated['cabang_asal'] = $request->cabang_asal;
+            $validated['satuan_kerja_asal'] = $request->satuan_kerja_asal;
+            $validated['tujuan_unit_kerja'] = $request->tujuan_unit_kerja;
+            $validated['isi'] = $request->editordata;
+            $validated['otor2_by'] = $request->tunjuk_otor2_by;
+            $validated['otor1_by'] = $request->tunjuk_otor1_by;
+            $validated['internal'] = 2;
+            $validated['draft'] = 1;
+
+            $tujuanUnitKerja = $request->tujuan_unit_kerja;
+            $tujuanKantorCabang = $request->tujuan_kantor_cabang;
+
+            // get file and store
+            if ($request->file('lampiran')) {
+                $file = $request->file('lampiran');
+                $originalFileName = $file->getClientOriginalName();
+                $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+                $fileName = date("YmdHis") . '_' . $fileName;
+                $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+            }
+            // dd($tujuanUnitKerja);
+            // dd(count($tujuanUnitKerja));
+
+            $create = SuratKeluar::create($validated);
+            // Return gagal simpan
+            if (!$create) {
+                return redirect('/suratKeluar/create')->with('error', 'Pembuatan surat gagal');
+            }
+
+            $idSurat = $create->id;
+
+            $cabangBesar = array();
+            $bidang = array();
+            if ($tujuanKantorCabang != null) {
+                foreach ($tujuanKantorCabang as $item) {
+                    if (substr($item, 0, 1) == 'S') {
+                        $item = ltrim($item, $item[0]);
+                        array_push($cabangBesar, $item);
+                    } elseif ($item == 'kantor_cabang') {
+                        continue;
+                    } else {
+                        array_push($bidang, $item);
+                    }
+                }
+            }
+
+            // Seluruh tujuan kantor cabang
+            if ($tujuanKantorCabang[0] == 'kantor_cabang') {
+                foreach ($cabang as $item) {
+                    if ($item->cabang_id != $user->cabang) {
+                        TujuanKantorCabang::create([
+                            'memo_id' => $idSurat,
+                            'cabang_id' => $item->id,
+                            'all_flag' => 1
+                        ]);
+                    }
+                }
+                // foreach ($bidangCabang as $item) {
+                //     TujuanKantorCabang::create([
+                //         'memo_id' => $idSurat,
+                //         'bidang_id' => $item->id,
+                //         'all_flag' => 1
+                //     ]);
+                // }
+            }
+
+            if (count($cabangBesar) != 0) {
+                foreach ($cabangBesar as $item) {
+                    TujuanKantorCabang::create([
+                        'memo_id' => $idSurat,
+                        'cabang_id' => $item,
+                        'all_flag' => 1
+                    ]);
+                    // $bidangLoop = BidangCabang::where('cabang_id', $item)->get();
+                    // foreach ($bidangLoop as $item_bidang) {
+                    //     TujuanKantorCabang::create([
+                    //         'memo_id' => $idSurat,
+                    //         'bidang_id' => $item_bidang->id,
+                    //         'all_flag' => 1
+                    //     ]);
+                    // }
+                }
+            }
+
+
+            // if (count($bidang) != 0) {
+            //     foreach ($bidang as $item) {
+            //         TujuanKantorCabang::create([
+            //             'memo_id' => $idSurat,
+            //             'bidang_id' => $item,
+            //             'all_flag' => 0
+            //         ]);
+            //     }
+            // }
+
+            // Tujuan unit kerja
+            if ($tujuanUnitKerja[0] == 'unit_kerja') {
+                foreach ($satuanKerja as $item) {
+                    if ($item->satuan_kerja != $user->satuan_kerja) {
+                        TujuanSatuanKerja::create([
+                            'memo_id' => $idSurat,
+                            'satuan_kerja_id' => $item->id,
+                            'all_flag' => 1
+                        ]);
+                    }
+                }
+            } else {
+                if ($tujuanUnitKerja != null)
+                    foreach ($tujuanUnitKerja as $item) {
+                        TujuanSatuanKerja::create([
+                            'memo_id' => $idSurat,
+                            'satuan_kerja_id' => $item,
+                            'all_flag' => 0
+                        ]);
+                    }
+            }
+
+            return redirect('/draft')->with('success', 'Draft berhasil disimpan');
         } else {
             //no button pressed
         }
@@ -306,7 +439,7 @@ class SuratKeluarController extends Controller
      */
     public function edit($id)
     {
-        //
+        dd($id);
     }
 
     /**
@@ -316,7 +449,7 @@ class SuratKeluarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($request, $id)
     {
         //
     }

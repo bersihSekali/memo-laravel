@@ -43,10 +43,12 @@ class CreateSuratKeluarsTable extends Migration
             $table->foreign('cabang_asal')->references('id')->on('cabangs');
             $table->foreign('departemen_asal')->references('id')->on('departemens');
 
+            $table->string('kriteria');
+            $table->string('isi')->nullable();
             $table->string('lampiran')->nullable();
             $table->string('pesan_tolak')->nullable();
             $table->unsignedBigInteger('internal');
-
+            $table->boolean('draft');
             $table->unsignedBigInteger('status')->default(1);
         });
     }
