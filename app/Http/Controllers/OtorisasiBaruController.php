@@ -169,7 +169,7 @@ class OtorisasiBaruController extends Controller
             $file = $request->file('lampiran_tolak');
             $originalFileName = $file->getClientOriginalName();
             $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-            $fileName = date("YmdHis") . '_' . $fileName . '_' . 'TOLAK';
+            $fileName = 'TOLAK' . '_' . date("YmdHis") . '_' . $fileName;
             $datas['lampiran_tolak'] = $request->file('lampiran_tolak')->storeAs('lampiran_tolak', $fileName);
             array_push($update, $datas['lampiran_tolak']);
         }
@@ -255,7 +255,7 @@ class OtorisasiBaruController extends Controller
             $file = $request->file('lampiran_tolak');
             $originalFileName = $file->getClientOriginalName();
             $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-            $fileName = date("YmdHis") . '_' . $fileName . '_' . 'TOLAK';
+            $fileName = 'TOLAK' . '_' . date("YmdHis") . '_' . $fileName;
             $datas['lampiran_tolak'] = $request->file('lampiran_tolak')->storeAs('lampiran_tolak', $fileName);
             array_push($update, $datas['lampiran_tolak']);
         }

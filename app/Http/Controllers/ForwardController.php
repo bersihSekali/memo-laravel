@@ -97,8 +97,8 @@ class ForwardController extends Controller
                 ->join('tujuan_departemens', 'surat_keluars.id', '=', 'tujuan_departemens.memo_id')
                 ->where('surat_keluars.id', $id)->first();
 
-            $forwarded = Forward::where('memo_id', $edit['id'])->get();
-            $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
+            $forwarded = Forward::where('memo_id', $edit['memo_id'])->get();
+            $forwarded_id = Forward::where('memo_id', $edit['memo_id'])->pluck('user_id')->toArray();
             $forward = User::where('departemen', $user->departemen)->get();
         }
 

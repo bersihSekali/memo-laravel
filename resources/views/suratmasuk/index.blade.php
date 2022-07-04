@@ -189,6 +189,9 @@
                         <tr>
                             <td class="align-top" width="20%">Tujuan</td>
                             <td>
+
+                                @if ($data->internal == 2)
+
                                 {{-- Tujuan kantor cabang --}}
                                 @if (in_array($data->memo_id, $seluruhCabangMemoIds))
                                 : SELURUH KANTOR LAYANAN <br>
@@ -198,26 +201,6 @@
                                 @if ($item->all_flag == true && $item->cabang_id != null)
                                 : CABANG {{ $item->tujuanCabang->cabang }} <br>
                                 @endif
-                                @endif
-                                @endforeach
-                                @endif
-
-                                {{-- Tujuan kantor bidang --}}
-                                @foreach ($tujuanCabangs as $item)
-                                @if ($item->memo_id == $data->memo_id)
-                                @if ($item->bidang_id != null && $item->all_flag!=true)
-                                : {{ $item->tujuanBidang->bidang }} <br>
-                                @endif
-                                @endif
-                                @endforeach
-
-                                {{-- Tujuan departemen --}}
-                                @if (in_array($data->memo_id, $seluruhDepartemenMemoIds))
-                                : SELURUH DEPARTEMEN SKTILOG <br>
-                                @else
-                                @foreach ($tujuanDepartemens as $item)
-                                @if ($item->memo_id == $data->memo_id)
-                                : {{ $item->tujuanDepartemen->departemen }} <br>
                                 @endif
                                 @endforeach
                                 @endif
@@ -233,6 +216,20 @@
                                 @endforeach
                                 @endif
 
+                                @elseif ($data->internal == 1)
+
+                                {{-- Tujuan departemen --}}
+                                @if (in_array($data->memo_id, $seluruhDepartemenMemoIds))
+                                : SELURUH DEPARTEMEN SKTILOG <br>
+                                @else
+                                @foreach ($tujuanDepartemens as $item)
+                                @if ($item->memo_id == $data->memo_id)
+                                : {{ $item->tujuanDepartemen->departemen }} <br>
+                                @endif
+                                @endforeach
+                                @endif
+
+                                @endif
                             </td>
                         </tr>
 
@@ -249,9 +246,14 @@
                         </tr>
                         @endif
 
+                        <tr width="20%">
+                            <td>Isi</td>
+                            <td>: <a type="button" href="/draft/{{ $data['memo_id'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Memo</a></td>
+                        </tr>
+
                         <tr>
                             <td>Lampiran</td>
-                            <td>: <a href="/storage/{{ $data['lampiran'] }}"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
+                            <td>: <a class="btn btn-info btn-sm" href="/storage/{{ $data['lampiran'] }}" target="_blank">Lihat Lampiran</a></td>
                         </tr>
                     </table>
                 </div>

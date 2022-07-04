@@ -193,7 +193,7 @@
                         <tr width="20%">
                             <td>Isi</td>
                             @if ($data->status == 0)
-                            <td>: <a type="button" href="/storage/{{ $data['lampiran_tolak'] }}" class="btn btn-info btn-sm" style="text-decoration: none">Lihat Memo</a></td>
+                            <td>: <a type="button" href="/storage/{{ $data['lampiran_tolak'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Memo</a></td>
                             @else
                             <td>: <a type="button" href="/draft/{{ $data['id'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Memo</a></td>
                             @endif
@@ -235,6 +235,7 @@
             </div>
             @if ($data->status == 0)
             <div class="modal-footer">
+                <a class="btn btn-warning" href="/draft/{{ $data['id'] }}/edit">Edit</a>
                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$data['id']}}">Hapus</button>
             </div>
             @endif

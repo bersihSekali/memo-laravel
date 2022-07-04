@@ -52,6 +52,7 @@
                     <tr>
                         <th scope="col">Nama</th>
                         <th scope="col">Pesan</th>
+                        <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,6 +60,15 @@
                     <tr>
                         <td>{{$item->users['name']}}</td>
                         <td>{{$item->pesan_disposisi}}</td>
+                        @if ($item->status_baca)
+                        <td>
+                            <span class="badge bg-success">Dibaca</span>
+                        </td>
+                        @else
+                        <td>
+                            <span class="badge bg-secondary">Belum Dibaca</span>
+                        </td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>
@@ -68,7 +78,7 @@
 
     <div class="row">
         <h1 class="h3 mb-2 text-gray-800">Tambahkan Tujuan:</h1>
-        <form action="/forward/{{$edits['id']}}" method="post">
+        <form action="/forward/{{$edits['memo_id']}}" method="post">
             @csrf
             {{method_field('PUT')}}
             <div class="modal-body">

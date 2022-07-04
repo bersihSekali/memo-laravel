@@ -49,6 +49,7 @@
                     <tr>
                         <th scope="col">Kantor Cabang Pembantu</th>
                         <th scope="col">Pesan</th>
+                        <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,6 +57,15 @@
                     <tr>
                         <td>{{$item->tujuanBidangCabang['bidang']}}</td>
                         <td>{{$item->pesan_disposisi}}</td>
+                        @if ($item->status_baca)
+                        <td>
+                            <span class="badge bg-success">Dibaca</span>
+                        </td>
+                        @else
+                        <td>
+                            <span class="badge bg-secondary">Belum Dibaca</span>
+                        </td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>

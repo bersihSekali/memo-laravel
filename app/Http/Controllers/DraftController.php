@@ -12,6 +12,7 @@ use App\Models\SatuanKerja;
 use App\Models\Cabang;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Departemen;
+use Illuminate\Support\Facades\Storage;
 
 
 class DraftController extends Controller
@@ -208,7 +209,16 @@ class DraftController extends Controller
         $validated['otor2_by'] = $request->tunjuk_otor2_by;
         $validated['otor1_by'] = $request->tunjuk_otor1_by;
         $validated['internal'] = 2;
+        $validated['status'] = 1;
         $validated['draft'] = 1;
+
+        // bersihkan tolak
+        $validated['pesan_tolak'] = null;
+        $validated['tanggal_tolak'] = null;
+        if ($draft['lampiran_tolak']) {
+            $validated['lampiran_tolak'] = null;
+            Storage::delete($draft->lampiran);
+        }
 
         // get file and store
         if ($request->file('lampiran')) {
@@ -312,6 +322,8 @@ class DraftController extends Controller
 
         if (isset($_POST['simpan'])) {
             $update[] = $draft['draft'] = 0;
+            $draft['status'] = 1;
+            array_push($update, $draft['status']);
             $draft->update($update);
 
             return redirect('/suratKeluar');

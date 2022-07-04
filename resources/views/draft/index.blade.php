@@ -168,7 +168,7 @@
 
                         <tr width="20%">
                             <td>Isi</td>
-                            <td>: <a type="button" href="/draft/{{ $data['id'] }}" class="btn btn-info btn-sm" style="text-decoration: none">Lihat Tinjauan</a></td>
+                            <td>: <a type="button" href="/draft/{{ $data['id'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Tinjauan</a></td>
                         </tr>
                         <tr width="20%">
                             <td>Lampiran</td>

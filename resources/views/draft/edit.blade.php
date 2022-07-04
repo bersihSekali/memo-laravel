@@ -189,7 +189,7 @@
             </div>
 
             <div class="d-flex">
-                <button type="submit" name="lihat" value="lihat" class="btn btn-info formulir" style="display: none">Lihat Pratinjau</button>
+                <button type="submit" name="lihat" value="lihat" class="btn btn-info formulir" style="display: none" formtarget="_blank">Lihat Pratinjau</button>
                 <button type="submit" name="draft" value="draft" class="btn btn-warning formulir" style="display: none">Simpan Draft</button>
                 <button type="submit" name="simpan" value="simpan" class="btn btn-primary formulir ms-auto" style="display: none">Simpan</button>
             </div>

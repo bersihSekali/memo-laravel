@@ -12,7 +12,7 @@
         @endif
         <h1 class="h3 mb-2 text-gray-800">Memo:</h1>
         <div class="table-responsive">
-            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+            <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th scope="col" width="10%">Tanggal</th>
@@ -46,11 +46,12 @@
     <div class="row mb-3">
         <h1 class="h3 mb-2 text-gray-800">Telah ditujukan kepada:</h1>
         <div class="table-responsive caption-top">
-            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+            <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th scope="col">Departemen</th>
                         <th scope="col">Pesan</th>
+                        <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,6 +59,15 @@
                     <tr>
                         <td>{{$item->tujuanDepartemen['departemen']}}</td>
                         <td>{{$item->pesan_disposisi}}</td>
+                        @if ($item->status_baca)
+                        <td>
+                            <span class="badge bg-success">Dibaca</span>
+                        </td>
+                        @else
+                        <td>
+                            <span class="badge bg-secondary">Belum Dibaca</span>
+                        </td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>

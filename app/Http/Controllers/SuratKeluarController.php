@@ -28,9 +28,11 @@ class SuratKeluarController extends Controller
         $user = User::where('id', $id)->first();
         if ($user->cabang) {
             $mails = SuratKeluar::where('cabang_asal', $user->cabang)
+                ->where('draft', 0)
                 ->latest()->get();
         } elseif ($user->satuan_kerja) {
             $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->where('draft', 0)
                 ->latest()->get();
         }
 
@@ -285,7 +287,7 @@ class SuratKeluarController extends Controller
 
             $canvas->page_text(550, 800, "{PAGE_NUM}/{PAGE_COUNT}", null, 10, array(0, 0, 0));
 
-            return $pdf->stream("{{$validated['perihal']}}", array('Attachment' => 0));
+            return $pdf->stream();
         } else if (isset($_POST['draft'])) {
             $id = Auth::id();
             $user = User::find($id);
