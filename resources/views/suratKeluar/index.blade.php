@@ -192,11 +192,15 @@
 
                         <tr width="20%">
                             <td>Isi</td>
-                            <td>: <a type="button" href="/draft/{{ $data['id'] }}" class="btn btn-info btn-sm" style="text-decoration: none">Lihat Memo</a></td>
+                            @if ($data->status == 0)
+                            <td>: <a type="button" href="/storage/{{ $data['lampiran_tolak'] }}" class="btn btn-info btn-sm" style="text-decoration: none">Lihat Memo</a></td>
+                            @else
+                            <td>: <a type="button" href="/draft/{{ $data['id'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Memo</a></td>
+                            @endif
                         </tr>
                         <tr width="20%">
                             <td>Lampiran</td>
-                            <td>: <a href="/storage/{{ $data['lampiran'] }}" target="_blank"><button type="button" class="btn btn-info btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
+                            <td>: <a class="btn btn-info btn-sm" href="/storage/{{ $data['lampiran'] }}" target="_blank">Lihat Lampiran</a></td>
                         </tr>
                         <tr>
                             <td width="20%">Status</td>
@@ -210,8 +214,8 @@
                                 <span class="badge bg-success">Disetujui {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}</span>
                                 <span class="badge bg-secondary">Menunggu {{$data->otor1By['name']}}</span>
 
-                                {{-- approved otor2_by --}}
-                                @elseif ($data->status == 2)
+                                {{-- approved otor1_by --}}
+                                @elseif ($data->status == 3)
                                 <span class="badge bg-success">Disetujui {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}</span>
                                 <span class="badge bg-success">Disetujui {{$data->otor1By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}</span>
 

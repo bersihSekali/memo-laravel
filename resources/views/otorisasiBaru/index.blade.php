@@ -182,11 +182,11 @@
 
                 {{-- approved otor2_by --}}
                 @elseif ($data->status == 2)
-                <span class="badge bg-secondary">Disetujui {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}</span>
+                <span class="badge bg-success">Disetujui {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}</span>
                 <span class="badge bg-secondary">Menunggu {{$data->otor1By['name']}}</span>
 
                 {{-- approved otor2_by --}}
-                @elseif ($data->status == 2)
+                @elseif ($data->status == 3)
                 <span class="badge bg-success">Disetujui {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}</span>
                 <span class="badge bg-success">Disetujui {{$data->otor1By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}</span>
 
@@ -231,7 +231,7 @@
           {{method_field('DELETE')}}
 
           <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran">
+            <input class="form-control" type="file" id="lampiran_tolak" name="lampiran_tolak">
           </div>
 
           <div class="my-3">
@@ -245,12 +245,12 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
         <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
-        <form action="/disapprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+        <form action="/otor/disApprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
-          {{method_field('DELETE')}}
+          {{method_field('POST')}}
 
           <div class="mb-3">
-            <input class="form-control" type="file" id="lampiran" name="lampiran">
+            <input class="form-control" type="file" id="lampiran_tolak" name="lampiran_tolak">
           </div>
 
           <div class="my-3">
@@ -469,8 +469,30 @@
     <div class="modal-content">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="modal-status bg-success"></div>
+      @if ($data->status == 1)
+      <div class="modal-body text-center py-4">
+        <h3>Apakah yakin ingin menyetujui?</h3>
+        <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+        <form action="/otor/{{ $data['id'] }}" method="post">
+          @csrf
+          {{method_field('PUT')}}
 
-      {{-- Kepala bidang, kepala operasi cabang, kepala cabang pembantu, officer --}}
+          <button type="submit" class="btn btn-success w-100">Setujui</button>
+        </form>
+      </div>
+      @elseif ($data->status == 2)
+      <div class="modal-body text-center py-4">
+        <h3>Apakah yakin ingin menyetujui?</h3>
+        <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
+        <form action="/otor/approvedOtorSatu/{{ $data['id'] }}" method="post">
+          @csrf
+          {{method_field('POST')}}
+
+          <button type="submit" class="btn btn-success w-100">Setujui</button>
+        </form>
+      </div>
+      @endif
+      <!-- {{-- Kepala bidang, kepala operasi cabang, kepala cabang pembantu, officer --}}
       @if ($users->levelTable->golongan == 5)
       {{-- Surat antar departemen sebagai otor2_by --}}
       @if (($data->status == 1) && ($data->internal == 1))
@@ -649,7 +671,7 @@
           <button type="submit" class="btn btn-success w-100">Setujui</button>
         </form>
       </div>
-      @endif
+      @endif -->
     </div>
   </div>
 </div>
