@@ -115,33 +115,20 @@ class OtorisasiBaruController extends Controller
     public function update(Request $request, $id)
     {
         $user_id = Auth::id();
-        $user = User::where('id', $user_id)->first();
+        $user = User::find($user_id);
 
         $datas = SuratKeluar::find($id);
 
         // Update tanggal otor
         $update[] = $datas['tanggal_otor2'] = date("Y-m-d H:i:s");
 
-        // Update otor_by 
+        // Update otor_by
         $datas['otor2_by'] = $user->id;
         array_push($update, $datas['otor2_by']);
 
-        // Nomor surat antar departemen
+        // status surat
         $datas['status'] = 2;
         array_push($update, $datas['status']);
-
-        // Update lampiran
-        if ($datas->lampiran) {
-            Storage::delete($datas->lampiran);
-        }
-
-        // get file and store
-        $file = $request->file('lampiran');
-        $originalFileName = $file->getClientOriginalName();
-        $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-        $fileName = date("YmdHis") . '_' . $fileName;
-        $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
-        array_push($update, $datas['lampiran']);
 
         $datas->update($update);
 
@@ -161,9 +148,10 @@ class OtorisasiBaruController extends Controller
     public function destroy(Request $request, $id)
     {
         $user_id = Auth::id();
-        $user = User::where('id', $user_id)->first();
+        $user = User::find($user_id);
 
         $datas = SuratKeluar::find($id);
+
         // Update otor status
         $update[] = $datas['status'] = '0';
 
@@ -171,31 +159,19 @@ class OtorisasiBaruController extends Controller
         $datas['pesan_tolak'] = $request->pesan_tolak;
         array_push($update, $datas['pesan_tolak']);
 
-        // Hapus nomor urut
-        $datas['no_urut'] = 0;
-        array_push($update, $datas['no_urut']);
-
         // Update tanggal otor
-        $datas['tanggal_otor2'] = date("Y-m-d H:i:s");
-        array_push($update, $datas['tanggal_otor2']);
-
-        // Update otor_by 
-        $datas['otor2_by'] = $user->id;
-        array_push($update, $datas['otor2_by']);
-
-        // Update lampiran
-        if ($datas->lampiran) {
-            Storage::delete($datas->lampiran);
-        }
+        $datas['tanggal_tolak'] = date("Y-m-d H:i:s");
+        array_push($update, $datas['tanggal_tolak']);
 
         // get file and store
-        if ($request->file('lampiran')) {
-            $file = $request->file('lampiran');
+
+        if ($request->file('lampiran_tolak')) {
+            $file = $request->file('lampiran_tolak');
             $originalFileName = $file->getClientOriginalName();
             $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-            $fileName = date("YmdHis") . '_' . $fileName;
-            $datas['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
-            array_push($update, $datas['lampiran']);
+            $fileName = date("YmdHis") . '_' . $fileName . '_' . 'TOLAK';
+            $datas['lampiran_tolak'] = $request->file('lampiran_tolak')->storeAs('lampiran_tolak', $fileName);
+            array_push($update, $datas['lampiran_tolak']);
         }
 
         $datas->update($update);

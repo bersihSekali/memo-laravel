@@ -92,14 +92,24 @@ class DraftController extends Controller
 
         $draft = SuratKeluar::find($id);
         $tujuanSatkerDraft = TujuanSatuanKerja::where('memo_id', $id)->pluck('satuan_kerja_id')->toArray();
+        $tujuanCabangDraft = TujuanKantorCabang::where('memo_id', $id)->pluck('cabang_id')->toArray();
 
         if (in_array(1, $tujuanSatkerDraft)) {
             $tujuanSatker = 'Seluruh Unit Kerja Kantor Pusat';
         } else {
             $tujuanSatker = $satuanKerja->whereIn('id', $tujuanSatkerDraft)->pluck('satuan_kerja')->toArray();
         }
+        if (in_array(1, $tujuanCabangDraft)) {
+            $tujuanCabang = 'Seluruh Kantor Layanan';
+        } else {
+            $tujuanCabang = $cabang->whereIn('id', $tujuanCabangDraft)->pluck('cabang')->toArray();
+        }
 
-        $dari = $satuanKerja->find($draft['satuan_kerja_asal']);
+        if ($draft['satuan_kerja_asal']) {
+            $dari = $satuanKerja->find($draft['satuan_kerja_asal']);
+        } elseif ($draft['cabang_asal']) {
+            $dari = $cabang->find($draft['cabang_asal']);
+        }
         $ttd1 = User::find($draft['otor1_by']);
         $ttd2 = User::find($draft['otor2_by']);
         $jabatanTtd1 = User::find($draft['otor1_by'])->levelTable['jabatan'];
@@ -175,7 +185,173 @@ class DraftController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request);
+        $idUser = Auth::id();
+        $user = User::find($idUser);
+        $draft = SuratKeluar::find($id);
+        $satuanKerja = SatuanKerja::all();
+        $cabang = Cabang::all();
+
+        $deletedTujuanSatker = TujuanSatuanKerja::where('memo_id', $id)->delete();
+        $deletedTujuanCabang = TujuanKantorCabang::where('memo_id', $id)->delete();
+
+        $validated = $request->validate([
+            'created_by' => 'required',
+            'kriteria' => 'required',
+            'nomor_surat' => 'required',
+            'perihal' => 'required',
+            'lampiran' => 'mimes:pdf',
+        ]);
+        $validated['cabang_asal'] = $request->cabang_asal;
+        $validated['satuan_kerja_asal'] = $request->satuan_kerja_asal;
+        $validated['tujuan_unit_kerja'] = $request->tujuan_unit_kerja;
+        $validated['isi'] = $request->editordata;
+        $validated['otor2_by'] = $request->tunjuk_otor2_by;
+        $validated['otor1_by'] = $request->tunjuk_otor1_by;
+        $validated['internal'] = 2;
+        $validated['draft'] = 1;
+
+        // get file and store
+        if ($request->file('lampiran')) {
+            $file = $request->file('lampiran');
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+        }
+
+        $draft->update($validated);
+
+        $tujuanUnitKerja = $request->tujuan_unit_kerja;
+        $tujuanKantorCabang = $request->tujuan_kantor_cabang;
+
+        $cabangBesar = array();
+        $bidang = array();
+        if ($tujuanKantorCabang != null) {
+            foreach ($tujuanKantorCabang as $item) {
+                if (substr($item, 0, 1) == 'S') {
+                    $item = ltrim($item, $item[0]);
+                    array_push($cabangBesar, $item);
+                } elseif ($item == 'kantor_cabang') {
+                    continue;
+                } else {
+                    array_push($bidang, $item);
+                }
+            }
+        }
+
+        // Seluruh tujuan kantor cabang
+        if ($tujuanKantorCabang[0] == 'kantor_cabang') {
+            foreach ($cabang as $item) {
+                if ($item->cabang_id != $user->cabang) {
+                    TujuanKantorCabang::create([
+                        'memo_id' => $id,
+                        'cabang_id' => $item->id,
+                        'all_flag' => 1
+                    ]);
+                }
+            }
+            // foreach ($bidangCabang as $item) {
+            //     TujuanKantorCabang::create([
+            //         'memo_id' => $idSurat,
+            //         'bidang_id' => $item->id,
+            //         'all_flag' => 1
+            //     ]);
+            // }
+        }
+
+        if (count($cabangBesar) != 0) {
+            foreach ($cabangBesar as $item) {
+                TujuanKantorCabang::create([
+                    'memo_id' => $id,
+                    'cabang_id' => $item,
+                    'all_flag' => 1
+                ]);
+                // $bidangLoop = BidangCabang::where('cabang_id', $item)->get();
+                // foreach ($bidangLoop as $item_bidang) {
+                //     TujuanKantorCabang::create([
+                //         'memo_id' => $idSurat,
+                //         'bidang_id' => $item_bidang->id,
+                //         'all_flag' => 1
+                //     ]);
+                // }
+            }
+        }
+
+
+        // if (count($bidang) != 0) {
+        //     foreach ($bidang as $item) {
+        //         TujuanKantorCabang::create([
+        //             'memo_id' => $idSurat,
+        //             'bidang_id' => $item,
+        //             'all_flag' => 0
+        //         ]);
+        //     }
+        // }
+
+        // Tujuan unit kerja
+        if ($tujuanUnitKerja[0] == 'unit_kerja') {
+            foreach ($satuanKerja as $item) {
+                if ($item->satuan_kerja != $user->satuan_kerja) {
+                    TujuanSatuanKerja::create([
+                        'memo_id' => $id,
+                        'satuan_kerja_id' => $item->id,
+                        'all_flag' => 1
+                    ]);
+                }
+            }
+        } else {
+            if ($tujuanUnitKerja != null)
+                foreach ($tujuanUnitKerja as $item) {
+                    TujuanSatuanKerja::create([
+                        'memo_id' => $id,
+                        'satuan_kerja_id' => $item,
+                        'all_flag' => 0
+                    ]);
+                }
+        }
+
+        if (isset($_POST['simpan'])) {
+            $update[] = $draft['draft'] = 0;
+            $draft->update($update);
+
+            return redirect('/suratKeluar');
+        } else if (isset($_POST['lihat'])) {
+            if ($validated['tujuan_unit_kerja'] == 'unit_kerja') {
+                $tujuanSatker = 'Seluruh Unit Kerja Kantor Pusat';
+            } elseif ($validated['tujuan_unit_kerja']) {
+                $tujuanSatker = $satuanKerja->whereIn('id', $validated['tujuan_unit_kerja'])->pluck('satuan_kerja')->toArray();
+            }
+
+            $dari = $satuanKerja->find($validated['satuan_kerja_asal']);
+            $ttd1 = User::find($validated['otor1_by']);
+            $ttd2 = User::find($validated['otor2_by']);
+            $jabatanTtd1 = User::find($validated['otor1_by'])->levelTable['jabatan'];
+            $jabatanTtd2 = User::find($validated['otor2_by'])->levelTable['jabatan'];
+
+            $pdf = PDF::loadView('preview/preview', [
+                'title' => 'Pratinjau',
+                'requests' => $validated,
+                'tujuanSatkers' => $tujuanSatker,
+                'dari' => $dari,
+                'ttd1' => $ttd1,
+                'ttd2' => $ttd2,
+                'jabatanTtd1' => $jabatanTtd1,
+                'jabatanTtd2' => $jabatanTtd2
+            ])->setPaper('a4', 'portrait');
+
+            $pdf->output();
+            $dompdf = $pdf->getDomPDF();
+
+            $canvas = $dompdf->get_canvas();
+
+            $cpdf = $canvas->get_page_count();
+
+            $canvas->page_text(550, 800, "{PAGE_NUM}/{PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+            return $pdf->stream();
+        } else if (isset($_POST['draft'])) {
+            return redirect('/draft')->with('success', 'Draft berhasil disimpan');
+        }
     }
 
     /**

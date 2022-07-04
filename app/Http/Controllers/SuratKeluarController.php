@@ -115,12 +115,15 @@ class SuratKeluarController extends Controller
                 'nomor_surat' => 'required',
                 'perihal' => 'required',
                 'lampiran' => 'mimes:pdf',
+                'kriteria' => 'required',
             ]);
             $validated['cabang_asal'] = $request->cabang_asal;
             $validated['satuan_kerja_asal'] = $request->satuan_kerja_asal;
-            $validated['otor2_by_pengganti'] = $request->tunjuk_otor2_by;
-            $validated['otor1_by_pengganti'] = $request->tunjuk_otor1_by;
+            $validated['isi'] = $request->editordata;
+            $validated['otor2_by'] = $request->tunjuk_otor2_by;
+            $validated['otor1_by'] = $request->tunjuk_otor1_by;
             $validated['internal'] = 2;
+            $validated['draft'] = 0;
 
             $tujuanUnitKerja = $request->tujuan_unit_kerja;
             $tujuanKantorCabang = $request->tujuan_kantor_cabang;
@@ -257,10 +260,10 @@ class SuratKeluarController extends Controller
             }
 
             $dari = $satuanKerja->find($validated['satuan_kerja_asal']);
-            $ttd1 = User::find($validated['otor1_by_pengganti']);
-            $ttd2 = User::find($validated['otor2_by_pengganti']);
-            $jabatanTtd1 = User::find($validated['otor1_by_pengganti'])->levelTable['jabatan'];
-            $jabatanTtd2 = User::find($validated['otor2_by_pengganti'])->levelTable['jabatan'];
+            $ttd1 = User::find($validated['otor1_by']);
+            $ttd2 = User::find($validated['otor2_by']);
+            $jabatanTtd1 = User::find($validated['otor1_by'])->levelTable['jabatan'];
+            $jabatanTtd2 = User::find($validated['otor2_by'])->levelTable['jabatan'];
 
             $pdf = PDF::loadView('preview/preview', [
                 'title' => 'Pratinjau',
@@ -282,7 +285,7 @@ class SuratKeluarController extends Controller
 
             $canvas->page_text(550, 800, "{PAGE_NUM}/{PAGE_COUNT}", null, 10, array(0, 0, 0));
 
-            return $pdf->stream();
+            return $pdf->stream("{{$validated['perihal']}}", array('Attachment' => 0));
         } else if (isset($_POST['draft'])) {
             $id = Auth::id();
             $user = User::find($id);

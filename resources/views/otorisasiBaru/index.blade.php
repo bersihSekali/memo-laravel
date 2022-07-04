@@ -163,78 +163,46 @@
             </tr>
             @endif
 
+            <tr width="20%">
+              <td>Isi</td>
+              <td>: <a type="button" href="/draft/{{ $data['id'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Memo</a></td>
+            </tr>
+
+            <tr width="20%">
+              <td>Lampiran</td>
+              <td>: <a class="btn btn-info btn-sm" href="/storage/{{ $data['lampiran'] }}" target="_blank">Lihat Lampiran</a></td>
+            </tr>
+
             <tr>
               <td width="20%">Status</td>
               <td>
                 : @if ($data->status == 1)
-                <span class="badge bg-secondary">Pending</span>
+                <span class="badge bg-secondary">Menunggu {{$data->otor2By['name']}}</span>
+                <span class="badge bg-secondary">Menunggu {{$data->otor1By['name']}}</span>
 
                 {{-- approved otor2_by --}}
                 @elseif ($data->status == 2)
-                {{-- Antar departemen --}}
-                @if ($data->internal == 1)
-                <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                </span>
-                <span class="badge bg-secondary">
-                  Pending Kadep
-                </span>
+                <span class="badge bg-secondary">Disetujui {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}</span>
+                <span class="badge bg-secondary">Menunggu {{$data->otor1By['name']}}</span>
 
-                {{-- Antar satuan kerja --}}
-                @else
-                <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                </span>
-                <span class="badge bg-secondary">
-                  Pending Kasat
-                </span>
-                @endif
-
-                {{-- approved otor1_by --}}
-                @elseif ($data->status == 3)
-                @if ($data->internal == 1)
-                <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                </span>
-                <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
-                </span>
-
-                {{-- Antar satuan kerja --}}
-                @else
-                <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                </span>
-                <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
-                </span>
-                @endif
+                {{-- approved otor2_by --}}
+                @elseif ($data->status == 2)
+                <span class="badge bg-success">Disetujui {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}</span>
+                <span class="badge bg-success">Disetujui {{$data->otor1By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}</span>
 
                 {{-- rejected --}}
                 @elseif ($data->status == 0)
-                {{-- rejected otor2_by --}}
-                @if ($data->otor1_by == 0)
-                <span class="badge bg-danger">
-                  Ditolak {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                </span>
-
-                {{-- rejected otor1_by --}}
+                @if ($data->tanggal_otor2)
+                <span class="badge bg-success">Disetujui {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}</span>
+                <span class="badge bg-success">Ditolak {{$data->otor1By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_tolak)) }}</span>
                 @else
-                <span class="badge bg-success">
-                  Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                </span>
-                <span class="badge bg-danger">
-                  Ditolak {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
-                </span>
+                <span class="badge bg-success">Ditolak {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_tolak)) }}</span>
+                <span class="badge bg-secondary">Menunggu {{$data->otor1By['name']}}</span>
                 @endif
                 @endif
               </td>
             </tr>
 
-            <tr width="20%">
-              <td>Lampiran</td>
-              <td>: <a href="/storage/{{ $data['lampiran'] }}" target="_blank"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
-            </tr>
           </table>
         </div>
       </div>
@@ -254,9 +222,47 @@
     <div class="modal-content">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="modal-status bg-danger"></div>
+      @if ($data->status == 1)
+      <div class="modal-body text-center py-4">
+        <h3>Apakah yakin ingin menolak?</h3>
+        <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+        <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+          @csrf
+          {{method_field('DELETE')}}
 
+          <div class="mb-3">
+            <input class="form-control" type="file" id="lampiran" name="lampiran">
+          </div>
 
-      {{-- Kepala bidang, kepala operasi cabang, kepala cabang pembantu, officer --}}
+          <div class="my-3">
+            <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+          </div>
+
+          <button type="submit" class="btn btn-danger w-100">Tolak</button>
+        </form>
+      </div>
+      @elseif ($data->status == 2)
+      <div class="modal-body text-center py-4">
+        <h3>Apakah yakin ingin menolak?</h3>
+        <span>Harap beri catatan dan unggah terlebih dahulu surat yang akan ditolak</span>
+        <form action="/disapprovedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
+          @csrf
+          {{method_field('DELETE')}}
+
+          <div class="mb-3">
+            <input class="form-control" type="file" id="lampiran" name="lampiran">
+          </div>
+
+          <div class="my-3">
+            <input class="form-control" type="text" id="pesan_tolak" name="pesan_tolak" placeholder="Tambah catatan" autocomplete="off" required>
+          </div>
+
+          <button type="submit" class="btn btn-danger w-100">Tolak</button>
+        </form>
+      </div>
+      @endif
+
+      <!-- {{-- Kepala bidang, kepala operasi cabang, kepala cabang pembantu, officer --}}
       @if ($users->levelTable->golongan == 5)
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menolak?</h3>
@@ -452,7 +458,7 @@
           <button type="submit" class="btn btn-danger w-100">Tolak</button>
         </form>
       </div>
-      @endif
+      @endif -->
     </div>
   </div>
 </div>

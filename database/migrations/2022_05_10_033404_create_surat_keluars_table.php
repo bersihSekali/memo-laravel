@@ -46,7 +46,9 @@ class CreateSuratKeluarsTable extends Migration
             $table->string('kriteria');
             $table->string('isi')->nullable();
             $table->string('lampiran')->nullable();
+            $table->string('lampiran_tolak')->nullable();
             $table->string('pesan_tolak')->nullable();
+            $table->datetime('tanggal_tolak')->nullable();
             $table->unsignedBigInteger('internal');
             $table->boolean('draft');
             $table->unsignedBigInteger('status')->default(1);
