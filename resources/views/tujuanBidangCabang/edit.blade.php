@@ -47,7 +47,7 @@
             <table class="table table-bordered table-hover" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th scope="col">Kantor Cabang Pembantu</th>
+                        <th scope="col">Nama</th>
                         <th scope="col">Pesan</th>
                         <th scope="col">Status</th>
                     </tr>
@@ -55,7 +55,7 @@
                 <tbody>
                     @foreach($forwardeds as $item)
                     <tr>
-                        <td>{{$item->tujuanBidangCabang['bidang']}}</td>
+                        <td>{{$item->users['name']}}</td>
                         <td>{{$item->pesan_disposisi}}</td>
                         @if ($item->status_baca)
                         <td>
@@ -84,7 +84,9 @@
                     <select class="form-select on-modal mb-3" aria-label=".form-select-sm example" name="departemen_tujuan[]" id="departemen_tujuan" multiple="multiple">
                         @foreach($forwards as $item)
                         @if(!in_array($item['id'], $forwarded_ids))
-                        <option value="{{$item['id']}}">{{$item['bidang']}}</option>
+                        @if($item['id'] != $users['id'])
+                        <option value="{{$item['id']}}">{{$item['name']}} - {{$item->cabangTable['cabang']}} - {{$item->bidangCabangTable['bidang']}}</option>
+                        @endif
                         @endif
                         @endforeach
                     </select>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BidangCabang;
+use App\Models\Forward;
 use App\Models\TujuanKantorCabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -77,9 +78,9 @@ class TujuanBidangCabangController extends Controller
 
         $edit = SuratKeluar::where('id', $id)->first();
 
-        $forwarded = TujuanBidangCabang::where('memo_id', $edit['id'])->get();
-        $forwarded_id = TujuanBidangCabang::where('memo_id', $edit['id'])->pluck('bidang_id')->toArray();
-        $forward = BidangCabang::where('cabang_id', $user->cabang)->get();
+        $forwarded = Forward::where('memo_id', $edit['id'])->get();
+        $forwarded_id = Forward::where('memo_id', $edit['id'])->pluck('user_id')->toArray();
+        $forward = User::where('cabang', $user->cabang)->where('level', '>=', $user->level)->get();
 
         return view('tujuanBidangCabang/edit', [
             'title' => 'Teruskan ke Departemen',
@@ -110,10 +111,9 @@ class TujuanBidangCabangController extends Controller
 
         //tujuan departemen
         foreach ($validated['departemen_tujuan'] as $item) {
-            TujuanBidangCabang::create([
+            Forward::create([
                 'memo_id' => $id,
-                'bidang_id' => $item,
-                'all_flag' => 0,
+                'user_id' => $item,
                 'pesan_disposisi' => $validated['pesan_disposisi'],
                 'tanggal_disposisi' => date('Y-m-d')
             ]);
@@ -136,7 +136,7 @@ class TujuanBidangCabangController extends Controller
         $datas['status_baca'] = 1;
         $datas->update($update);
 
-        return redirect('cabang/' . $id . '/edit')->with('success', 'Surat telah ditandai sebagai telah dibaca, silakan masukkan disposisi jika diperlukan.');
+        return redirect('forwardCabang/' . $id . '/edit')->with('success', 'Surat telah ditandai sebagai telah dibaca, silakan masukkan disposisi jika diperlukan.');
     }
 
     /**

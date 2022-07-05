@@ -280,7 +280,7 @@
             </div>
             @endif
 
-            @elseif ($users->level == 5)
+            @elseif ($users->level == 5 || $users->level == 9 || $users->level == 10 || $users->level == 13)
             @if (!$data->status_baca)
             <div class="modal-footer">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
@@ -288,17 +288,6 @@
             @else
             <div class="modal-footer">
                 <a class="btn btn-secondary" href="/cabang/{{$data['memo_id']}}/edit">Terusan</a>
-            </div>
-            @endif
-
-            @elseif ($users->level == 10)
-            @if (!$data->status_baca)
-            <div class="modal-footer">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
-            </div>
-            @else
-            <div class="modal-footer">
-                <a class="btn btn-secondary" href="/forwardCabang/{{$data['memo_id']}}/edit">Terusan</a>
             </div>
             @endif
 
