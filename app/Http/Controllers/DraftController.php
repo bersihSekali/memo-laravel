@@ -27,10 +27,14 @@ class DraftController extends Controller
         $id = Auth::id();
         $user = User::where('id', $id)->first();
         if ($user->cabang) {
-            $mails = SuratKeluar::where('cabang_asal', $user->cabang)->where('draft', 1)
+            $mails = SuratKeluar::where('cabang_asal', $user->cabang)
+                ->where('draft', 1)
+                ->where('created_by', $id)
                 ->latest()->get();
         } elseif ($user->satuan_kerja) {
-            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)->where('draft', 1)
+            $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+                ->where('draft', 1)
+                ->where('created_by', $id)
                 ->latest()->get();
         }
 

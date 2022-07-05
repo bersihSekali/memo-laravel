@@ -168,10 +168,12 @@
               <td>: <a type="button" href="/draft/{{ $data['id'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Memo</a></td>
             </tr>
 
+            @if ($data['lampiran'])
             <tr width="20%">
               <td>Lampiran</td>
               <td>: <a class="btn btn-info btn-sm" href="/storage/{{ $data['lampiran'] }}" target="_blank">Lihat Lampiran</a></td>
             </tr>
+            @endif
 
             <tr>
               <td width="20%">Status</td>

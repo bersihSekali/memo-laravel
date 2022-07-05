@@ -184,7 +184,9 @@
 
             <div class="mb-3 formulir" style="display: none">
                 <label for="lampiran" class="form-label">Lampiran</label>
+                @if ($edit['lampiran'])
                 <a href="/storage/{{ $edit['lampiran'] }}" target="_blank"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran Terunggah</button></a>
+                @endif
                 <input class="form-control" type="file" id="lampiran" name="lampiran">
             </div>
 

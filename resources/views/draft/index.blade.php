@@ -170,10 +170,12 @@
                             <td>Isi</td>
                             <td>: <a type="button" href="/draft/{{ $data['id'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Tinjauan</a></td>
                         </tr>
+                        @if ($data['lampiran'])
                         <tr width="20%">
                             <td>Lampiran</td>
                             <td>: <a href="/storage/{{ $data['lampiran'] }}" target="_blank"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
                         </tr>
+                        @endif
                     </table>
                 </div>
             </div>
