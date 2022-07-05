@@ -78,19 +78,18 @@ class SuratKeluarController extends Controller
         $satuanKerja = SatuanKerja::where('id', '!=', 1)
             ->where('satuan_kerja', '!=', 'CABANG JABODETABEK')
             ->where('satuan_kerja', '!=', 'CABANG NON JABODETABEK')->get();
-        $cabang = Cabang::select('id', 'cabang')
-            ->where('id', '!=', 1)->get();
-        $bidangCabang = BidangCabang::all();
+        $cabang = Cabang::where('id', '!=', 1)->get();
+        // $bidangCabang = BidangCabang::all();
         // $kantorCabang = Departemen::where('grup', 2)->get();
-        $departemenDireksi = Departemen::where('grup', 4)->get();
+        // $departemenDireksi = Departemen::where('grup', 4)->get();
 
         $datas = [
             'title' => 'Tambah Surat',
             'satuanKerjas' => $satuanKerja,
             'departemens' => $departemen,
             'cabangs' => $cabang,
-            'bidangCabangs' => $bidangCabang,
-            'departemenDireksis' => $departemenDireksi,
+            // 'bidangCabangs' => $bidangCabang,
+            // 'departemenDireksis' => $departemenDireksi,
             'users' => $user,
             'penggantis' => $pengganti
         ];
@@ -112,7 +111,6 @@ class SuratKeluarController extends Controller
 
             $satuanKerja = SatuanKerja::all();
             $cabang = Cabang::all();
-            $bidangCabang = BidangCabang::all();
 
             $validated = $request->validate([
                 'created_by' => 'required',

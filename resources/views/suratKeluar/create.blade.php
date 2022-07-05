@@ -104,14 +104,6 @@
                                 <option class="opsi_kantor_cabang_besar besar-{{ $cabang->id }}" value="{{ $cabang->id }}">
                                     {{ $cabang->cabang }}
                                 </option>
-
-                                <!-- @foreach ($bidangCabangs as $bidang)
-                                @if ($bidang->cabang_id == $cabang->id)
-                                <option class="opsi_kantor_bidang bidang-{{ $cabang->id }}" value="{{ $bidang->id }}">-
-                                    {{ $bidang->bidang }}
-                                </option>
-                                @endif
-                                @endforeach -->
                                 @endforeach
                             </select>
                         </div>
@@ -134,17 +126,17 @@
                         @if ($users->satuanKerja['grup'] == 5)
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->level == 6 && $pengganti->satuan_kerja == $users->satuan_kerja)
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja['inisial']) }}</option>
                         @endif
                         @endforeach
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->level == 6 && $pengganti->satuanKerja['grup'] == 5 && $pengganti->satuan_kerja != $users->satuan_kerja)
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja['inisial']) }}</option>
                         @endif
                         @endforeach
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->level == 2)
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja['inisial']) }}</option>
                         @endif
                         @endforeach
 
@@ -158,7 +150,7 @@
                         @else
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->levelTable->golongan == 7)
-                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja['inisial']) }}</option>
                         @endif
                         @endforeach
                         @endif

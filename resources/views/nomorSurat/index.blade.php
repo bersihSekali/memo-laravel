@@ -47,9 +47,9 @@
                             <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
                             <td class="align-top" style="text-align: center">
                                 @if ($data->departemen_asal == '')
-                                    {{ $data->satuanKerjaAsal['inisial'] }}
+                                {{ $data->satuanKerjaAsal['inisial'] }}
                                 @else
-                                    {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
+                                {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
                                 @endif
                             </td>
                             <td class="align-top">{{ $data->perihal }}</td>
@@ -100,7 +100,7 @@
                             <td width="20%">Nomor Surat</td>
                             <td>:
                                 @if (!$data->nomor_surat)
-                                Setujui surat terlebih dahulu
+                                Menunggu
                                 @else
                                 {{ $data->nomor_surat }}
                                 @endif
@@ -121,69 +121,58 @@
                             <td class="align-top" width="20%">Tujuan</td>
                             <td>
 
-                                {{-- Tujuan kantor cabang --}}
-                                @if (in_array($data->id, $seluruhCabangMemoIds))
-                                : SELURUH KANTOR LAYANAN <br>
+                                {{-- Tujuan satuan kerja --}}
+                                @if (in_array($data->id, $seluruhSatkerMemoIds))
+                                : Segenap Unit Kerja Kantor Pusat <br>
                                 @else
-                                    @foreach ($tujuanCabangs as $item)
-                                        @if ($item->memo_id == $data->id)
-                                            @if ($item->all_flag == true && $item->cabang_id != null)
-                                            : SELURUH {{ $item->tujuanCabang->cabang }} <br>
-                                            @endif
-                                        @endif
-                                    @endforeach
+                                @foreach ($tujuanSatkers as $item)
+                                @if ($item->memo_id == $data->id)
+                                : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                                @endif
+                                @endforeach
                                 @endif
 
-                                {{-- Tujuan kantor bidang --}}
+                                {{-- Tujuan kantor cabang --}}
+                                @if (in_array($data->id, $seluruhCabangMemoIds))
+                                : Segenap Kantor Layanan <br>
+                                @else
                                 @foreach ($tujuanCabangs as $item)
-                                    @if ($item->memo_id == $data->id)
-                                        @if ($item->bidang_id != null && $item->all_flag!=true)
-                                        : {{ $item->tujuanBidang->bidang }} <br>
-                                        @endif
-                                    @endif
+                                @if ($item->memo_id == $data->id)
+                                : {{ $item->tujuanCabang->cabang }} <br>
+                                @endif
                                 @endforeach
+                                @endif
 
                                 {{-- Tujuan departemen --}}
                                 @if (in_array($data->id, $seluruhDepartemenMemoIds))
-                                    : SELURUH DEPARTEMEN SKTILOG <br>
+                                : SELURUH DEPARTEMEN SKTILOG <br>
                                 @else
-                                    @foreach ($tujuanDepartemens as $item)
-                                        @if ($item->memo_id == $data->id)
-                                            : {{ $item->tujuanDepartemen->inisial }} <br>
-                                        @endif
-                                    @endforeach
+                                @foreach ($tujuanDepartemens as $item)
+                                @if ($item->memo_id == $data->id)
+                                : {{ $item->tujuanDepartemen->inisial }} <br>
                                 @endif
-
-                                {{-- Tujuan satuan kerja --}}
-                                @if (in_array($data->id, $seluruhSatkerMemoIds))
-                                    : SELURUH UNIT KERJA KANTOR PUSAT <br>
-                                @else
-                                    @foreach ($tujuanSatkers as $item)
-                                        @if ($item->memo_id == $data->id)
-                                            : {{ $item->tujuanSatuanKerja->inisial }} <br>
-                                        @endif
-                                    @endforeach
+                                @endforeach
                                 @endif
                             </td>
                         </tr>
 
                         <tr>
                             @if ($data->otor2_by_pengganti && $data->otor1_by_pengganti)
-                                <td width="20%">Pejabat Pengganti</td>
-                                <td>
-                                    : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2 <br>
-                                    {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
-                                </td>
+                            <td width="20%">Pejabat Pengganti</td>
+                            <td>
+                                : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2 <br>
+                                {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
+                            </td>
                             @elseif ($data->otor2_by_pengganti && !$data->otor1_by_pengganti)
-                                <td width="20%">Pejabat Pengganti</td>
-                                <td>
-                                    : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2
-                                </td>
+                            <td width="20%">Pejabat Pengganti</td>
+                            <td>
+                                : {{ strtoupper($data->otor2ByPengganti->name) }} sebagai otor 2
+                            </td>
                             @elseif (!$data->otor2_by_pengganti && $data->otor1_by_pengganti)
-                                <td width="20%">Pejabat Pengganti</td>
-                                <td>
-                                    : {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
-                                </td>
+                            <td width="20%">Pejabat Pengganti</td>
+                            <td>
+                                : {{ strtoupper($data->otor1ByPengganti->name) }} sebagai otor 1
+                            </td>
                             @endif
                         </tr>
 
@@ -199,92 +188,62 @@
                         </tr>
                         @endif
 
+                        <tr width="20%">
+                            <td>Isi</td>
+                            @if ($data->status == 0)
+                            <td>: <a type="button" href="/storage/{{ $data['lampiran_tolak'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Memo</a></td>
+                            @else
+                            <td>: <a type="button" href="/draft/{{ $data['id'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Memo</a></td>
+                            @endif
+                        </tr>
+                        @if ($data['lampiran'])
+                        <tr width="20%">
+                            <td>Lampiran</td>
+                            <td>: <a class="btn btn-info btn-sm" href="/storage/{{ $data['lampiran'] }}" target="_blank">Lihat Lampiran</a></td>
+                        </tr>
+                        @endif
                         <tr>
                             <td width="20%">Status</td>
                             <td>
                                 : @if ($data->status == 1)
-                                <span class="badge bg-secondary">Pending</span>
+                                <span class="badge bg-secondary">Menunggu {{$data->otor2By['name']}}</span>
+                                <span class="badge bg-secondary">Menunggu {{$data->otor1By['name']}}</span>
 
                                 {{-- approved otor2_by --}}
                                 @elseif ($data->status == 2)
-                                {{-- Antar departemen --}}
-                                @if ($data->internal == 1)
-                                <span class="badge bg-success">
-                                    Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                </span>
-                                <span class="badge bg-secondary">
-                                    Pending Kadep
-                                </span>
-
-                                {{-- Antar satuan kerja --}}
-                                @else
-                                <span class="badge bg-success">
-                                    Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                </span>
-                                <span class="badge bg-secondary">
-                                    Pending Kasat
-                                </span>
-                                @endif
+                                <span class="badge bg-success">Disetujui {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}</span>
+                                <span class="badge bg-secondary">Menunggu {{$data->otor1By['name']}}</span>
 
                                 {{-- approved otor1_by --}}
                                 @elseif ($data->status == 3)
-                                @if ($data->internal == 1)
-                                <span class="badge bg-success">
-                                    Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                </span>
-                                <span class="badge bg-success">
-                                    Disetujui {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
-                                </span>
-
-                                {{-- Antar satuan kerja --}}
-                                @else
-                                <span class="badge bg-success">
-                                    Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                </span>
-                                <span class="badge bg-success">
-                                    Disetujui {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
-                                </span>
-                                @endif
+                                <span class="badge bg-success">Disetujui {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}</span>
+                                <span class="badge bg-success">Disetujui {{$data->otor1By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}</span>
 
                                 {{-- rejected --}}
                                 @elseif ($data->status == 0)
-                                {{-- rejected otor2_by --}}
-                                @if ($data->otor1_by == 0)
-                                <span class="badge bg-danger">
-                                    Ditolak {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                </span>
-
-                                {{-- rejected otor1_by --}}
+                                @if ($data->tanggal_otor2)
+                                <span class="badge bg-success">Disetujui {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}</span>
+                                <span class="badge bg-danger">Ditolak {{$data->otor1By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_tolak)) }}</span>
                                 @else
-                                <span class="badge bg-success">
-                                    Disetujui {{ strtoupper($data->otor2By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor2)) }}
-                                </span>
-                                <span class="badge bg-danger">
-                                    Ditolak {{ strtoupper($data->otor1By['name']) }} at: {{ date("Y-m-d", strtotime($data->tanggal_otor1)) }}
-                                </span>
+                                <span class="badge bg-danger">Ditolak {{$data->otor2By['name']}} pada {{ date("Y-m-d", strtotime($data->tanggal_tolak)) }}</span>
                                 @endif
                                 @endif
                             </td>
-                        </tr>
-
-                        <tr width="20%">
-                            <td>Lampiran</td>
-                            <td>: <a href="/storage/{{ $data['lampiran'] }}" target="_blank"><button type="button" class="btn btn-secondary btn-sm" style="text-decoration: none">Lihat Lampiran</button></a></td>
                         </tr>
                     </table>
                 </div>
             </div>
 
-                @if ($data->satuan_kerja_asal == $users->satuan_kerja)
-                    @if (($data->departemen_asal == $users->departemen) || ($users->level == 2))
-                        <div class="modal-footer">
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$data['id']}}">Hapus</button>
-                        </div>
-                    @endif
-                @endif
+            @if ($data->satuan_kerja_asal == $users->satuan_kerja)
+            @if (($data->departemen_asal == $users->departemen) || ($users->level == 2))
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$data['id']}}">Hapus</button>
             </div>
+            @endif
+            @endif
         </div>
     </div>
+</div>
 </div>
 
 {{-- Modal delete for confirmation --}}

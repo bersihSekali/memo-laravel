@@ -158,17 +158,13 @@ class SuratKeluar extends Model
 
     public function columnTujuan($user)
     {
-        $memoIdSatker = SuratKeluar::select('id', 'satuan_kerja_asal')
-            ->where('satuan_kerja_asal', $user->satuan_kerja)
+        $memoIdSatker = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
             ->pluck('id')->toArray();
-        $tujuanDepartemen = TujuanDepartemen::select('id', 'memo_id', 'departemen_id', 'all_flag')
-            ->whereIn('memo_id', $memoIdSatker)
+        $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $memoIdSatker)
             ->latest()->get();
-        $tujuanSatker = TujuanSatuanKerja::select('id', 'memo_id', 'satuan_kerja_id', 'all_flag')
-            ->whereIn('memo_id', $memoIdSatker)
+        $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $memoIdSatker)
             ->latest()->get();
-        $tujuanCabangs = TujuanKantorCabang::select('id', 'memo_id', 'cabang_id', 'bidang_id', 'all_flag')
-            ->whereIn('memo_id', $memoIdSatker)
+        $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
             ->latest()->get();
 
         $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();

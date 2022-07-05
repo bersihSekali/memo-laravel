@@ -1,8 +1,15 @@
 @extends('templates.index')
 
 @section('content')
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<link href="{{url('assets/vendor/summernote/summernote-bs4.css')}}" rel="stylesheet" />
+<script src="{{url('assets/vendor/summernote/summernote-bs4.js')}}"></script>
+
 <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-10">
         @if(session()->has('error'))
         <div class="alert alert-warning mt-3" role="alert">
             {{ session('error') }}
@@ -52,6 +59,19 @@
                 </div>
             </div>
 
+            {{-- Kriteria --}}
+            <div class="form-group formulir mb-3" style="display: none;">
+                <div class="col-md-6">
+                    <label for="kriteria" class="form-label ">Kriteria Informasi</label>
+                    <select class="form-select mb-3" aria-label=".form-select-sm example" name="kriteria" style="width: 100%;">
+                        <option selected disabled> -- Pilih salah satu -- </option>
+                        <option value="INTERNAL BCA SYARIAH"> INTERNAL BCA SYARIAH </option>
+                        <option value="RAHASIA"> RAHASIA </option>
+                        <option value="SANGAT RAHASIA"> SANGAT RAHASIA </option>
+                    </select>
+                </div>
+            </div>
+
             {{-- Input tujuan --}}
             <div class="form-group mb-3">
                 <label for="tujuan" class="form-label formulir" style="display: none">Tujuan</label>
@@ -83,17 +103,9 @@
                             <select class="form-select" aria-label=".form-select-sm example" name="tujuan_kantor_cabang[]" id="tujuan_kantor_cabang" multiple="multiple">
                                 <option id="kantor_cabang" value="kantor_cabang">SELURUH KANTOR LAYANAN</option>
                                 @foreach ($cabangs as $cabang)
-                                <option class="opsi_kantor_cabang_besar besar-{{ $cabang->id }}" value="S{{ $cabang->id }}">
+                                <option class="opsi_kantor_cabang_besar besar-{{ $cabang->id }}" value="{{ $cabang->id }}">
                                     {{ $cabang->cabang }}
                                 </option>
-
-                                @foreach ($bidangCabangs as $bidang)
-                                @if ($bidang->cabang_id == $cabang->id)
-                                <option class="opsi_kantor_bidang bidang-{{ $cabang->id }}" value="{{ $bidang->id }}">-
-                                    {{ $bidang->bidang }}
-                                </option>
-                                @endif
-                                @endforeach
                                 @endforeach
                             </select>
                         </div>
@@ -124,21 +136,12 @@
                 <textarea class="form-control" aria-label="With textarea" name="perihal" required id="perihal" required></textarea>
             </div>
 
-            {{-- Input pejabat pengganti --}}
-            <div class="form-check formulir" style="display: none">
-                <input class="form-check-input" type="checkbox" value="" id="pejabat_pengganti" name="pejabat_pengganti">
-                <label class="form-check-label" for="pejabat_pengganti">
-                    Pejabat Pengganti
-                </label>
-            </div>
-
             {{-- Input otor pengganti --}}
-            <div class="form-group row" id="otor_pengganti" name="otor_pengganti" style="display: none">
-                <div class="col-sm-6 mb-3" name="pengganti_antar_satuan_kerja" id="pengganti_eksternal" style="display: none">
-                    <label for="tunjuk_otor1_by" class="form-label">Otor 1 Pengganti</label>
+            <div class="form-group row formulir" id="otor_pengganti" name="otor_pengganti" style="display: none">
+                <div class="col-sm-6 mb-3" name="pengganti1_antar_satuan_kerja" id="pengganti1_eksternal" style="display: none">
+                    <label for="tunjuk_otor1_by" class="form-label">Tanda Tangan 1</label>
                     <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
-                        <option value=""> ---- </option>
-                        @foreach ($penggantis as $pengganti)
+                        <option selected disabled> -- Pilih salah satu -- </option> @foreach ($penggantis as $pengganti)
                         @if ($pengganti->levelTable->golongan == 7)
                         <option value="{{ $pengganti['id'] }}">
                             {{ strtoupper($pengganti->name) }} - KA. {{strtoupper($pengganti->satuanKerja->inisial) }}
@@ -148,11 +151,10 @@
                     </select>
                 </div>
 
-                <div class="col-sm-6 mb-3" name="pengganti_antar_departemen" id="pengganti_internal" style="display: none">
-                    <label for="tunjuk_otor1_by" class="form-label">Otor 1 Pengganti</label>
+                <div class="col-sm-6 mb-3" name="pengganti1_antar_departemen" id="pengganti1_internal" style="display: none">
+                    <label for="tunjuk_otor1_by" class="form-label">Tanda Tangan 1</label>
                     <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
-                        <option value=""> ---- </option>
-                        @foreach ($penggantis as $pengganti)
+                        <option selected disabled> -- Pilih salah satu -- </option> @foreach ($penggantis as $pengganti)
                         @if ($pengganti->satuan_kerja == 2)
                         @if (($pengganti->levelTable->golongan >= 5) && ($pengganti->levelTable->golongan <= 7)) @if ($pengganti->levelTable->golongan == 7)
                             <option value="{{ $pengganti['id'] }}">
@@ -173,11 +175,10 @@
                     </select>
                 </div>
 
-                <div class="col-sm-6 mb-3">
-                    <label for="tunjuk_otor2_by" class="form-label">Otor 2 Pengganti</label>
-                    <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor2_by" id="tunjuk_otor2_by">
-                        <option value="" selected> ---- </option>
-                        @foreach ($penggantis as $pengganti)
+                <div class="col-sm-6 mb-3" name="pengganti2_antar_satuan_kerja" id="pengganti2_eksternal" style="display: none">
+                    <label for="tunjuk_otor2_by" class="form-label">Tanda Tangan 2</label>
+                    <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor2_by" id="tunjuk_otor2_by_eksternal">
+                        <option selected disabled> -- Pilih salah satu -- </option> @foreach ($penggantis as $pengganti)
                         @if ($pengganti->satuan_kerja == 2)
                         @if (($pengganti->levelTable->golongan >= 5) && ($pengganti->levelTable->golongan <= 6)) @if ($pengganti->levelTable->jabatan == 'Kepala Departemen')
                             <option value="{{ $pengganti['id'] }}">
@@ -193,21 +194,57 @@
                             @endforeach
                     </select>
                 </div>
+
+                <div class="col-sm-6 mb-3" name="pengganti2_antar_departemen" id="pengganti2_internal" style="display: none">
+                    <label for="tunjuk_otor2_by" class="form-label">Tanda Tangan 2</label>
+                    <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor2_by" id="tunjuk_otor2_by_internal">
+                        <option selected disabled> -- Pilih salah satu -- </option> @foreach ($penggantis as $pengganti)
+                        @if ($pengganti->satuan_kerja == 2 && $pengganti->departemen == $users->departemen)
+                        @if (($pengganti->levelTable->golongan >= 5) && ($pengganti->levelTable->golongan < 6)) <option value="{{ $pengganti['id'] }}">
+                            {{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->satuanKerja->inisial) }} | {{ strtoupper($pengganti->departemenTable->inisial) }}
+                            </option>
+                            @endif
+                            @endif
+                            @endforeach
+                    </select>
+                </div>
             </div>
 
             {{-- Input lampiran --}}
-            <div class="mb-3 formulir" style="display: none">
-                <label for="lampiran" class="form-label">Lampiran</label>
-                <input class="form-control" type="file" id="lampiran" name="lampiran" required>
+            <div class="mb-3 formulir" style="display: none;">
+                <textarea id="summernote" name="editordata"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary formulir" style="display: none">Simpan</button>
+            <div class="mb-3 formulir" style="display: none">
+                <label for="lampiran" class="form-label">Lampiran</label>
+                <input class="form-control" type="file" id="lampiran" name="lampiran">
+            </div>
+
+            <div class="d-flex">
+                <button type="submit" name="lihat" value="lihat" class="btn btn-info formulir" style="display: none" formtarget="_blank">Lihat Pratinjau</button>
+                <button type="submit" name="draft" value="draft" class="btn btn-warning formulir" style="display: none">Simpan Sebagai Draft</button>
+                <button type="submit" name="simpan" value="simpan" class="btn btn-primary formulir ms-auto" style="display: none">Simpan Surat</button>
+            </div>
         </form>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
+<script>
+    $('#summernote').summernote({
+        placeholder: 'Isi Memo',
+        tabsize: 2,
+        height: 400,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+    });
+</script>
 <script>
     $(document).ready(function() {
         $(".form-selectgroup-input").change(function() {
@@ -216,24 +253,22 @@
                 $('.formulir').show(1000).delay(100)
                 $('.tujuan-eksternal').hide(500)
                 $('.tujuan-internal').show(1000)
-                $('#pengganti_eksternal').hide()
-                $('#pengganti_internal').show()
+                $('#pengganti1_eksternal').hide()
+                $('#pengganti1_internal').show()
+                $('#pengganti2_eksternal').hide()
+                $('#pengganti2_internal').show()
                 $('#kantor_cabang').val(null).trigger('change')
                 $('#unit_kerja').val(null).trigger('change')
             } else {
                 $('.formulir').show(1000).delay(100)
                 $('.tujuan-eksternal').show(1000)
                 $('.tujuan-internal').hide(500)
-                $('#pengganti_internal').hide()
-                $('#pengganti_eksternal').show()
+                $('#pengganti1_internal').hide()
+                $('#pengganti1_eksternal').show()
+                $('#pengganti2_internal').hide()
+                $('#pengganti2_eksternal').show()
                 $('#tujuan_internal').val(null).trigger('change')
             }
-        });
-
-        $('#pejabat_pengganti').click(function() {
-            $('#otor_pengganti').toggle();
-            $('.otor-pengganti').val(null).trigger('change')
-            $('.otor-pengganti').val(null).trigger('change')
         });
 
         $('#tujuan_satuan_kerja').select2({

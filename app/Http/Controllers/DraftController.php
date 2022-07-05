@@ -12,6 +12,7 @@ use App\Models\SatuanKerja;
 use App\Models\Cabang;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Departemen;
+use App\Models\TujuanDepartemen;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -94,10 +95,12 @@ class DraftController extends Controller
     {
         $satuanKerja = SatuanKerja::all();
         $cabang = Cabang::all();
+        $departemenInternal = Departemen::where('satuan_kerja', 2)->get();
 
         $draft = SuratKeluar::find($id);
         $tujuanSatkerDraft = TujuanSatuanKerja::where('memo_id', $id)->pluck('satuan_kerja_id')->toArray();
         $tujuanCabangDraft = TujuanKantorCabang::where('memo_id', $id)->pluck('cabang_id')->toArray();
+        $tujuanDepartemenDraft = TujuanDepartemen::where('memo_id', $id)->pluck('departemen_id')->toArray();
 
         if (in_array(1, $tujuanSatkerDraft)) {
             $tujuanSatker = ['Segenap Unit Kerja Kantor Pusat'];
@@ -109,8 +112,15 @@ class DraftController extends Controller
         } else {
             $tujuanCabang = $cabang->whereIn('id', $tujuanCabangDraft)->pluck('cabang')->toArray();
         }
+        if (in_array(1, $tujuanDepartemenDraft)) {
+            $tujuanDepartemen = ['Segenap Departemen di SKTILOG'];
+        } else {
+            $tujuanDepartemen = $departemenInternal->whereIn('id', $tujuanDepartemenDraft)->pluck('departemen')->toArray();
+        }
 
-        if ($draft['satuan_kerja_asal']) {
+        if ($draft['internal'] == 1) {
+            $dari = $departemenInternal->find($draft['departemen_asal'])->departemen;
+        } elseif ($draft['satuan_kerja_asal']) {
             $dari = $satuanKerja->find($draft['satuan_kerja_asal'])->satuan_kerja;
         } elseif ($draft['cabang_asal']) {
             $dari = 'Cabang' . ' ' . $cabang->find($draft['cabang_asal'])->cabang;
@@ -125,6 +135,7 @@ class DraftController extends Controller
             'requests' => $draft,
             'tujuanSatkers' => $tujuanSatker,
             'tujuanCabangs' => $tujuanCabang,
+            'tujuanDepartemens' => $tujuanDepartemen,
             'dari' => $dari,
             'ttd1' => $ttd1,
             'ttd2' => $ttd2,
