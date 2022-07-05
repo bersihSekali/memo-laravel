@@ -111,9 +111,9 @@ class DraftController extends Controller
         }
 
         if ($draft['satuan_kerja_asal']) {
-            $dari = $satuanKerja->find($draft['satuan_kerja_asal']);
+            $dari = $satuanKerja->find($draft['satuan_kerja_asal'])->satuan_kerja;
         } elseif ($draft['cabang_asal']) {
-            $dari = $cabang->find($draft['cabang_asal']);
+            $dari = 'Cabang' . ' ' . $cabang->find($draft['cabang_asal'])->cabang;
         }
         $ttd1 = User::find($draft['otor1_by']);
         $ttd2 = User::find($draft['otor2_by']);
@@ -239,25 +239,10 @@ class DraftController extends Controller
         $tujuanUnitKerja = $request->tujuan_unit_kerja;
         $tujuanKantorCabang = $request->tujuan_kantor_cabang;
 
-        $cabangBesar = array();
-        $bidang = array();
-        if ($tujuanKantorCabang != null) {
-            foreach ($tujuanKantorCabang as $item) {
-                if (substr($item, 0, 1) == 'S') {
-                    $item = ltrim($item, $item[0]);
-                    array_push($cabangBesar, $item);
-                } elseif ($item == 'kantor_cabang') {
-                    continue;
-                } else {
-                    array_push($bidang, $item);
-                }
-            }
-        }
-
-        // Seluruh tujuan kantor cabang
+        //TujuanCabang
         if ($tujuanKantorCabang[0] == 'kantor_cabang') {
             foreach ($cabang as $item) {
-                if ($item->cabang_id != $user->cabang) {
+                if ($item->cabang != $user->cabang) {
                     TujuanKantorCabang::create([
                         'memo_id' => $id,
                         'cabang_id' => $item->id,
@@ -265,43 +250,16 @@ class DraftController extends Controller
                     ]);
                 }
             }
-            // foreach ($bidangCabang as $item) {
-            //     TujuanKantorCabang::create([
-            //         'memo_id' => $idSurat,
-            //         'bidang_id' => $item->id,
-            //         'all_flag' => 1
-            //     ]);
-            // }
+        } else {
+            if ($tujuanKantorCabang != null)
+                foreach ($tujuanKantorCabang as $item) {
+                    TujuanKantorCabang::create([
+                        'memo_id' => $id,
+                        'cabang_id' => $item,
+                        'all_flag' => 0
+                    ]);
+                }
         }
-
-        if (count($cabangBesar) != 0) {
-            foreach ($cabangBesar as $item) {
-                TujuanKantorCabang::create([
-                    'memo_id' => $id,
-                    'cabang_id' => $item,
-                    'all_flag' => 1
-                ]);
-                // $bidangLoop = BidangCabang::where('cabang_id', $item)->get();
-                // foreach ($bidangLoop as $item_bidang) {
-                //     TujuanKantorCabang::create([
-                //         'memo_id' => $idSurat,
-                //         'bidang_id' => $item_bidang->id,
-                //         'all_flag' => 1
-                //     ]);
-                // }
-            }
-        }
-
-
-        // if (count($bidang) != 0) {
-        //     foreach ($bidang as $item) {
-        //         TujuanKantorCabang::create([
-        //             'memo_id' => $idSurat,
-        //             'bidang_id' => $item,
-        //             'all_flag' => 0
-        //         ]);
-        //     }
-        // }
 
         // Tujuan unit kerja
         if ($tujuanUnitKerja[0] == 'unit_kerja') {

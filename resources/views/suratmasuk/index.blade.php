@@ -177,7 +177,7 @@
                         <tr>
                             <td>Asal</td>
                             @if ($data->cabang_asal)
-                            <td>: {{$data->cabangAsal['cabang']}}</td>
+                            <td>: Cabang {{$data->cabangAsal['cabang']}}</td>
                             @elseif($data->internal == 1)
                             <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
                             @elseif($data->internal ==2)
@@ -198,9 +198,7 @@
                                 @else
                                 @foreach ($tujuanCabangs as $item)
                                 @if ($item->memo_id == $data->memo_id)
-                                @if ($item->all_flag == true && $item->cabang_id != null)
-                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
-                                @endif
+                                : Cabang {{ $item->tujuanCabang->cabang }} <br>
                                 @endif
                                 @endforeach
                                 @endif
@@ -251,10 +249,12 @@
                             <td>: <a type="button" href="/draft/{{ $data['memo_id'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Memo</a></td>
                         </tr>
 
+                        @if($data['lampiran'])
                         <tr>
                             <td>Lampiran</td>
                             <td>: <a class="btn btn-info btn-sm" href="/storage/{{ $data['lampiran'] }}" target="_blank">Lihat Lampiran</a></td>
                         </tr>
+                        @endif
                     </table>
                 </div>
             </div>
@@ -268,35 +268,50 @@
                 <a class="btn btn-secondary" href="/tujuanDepartemen/{{$data['memo_id']}}/edit">Disposisi</a>
             </div>
             @endif
-            @elseif ($users->level >= 6)
+
+            @elseif ($users->level == 6)
             @if (!$data->status_baca)
             <div class="modal-footer">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
-            </div>
-            @else
-            @if ($users->level == 5)
-            <div class="modal-footer">
-                <a class="btn btn-secondary" href="/cabang/{{$data['memo_id']}}/edit">Terusan</a>
             </div>
             @else
             <div class="modal-footer">
                 <a class="btn btn-secondary" href="/forward/{{$data['memo_id']}}/edit">Terusan</a>
             </div>
             @endif
+
+            @elseif ($users->level == 5)
+            @if (!$data->status_baca)
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
+            </div>
+            @else
+            <div class="modal-footer">
+                <a class="btn btn-secondary" href="/cabang/{{$data['memo_id']}}/edit">Terusan</a>
+            </div>
             @endif
 
-            @elseif ($users->levelTable['golongan'] < 6) <div class="modal-footer">
-                @if (!$data->status_baca)
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
-                </div>
-                @elseif ($users->level == 10)
-                <div class="modal-footer">
-                    <a class="btn btn-secondary" href="/forwardCabang/{{$data['memo_id']}}/edit">Terusan</a>
-                </div>
-                @endif
+            @elseif ($users->level == 10)
+            @if (!$data->status_baca)
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
+            </div>
+            @else
+            <div class="modal-footer">
+                <a class="btn btn-secondary" href="/forwardCabang/{{$data['memo_id']}}/edit">Terusan</a>
+            </div>
+            @endif
+
+            @else
+            @if (!$data->status_baca)
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>
+            </div>
+            @else
+            @endif
+
+            @endif
         </div>
-        @endif
     </div>
 </div>
 </div>
@@ -352,7 +367,7 @@
                     <button class="btn btn-primary" type="submit">Yakin</button>
                 </div>
             </form>
-            @elseif ($users->levelTable['golongan'] == 6)
+            @elseif ($users->level == 6)
             <form action="/forward/selesaikan/{{$data['memo_id']}}" method="post">
                 @csrf
                 {{method_field('POST')}}
@@ -380,7 +395,8 @@
                     <button class="btn btn-primary" type="submit">Yakin</button>
                 </div>
             </form>
-            @elseif ($users->levelTable['golongan'] < 6) <form action="/forward/baca/{{$data['memo_id']}}" method="post">
+            @else
+            <form action="/forward/baca/{{$data['memo_id']}}" method="post">
                 @csrf
                 {{method_field('POST')}}
                 <div class="modal-body">
@@ -392,8 +408,8 @@
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
                     <button class="btn btn-primary" type="submit">Yakin</button>
                 </div>
-                </form>
-                @endif
+            </form>
+            @endif
         </div>
     </div>
 </div>

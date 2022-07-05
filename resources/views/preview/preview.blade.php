@@ -119,7 +119,7 @@
                 <tr>
                     <td>Dari</td>
                     <td>:</td>
-                    <td>{{$dari['satuan_kerja']}}</td>
+                    <td>{{$dari}}</td>
                 </tr>
                 <tr>
                     <td>Tembusan</td>
@@ -146,7 +146,7 @@
                 {!!$requests['isi']!!}
             </div>
             <div>
-                <p><strong>{{strtoupper($dari['satuan_kerja'])}}</strong></p>
+                <p><strong>{{strtoupper($dari)}}</strong></p>
                 <table id="ttd">
                     <tr id="kolom-ttd">
                         <td><br><br></td>

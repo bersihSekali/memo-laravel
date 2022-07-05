@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
         $departemen = array(
             // [satuan keja, nama departemen, inisial, grup]
             // Sluruh satuan kerja internal sktilog
-            [1, 'Seluruh Departemen Sktilog', 'STL-ALL', 1],
+            [1, 'Seluruh Departemen SKTILOG', 'STL-ALL', 1],
             // Sktilog
             [2, 'Logistik', 'LOG', 4], [2, 'Sistem Prosedur & Pendukung Operasi', 'PPO', 4], [2, 'Departemen Teknologi Informasi', 'DTI', 4],
             // [2, 'sekuriti Teknologi Informasi', 3], [2, 'operasi Teknologi Informasi', 5],
@@ -73,7 +73,7 @@ class DatabaseSeeder extends Seeder
             // [5, 'riset Pemasaran Dan Pendayagunaan Data Warehouse', 5], [5, 'pengembangan Dan Pembinaan Jaringan Cabang', 3],
 
             // Skarp
-            [6, 'Fungsi Pendukung Arp', 'RPD', 6],
+            [6, 'Fungsi Pendukung ARP', 'RPD', 6],
             // [6, 'analisa Pembiayaan', 5], [6, 'penilaian Agunan', 5],
 
             // Skbrk
@@ -116,59 +116,65 @@ class DatabaseSeeder extends Seeder
         $bidang = array(
             // [Unit layanan, Cabang Utama]
             // Jatinegara
-            ['Cabang Jatinegara', 2], ['KCP Depok', 2], ['KCP Cileungsi', 2],
+            // ['Cabang Jatinegara', 2], 
+            ['KCP Depok', 2], ['KCP Cileungsi', 2],
             // ['uls Cimanggis', 2],
             // ['uls Margonda Depok', 2], ['uls Bogor', 2], ['uls Gudang Peluru', 2],
             // ['uls Pondok Indah', 2], ['uls Pasar Minggu', 2],
 
             // Mangga Dua
-            ['Cabang Mangga Dua', 3], ['KCP Ciledug', 3], ['KCP Ciputat', 3],
+            // ['Cabang Mangga Dua', 3], 
+            ['KCP Ciledug', 3], ['KCP Ciputat', 3],
             // ['uls Tanah Abang', 3], ['uls Bintaro Utama', 3], ['uls Melawai', 3],
             // ['uls Kemang Mansion', 3],
 
             // Samanhudi
-            ['Cabang Samanhudi', 4], ['KCP Kenari', 4], ['KCP Pasar Anyar Tangerang', 4],
+            // ['Cabang Samanhudi', 4], 
+            ['KCP Kenari', 4], ['KCP Pasar Anyar Tangerang', 4],
             // ['uls Tangerang', 4], ['uls Pluti Kencana', 4], ['uls Puri Indah', 4],
             // ['uls Bintaro', 4],
 
             // Sunter
-            ['Cabang Sunter', 5], ['KCP Kelapa Gading', 5], ['KCP Bekasi', 5],
+            // ['Cabang Sunter', 5], 
+            ['KCP Kelapa Gading', 5], ['KCP Bekasi', 5],
             ['KCP Pasar Kranji Bekasi', 5], ['KCP Pondok Gede', 5], ['KCP Cikarang Selatan', 5],
             // ['uls Juanda Bekasi', 5], ['uls Tanjung Priok', 5],
 
             // Banda Aceh
-            ['Cabang Banda Aceh', 6], ['KCP Lhokseumawe', 6],
+            // ['Cabang Banda Aceh', 6], 
+            ['KCP Lhokseumawe', 6],
             // , ['uls Bireuen', 6],
 
             // Bandung
-            ['Cabang Bandung', 7],
+            // ['Cabang Bandung', 7],
             // ['uls Buah Batu', 7], ['uls Kota Baru Parahyangan', 7],
             // ['uls Dago', 7],
 
             // Lampung
-            ['Cabang Lampung', 8],
+            // ['Cabang Lampung', 8],
 
             // Medan
-            ['Cabang Medan', 9],
+            // ['Cabang Medan', 9],
             // ['uls Setiabudi Medan', 9],
 
             // Palembang
-            ['Cabang Palembang', 10],
+            // ['Cabang Palembang', 10],
             // ['uls Sudirman Palembang', 10], ['uls Ahmad Rivai', 10],
 
             // Panakkukang
-            ['Cabang Panakkukang', 11],
+            // ['Cabang Panakkukang', 11],
 
             // Semarang
-            ['Cabang Semarang', 12],
+            // ['Cabang Semarang', 12],
             // ['uls Pemuda', 12], ['uls Kudus', 12], ['uls Majapahit', 12],
 
             // Solo
-            ['Cabang Solo', 13],
+            // ['Cabang Solo', 13],
             // ['uls Slamet Tiyadi', 13], ['uls Singosaren', 13], ['uls Sragen', 13],
 
             // Surabaya
-            ['Cabang Surabaya', 14], ['KCP Malang', 14], ['KCP Kediri', 14],
+            // ['Cabang Surabaya', 14], 
+            ['KCP Malang', 14], ['KCP Kediri', 14],
             ['KCP Pasuruan', 14], ['KCP Banyuwangi', 14],
             // ['uls Veteran', 14],
             // ['uls Darmo', 14], ['uls Gedangan', 14], ['uls Sepanjang', 14],
@@ -177,7 +183,7 @@ class DatabaseSeeder extends Seeder
             // ['uls Kapas Krampung', 14], ['uls Kepanjen', 14], ['uls Taman Pondok Indah', 14],
 
             // Yogyakarta
-            ['Cabang Yogyakarta', 15],
+            // ['Cabang Yogyakarta', 15],
             // ['uls Sudirman Yogyakarta', 15]
         );
 

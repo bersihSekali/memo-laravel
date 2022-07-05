@@ -36,7 +36,7 @@
                                 @if ($data->satuan_kerja_asal)
                                 {{ $data->satuanKerjaAsal['inisial'] }}
                                 @else
-                                CABANG {{ $data->cabangAsal['cabang'] }}
+                                Cabang {{ $data->cabangAsal['cabang'] }}
                                 @endif
                             </td>
                             <td class="align-top">{{ $data->perihal }}</td>
@@ -90,7 +90,7 @@
                                 @if ($data->satuan_kerja_asal)
                                 : {{ $data->satuanKerjaAsal['satuan_kerja'] }}
                                 @else
-                                : CABANG {{ $data->cabangAsal['cabang'] }}
+                                : Cabang {{ $data->cabangAsal['cabang'] }}
                                 @endif
                             </td>
                         </tr>
@@ -115,22 +115,10 @@
                                 @else
                                 @foreach ($tujuanCabangs as $item)
                                 @if ($item->memo_id == $data->id)
-                                @if ($item->all_flag == true && $item->cabang_id != null)
-                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
-                                @endif
+                                : Cabang {{ $item->tujuanCabang->cabang }} <br>
                                 @endif
                                 @endforeach
                                 @endif
-
-                                {{-- Tujuan kantor bidang --}}
-                                @foreach ($tujuanCabangs as $item)
-                                @if ($item->memo_id == $data->id)
-                                @if ($item->bidang_id != null && $item->all_flag!=true)
-                                : {{ $item->tujuanBidang->bidang }} <br>
-                                @endif
-                                @endif
-                                @endforeach
-
                             </td>
                         </tr>
 

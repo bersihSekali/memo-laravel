@@ -99,7 +99,7 @@
             </div>
             <div class="modal-footer">
                 <a class="btn btn-secondary" href="{{route('suratMasuk')}}">Kembali ke Surat Masuk</a>
-                <button class="btn btn-primary" type="submit">Selesaikan</button>
+                <button class="btn btn-primary" type="submit">Teruskan</button>
             </div>
         </form>
     </div>
