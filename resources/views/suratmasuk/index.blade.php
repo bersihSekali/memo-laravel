@@ -75,7 +75,7 @@
                             @endif
                         </tr>
                         @endforeach
-                        @elseif($users->levelTable['golongan'] == 6)
+                        @elseif($users->level == 6 ||$users->level == 5)
                         @foreach($datas as $data)
                         <tr class="{{ ($data['status_baca'] == 1 ? 'table-light' : 'table-bold') }}" id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['memo_id']}}" style="cursor: pointer;">
                             <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_disposisi']))}}</td>
@@ -268,7 +268,7 @@
                 <a class="btn btn-secondary" href="/tujuanDepartemen/{{$data['memo_id']}}/edit">Disposisi</a>
             </div>
             @endif
-            @elseif ($users->levelTable['golongan'] >= 6)
+            @elseif ($users->level >= 6)
             @if (!$data->status_baca)
             <div class="modal-footer">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSelesai-{{ $data['memo_id'] }}">Selesaikan</button>

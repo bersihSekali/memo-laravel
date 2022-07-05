@@ -120,6 +120,7 @@ class DraftController extends Controller
             'title' => 'Pratinjau',
             'requests' => $draft,
             'tujuanSatkers' => $tujuanSatker,
+            'tujuanCabangs' => $tujuanCabang,
             'dari' => $dari,
             'ttd1' => $ttd1,
             'ttd2' => $ttd2,

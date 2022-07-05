@@ -111,6 +111,9 @@
                         @foreach($tujuanSatkers as $tujuanSatker)
                         {{$tujuanSatker}}<br>
                         @endforeach
+                        @foreach($tujuanCabangs as $tujuanCabang)
+                        Cabang {{$tujuanCabang}}<br>
+                        @endforeach
                     </td>
                 </tr>
                 <tr>

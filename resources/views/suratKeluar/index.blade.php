@@ -140,7 +140,7 @@
                                 @foreach ($tujuanCabangs as $item)
                                 @if ($item->memo_id == $data->id)
                                 @if ($item->all_flag == true && $item->cabang_id != null)
-                                : CABANG {{ $item->tujuanCabang->cabang }} <br>
+                                : Cabang {{ $item->tujuanCabang->cabang }} <br>
                                 @endif
                                 @endif
                                 @endforeach
@@ -154,7 +154,6 @@
                                 @endif
                                 @endif
                                 @endforeach
-
                             </td>
                         </tr>
 

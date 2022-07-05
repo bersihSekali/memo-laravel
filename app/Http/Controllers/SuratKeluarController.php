@@ -24,8 +24,10 @@ class SuratKeluarController extends Controller
      */
     public function index()
     {
+        // data user
         $id = Auth::id();
         $user = User::where('id', $id)->first();
+        //cek user
         if ($user->cabang) {
             $mails = SuratKeluar::where('cabang_asal', $user->cabang)
                 ->where('draft', 0)
@@ -250,6 +252,7 @@ class SuratKeluarController extends Controller
             $validated['cabang_asal'] = $request->cabang_asal;
             $validated['satuan_kerja_asal'] = $request->satuan_kerja_asal;
             $validated['tujuan_unit_kerja'] = $request->tujuan_unit_kerja;
+            $validated['tujuan_kantor_cabang'] = $request->tujuan_kantor_cabang;
             $validated['isi'] = $request->editordata;
             $validated['otor2_by'] = $request->tunjuk_otor2_by;
             $validated['otor1_by'] = $request->tunjuk_otor1_by;
@@ -259,6 +262,12 @@ class SuratKeluarController extends Controller
                 $tujuanSatker = 'Seluruh Unit Kerja Kantor Pusat';
             } elseif ($validated['tujuan_unit_kerja']) {
                 $tujuanSatker = $satuanKerja->whereIn('id', $validated['tujuan_unit_kerja'])->pluck('satuan_kerja')->toArray();
+            }
+
+            if ($validated['tujuan_kantor_cabang'] == 'kantor_cabang') {
+                $tujuanCabang = 'Seluruh Kantor Layanan';
+            } elseif ($validated['tujuan_kantor_cabang']) {
+                $tujuanCabang = $cabang->whereIn('id', $validated['tujuan_kantor_cabang'])->pluck('cabang')->toArray();
             }
 
             $dari = $satuanKerja->find($validated['satuan_kerja_asal']);
@@ -271,6 +280,7 @@ class SuratKeluarController extends Controller
                 'title' => 'Pratinjau',
                 'requests' => $validated,
                 'tujuanSatkers' => $tujuanSatker,
+                'tujuanCabangs' => $tujuanCabang,
                 'dari' => $dari,
                 'ttd1' => $ttd1,
                 'ttd2' => $ttd2,
@@ -305,6 +315,7 @@ class SuratKeluarController extends Controller
             $validated['cabang_asal'] = $request->cabang_asal;
             $validated['satuan_kerja_asal'] = $request->satuan_kerja_asal;
             $validated['tujuan_unit_kerja'] = $request->tujuan_unit_kerja;
+            $validated['tujuan_kantor_cabang'] = $request->tujuan_kantor_cabang;
             $validated['isi'] = $request->editordata;
             $validated['otor2_by'] = $request->tunjuk_otor2_by;
             $validated['otor1_by'] = $request->tunjuk_otor1_by;
