@@ -218,7 +218,7 @@ class SuratKeluarController extends Controller
             //TujuanCabang
             if ($tujuanKantorCabang[0] == 'kantor_cabang') {
                 foreach ($cabang as $item) {
-                    if ($item->cabang != $user->cabang) {
+                    if ($item->id != $user->cabang) {
                         TujuanKantorCabang::create([
                             'memo_id' => $idSurat,
                             'cabang_id' => $item->id,
@@ -239,7 +239,7 @@ class SuratKeluarController extends Controller
             // Tujuan unit kerja
             if ($tujuanUnitKerja[0] == 'unit_kerja') {
                 foreach ($satuanKerja as $item) {
-                    if ($item->satuan_kerja != $user->satuan_kerja) {
+                    if ($item->id != $user->satuan_kerja) {
                         TujuanSatuanKerja::create([
                             'memo_id' => $idSurat,
                             'satuan_kerja_id' => $item->id,
@@ -438,7 +438,7 @@ class SuratKeluarController extends Controller
             //TujuanCabang
             if ($tujuanKantorCabang[0] == 'kantor_cabang') {
                 foreach ($cabang as $item) {
-                    if ($item->cabang != $user->cabang) {
+                    if ($item->id != $user->cabang) {
                         TujuanKantorCabang::create([
                             'memo_id' => $idSurat,
                             'cabang_id' => $item->id,
@@ -460,7 +460,7 @@ class SuratKeluarController extends Controller
             // Tujuan unit kerja
             if ($tujuanUnitKerja[0] == 'unit_kerja') {
                 foreach ($satuanKerja as $item) {
-                    if ($item->satuan_kerja != $user->satuan_kerja) {
+                    if ($item->id != $user->satuan_kerja) {
                         TujuanSatuanKerja::create([
                             'memo_id' => $idSurat,
                             'satuan_kerja_id' => $item->id,
