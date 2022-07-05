@@ -131,12 +131,30 @@
                     <label for="tunjuk_otor1_by" class="form-label">Tanda Tangan 1</label>
                     <select class="form-select mb-3" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
                         <option selected disabled> -- Pilih salah satu -- </option>
-                        @if ($users->cabang)
+                        @if ($users->satuanKerja['grup'] == 5)
+                        @foreach ($penggantis as $pengganti)
+                        @if ($pengganti->level == 6 && $pengganti->satuan_kerja == $users->satuan_kerja)
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        @endif
+                        @endforeach
+                        @foreach ($penggantis as $pengganti)
+                        @if ($pengganti->level == 6 && $pengganti->satuanKerja['grup'] == 5 && $pengganti->satuan_kerja != $users->satuan_kerja)
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        @endif
+                        @endforeach
+                        @foreach ($penggantis as $pengganti)
+                        @if ($pengganti->level == 2)
+                        <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        @endif
+                        @endforeach
+
+                        @elseif ($users->cabang)
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->level == 5 || $pengganti->level == 9 || ($pengganti->departemenTable['inisial'] == 'SBK' && $pengganti->level == 2))
                         <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }}</option>
                         @endif
                         @endforeach
+
                         @else
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->levelTable->golongan == 7)
@@ -159,14 +177,16 @@
                         @endif
                         @endif
                         @endforeach
+
                         @elseif ($users->satuanKerja['grup'] == 5)
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->satuan_kerja == $users->satuan_kerja)
-                        @if ($pengganti->levelTable['golongan'] >= 4)
+                        @if ($pengganti->levelTable['golongan'] >= 4 && $pengganti->level != 6)
                         <option value="{{ $pengganti['id'] }}">{{ strtoupper($pengganti->name) }}</option>
                         @endif
                         @endif
                         @endforeach
+
                         @else
                         @foreach ($penggantis as $pengganti)
                         @if (($pengganti->levelTable->golongan == 6) || ($pengganti->levelTable->golongan == 5))
