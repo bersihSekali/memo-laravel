@@ -36,7 +36,7 @@
                                 @if ($data->satuan_kerja_asal)
                                 {{ $data->satuanKerjaAsal['inisial'] }}
                                 @else
-                                Cabang {{ $data->cabangAsal['cabang'] }}
+                                {{ $data->cabangAsal['cabang'] }}
                                 @endif
                             </td>
                             <td class="align-top">{{ $data->perihal }}</td>
@@ -90,7 +90,7 @@
                                 @if ($data->satuan_kerja_asal)
                                 : {{ $data->satuanKerjaAsal['satuan_kerja'] }}
                                 @else
-                                : Cabang {{ $data->cabangAsal['cabang'] }}
+                                : {{ $data->cabangAsal['cabang'] }}
                                 @endif
                             </td>
                         </tr>
@@ -100,7 +100,7 @@
                             <td>
                                 {{-- Tujuan satuan kerja --}}
                                 @if (in_array($data->id, $seluruhSatkerMemoIds))
-                                : SELURUH UNIT KERJA KANTOR PUSAT <br>
+                                : Segenap Unit Kerja Kantor Pusat <br>
                                 @else
                                 @foreach ($tujuanSatkers as $item)
                                 @if ($item->memo_id == $data->id)
@@ -111,11 +111,11 @@
 
                                 {{-- Tujuan kantor cabang --}}
                                 @if (in_array($data->id, $seluruhCabangMemoIds))
-                                : SELURUH KANTOR LAYANAN <br>
+                                : Segenap Kantor Layanan <br>
                                 @else
                                 @foreach ($tujuanCabangs as $item)
                                 @if ($item->memo_id == $data->id)
-                                : Cabang {{ $item->tujuanCabang->cabang }} <br>
+                                : {{ $item->tujuanCabang->cabang }} <br>
                                 @endif
                                 @endforeach
                                 @endif

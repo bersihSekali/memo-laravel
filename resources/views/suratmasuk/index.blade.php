@@ -177,7 +177,7 @@
                         <tr>
                             <td>Asal</td>
                             @if ($data->cabang_asal)
-                            <td>: Cabang {{$data->cabangAsal['cabang']}}</td>
+                            <td>: {{$data->cabangAsal['cabang']}}</td>
                             @elseif($data->internal == 1)
                             <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
                             @elseif($data->internal ==2)
@@ -194,18 +194,18 @@
 
                                 {{-- Tujuan kantor cabang --}}
                                 @if (in_array($data->memo_id, $seluruhCabangMemoIds))
-                                : SELURUH KANTOR LAYANAN <br>
+                                : Segenap Kantor Layanan <br>
                                 @else
                                 @foreach ($tujuanCabangs as $item)
                                 @if ($item->memo_id == $data->memo_id)
-                                : Cabang {{ $item->tujuanCabang->cabang }} <br>
+                                : {{ $item->tujuanCabang->cabang }} <br>
                                 @endif
                                 @endforeach
                                 @endif
 
                                 {{-- Tujuan satuan kerja --}}
                                 @if (in_array($data->memo_id, $seluruhSatkerMemoIds))
-                                : SELURUH UNIT KERJA KANTOR PUSAT <br>
+                                : Segenap Unit Kerja Kantor Pusat <br>
                                 @else
                                 @foreach ($tujuanSatkers as $item)
                                 @if ($item->memo_id == $data->memo_id)
@@ -218,7 +218,7 @@
 
                                 {{-- Tujuan departemen --}}
                                 @if (in_array($data->memo_id, $seluruhDepartemenMemoIds))
-                                : SELURUH DEPARTEMEN SKTILOG <br>
+                                : Seluruh Departemen SKTILOG <br>
                                 @else
                                 @foreach ($tujuanDepartemens as $item)
                                 @if ($item->memo_id == $data->memo_id)

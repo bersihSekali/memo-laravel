@@ -100,12 +100,12 @@ class DraftController extends Controller
         $tujuanCabangDraft = TujuanKantorCabang::where('memo_id', $id)->pluck('cabang_id')->toArray();
 
         if (in_array(1, $tujuanSatkerDraft)) {
-            $tujuanSatker = 'Seluruh Unit Kerja Kantor Pusat';
+            $tujuanSatker = ['Segenap Unit Kerja Kantor Pusat'];
         } else {
             $tujuanSatker = $satuanKerja->whereIn('id', $tujuanSatkerDraft)->pluck('satuan_kerja')->toArray();
         }
         if (in_array(1, $tujuanCabangDraft)) {
-            $tujuanCabang = 'Seluruh Kantor Layanan';
+            $tujuanCabang = ['Segenap Kantor Layanan'];
         } else {
             $tujuanCabang = $cabang->whereIn('id', $tujuanCabangDraft)->pluck('cabang')->toArray();
         }

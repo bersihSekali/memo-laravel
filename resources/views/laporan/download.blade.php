@@ -109,7 +109,7 @@
                         @foreach ($tujuanCabangs as $item)
                         @if ($item->memo_id == $data->memo_id)
                         @if ($item->all_flag == true && $item->cabang_id != null)
-                        CABANG {{ $item->tujuanCabang->cabang }} <br>
+                        {{ $item->tujuanCabang->cabang }} <br>
                         @endif
                         @endif
                         @endforeach
@@ -177,7 +177,7 @@
                         @foreach ($tujuanCabangs as $item)
                         @if ($item->memo_id == $data->id)
                         @if ($item->all_flag == true && $item->cabang_id != null)
-                        CABANG {{ $item->tujuanCabang->cabang }} <br>
+                        {{ $item->tujuanCabang->cabang }} <br>
                         @endif
                         @endif
                         @endforeach

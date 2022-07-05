@@ -97,13 +97,13 @@ class DatabaseSeeder extends Seeder
 
         $cabang = array(
             // Jabodetabek
-            ['Seluruh Kantor Cabang', 11], ['Jatinegara', 11], ['Mangga Dua', 11],
-            ['Samanhudi', 11], ['Sunter', 11],
+            ['Seluruh Kantor Cabang', 11], ['Kantor Cabang Jatinegara', 11], ['Kantor Cabang Mangga Dua', 11],
+            ['Kantor Cabang Samanhudi', 11], ['Kantor Cabang Sunter', 11],
 
             // Non Jabodetabek
-            ['Banda Aceh', 12], ['Bandung', 12], ['Lampung', 12],
-            ['Medan', 12], ['Palembang', 12], ['Panakkukang', 12],
-            ['Semarang', 12], ['Solo', 12], ['Surabaya', 12], ['Yogyakarta', 12]
+            ['Kantor Cabang Banda Aceh', 12], ['Kantor Cabang Bandung', 12], ['Kantor Cabang Lampung', 12],
+            ['Kantor Cabang Medan', 12], ['Kantor Cabang Palembang', 12], ['Kantor Cabang Panakkukang', 12],
+            ['Kantor Cabang Semarang', 12], ['Kantor Cabang Solo', 12], ['Kantor Cabang Surabaya', 12], ['Kantor Cabang Yogyakarta', 12]
         );
 
         for ($i = 0; $i < count($cabang); $i++) {

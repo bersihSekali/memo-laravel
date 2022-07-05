@@ -281,13 +281,13 @@ class SuratKeluarController extends Controller
             $validated['internal'] = 2;
 
             if ($validated['tujuan_unit_kerja'] == 'unit_kerja') {
-                $tujuanSatker = 'Seluruh Unit Kerja Kantor Pusat';
+                $tujuanSatker = ['Segenap Unit Kerja Kantor Pusat'];
             } else {
                 $tujuanSatker = $satuanKerja->whereIn('id', $validated['tujuan_unit_kerja'])->pluck('satuan_kerja')->toArray();
             }
 
             if ($validated['tujuan_kantor_cabang'] == 'kantor_cabang') {
-                $tujuanCabang = 'Seluruh Kantor Layanan';
+                $tujuanCabang = ['Segenap Kantor Layanan'];
             } else {
                 $tujuanCabang = $cabang->whereIn('id', $validated['tujuan_kantor_cabang'])->pluck('cabang')->toArray();
             }

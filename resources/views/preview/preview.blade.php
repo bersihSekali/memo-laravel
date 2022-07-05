@@ -112,7 +112,7 @@
                         {{$tujuanSatker}}<br>
                         @endforeach
                         @foreach($tujuanCabangs as $tujuanCabang)
-                        Cabang {{$tujuanCabang}}<br>
+                        {{$tujuanCabang}}<br>
                         @endforeach
                     </td>
                 </tr>

@@ -100,7 +100,7 @@
                     <div class="row">
                         <div class="col">
                             <select class="form-select" aria-label=".form-select-sm example" name="tujuan_kantor_cabang[]" id="tujuan_kantor_cabang" multiple="multiple">
-                                <option id="kantor_cabang" value="kantor_cabang">SELURUH KANTOR LAYANAN</option>
+                                <option id="kantor_cabang" value="kantor_cabang">Seluruh Kantor Layanan</option>
                                 @foreach ($cabangs as $cabang)
                                 <option class="opsi_kantor_cabang_besar besar-{{ $cabang->id }}" value="{{ $cabang->id }}" {{ in_array($cabang->id, $tujuanCabangDrafts) ? 'selected' : '' }}>
                                     {{ $cabang->cabang }}
