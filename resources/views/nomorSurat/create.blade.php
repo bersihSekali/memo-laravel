@@ -156,17 +156,13 @@
                     <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
                         <option selected disabled> -- Pilih salah satu -- </option> @foreach ($penggantis as $pengganti)
                         @if ($pengganti->satuan_kerja == 2)
-                        @if (($pengganti->levelTable->golongan >= 5) && ($pengganti->levelTable->golongan <= 7)) @if ($pengganti->levelTable->golongan == 7)
+                        @if (($pengganti->levelTable->golongan >= 5) && ($pengganti->levelTable->golongan < 7)) @if ($pengganti->levelTable->jabatan == 'Kepala Departemen')
                             <option value="{{ $pengganti['id'] }}">
-                                {{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->inisial) }}
-                            </option>
-                            @elseif ($pengganti->levelTable->jabatan == 'Kepala Departemen')
-                            <option value="{{ $pengganti['id'] }}">
-                                {{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->satuanKerja->inisial) }} | KA. {{ strtoupper($pengganti->departemenTable->inisial) }}
+                                {{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->satuanKerja['inisial']) }} | KA. {{ strtoupper($pengganti->departemenTable['inisial']) }}
                             </option>
                             @else
                             <option value="{{ $pengganti['id'] }}">
-                                {{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->satuanKerja->inisial) }} | {{ strtoupper($pengganti->departemenTable->inisial) }}
+                                {{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->satuanKerja['inisial']) }} | {{ strtoupper($pengganti->departemenTable['inisial']) }}
                             </option>
                             @endif
                             @endif

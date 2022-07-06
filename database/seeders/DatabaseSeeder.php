@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
             // Sluruh satuan kerja internal sktilog
             [1, 'Seluruh Departemen SKTILOG', 'STL-ALL', 1],
             // Sktilog
-            [2, 'Logistik', 'LOG', 4], [2, 'Sistem Prosedur & Pendukung Operasi', 'PPO', 4], [2, 'Departemen Teknologi Informasi', 'DTI', 4],
+            [2, 'Departemen Logistik', 'LOG', 4], [2, 'Departemen Sistem Prosedur & Pendukung Operasi', 'PPO', 4], [2, 'Departemen Teknologi Informasi', 'DTI', 4],
             // [2, 'sekuriti Teknologi Informasi', 3], [2, 'operasi Teknologi Informasi', 5],
 
             // Skai
