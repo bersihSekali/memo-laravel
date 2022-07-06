@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BidangCabang;
 use App\Models\Cabang;
 use App\Models\Departemen;
+use App\Models\Penomoran;
 use Illuminate\Http\Request;
 use App\Models\SuratKeluar;
 use App\Models\User;
@@ -110,9 +111,12 @@ class NomorSuratController extends Controller
         $departemenInternal = Departemen::where('satuan_kerja', 2)->get();
         $cabang = Cabang::all();
 
+        $nomorTersedia = Penomoran::latest()->pluck('nomor_surat')->toArray();
+        $request->flash();
+
         $validated = $request->validate([
             'created_by' => 'required',
-            'nomor_surat' => 'required',
+            'nomor_surat' => 'required|unique:surat_keluars',
             'satuan_kerja_asal' => 'required',
             'perihal' => 'required',
             'lampiran' => 'mimes:pdf',
@@ -124,6 +128,9 @@ class NomorSuratController extends Controller
         $validated['internal'] = $request->tipe_surat;
         $validated['draft'] = 0;
 
+        if (!in_array($validated['nomor_surat'], $nomorTersedia)) {
+            return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal, harap ambil nomor terlebih dahulu');
+        }
 
         $tujuanUnitKerja = $request->tujuan_unit_kerja;
         $tujuanKantorCabang = $request->tujuan_kantor_cabang;

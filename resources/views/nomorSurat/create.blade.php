@@ -15,6 +15,15 @@
             {{ session('error') }}
         </div>
         @endif
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
 
         <form action="/nomorSurat" method="post" enctype="multipart/form-data">
             @csrf
@@ -76,7 +85,7 @@
             <div class="form-group formulir mb-3" style="display: none;">
                 <div class="col-md-6">
                     <label for="nomor_surat" class="form-label ">Nomor Surat</label>
-                    <input type="text" class="form-control" autocomplete="off" name="nomor_surat">
+                    <input type="text" class="form-control" autocomplete="off" name="nomor_surat" value="{{old('nomor_surat')}}">
                 </div>
             </div>
 
@@ -141,7 +150,7 @@
             {{-- Input perihal --}}
             <div class="form-group mb-3 formulir" style="display: none">
                 <label for="perihal" class="form-label ">Perihal</label>
-                <textarea class="form-control" aria-label="With textarea" name="perihal" required id="perihal" required></textarea>
+                <textarea class="form-control" aria-label="With textarea" name="perihal" required id="perihal" required>{{old('perihal')}}</textarea>
             </div>
 
             {{-- Input otor pengganti --}}
@@ -216,7 +225,7 @@
 
             {{-- Input lampiran --}}
             <div class="mb-3 formulir" style="display: none;">
-                <textarea id="summernote" name="editordata"></textarea>
+                <textarea id="summernote" name="editordata">{{old('editordata')}}</textarea>
             </div>
 
             <div class="mb-3 formulir" style="display: none">
