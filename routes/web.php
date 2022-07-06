@@ -20,6 +20,8 @@ use App\Http\Controllers\TujuanBidangCabangController;
 use App\Http\Controllers\TujuanDepartemenController;
 use App\Http\Controllers\ForwardCabangController;
 use App\Http\Controllers\DraftController;
+use App\Http\Controllers\PenomoranController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,7 +49,7 @@ Route::get('/listuser', [AuthController::class, 'listUser'])->middleware('auth')
 Route::get('/registration', [AuthController::class, 'registration'])->middleware('auth');
 Route::post('/registration', [AuthController::class, 'register']);
 
-// Penomoran Surat
+// Surat Keluar Penomoran
 Route::get('/nomorSurat/suratHapus', [NomorSuratController::class, 'listSuratHapus'])->middleware('auth');
 Route::get('/nomorSurat/allSurat', [NomorSuratController::class, 'allSurat'])->middleware('auth');
 Route::get('/nomorSurat/hapusPermanen', [NomorSuratController::class, 'hapusPermanen'])->middleware('auth');
@@ -84,6 +86,9 @@ Route::resource('checker', CheckerController::class)->middleware('auth');
 Route::resource('checkerDisposisi', CheckerDisposisiController::class)->middleware('auth');
 Route::post('disposisi/selesai/{id}', [DisposisiController::class, 'selesai'])->middleware('auth');
 Route::resource('disposisi', DisposisiController::class)->middleware('auth');
+
+//Penomoran
+Route::resource('penomoran', PenomoranController::class)->middleware('auth');
 
 // Log aktivitas
 Route::resource('aktivitas', AktivitasController::class)->middleware('auth');

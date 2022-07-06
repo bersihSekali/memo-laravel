@@ -157,6 +157,15 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a class="nav-link" href="/penomoran" target="_blank">
+              <i class="fas fa-sort-numeric-down"></i>
+              <span class="nav-link-title ms-1">
+                Penomoran Surat
+              </span>
+            </a>
+          </li>
+
           {{-- Untuk Admin --}}
           @else
           <li class="nav-item dropdown">
