@@ -29,6 +29,8 @@
                 </div>
             </div>
 
+            <input type="radio" name="tipe_surat" value="2" class="form-selectgroup-input" checked hidden>
+
             {{-- Kriteria --}}
             <div class="form-group formulir mb-3" style="display: none;">
                 <div class="col-md-6">

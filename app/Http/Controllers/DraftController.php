@@ -252,7 +252,6 @@ class DraftController extends Controller
         $validated['isi'] = $request->editordata;
         $validated['otor2_by'] = $request->tunjuk_otor2_by;
         $validated['otor1_by'] = $request->tunjuk_otor1_by;
-        dd($request->tipe_surat);
         if ($request->tipe_surat == 1) {
             $validated['internal'] = 1;
         } else {

@@ -41,11 +41,14 @@ class NomorSuratController extends Controller
                 ->where('draft', 0)
                 ->latest()->get();
         } elseif ($user->levelTable->golongan <= 6) {
-            $mails = SuratKeluar::where('departemen_asal', $user->departemen)
-                ->orWhere('internal', 2)
-                ->where('draft', 0)
+            $mails = SuratKeluar::where('draft', 0)
+                ->where(function ($query) use ($user) {
+                    $query->where('internal', 2)
+                        ->orWhere('departemen_asal', $user->departemen);
+                })
                 ->latest()->get();
         }
+
 
         //untuk cek all flag, Untuk view column tujuan 
         $tujuan = $this->suratKeluar->columnTujuan($user);
@@ -121,12 +124,13 @@ class NomorSuratController extends Controller
                 'perihal' => 'required',
                 'lampiran' => 'mimes:pdf',
                 'kriteria' => 'required',
-                'isi' => 'required',
+                'editordata' => 'required',
             ]);
             $validated['departemen_asal'] = $request->departemen_asal;
             $validated['otor2_by'] = $request->tunjuk_otor2_by;
             $validated['otor1_by'] = $request->tunjuk_otor1_by;
             $validated['internal'] = $request->tipe_surat;
+            $validated['isi'] = $request->editordata;
             $validated['draft'] = 0;
 
             if (!in_array($validated['nomor_surat'], $nomorTersedia)) {
