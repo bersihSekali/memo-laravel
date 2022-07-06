@@ -33,10 +33,12 @@
                         <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
                             <td class="align-top">{{ date("Y-m-d", strtotime($data->created_at)) }}</td>
                             <td class="align-top">
-                                @if ($data->satuan_kerja_asal)
+                                @if ($data->departemen_asal == '')
                                 {{ $data->satuanKerjaAsal['inisial'] }}
-                                @else
+                                @elseif ($data->cabang_asal)
                                 {{ $data->cabangAsal['cabang'] }}
+                                @else
+                                {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
                                 @endif
                             </td>
                             <td class="align-top">{{ $data->perihal }}</td>
@@ -87,10 +89,12 @@
                         <tr>
                             <td width="20%">Asal</td>
                             <td>
-                                @if ($data->satuan_kerja_asal)
-                                : {{ $data->satuanKerjaAsal['satuan_kerja'] }}
-                                @else
+                                @if ($data->departemen_asal == '')
+                                : {{ $data->satuanKerjaAsal['inisial'] }}
+                                @elseif ($data->cabang_asal)
                                 : {{ $data->cabangAsal['cabang'] }}
+                                @else
+                                : {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}
                                 @endif
                             </td>
                         </tr>
@@ -116,6 +120,17 @@
                                 @foreach ($tujuanCabangs as $item)
                                 @if ($item->memo_id == $data->id)
                                 : {{ $item->tujuanCabang->cabang }} <br>
+                                @endif
+                                @endforeach
+                                @endif
+
+                                {{-- Tujuan departemen --}}
+                                @if (in_array($data->id, $seluruhDepartemenMemoIds))
+                                : SELURUH DEPARTEMEN SKTILOG <br>
+                                @else
+                                @foreach ($tujuanDepartemens as $item)
+                                @if ($item->memo_id == $data->id)
+                                : {{ $item->tujuanDepartemen->inisial }} <br>
                                 @endif
                                 @endforeach
                                 @endif

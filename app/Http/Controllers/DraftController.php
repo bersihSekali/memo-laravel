@@ -46,8 +46,11 @@ class DraftController extends Controller
             ->latest()->get();
         $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
             ->latest()->get();
+        $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
 
         //untuk cek all flag
+        $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
         $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
         $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
 
@@ -56,9 +59,11 @@ class DraftController extends Controller
             'datas' => $mails,
             'tujuanSatkers' => $tujuanSatker,
             'tujuanCabangs' => $tujuanCabangs,
+            'tujuanDepartemens' => $tujuanDepartemen,
             'users' => $user,
             'seluruhSatkerMemoIds' => $seluruhSatkerMemoId,
             'seluruhCabangMemoIds' => $seluruhCabangMemoId,
+            'seluruhDepartemenMemoIds' => $seluruhDepartemenMemoId,
         ];
 
         return view('draft.index', $datas);
@@ -168,29 +173,52 @@ class DraftController extends Controller
         $pengganti = User::all();
         $edit = SuratKeluar::find($id);
 
-        $tujuanSatkerDraft = TujuanSatuanKerja::where('memo_id', $id)->pluck('satuan_kerja_id')->toArray();
-        $tujuanCabangDraft = TujuanKantorCabang::where('memo_id', $id)->pluck('cabang_id')->toArray();
+        if ($edit['internal'] == 1) {
+            $departemen = Departemen::where('satuan_kerja', $user->satuan_kerja)->get();
+            $satuanKerja = SatuanKerja::where('id', '!=', 1)
+                ->where('satuan_kerja', '!=', 'CABANG JABODETABEK')
+                ->where('satuan_kerja', '!=', 'CABANG NON JABODETABEK')->get();
+            $cabang = Cabang::where('id', '!=', 1)->get();
 
-        $departemen = Departemen::all();
-        $satuanKerja = SatuanKerja::where('id', '!=', 1)
-            ->where('satuan_kerja', '!=', 'CABANG JABODETABEK')
-            ->where('satuan_kerja', '!=', 'CABANG NON JABODETABEK')->get();
-        $cabang = Cabang::select('id', 'cabang')
-            ->where('id', '!=', 1)->get();
+            $tujuanDepartemenDraft = TujuanDepartemen::where('memo_id', $id)->pluck('departemen_id')->toArray();
 
-        $datas = [
-            'title' => 'Edit Surat',
-            'edit' => $edit,
-            'satuanKerjas' => $satuanKerja,
-            'departemens' => $departemen,
-            'cabangs' => $cabang,
-            'users' => $user,
-            'penggantis' => $pengganti,
-            'tujuanSatkerDrafts' => $tujuanSatkerDraft,
-            'tujuanCabangDrafts' => $tujuanCabangDraft,
-        ];
+            $datas = [
+                'title' => 'Tambah Surat',
+                'edit' => $edit,
+                'satuanKerjas' => $satuanKerja,
+                'departemens' => $departemen,
+                'cabangs' => $cabang,
+                'users' => $user,
+                'penggantis' => $pengganti,
+                'tujuanDepartemenDrafts' => $tujuanDepartemenDraft,
+            ];
 
-        return view('draft.edit', $datas);
+            return view('draft.editInternal', $datas);
+        } else {
+            $tujuanSatkerDraft = TujuanSatuanKerja::where('memo_id', $id)->pluck('satuan_kerja_id')->toArray();
+            $tujuanCabangDraft = TujuanKantorCabang::where('memo_id', $id)->pluck('cabang_id')->toArray();
+
+            $departemen = Departemen::all();
+            $satuanKerja = SatuanKerja::where('id', '!=', 1)
+                ->where('satuan_kerja', '!=', 'CABANG JABODETABEK')
+                ->where('satuan_kerja', '!=', 'CABANG NON JABODETABEK')->get();
+            $cabang = Cabang::select('id', 'cabang')
+                ->where('id', '!=', 1)->get();
+
+            $datas = [
+                'title' => 'Edit Surat',
+                'edit' => $edit,
+                'satuanKerjas' => $satuanKerja,
+                'departemens' => $departemen,
+                'cabangs' => $cabang,
+                'users' => $user,
+                'penggantis' => $pengganti,
+                'tujuanSatkerDrafts' => $tujuanSatkerDraft,
+                'tujuanCabangDrafts' => $tujuanCabangDraft,
+            ];
+
+            return view('draft.edit', $datas);
+        }
     }
 
     /**
@@ -224,7 +252,12 @@ class DraftController extends Controller
         $validated['isi'] = $request->editordata;
         $validated['otor2_by'] = $request->tunjuk_otor2_by;
         $validated['otor1_by'] = $request->tunjuk_otor1_by;
-        $validated['internal'] = 2;
+        dd($request->tipe_surat);
+        if ($request->tipe_surat == 1) {
+            $validated['internal'] = 1;
+        } else {
+            $validated['internal'] = 2;
+        }
         $validated['status'] = 1;
         $validated['draft'] = 1;
 
@@ -302,13 +335,36 @@ class DraftController extends Controller
 
             return redirect('/suratKeluar');
         } else if (isset($_POST['lihat'])) {
-            if ($validated['tujuan_unit_kerja'] == 'unit_kerja') {
-                $tujuanSatker = 'Seluruh Unit Kerja Kantor Pusat';
-            } elseif ($validated['tujuan_unit_kerja']) {
-                $tujuanSatker = $satuanKerja->whereIn('id', $validated['tujuan_unit_kerja'])->pluck('satuan_kerja')->toArray();
+            $departemenInternal = Departemen::where('satuan_kerja', 2)->get();
+
+            $tujuanSatkerDraft = TujuanSatuanKerja::where('memo_id', $id)->pluck('satuan_kerja_id')->toArray();
+            $tujuanCabangDraft = TujuanKantorCabang::where('memo_id', $id)->pluck('cabang_id')->toArray();
+            $tujuanDepartemenDraft = TujuanDepartemen::where('memo_id', $id)->pluck('departemen_id')->toArray();
+
+            if (in_array(1, $tujuanSatkerDraft)) {
+                $tujuanSatker = ['Segenap Unit Kerja Kantor Pusat'];
+            } else {
+                $tujuanSatker = $satuanKerja->whereIn('id', $tujuanSatkerDraft)->pluck('satuan_kerja')->toArray();
+            }
+            if (in_array(1, $tujuanCabangDraft)) {
+                $tujuanCabang = ['Segenap Kantor Layanan'];
+            } else {
+                $tujuanCabang = $cabang->whereIn('id', $tujuanCabangDraft)->pluck('cabang')->toArray();
+            }
+            if (in_array(1, $tujuanDepartemenDraft)) {
+                $tujuanDepartemen = ['Segenap Departemen di SKTILOG'];
+            } else {
+                $tujuanDepartemen = $departemenInternal->whereIn('id', $tujuanDepartemenDraft)->pluck('departemen')->toArray();
             }
 
-            $dari = $satuanKerja->find($validated['satuan_kerja_asal']);
+            if ($draft['internal'] == 1) {
+                $dari = $departemenInternal->find($draft['departemen_asal'])->departemen;
+            } elseif ($draft['satuan_kerja_asal']) {
+                $dari = $satuanKerja->find($draft['satuan_kerja_asal'])->satuan_kerja;
+            } elseif ($draft['cabang_asal']) {
+                $dari = 'Cabang' . ' ' . $cabang->find($draft['cabang_asal'])->cabang;
+            }
+
             $ttd1 = User::find($validated['otor1_by']);
             $ttd2 = User::find($validated['otor2_by']);
             $jabatanTtd1 = User::find($validated['otor1_by'])->levelTable['jabatan'];
@@ -318,6 +374,8 @@ class DraftController extends Controller
                 'title' => 'Pratinjau',
                 'requests' => $validated,
                 'tujuanSatkers' => $tujuanSatker,
+                'tujuanDepartemens' => $tujuanDepartemen,
+                'tujuanCabangs' => $tujuanCabang,
                 'dari' => $dari,
                 'ttd1' => $ttd1,
                 'ttd2' => $ttd2,
