@@ -112,6 +112,7 @@ class NomorSuratController extends Controller
 
         $validated = $request->validate([
             'created_by' => 'required',
+            'nomor_surat' => 'required',
             'satuan_kerja_asal' => 'required',
             'perihal' => 'required',
             'lampiran' => 'mimes:pdf',

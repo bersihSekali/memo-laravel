@@ -72,6 +72,14 @@
                 </div>
             </div>
 
+            {{-- No Surat --}}
+            <div class="form-group formulir mb-3" style="display: none;">
+                <div class="col-md-6">
+                    <label for="nomor_surat" class="form-label ">Nomor Surat</label>
+                    <input type="text" class="form-control" autocomplete="off" name="nomor_surat">
+                </div>
+            </div>
+
             {{-- Input tujuan --}}
             <div class="form-group mb-3">
                 <label for="tujuan" class="form-label formulir" style="display: none">Tujuan</label>
