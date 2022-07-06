@@ -157,7 +157,7 @@
             <div class="form-group row formulir" id="otor_pengganti" name="otor_pengganti" style="display: none">
                 <div class="col-sm-6 mb-3" name="pengganti1_antar_satuan_kerja" id="pengganti1_eksternal" style="display: none">
                     <label for="tunjuk_otor1_by" class="form-label">Tanda Tangan 1</label>
-                    <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
+                    <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor1_by" id="tunjuk_otor1_by_eksternal">
                         <option selected disabled> -- Pilih salah satu -- </option> @foreach ($penggantis as $pengganti)
                         @if ($pengganti->levelTable->golongan == 7)
                         <option value="{{ $pengganti['id'] }}">
@@ -170,7 +170,7 @@
 
                 <div class="col-sm-6 mb-3" name="pengganti1_antar_departemen" id="pengganti1_internal" style="display: none">
                     <label for="tunjuk_otor1_by" class="form-label">Tanda Tangan 1</label>
-                    <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor1_by">
+                    <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor1_by" id="tunjuk_otor1_by_internal">
                         <option selected disabled> -- Pilih salah satu -- </option> @foreach ($penggantis as $pengganti)
                         @if ($pengganti->satuan_kerja == 2)
                         @if (($pengganti->levelTable->golongan >= 5) && ($pengganti->levelTable->golongan < 7)) @if ($pengganti->levelTable->jabatan == 'Kepala Departemen')
@@ -270,6 +270,8 @@
                 $('#pengganti1_internal').show()
                 $('#pengganti2_eksternal').hide()
                 $('#pengganti2_internal').show()
+                $('#tunjuk_otor1_by_eksternal').val(null).trigger('change')
+                $('#tunjuk_otor2_by_eksternal').val(null).trigger('change')
                 $('#kantor_cabang').val(null).trigger('change')
                 $('#unit_kerja').val(null).trigger('change')
             } else {
@@ -280,6 +282,8 @@
                 $('#pengganti1_eksternal').show()
                 $('#pengganti2_internal').hide()
                 $('#pengganti2_eksternal').show()
+                $('#tunjuk_otor1_by_internal').val(null).trigger('change')
+                $('#tunjuk_otor2_by_internal').val(null).trigger('change')
                 $('#tujuan_internal').val(null).trigger('change')
             }
         });

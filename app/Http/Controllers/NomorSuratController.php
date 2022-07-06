@@ -16,6 +16,7 @@ use App\Models\TujuanSatuanKerja;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class NomorSuratController extends Controller
@@ -103,131 +104,214 @@ class NomorSuratController extends Controller
      */
     public function store(Request $request)
     {
-        $id = Auth::id();
-        $user = User::find($id);
+        if (isset($_POST['simpan'])) {
+            $id = Auth::id();
+            $user = User::find($id);
 
-        $satuanKerja = SatuanKerja::where('satuan_kerja', '!=', 'CABANG JABODETABEK')
-            ->where('satuan_kerja', '!=', 'CABANG NON JABODETABEK')->get();
-        $departemenInternal = Departemen::where('satuan_kerja', 2)->get();
-        $cabang = Cabang::all();
+            $satuanKerja = SatuanKerja::where('satuan_kerja', '!=', 'CABANG JABODETABEK')
+                ->where('satuan_kerja', '!=', 'CABANG NON JABODETABEK')->get();
+            $departemenInternal = Departemen::where('satuan_kerja', 2)->get();
+            $cabang = Cabang::all();
 
-        $nomorTersedia = Penomoran::latest()->pluck('nomor_surat')->toArray();
-        $request->flash();
+            $nomorTersedia = Penomoran::latest()->pluck('nomor_surat')->toArray();
+            $request->flash();
 
-        $validated = $request->validate([
-            'created_by' => 'required',
-            'nomor_surat' => 'required|unique:surat_keluars',
-            'satuan_kerja_asal' => 'required',
-            'perihal' => 'required',
-            'lampiran' => 'mimes:pdf',
-            'kriteria' => 'required',
-        ]);
-        $validated['departemen_asal'] = $request->departemen_asal;
-        $validated['otor2_by'] = $request->tunjuk_otor2_by;
-        $validated['otor1_by'] = $request->tunjuk_otor1_by;
-        $validated['internal'] = $request->tipe_surat;
-        $validated['draft'] = 0;
+            $validated = $request->validate([
+                'created_by' => 'required',
+                'nomor_surat' => 'required|unique:surat_keluars',
+                'satuan_kerja_asal' => 'required',
+                'perihal' => 'required',
+                'lampiran' => 'mimes:pdf',
+                'kriteria' => 'required',
+                'isi' => 'required',
+            ]);
+            $validated['departemen_asal'] = $request->departemen_asal;
+            $validated['otor2_by'] = $request->tunjuk_otor2_by;
+            $validated['otor1_by'] = $request->tunjuk_otor1_by;
+            $validated['internal'] = $request->tipe_surat;
+            $validated['draft'] = 0;
 
-        if (!in_array($validated['nomor_surat'], $nomorTersedia)) {
-            return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal, harap ambil nomor terlebih dahulu');
-        }
+            if (!in_array($validated['nomor_surat'], $nomorTersedia)) {
+                return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal, harap ambil nomor terlebih dahulu');
+            }
 
-        $tujuanUnitKerja = $request->tujuan_unit_kerja;
-        $tujuanKantorCabang = $request->tujuan_kantor_cabang;
-        $tujuanInternal = $request->tujuan_internal;
+            $tujuanUnitKerja = $request->tujuan_unit_kerja;
+            $tujuanKantorCabang = $request->tujuan_kantor_cabang;
+            $tujuanInternal = $request->tujuan_internal;
 
-        // get file and store
-        if ($request->file('lampiran')) {
-            $file = $request->file('lampiran');
-            $originalFileName = $file->getClientOriginalName();
-            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
-            $fileName = date("YmdHis") . '_' . $fileName;
-            $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
-        }
+            // get file and store
+            if ($request->file('lampiran')) {
+                $file = $request->file('lampiran');
+                $originalFileName = $file->getClientOriginalName();
+                $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+                $fileName = date("YmdHis") . '_' . $fileName;
+                $validated['lampiran'] = $request->file('lampiran')->storeAs('lampiran', $fileName);
+            }
 
-        $create = SuratKeluar::create($validated);
-        // Return gagal simpan
-        if (!$create) {
-            return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal');
-        }
+            $create = SuratKeluar::create($validated);
+            // Return gagal simpan
+            if (!$create) {
+                return redirect('/nomorSurat/create')->with('error', 'Pembuatan surat gagal');
+            }
 
-        $idSurat = $create->id;
+            $idSurat = $create->id;
 
-        // Update audit trail
-        $audit = [
-            'users' => $user->id,
-            'aktifitas' => config('constants.CREATE'),
-            'deskripsi' => $idSurat
-        ];
-        storeAudit($audit);
+            // Update audit trail
+            $audit = [
+                'users' => $user->id,
+                'aktifitas' => config('constants.CREATE'),
+                'deskripsi' => $idSurat
+            ];
+            storeAudit($audit);
 
-        // Seluruh tujuan internal
-        if ($tujuanInternal[0] == 'internal') {
-            foreach ($departemenInternal as $item) {
-                if ($item->id != $user->departemen) {
-                    TujuanDepartemen::create([
-                        'memo_id' => $idSurat,
-                        'departemen_id' => $item->id,
-                        'all_flag' => 1
-                    ]);
+            // Seluruh tujuan internal
+            if ($tujuanInternal[0] == 'internal') {
+                foreach ($departemenInternal as $item) {
+                    if ($item->id != $user->departemen) {
+                        TujuanDepartemen::create([
+                            'memo_id' => $idSurat,
+                            'departemen_id' => $item->id,
+                            'all_flag' => 1
+                        ]);
+                    }
+                }
+            } else {
+                if ($tujuanInternal != null) {
+                    foreach ($tujuanInternal as $item) {
+                        TujuanDepartemen::create([
+                            'memo_id' => $idSurat,
+                            'departemen_id' => $item,
+                            'all_flag' => 0
+                        ]);
+                    }
                 }
             }
-        } else {
-            if ($tujuanInternal != null) {
-                foreach ($tujuanInternal as $item) {
-                    TujuanDepartemen::create([
-                        'memo_id' => $idSurat,
-                        'departemen_id' => $item,
-                        'all_flag' => 0
-                    ]);
-                }
-            }
-        }
 
-        //TujuanCabang
-        if ($tujuanKantorCabang[0] == 'kantor_cabang') {
-            foreach ($cabang as $item) {
-                if ($item->id != $user->cabang) {
-                    TujuanKantorCabang::create([
-                        'memo_id' => $idSurat,
-                        'cabang_id' => $item->id,
-                        'all_flag' => 1
-                    ]);
+            //TujuanCabang
+            if ($tujuanKantorCabang[0] == 'kantor_cabang') {
+                foreach ($cabang as $item) {
+                    if ($item->id != $user->cabang) {
+                        TujuanKantorCabang::create([
+                            'memo_id' => $idSurat,
+                            'cabang_id' => $item->id,
+                            'all_flag' => 1
+                        ]);
+                    }
                 }
+            } else {
+                if ($tujuanKantorCabang != null)
+                    foreach ($tujuanKantorCabang as $item) {
+                        TujuanKantorCabang::create([
+                            'memo_id' => $idSurat,
+                            'cabang_id' => $item,
+                            'all_flag' => 0
+                        ]);
+                    }
             }
-        } else {
-            if ($tujuanKantorCabang != null)
-                foreach ($tujuanKantorCabang as $item) {
-                    TujuanKantorCabang::create([
-                        'memo_id' => $idSurat,
-                        'cabang_id' => $item,
-                        'all_flag' => 0
-                    ]);
+            // Tujuan unit kerja
+            if ($tujuanUnitKerja[0] == 'unit_kerja') {
+                foreach ($satuanKerja as $item) {
+                    if ($item->id != $user->satuan_kerja) {
+                        TujuanSatuanKerja::create([
+                            'memo_id' => $idSurat,
+                            'satuan_kerja_id' => $item->id,
+                            'all_flag' => 1
+                        ]);
+                    }
                 }
-        }
-        // Tujuan unit kerja
-        if ($tujuanUnitKerja[0] == 'unit_kerja') {
-            foreach ($satuanKerja as $item) {
-                if ($item->id != $user->satuan_kerja) {
-                    TujuanSatuanKerja::create([
-                        'memo_id' => $idSurat,
-                        'satuan_kerja_id' => $item->id,
-                        'all_flag' => 1
-                    ]);
-                }
+            } else {
+                if ($tujuanUnitKerja != null)
+                    foreach ($tujuanUnitKerja as $item) {
+                        TujuanSatuanKerja::create([
+                            'memo_id' => $idSurat,
+                            'satuan_kerja_id' => $item,
+                            'all_flag' => 0
+                        ]);
+                    }
             }
-        } else {
-            if ($tujuanUnitKerja != null)
-                foreach ($tujuanUnitKerja as $item) {
-                    TujuanSatuanKerja::create([
-                        'memo_id' => $idSurat,
-                        'satuan_kerja_id' => $item,
-                        'all_flag' => 0
-                    ]);
-                }
-        }
 
-        return redirect('/nomorSurat')->with('success', 'Pembuatan surat berhasil');
+            return redirect('/nomorSurat')->with('success', 'Pembuatan surat berhasil');
+        } elseif (isset($_POST['lihat'])) {
+            $satuanKerja = SatuanKerja::where('satuan_kerja', '!=', 'CABANG JABODETABEK')
+                ->where('satuan_kerja', '!=', 'CABANG NON JABODETABEK')->get();
+            $departemenInternal = Departemen::where('satuan_kerja', 2)->get();
+            $cabang = Cabang::all();
+
+            $validated = $request->validate([
+                'created_by' => 'required',
+                'nomor_surat' => 'required|unique:surat_keluars',
+                'satuan_kerja_asal' => 'required',
+                'perihal' => 'required',
+                'lampiran' => 'mimes:pdf',
+                'kriteria' => 'required',
+            ]);
+            $validated['departemen_asal'] = $request->departemen_asal;
+            $validated['tujuan_unit_kerja'] = $request->tujuan_unit_kerja;
+            $validated['tujuan_kantor_cabang'] = $request->tujuan_kantor_cabang;
+            $validated['tujuan_internal'] = $request->tujuan_internal;
+            $validated['otor2_by'] = $request->tunjuk_otor2_by;
+            $validated['otor1_by'] = $request->tunjuk_otor1_by;
+            $validated['isi'] = $request->editordata;
+            $validated['internal'] = $request->tipe_surat;
+            $validated['draft'] = 0;
+
+            if ($validated['tujuan_unit_kerja'] == 'unit_kerja') {
+                $tujuanSatker = ['Segenap Unit Kerja Kantor Pusat'];
+            } else {
+                $tujuanSatker = $satuanKerja->whereIn('id', $validated['tujuan_unit_kerja'])->pluck('satuan_kerja')->toArray();
+            }
+
+            if ($validated['tujuan_kantor_cabang'] == 'kantor_cabang') {
+                $tujuanCabang = ['Segenap Kantor Layanan'];
+            } else {
+                $tujuanCabang = $cabang->whereIn('id', $validated['tujuan_kantor_cabang'])->pluck('cabang')->toArray();
+            }
+
+            if ($validated['tujuan_internal'] == 'kantor_cabang') {
+                $tujuanDepartemen = ['Seluruh Departemen di SKTILOG'];
+            } else {
+                $tujuanDepartemen = $departemenInternal->whereIn('id', $validated['tujuan_internal'])->pluck('departemen')->toArray();
+            }
+
+            if ($validated['internal'] == 1) {
+                $dari = $departemenInternal->find($validated['departemen_asal'])->departemen;
+            } elseif ($validated['satuan_kerja_asal']) {
+                $dari = $satuanKerja->find($validated['satuan_kerja_asal'])->satuan_kerja;
+            } elseif ($validated['cabang_asal']) {
+                $dari = 'Cabang' . ' ' . $cabang->find($validated['cabang_asal'])->cabang;
+            }
+
+            $ttd1 = User::find($validated['otor1_by']);
+            $ttd2 = User::find($validated['otor2_by']);
+            $jabatanTtd1 = User::find($validated['otor1_by'])->levelTable['jabatan'];
+            $jabatanTtd2 = User::find($validated['otor2_by'])->levelTable['jabatan'];
+
+            $pdf = PDF::loadView('preview/preview', [
+                'title' => 'Pratinjau',
+                'requests' => $validated,
+                'tujuanSatkers' => $tujuanSatker,
+                'tujuanCabangs' => $tujuanCabang,
+                'tujuanDepartemens' => $tujuanDepartemen,
+                'dari' => $dari,
+                'ttd1' => $ttd1,
+                'ttd2' => $ttd2,
+                'jabatanTtd1' => $jabatanTtd1,
+                'jabatanTtd2' => $jabatanTtd2
+            ])->setPaper('a4', 'portrait');
+
+            $pdf->output();
+            $dompdf = $pdf->getDomPDF();
+
+            $canvas = $dompdf->get_canvas();
+
+            $cpdf = $canvas->get_page_count();
+
+            $canvas->page_text(550, 800, "{PAGE_NUM}/{PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+            return $pdf->stream();
+        } elseif (isset($_POST['draft'])) {
+            dd('draft');
+        }
     }
 
     /**

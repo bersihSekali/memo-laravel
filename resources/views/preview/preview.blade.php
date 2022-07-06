@@ -108,7 +108,7 @@
                     <td class="align-top" width="10%"> Kepada</td>
                     <td class="align-top">:</td>
                     <td>
-                        @if ($requests->internal == 1)
+                        @if ($requests['internal'] == 1)
                         @foreach($tujuanDepartemens as $tujuanDepartemen)
                         {{$tujuanDepartemen}}<br>
                         @endforeach
