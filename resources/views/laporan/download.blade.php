@@ -130,7 +130,7 @@
                         @else
                         @foreach ($tujuanSatkers as $item)
                         @if ($item->memo_id == $data->memo_id)
-                        {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                        {{ $item->tujuanSatuanKerja['inisial'] }} <br>
                         @endif
                         @endforeach
                         @endif
@@ -154,7 +154,7 @@
                 @foreach($datas as $data)
                 <tr>
                     <td class="text-center">{{date('Y-m-d', strtotime($data['created_at']))}}</td>
-                    <td class="text-center">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
+                    <td class="text-center">{{$data['tanggal_otor1'] ? date('Y-m-d', strtotime($data['tanggal_otor1'])) : '' }}</td>
                     <td class="text-center">{{$data['nomor_surat']}}</td>
                     <td>{{$data['perihal']}}</td>
                     <td class="text-center">{{$data->satuanKerjaAsal['inisial']}}</td>
@@ -165,7 +165,7 @@
                         @else
                         @foreach ($tujuanSatkers as $item)
                         @if ($item->memo_id == $data->id)
-                        {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                        {{ $item->tujuanSatuanKerja['inisial'] }} <br>
                         @endif
                         @endforeach
                         @endif
@@ -192,10 +192,10 @@
                         @endif
                         @endforeach
                     </td>
-                    @if($data->tanggal_baca)
-                    <td class="text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_baca']))}}</td>
+                    @if($data->status == 3)
+                    <td class="text-center">Selesai pada {{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
                     @else
-                    <td class="text-center">Belum diselesaikan</td>
+                    <td class="text-center">Belum terbit</td>
                     @endif
                 </tr>
                 @endforeach

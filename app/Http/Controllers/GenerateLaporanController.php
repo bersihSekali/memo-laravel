@@ -57,53 +57,43 @@ class GenerateLaporanController extends Controller
             if ($user->levelTable->golongan == 7) {
                 $data = SuratKeluar::with('tujuanSatker')
                     ->join('tujuan_satuan_kerjas', 'surat_keluars.id', '=', 'tujuan_satuan_kerjas.memo_id')
-                    ->where('satuan_kerja_id', $user['satuan_kerja'])
-                    ->where('status', 3)
-                    ->whereBetween('tanggal_otor1', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
+                    ->where('satuan_kerja_id', $user['satuan_kerja'])->where('status', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
                     ->latest('tujuan_satuan_kerjas.created_at')->get();
-                $countSelesai = $data->whereNotNull('tanggal_baca')->count();
-                $countBelumSelesai = $data->whereNull('tanggal_baca')->count();
-            } elseif ($user->levelTable->golongan == 6) {
-                if ($user->cabang) {
-                    $data = SuratKeluar::with('tujuanKantorCabang')
-                        ->join('tujuan_kantor_cabangs', 'surat_keluars.id', '=', 'tujuan_kantor_cabangs.memo_id')
-                        ->where('cabang_id', $user['cabang'])->where('status', 3)
-                        ->whereBetween('tanggal_otor1', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
-                        ->latest('tujuan_kantor_cabangs.created_at')->get();
-                    $countSelesai = $data->whereNotNull('tanggal_baca')->count();
-                    $countBelumSelesai = $data->whereNull('tanggal_baca')->count();
-                } elseif ($user->satuanKerja['grup'] == 5) {
-                    $data = SuratKeluar::with('tujuanSatker')
-                        ->join('tujuan_satuan_kerjas', 'surat_keluars.id', '=', 'tujuan_satuan_kerjas.memo_id')
-                        ->where('satuan_kerja_id', $user['satuan_kerja'])->where('status', 3)
-                        ->whereBetween('tanggal_otor1', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
-                        ->latest('tujuan_satuan_kerjas.created_at')->get();
-                    $countSelesai = $data->whereNotNull('tanggal_baca')->count();
-                    $countBelumSelesai = $data->whereNull('tanggal_baca')->count();
-                } else {
-                    $data = SuratKeluar::with('tujuanDepartemen')
-                        ->join('tujuan_departemens', 'surat_keluars.id', '=', 'tujuan_departemens.memo_id')
-                        ->where('departemen_id', $user['departemen'])->where('status', 3)
-                        ->whereBetween('tanggal_otor1', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
-                        ->latest('tujuan_departemens.created_at')->get();
-                    $countSelesai = $data->whereNotNull('tanggal_baca')->count();
-                    $countBelumSelesai = $data->whereNull('tanggal_baca')->count();
-                }
-            } elseif ($user->levelTable['golongan'] <= 5) {
-                if ($user->level == 10) {
-                    $data = SuratKeluar::with('tujuanBidangCabang')
-                        ->join('tujuan_bidang_cabangs', 'surat_keluars.id', '=', 'tujuan_bidang_cabangs.memo_id')
-                        ->where('bidang_id', $user['bidang_cabang'])->where('status', 3)->latest('tujuan_bidang_cabangs.created_at')->get();
-                    $countSelesai = $data->whereNotNull('tanggal_baca')->count();
-                    $countBelumSelesai = $data->whereNull('tanggal_baca')->count();
-                } else {
-                    $data = SuratKeluar::with('forward')
-                        ->join('forwards', 'surat_keluars.id', '=', 'forwards.memo_id')
-                        ->where('user_id', $id)->where('status', 3)->latest('forwards.created_at')->get();
-                    $countSelesai = $data->whereNotNull('tanggal_baca')->count();
-                    $countBelumSelesai = $data->whereNull('tanggal_baca')->count();
-                }
+            } elseif ($user->level == 5) {
+                $data = SuratKeluar::with('tujuanKantorCabang')
+                    ->join('tujuan_kantor_cabangs', 'surat_keluars.id', '=', 'tujuan_kantor_cabangs.memo_id')
+                    ->where('cabang_id', $user['cabang'])->where('status', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
+                    ->latest('tujuan_kantor_cabangs.created_at')->get();
+            } elseif ($user->satuanKerja['grup'] == 5 && $user->level == 6) {
+                $data = SuratKeluar::with('tujuanSatker')
+                    ->join('tujuan_satuan_kerjas', 'surat_keluars.id', '=', 'tujuan_satuan_kerjas.memo_id')
+                    ->where('satuan_kerja_id', $user['satuan_kerja'])->where('status', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
+                    ->latest('tujuan_satuan_kerjas.created_at')->get();
+            } elseif ($user->level == 6) {
+                $data = SuratKeluar::with('tujuanDepartemen')
+                    ->join('tujuan_departemens', 'surat_keluars.id', '=', 'tujuan_departemens.memo_id')
+                    ->where('departemen_id', $user['departemen'])->where('status', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
+                    ->latest('tujuan_departemens.created_at')->get();
+            } elseif ($user->level == 10) {
+                $data = SuratKeluar::with('tujuanBidangCabang')
+                    ->join('tujuan_bidang_cabangs', 'surat_keluars.id', '=', 'tujuan_bidang_cabangs.memo_id')
+                    ->where('bidang_id', $user['bidang_cabang'])->where('status', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
+                    ->latest('tujuan_bidang_cabangs.created_at')->get();
+            } else {
+                $data = SuratKeluar::with('forward')
+                    ->join('forwards', 'surat_keluars.id', '=', 'forwards.memo_id')
+                    ->where('user_id', $id)->where('status', 3)
+                    ->whereBetween('created_at', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
+                    ->latest('forwards.created_at')->get();
             }
+            $countSelesai = $data->whereNotNull('tanggal_baca')->count();
+            $countBelumSelesai = $data->whereNull('tanggal_baca')->count();
+
             $satuanKerja = SatuanKerja::all();
             $departemen = Departemen::all();
 
@@ -126,9 +116,18 @@ class GenerateLaporanController extends Controller
                     ->whereBetween('created_at', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
                     ->latest()->get();
             } elseif ($user->satuan_kerja) {
-                $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
-                    ->whereBetween('created_at', [$validated['tanggalmulai'], date("Y-m-d", strtotime($validated['tanggalakhir'] . "+1 days"))])
-                    ->latest()->get();
+                if ($user->levelTable->golongan == 7) {
+                    $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
+                        ->where('draft', 0)
+                        ->latest()->get();
+                } elseif ($user->levelTable->golongan <= 6) {
+                    $mails = SuratKeluar::where('draft', 0)
+                        ->where(function ($query) use ($user) {
+                            $query->where('internal', 2)
+                                ->orWhere('departemen_asal', $user->departemen);
+                        })
+                        ->latest()->get();
+                }
             }
             $countSelesai = $mails->where('status', 3)->count();
             $countBelumSelesai = $mails->where('status', '!=', 3)->count();
