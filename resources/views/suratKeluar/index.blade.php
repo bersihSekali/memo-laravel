@@ -112,7 +112,7 @@
                             <td width="20%">Asal</td>
                             <td>
                                 @if ($data->satuan_kerja_asal)
-                                : {{ $data->satuanKerjaAsal['satuan_kerja'] }}
+                                : {{ $data->satuanKerjaAsal['inisial'] }}
                                 @else
                                 : {{ $data->cabangAsal['cabang'] }}
                                 @endif
@@ -128,7 +128,7 @@
                                 @else
                                 @foreach ($tujuanSatkers as $item)
                                 @if ($item->memo_id == $data->id)
-                                : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                                : {{ $item->tujuanSatuanKerja['inisial'] }} <br>
                                 @endif
                                 @endforeach
                                 @endif
