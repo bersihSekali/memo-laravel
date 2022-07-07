@@ -157,6 +157,7 @@
             </a>
           </li>
 
+          @if ($users->satuan_kerja == 2)
           <li class="nav-item">
             <a class="nav-link" href="/penomoran" target="_blank">
               <i class="fas fa-sort-numeric-down"></i>
@@ -165,6 +166,7 @@
               </span>
             </a>
           </li>
+          @endif
 
           {{-- Untuk Admin --}}
           @else

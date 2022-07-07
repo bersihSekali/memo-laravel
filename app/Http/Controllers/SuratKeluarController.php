@@ -118,8 +118,8 @@ class SuratKeluarController extends Controller
                 'perihal' => 'required',
                 'lampiran' => 'mimes:pdf',
                 'kriteria' => 'required',
-                'isi' => 'required'
             ]);
+            $validated['isi'] = $request->editordata;
             $validated['cabang_asal'] = $request->cabang_asal;
             $validated['satuan_kerja_asal'] = $request->satuan_kerja_asal;
             $validated['otor2_by'] = $request->tunjuk_otor2_by;
