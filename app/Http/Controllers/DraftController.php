@@ -235,9 +235,11 @@ class DraftController extends Controller
         $draft = SuratKeluar::find($id);
         $satuanKerja = SatuanKerja::all();
         $cabang = Cabang::all();
+        $departemenInternal = Departemen::where('satuan_kerja', 2)->get();
 
         $deletedTujuanSatker = TujuanSatuanKerja::where('memo_id', $id)->delete();
         $deletedTujuanCabang = TujuanKantorCabang::where('memo_id', $id)->delete();
+        $deletedTujuanDepartemen = TujuanDepartemen::where('memo_id', $id)->delete();
 
         $validated = $request->validate([
             'created_by' => 'required',
@@ -249,6 +251,8 @@ class DraftController extends Controller
         $validated['cabang_asal'] = $request->cabang_asal;
         $validated['satuan_kerja_asal'] = $request->satuan_kerja_asal;
         $validated['tujuan_unit_kerja'] = $request->tujuan_unit_kerja;
+        $validated['tujuan_kantor_cabang'] = $request->tujuan_kantor_cabang;
+        $validated['tujuan_internal'] = $request->tujuan_internal;
         $validated['isi'] = $request->editordata;
         $validated['otor2_by'] = $request->tunjuk_otor2_by;
         $validated['otor1_by'] = $request->tunjuk_otor1_by;
@@ -281,6 +285,7 @@ class DraftController extends Controller
 
         $tujuanUnitKerja = $request->tujuan_unit_kerja;
         $tujuanKantorCabang = $request->tujuan_kantor_cabang;
+        $tujuanInternal = $request->tujuan_internal;
 
         //TujuanCabang
         if ($tujuanKantorCabang[0] == 'kantor_cabang') {
@@ -325,6 +330,40 @@ class DraftController extends Controller
                     ]);
                 }
         }
+
+        // Seluruh tujuan internal
+        if ($tujuanInternal[0] == 'internal') {
+            foreach ($departemenInternal as $item) {
+                if ($item->id != $user->departemen) {
+                    TujuanDepartemen::create([
+                        'memo_id' => $id,
+                        'departemen_id' => $item->id,
+                        'all_flag' => 1
+                    ]);
+                }
+            }
+            TujuanSatuanKerja::create([
+                'memo_id' => $id,
+                'satuan_kerja_id' => 2,
+                'all_flag' => 1
+            ]);
+        } else {
+            if ($tujuanInternal != null) {
+                foreach ($tujuanInternal as $item) {
+                    TujuanDepartemen::create([
+                        'memo_id' => $id,
+                        'departemen_id' => $item,
+                        'all_flag' => 0
+                    ]);
+                }
+                TujuanSatuanKerja::create([
+                    'memo_id' => $id,
+                    'satuan_kerja_id' => 2,
+                    'all_flag' => 0
+                ]);
+            }
+        }
+
 
         if (isset($_POST['simpan'])) {
             $update[] = $draft['draft'] = 0;

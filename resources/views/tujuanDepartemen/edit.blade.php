@@ -84,11 +84,17 @@
                 <div class="form-group mb-3">
                     <label for="departemen_tujuan" class="form-label ">Teruskan ke:</label>
                     <select class="form-select on-modal mb-3" aria-label=".form-select-sm example" name="departemen_tujuan[]" id="departemen_tujuan" multiple="multiple">
+                        @if ($edits->internal == 1)
+                        @foreach($forwards as $item)
+                        <option value="{{$item['id']}}">{{$item['departemen']}}</option>
+                        @endforeach
+                        @else
                         @foreach($forwards as $item)
                         @if(!in_array($item['id'], $forwarded_ids))
                         <option value="{{$item['id']}}">{{$item['departemen']}}</option>
                         @endif
                         @endforeach
+                        @endif
                     </select>
                 </div>
                 <div class="form-group mb-3" id="formPesan">

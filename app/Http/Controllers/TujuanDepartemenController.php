@@ -110,6 +110,7 @@ class TujuanDepartemenController extends Controller
 
         //tujuan departemen
         foreach ($validated['departemen_tujuan'] as $item) {
+            $deleted = TujuanDepartemen::where('memo_id', $id)->where('departemen_id', $item)->delete();
             TujuanDepartemen::create([
                 'memo_id' => $id,
                 'departemen_id' => $item,

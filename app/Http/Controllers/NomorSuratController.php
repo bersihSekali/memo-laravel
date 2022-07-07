@@ -171,21 +171,31 @@ class NomorSuratController extends Controller
                 foreach ($departemenInternal as $item) {
                     if ($item->id != $user->departemen) {
                         TujuanDepartemen::create([
-                            'memo_id' => $idSurat,
+                            'memo_id' => $id,
                             'departemen_id' => $item->id,
                             'all_flag' => 1
                         ]);
                     }
                 }
+                TujuanSatuanKerja::create([
+                    'memo_id' => $id,
+                    'satuan_kerja_id' => 2,
+                    'all_flag' => 1
+                ]);
             } else {
                 if ($tujuanInternal != null) {
                     foreach ($tujuanInternal as $item) {
                         TujuanDepartemen::create([
-                            'memo_id' => $idSurat,
+                            'memo_id' => $id,
                             'departemen_id' => $item,
                             'all_flag' => 0
                         ]);
                     }
+                    TujuanSatuanKerja::create([
+                        'memo_id' => $id,
+                        'satuan_kerja_id' => 2,
+                        'all_flag' => 0
+                    ]);
                 }
             }
 
@@ -379,21 +389,31 @@ class NomorSuratController extends Controller
                 foreach ($departemenInternal as $item) {
                     if ($item->id != $user->departemen) {
                         TujuanDepartemen::create([
-                            'memo_id' => $idSurat,
+                            'memo_id' => $id,
                             'departemen_id' => $item->id,
                             'all_flag' => 1
                         ]);
                     }
                 }
+                TujuanSatuanKerja::create([
+                    'memo_id' => $id,
+                    'satuan_kerja_id' => 2,
+                    'all_flag' => 1
+                ]);
             } else {
                 if ($tujuanInternal != null) {
                     foreach ($tujuanInternal as $item) {
                         TujuanDepartemen::create([
-                            'memo_id' => $idSurat,
+                            'memo_id' => $id,
                             'departemen_id' => $item,
                             'all_flag' => 0
                         ]);
                     }
+                    TujuanSatuanKerja::create([
+                        'memo_id' => $id,
+                        'satuan_kerja_id' => 2,
+                        'all_flag' => 0
+                    ]);
                 }
             }
 
