@@ -109,7 +109,7 @@
 
                   {{-- Untuk golongan lebih dari 4 --}}
                   @if ($users->levelTable->golongan > 4)
-                  <a class="dropdown-item" href="/otorisasi">
+                  <a class="dropdown-item" href="/otor">
                     Otorisasi Surat
                   </a>
                   @endif
