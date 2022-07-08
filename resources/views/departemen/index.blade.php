@@ -46,10 +46,10 @@
                     <tbody>
                         @foreach($departemens as $departemen)
                         @if (($departemen->id == 1) || ($departemen->id == 12) || ($departemen->id == 12))
-                            @continue
+                        @continue
                         @endif
                         <tr>
-                            <td class="align-top">{{ $departemen->satuanKerjaTable->satuan_kerja }}</td>
+                            <td class="align-top">{{ $departemen->satuanKerjaTable['inisial'] }}</td>
                             <td class="align-top">{{ $departemen->departemen }}</td>
                         </tr>
                         @endforeach

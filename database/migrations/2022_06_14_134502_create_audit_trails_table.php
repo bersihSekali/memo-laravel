@@ -20,13 +20,12 @@ class CreateAuditTrailsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
 
             $table->string('aktifitas')->nullable();
-            $table->unsignedBigInteger('deskripsi')->nullable();
-            $table->foreign('deskripsi')->references('id')->on('surat_keluars');
+            $table->string('deskripsi')->nullable();
 
             $table->string('url');
-            $table->string('ip_address');
-            $table->string('mac_address');
-            $table->string('user_agent');
+            // $table->string('ip_address');
+            // $table->string('mac_address');
+            // $table->string('user_agent');
             $table->timestamps();
         });
     }

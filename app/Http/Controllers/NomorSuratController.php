@@ -161,24 +161,25 @@ class NomorSuratController extends Controller
             // Update audit trail
             $audit = [
                 'users' => $user->id,
-                'aktifitas' => config('constants.CREATE'),
-                'deskripsi' => $idSurat
+                'kegiatan' => config('constants.CREATE'),
+                'deskripsi' => (string)$idSurat
             ];
             storeAudit($audit);
+
 
             // Seluruh tujuan internal
             if ($tujuanInternal[0] == 'internal') {
                 foreach ($departemenInternal as $item) {
                     if ($item->id != $user->departemen) {
                         TujuanDepartemen::create([
-                            'memo_id' => $id,
+                            'memo_id' => $idSurat,
                             'departemen_id' => $item->id,
                             'all_flag' => 1
                         ]);
                     }
                 }
                 TujuanSatuanKerja::create([
-                    'memo_id' => $id,
+                    'memo_id' => $idSurat,
                     'satuan_kerja_id' => 2,
                     'all_flag' => 1
                 ]);
@@ -186,13 +187,13 @@ class NomorSuratController extends Controller
                 if ($tujuanInternal != null) {
                     foreach ($tujuanInternal as $item) {
                         TujuanDepartemen::create([
-                            'memo_id' => $id,
+                            'memo_id' => $idSurat,
                             'departemen_id' => $item,
                             'all_flag' => 0
                         ]);
                     }
                     TujuanSatuanKerja::create([
-                        'memo_id' => $id,
+                        'memo_id' => $idSurat,
                         'satuan_kerja_id' => 2,
                         'all_flag' => 0
                     ]);
@@ -379,8 +380,8 @@ class NomorSuratController extends Controller
             // Update audit trail
             $audit = [
                 'users' => $user->id,
-                'aktifitas' => config('constants.CREATE'),
-                'deskripsi' => $idSurat
+                'kegiatan' => config('constants.CREATE'),
+                'deskripsi' => (string)$idSurat
             ];
             storeAudit($audit);
 
@@ -389,14 +390,14 @@ class NomorSuratController extends Controller
                 foreach ($departemenInternal as $item) {
                     if ($item->id != $user->departemen) {
                         TujuanDepartemen::create([
-                            'memo_id' => $id,
+                            'memo_id' => $idSurat,
                             'departemen_id' => $item->id,
                             'all_flag' => 1
                         ]);
                     }
                 }
                 TujuanSatuanKerja::create([
-                    'memo_id' => $id,
+                    'memo_id' => $idSurat,
                     'satuan_kerja_id' => 2,
                     'all_flag' => 1
                 ]);
@@ -404,13 +405,13 @@ class NomorSuratController extends Controller
                 if ($tujuanInternal != null) {
                     foreach ($tujuanInternal as $item) {
                         TujuanDepartemen::create([
-                            'memo_id' => $id,
+                            'memo_id' => $idSurat,
                             'departemen_id' => $item,
                             'all_flag' => 0
                         ]);
                     }
                     TujuanSatuanKerja::create([
-                        'memo_id' => $id,
+                        'memo_id' => $idSurat,
                         'satuan_kerja_id' => 2,
                         'all_flag' => 0
                     ]);
@@ -525,8 +526,8 @@ class NomorSuratController extends Controller
         // Update audit trail
         $audit = [
             'users' => $user->id,
-            'aktifitas' => config('constants.DELETE'),
-            'deskripsi' => $datas['id']
+            'kegiatan' => config('constants.DELETE'),
+            'deskripsi' => (string) $datas['id']
         ];
         storeAudit($audit);
 
@@ -613,7 +614,7 @@ class NomorSuratController extends Controller
         // Update audit trail
         $audit = [
             'users' => $user->id,
-            'aktifitas' => 'config.constants.FORCE_DELETE',
+            'kegiatan' => 'config.constants.FORCE_DELETE',
             'deskripsi' => null
         ];
         storeAudit($audit);

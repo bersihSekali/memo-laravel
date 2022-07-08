@@ -85,6 +85,8 @@
             <tr>
               <td class="align-top" width="20%">Tujuan</td>
               <td>
+                @if ($data->internal == 2)
+
                 {{-- Tujuan kantor cabang --}}
                 @if (in_array($data->id, $seluruhCabangMemoIds))
                 : Seluruh Kantor Layanan <br>
@@ -92,17 +94,6 @@
                 @foreach ($tujuanCabangs as $item)
                 @if ($item->memo_id == $data->id)
                 : {{ $item->tujuanCabang->cabang }} <br>
-                @endif
-                @endforeach
-                @endif
-
-                {{-- Tujuan departemen --}}
-                @if (in_array($data->id, $seluruhDepartemenMemoIds))
-                : Seluruh Departemen SKTILOG <br>
-                @else
-                @foreach ($tujuanDepartemens as $item)
-                @if ($item->memo_id == $data->id)
-                : {{ $item->tujuanDepartemen['inisial'] }} <br>
                 @endif
                 @endforeach
                 @endif
@@ -116,6 +107,21 @@
                 : {{ $item->tujuanSatuanKerja['inisial'] }} <br>
                 @endif
                 @endforeach
+                @endif
+
+                @else
+
+                {{-- Tujuan departemen --}}
+                @if (in_array($data->id, $seluruhDepartemenMemoIds))
+                : Seluruh Departemen SKTILOG <br>
+                @else
+                @foreach ($tujuanDepartemens as $item)
+                @if ($item->memo_id == $data->id)
+                : {{ $item->tujuanDepartemen['inisial'] }} <br>
+                @endif
+                @endforeach
+                @endif
+
                 @endif
               </td>
             </tr>

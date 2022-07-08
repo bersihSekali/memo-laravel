@@ -209,7 +209,7 @@
                                 @else
                                 @foreach ($tujuanSatkers as $item)
                                 @if ($item->memo_id == $data->memo_id)
-                                : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                                : {{ $item->tujuanSatuanKerja['inisial'] }} <br>
                                 @endif
                                 @endforeach
                                 @endif

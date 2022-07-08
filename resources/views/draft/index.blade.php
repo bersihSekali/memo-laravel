@@ -102,6 +102,9 @@
                         <tr>
                             <td class="align-top" width="20%">Tujuan</td>
                             <td>
+
+                                @if ($data->internal == 2)
+
                                 {{-- Tujuan satuan kerja --}}
                                 @if (in_array($data->id, $seluruhSatkerMemoIds))
                                 : Segenap Unit Kerja Kantor Pusat <br>
@@ -124,6 +127,8 @@
                                 @endforeach
                                 @endif
 
+                                @else
+
                                 {{-- Tujuan departemen --}}
                                 @if (in_array($data->id, $seluruhDepartemenMemoIds))
                                 : Seluruh Departemen SKTILOG <br>
@@ -133,6 +138,8 @@
                                 : {{ $item->tujuanDepartemen->inisial }} <br>
                                 @endif
                                 @endforeach
+                                @endif
+
                                 @endif
                             </td>
                         </tr>

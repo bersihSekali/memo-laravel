@@ -120,6 +120,7 @@
                         <tr>
                             <td class="align-top" width="20%">Tujuan</td>
                             <td>
+                                @if ($data->internal == 2)
 
                                 {{-- Tujuan satuan kerja --}}
                                 @if (in_array($data->id, $seluruhSatkerMemoIds))
@@ -127,7 +128,7 @@
                                 @else
                                 @foreach ($tujuanSatkers as $item)
                                 @if ($item->memo_id == $data->id)
-                                : {{ $item->tujuanSatuanKerja->satuan_kerja }} <br>
+                                : {{ $item->tujuanSatuanKerja['inisial'] }} <br>
                                 @endif
                                 @endforeach
                                 @endif
@@ -143,6 +144,8 @@
                                 @endforeach
                                 @endif
 
+                                @else
+
                                 {{-- Tujuan departemen --}}
                                 @if (in_array($data->id, $seluruhDepartemenMemoIds))
                                 : SELURUH DEPARTEMEN SKTILOG <br>
@@ -152,6 +155,8 @@
                                 : {{ $item->tujuanDepartemen->inisial }} <br>
                                 @endif
                                 @endforeach
+                                @endif
+
                                 @endif
                             </td>
                         </tr>

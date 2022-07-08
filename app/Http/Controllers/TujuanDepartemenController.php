@@ -137,6 +137,13 @@ class TujuanDepartemenController extends Controller
         $datas['status_baca'] = 1;
         $datas->update($update);
 
+        // Memo Internal
+        $memo = SuratKeluar::find($tujuanSatkerId->memo_id);
+        if ($memo->internal == 1) {
+            $update[] = $memo['status'] = 4;
+            $memo->update($update);
+        }
+
         if ($user->satuanKerja['grup'] == 5 && $user->levelTable['golongan'] == 6) {
             return redirect('forward/' . $id . '/edit')->with('success', 'Surat telah ditandai sebagai telah dibaca, silakan teruskan pesan jika diperlukan.');
         } else {

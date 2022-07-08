@@ -42,7 +42,16 @@ class SuratMasukController extends Controller
         } elseif ($user->level == 6) {
             $data = SuratKeluar::with('tujuanDepartemen')
                 ->join('tujuan_departemens', 'surat_keluars.id', '=', 'tujuan_departemens.memo_id')
-                ->where('departemen_id', $user['departemen'])->where('status', 3)->latest('tujuan_departemens.created_at')->get();
+                ->where('departemen_id', $user['departemen'])
+                ->where(function ($q) {
+                    $q->where(function ($query) {
+                        $query->where('status', 3)->where('internal', 2);
+                    })
+                        ->orWhere(function ($query) {
+                            $query->where('status', 4)->where('internal', 1);
+                        });
+                })
+                ->latest('tujuan_departemens.created_at')->get();
         } elseif ($user->level == 10) {
             $data = SuratKeluar::with('tujuanBidangCabang')
                 ->join('tujuan_bidang_cabangs', 'surat_keluars.id', '=', 'tujuan_bidang_cabangs.memo_id')

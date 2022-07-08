@@ -129,17 +129,17 @@
                         @if ($users->satuanKerja['grup'] == 5)
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->level == 6 && $pengganti->satuan_kerja == $users->satuan_kerja)
-                        <option value="{{ $pengganti['id'] }}" {{ $edit->otor1_by == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        <option value="{{ $pengganti['id'] }}" {{ $edit->otor1_by == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja['inisial']) }}</option>
                         @endif
                         @endforeach
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->level == 6 && $pengganti->satuanKerja['grup'] == 5 && $pengganti->satuan_kerja != $users->satuan_kerja)
-                        <option value="{{ $pengganti['id'] }}" {{ $edit->otor1_by == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        <option value="{{ $pengganti['id'] }}" {{ $edit->otor1_by == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja['inisial']) }}</option>
                         @endif
                         @endforeach
                         @foreach ($penggantis as $pengganti)
                         @if ($pengganti->level == 2)
-                        <option value="{{ $pengganti['id'] }}" {{ $edit->otor1_by == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja->satuan_kerja) }}</option>
+                        <option value="{{ $pengganti['id'] }}" {{ $edit->otor1_by == $pengganti['id'] ? 'selected' : '' }}>{{ strtoupper($pengganti->name) }} - KA. {{ strtoupper($pengganti->satuanKerja['inisial']) }}</option>
                         @endif
                         @endforeach
 
