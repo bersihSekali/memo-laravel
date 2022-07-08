@@ -142,6 +142,7 @@ class TujuanDepartemenController extends Controller
         if ($memo->internal == 1) {
             $update[] = $memo['status'] = 4;
             $memo->update($update);
+            $updateTujuanDepartemenInternal = TujuanDepartemen::where('memo_id', $id)->update(['tanggal_disposisi' => date('Y-m-d')]);
         }
 
         if ($user->satuanKerja['grup'] == 5 && $user->levelTable['golongan'] == 6) {

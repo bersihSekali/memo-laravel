@@ -30,7 +30,7 @@ class SuratMasukController extends Controller
         if ($user->levelTable->golongan == 7) {
             $data = SuratKeluar::with('tujuanSatker')
                 ->join('tujuan_satuan_kerjas', 'surat_keluars.id', '=', 'tujuan_satuan_kerjas.memo_id')
-                ->where('satuan_kerja_id', $user['satuan_kerja'])->where('status', 3)->latest('tujuan_satuan_kerjas.created_at')->get();
+                ->where('satuan_kerja_id', $user['satuan_kerja'])->where('status', 3)->orWhere('status', 4)->latest('tujuan_satuan_kerjas.created_at')->get();
         } elseif ($user->level == 5) {
             $data = SuratKeluar::with('tujuanKantorCabang')
                 ->join('tujuan_kantor_cabangs', 'surat_keluars.id', '=', 'tujuan_kantor_cabangs.memo_id')

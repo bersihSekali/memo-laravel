@@ -38,11 +38,11 @@
                             <td class="align-top">{{$data['nomor_surat']}}</td>
                             <td class="align-top">
                                 @if ($data->departemen_asal)
-                                {{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}
+                                {{$data->satuanKerjaAsal['inisial']}} | {{$data->departemenAsal['inisial']}}
                                 @elseif ($data->cabang_asal)
                                 {{$data->cabangAsal['cabang']}}
                                 @else
-                                {{$data->satuanKerjaAsal['satuan_kerja']}}
+                                {{$data->satuanKerjaAsal['inisial']}}
                                 @endif
                             </td>
                             <td class="align-top">{{$data['perihal']}}</td>
@@ -60,11 +60,11 @@
                             <td class="align-top">{{$data['nomor_surat']}}</td>
                             <td class="align-top">
                                 @if ($data->departemen_asal)
-                                {{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}
+                                {{$data->satuanKerjaAsal['inisial']}} | {{$data->departemenAsal['inisial']}}
                                 @elseif ($data->cabang_asal)
                                 {{$data->cabangAsal['cabang']}}
                                 @else
-                                {{$data->satuanKerjaAsal['satuan_kerja']}}
+                                {{$data->satuanKerjaAsal['inisial']}}
                                 @endif
                             </td>
                             <td class="align-top">{{$data['perihal']}}</td>
@@ -78,15 +78,20 @@
                         @elseif($users->level == 6 ||$users->level == 5)
                         @foreach($datas as $data)
                         <tr class="{{ ($data['status_baca'] == 1 ? 'table-light' : 'table-bold') }}" id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['memo_id']}}" style="cursor: pointer;">
-                            <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_disposisi']))}}</td>
+                            <td class="align-top">
+                                @if ($data->tanggal_disposisi)
+                                {{date('Y-m-d', strtotime($data['tanggal_disposisi']))}}
+                                @else
+                                @endif
+                            </td>
                             <td class="align-top">{{$data['nomor_surat']}}</td>
                             <td class="align-top">
                                 @if ($data->departemen_asal)
-                                {{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}
+                                {{$data->satuanKerjaAsal['inisial']}} | {{$data->departemenAsal['inisial']}}
                                 @elseif ($data->cabang_asal)
                                 {{$data->cabangAsal['cabang']}}
                                 @else
-                                {{$data->satuanKerjaAsal['satuan_kerja']}}
+                                {{$data->satuanKerjaAsal['inisial']}}
                                 @endif
                             </td>
                             <td class="align-top">{{$data['perihal']}}</td>
@@ -107,12 +112,12 @@
                             <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_disposisi']))}}</td>
                             <td class="align-top">{{$data['nomor_surat']}}</td>
                             <td class="align-top">
-                                @if ($data->departemen_asal)
-                                {{$data->satuanKerjaAsal['satuan_kerja']}} | {{$data->departemenAsal['departemen']}}
+                                @if ($data->internal == 1)
+                                {{$data->satuanKerjaAsal['inisial']}} | {{$data->departemenAsal['inisial']}}
                                 @elseif ($data->cabang_asal)
                                 {{$data->cabangAsal['cabang']}}
                                 @else
-                                {{$data->satuanKerjaAsal['satuan_kerja']}}
+                                {{$data->satuanKerjaAsal['inisial']}}
                                 @endif
                             </td>
                             <td class="align-top">{{$data['perihal']}}</td>
@@ -179,9 +184,9 @@
                             @if ($data->cabang_asal)
                             <td>: {{$data->cabangAsal['cabang']}}</td>
                             @elseif($data->internal == 1)
-                            <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }} | {{ $data->departemenAsal['departemen'] }}</td>
+                            <td>: {{ $data->satuanKerjaAsal['inisial'] }} | {{ $data->departemenAsal['inisial'] }}</td>
                             @elseif($data->internal ==2)
-                            <td>: {{ $data->satuanKerjaAsal['satuan_kerja'] }}</td>
+                            <td>: {{ $data->satuanKerjaAsal['inisial'] }}</td>
                             @endif
 
                         </tr>
@@ -222,7 +227,7 @@
                                 @else
                                 @foreach ($tujuanDepartemens as $item)
                                 @if ($item->memo_id == $data->memo_id)
-                                : {{ $item->tujuanDepartemen->departemen }} <br>
+                                : {{ $item->tujuanDepartemen['inisial'] }} <br>
                                 @endif
                                 @endforeach
                                 @endif
