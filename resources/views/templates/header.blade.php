@@ -79,6 +79,9 @@
             </a>
           </li>
 
+
+          {{-- Untuk semua user --}}
+          @if ($users->level != 1)
           <li class="nav-item">
             <a class="nav-link" href="/draft">
               <i class="fas fa-envelope"></i>
@@ -87,9 +90,6 @@
               </span>
             </a>
           </li>
-
-          {{-- Untuk semua user --}}
-          @if ($users->level != 1)
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
               <i class="fas fa-envelope"></i>

@@ -627,15 +627,35 @@ class NomorSuratController extends Controller
     public function allSurat() // get all Surat
     {
         $id = Auth::id();
-        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
-            ->where('id', $id)->first();
-        $mails = SuratKeluar::select('id', 'created_at', 'otor1_by', 'otor2_by', 'otor1_by_pengganti', 'otor2_by_pengganti', 'created_by', 'tanggal_otor2', 'tanggal_otor1', 'nomor_surat', 'perihal', 'satuan_kerja_asal', 'departemen_asal', 'lampiran', 'pesan_tolak', 'internal', 'status', 'deleted_by', 'deleted_at')
-            ->withTrashed()->latest()->get();
-        $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
-            ->get();
+        $user = User::find($id);
+        if ($user->id != 1) {
+            dd('Bukan Admin');
+        }
+        $mails = SuratKeluar::withTrashed()->where('draft', 0)
+            ->latest()->get();
+        $userLog = User::all();
 
         //untuk cek all flag, Untuk view column tujuan 
-        $tujuan = $this->coba->columnTujuan($user);
+        $memoIdSatker = SuratKeluar::pluck('id')->toArray();
+        $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+        $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+        $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
+            ->latest()->get();
+
+        $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
+        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
+        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
+
+        $tujuan = [
+            'tujuanDepartemen' => $tujuanDepartemen,
+            'tujuanSatker' => $tujuanSatker,
+            'tujuanCabangs' => $tujuanCabangs,
+            'seluruhDepartemenMemoId' => $seluruhDepartemenMemoId,
+            'seluruhSatkerMemoId' => $seluruhSatkerMemoId,
+            'seluruhCabangMemoId' => $seluruhCabangMemoId
+        ];
 
         $datas = [
             'users' => $user,
@@ -649,6 +669,6 @@ class NomorSuratController extends Controller
             'seluruhCabangMemoIds' => $tujuan['seluruhCabangMemoId'],
         ];
 
-        return view('nomorSurat.all', $datas);
+        return view('admin.index', $datas);
     }
 }
