@@ -113,8 +113,7 @@ class SuratKeluar extends Model
             $mails1 = SuratKeluar::where('cabang_asal', $user->cabang)
                 ->where('status', 1)
                 ->where('draft', 0)
-                ->where('otor2_by', $user['id'])
-                ->latest();
+                ->where('otor2_by', $user['id']);
             $mails = SuratKeluar::where('cabang_asal', $user->cabang)
                 ->where('status', 2)
                 ->where('draft', 0)
@@ -128,8 +127,7 @@ class SuratKeluar extends Model
             $mails1 = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('status', 1)
                 ->where('draft', 0)
-                ->where('otor2_by', $user['id'])
-                ->latest();
+                ->where('otor2_by', $user['id']);
             $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('status', 2)
                 ->where('draft', 0)
@@ -143,8 +141,7 @@ class SuratKeluar extends Model
             $mails1 = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('status', 1)
                 ->where('draft', 0)
-                ->where('otor2_by', $user['id'])
-                ->latest();
+                ->where('otor2_by', $user['id']);
             $mails = SuratKeluar::where('satuan_kerja_asal', $user->satuan_kerja)
                 ->where('status', 2)
                 ->where('draft', 0)
