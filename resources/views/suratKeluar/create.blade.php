@@ -202,9 +202,9 @@
                 <input class="form-control" type="file" id="berkas" name="berkas">
             </div>
 
-            <div class="mb-3">
-                <textarea id="summernote" name="editordata"></textarea>
-            </div>
+            <!-- <div class="mb-3 formulir" style="display: none;">
+                <textarea id="summernote" name="editordata">{{old('editordata')}}</textarea>
+            </div> -->
 
             <div class="mb-3 formulir" style="display: none">
                 <label for="lampiran" class="form-label">Lampiran</label>
@@ -213,8 +213,8 @@
 
             <div class="d-flex">
                 <!-- <button type="submit" name="lihat" value="lihat" class="btn btn-info formulir" style="display: none" formtarget="_blank">Lihat Pratinjau</button> -->
-                <button type="submit" name="draft" value="draft" class="btn btn-warning formulir" style="display: none">Simpan Sebagai Draft</button>
-                <button type="submit" name="simpan" value="simpan" class="btn btn-primary formulir ms-auto" style="display: none">Simpan Surat</button>
+                <button type="submit" name="draft" value="draft" class="btn btn-warning formulir ms-auto" style="display: none">Simpan Sebagai Draft</button>
+                <button type="submit" name="simpan" value="simpan" class="btn btn-primary formulir" style="display: none">Simpan Surat</button>
             </div>
         </form>
     </div>
