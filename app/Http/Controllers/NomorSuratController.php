@@ -122,9 +122,9 @@ class NomorSuratController extends Controller
                 'nomor_surat' => 'required|unique:surat_keluars',
                 'satuan_kerja_asal' => 'required',
                 'perihal' => 'required',
+                'berkas' => 'mimes:pdf',
                 'lampiran' => 'mimes:pdf',
                 'kriteria' => 'required',
-                'editordata' => 'required',
             ]);
             $validated['departemen_asal'] = $request->departemen_asal;
             $validated['otor2_by'] = $request->tunjuk_otor2_by;
@@ -141,7 +141,16 @@ class NomorSuratController extends Controller
             $tujuanKantorCabang = $request->tujuan_kantor_cabang;
             $tujuanInternal = $request->tujuan_internal;
 
-            // get file and store
+            // setor berkas
+            if ($request->file('berkas')) {
+                $file = $request->file('berkas');
+                $originalFileName = $file->getClientOriginalName();
+                $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+                $fileName = date("YmdHis") . '_' . $fileName;
+                $validated['berkas'] = $request->file('berkas')->storeAs('berkas', $fileName);
+            }
+
+            // setor lampiran
             if ($request->file('lampiran')) {
                 $file = $request->file('lampiran');
                 $originalFileName = $file->getClientOriginalName();
@@ -339,6 +348,7 @@ class NomorSuratController extends Controller
                 'nomor_surat' => 'required|unique:surat_keluars',
                 'satuan_kerja_asal' => 'required',
                 'perihal' => 'required',
+                'berkas' => 'mimes:pdf',
                 'lampiran' => 'mimes:pdf',
                 'kriteria' => 'required',
             ]);
@@ -360,6 +370,14 @@ class NomorSuratController extends Controller
             $tujuanKantorCabang = $request->tujuan_kantor_cabang;
             $tujuanInternal = $request->tujuan_internal;
 
+            // setor berkas
+            if ($request->file('berkas')) {
+                $file = $request->file('berkas');
+                $originalFileName = $file->getClientOriginalName();
+                $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+                $fileName = date("YmdHis") . '_' . $fileName;
+                $validated['berkas'] = $request->file('berkas')->storeAs('berkas', $fileName);
+            }
             // get file and store
             if ($request->file('lampiran')) {
                 $file = $request->file('lampiran');

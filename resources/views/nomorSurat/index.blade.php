@@ -193,6 +193,16 @@
                         </tr>
                         @endif
 
+                        <tr>
+                            <td>Berkas</td>
+                            @if ($data->status == 0)
+                            <td>: <a type="button" href="/storage/{{ $data['lampiran_tolak'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Memo</a></td>
+                            @else
+                            <td>: <a class="btn btn-info btn-sm" href="/storage/{{ $data['berkas'] }}" target="_blank">Lihat Memo</a></td>
+                            @endif
+                        </tr>
+
+                        @if ($data['isi'])
                         <tr width="20%">
                             <td>Isi</td>
                             @if ($data->status == 0)
@@ -201,6 +211,8 @@
                             <td>: <a type="button" href="/draft/{{ $data['id'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Memo</a></td>
                             @endif
                         </tr>
+                        @endif
+
                         @if ($data['lampiran'])
                         <tr width="20%">
                             <td>Lampiran</td>

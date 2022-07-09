@@ -22,6 +22,7 @@ class SuratKeluar extends Model
         'satuan_kerja_asal',
         'cabang_asal',
         'departemen_asal',
+        'berkas',
         'lampiran',
         'pesan_tolak',
         'lampiran_tolak',

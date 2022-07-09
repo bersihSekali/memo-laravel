@@ -176,10 +176,18 @@
                         </tr>
                         @endif
 
+                        <tr>
+                            <td>Berkas</td>
+                            <td>: <a class="btn btn-info btn-sm" href="/storage/{{ $data['berkas'] }}" target="_blank">Lihat Memo</a></td>
+                        </tr>
+
+                        @if ($data['isi'])
                         <tr width="20%">
                             <td>Isi</td>
                             <td>: <a type="button" href="/draft/{{ $data['id'] }}" class="btn btn-info btn-sm" style="text-decoration: none" target="_blank">Lihat Tinjauan</a></td>
                         </tr>
+                        @endif
+
                         @if ($data['lampiran'])
                         <tr width="20%">
                             <td>Lampiran</td>

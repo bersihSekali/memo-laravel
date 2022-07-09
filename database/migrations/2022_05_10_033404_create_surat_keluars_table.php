@@ -44,6 +44,7 @@ class CreateSuratKeluarsTable extends Migration
             $table->foreign('departemen_asal')->references('id')->on('departemens');
 
             $table->string('kriteria');
+            $table->string('berkas')->nullable();
             $table->string('isi')->nullable();
             $table->string('lampiran')->nullable();
             $table->string('lampiran_tolak')->nullable();
