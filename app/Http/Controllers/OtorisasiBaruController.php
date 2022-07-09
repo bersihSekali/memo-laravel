@@ -130,6 +130,18 @@ class OtorisasiBaruController extends Controller
         $datas['status'] = 2;
         array_push($update, $datas['status']);
 
+        if ($request->file('berkas')) {
+            if ($datas->berkas) {
+                Storage::delete($datas->berkas);
+            }
+            $file = $request->file('berkas');
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $datas['berkas'] = $request->file('berkas')->storeAs('berkas', $fileName);
+            array_push($update, $datas['berkas']);
+        }
+
         $datas->update($update);
 
         if (!$datas) {
@@ -199,6 +211,18 @@ class OtorisasiBaruController extends Controller
         // Update otor_by 
         $datas['otor1_by'] = $user->id;
         array_push($update, $datas['otor1_by']);
+
+        if ($request->file('berkas')) {
+            if ($datas->berkas) {
+                Storage::delete($datas->berkas);
+            }
+            $file = $request->file('berkas');
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $datas['berkas'] = $request->file('berkas')->storeAs('berkas', $fileName);
+            array_push($update, $datas['berkas']);
+        }
 
         // Compare latest date with now to reset no_urut
         // $lastSuratMasuk = SuratMasuk::where('satuan_kerja_asal', $user->satuan_kerja)

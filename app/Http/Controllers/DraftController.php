@@ -246,6 +246,7 @@ class DraftController extends Controller
             'kriteria' => 'required',
             'nomor_surat' => 'required',
             'perihal' => 'required',
+            'berkas' => 'mimes:pdf',
             'lampiran' => 'mimes:pdf',
         ]);
         $validated['cabang_asal'] = $request->cabang_asal;
@@ -269,11 +270,26 @@ class DraftController extends Controller
         $validated['tanggal_tolak'] = null;
         if ($draft['lampiran_tolak']) {
             $validated['lampiran_tolak'] = null;
-            Storage::delete($draft->lampiran);
+            Storage::delete($draft->lampiran_tolak);
+        }
+
+        // setor berkas
+        if ($request->file('berkas')) {
+            if ($draft->berkas) {
+                Storage::delete($draft->berkas);
+            }
+            $file = $request->file('berkas');
+            $originalFileName = $file->getClientOriginalName();
+            $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);
+            $fileName = date("YmdHis") . '_' . $fileName;
+            $validated['berkas'] = $request->file('berkas')->storeAs('berkas', $fileName);
         }
 
         // get file and store
         if ($request->file('lampiran')) {
+            if ($draft->lampiran) {
+                Storage::delete($draft->lampiran);
+            }
             $file = $request->file('lampiran');
             $originalFileName = $file->getClientOriginalName();
             $fileName = preg_replace('/[^.\w\s\pL]/', '', $originalFileName);

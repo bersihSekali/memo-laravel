@@ -477,9 +477,13 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otor/{{ $data['id'] }}" method="post">
+        <form action="/otor/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('PUT')}}
+
+          <div class="mb-3">
+            <input class="form-control" type="file" id="berkas" name="berkas" required>
+          </div>
 
           <button type="submit" class="btn btn-success w-100">Setujui</button>
         </form>
@@ -488,9 +492,13 @@
       <div class="modal-body text-center py-4">
         <h3>Apakah yakin ingin menyetujui?</h3>
         <span>Harap tanda tangani dan cantumkan tanggal terlebih dahulu surat yang akan disetujui</span>
-        <form action="/otor/approvedOtorSatu/{{ $data['id'] }}" method="post">
+        <form action="/otor/approvedOtorSatu/{{ $data['id'] }}" method="post" enctype="multipart/form-data">
           @csrf
           {{method_field('POST')}}
+
+          <div class="mb-3">
+            <input class="form-control" type="file" id="berkas" name="berkas" required>
+          </div>
 
           <button type="submit" class="btn btn-success w-100">Setujui</button>
         </form>
