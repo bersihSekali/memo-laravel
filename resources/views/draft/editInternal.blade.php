@@ -203,8 +203,8 @@
                     <select class="form-select mb-3 otor-pengganti" aria-label=".form-select-sm example" name="tunjuk_otor2_by" id="tunjuk_otor2_by_internal">
                         <option selected disabled> -- Pilih salah satu -- </option> @foreach ($penggantis as $pengganti)
                         @if ($pengganti->satuan_kerja == 2 && $pengganti->departemen == $users->departemen)
-                        @if (($pengganti->levelTable->golongan >= 5) && ($pengganti->levelTable->golongan < 6)) <option value="{{ $pengganti['id'] }}" {{ $edit->otor2_by == $pengganti['id'] ? 'selected' : '' }}>
-                            {{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->satuanKerja->inisial) }} | {{ strtoupper($pengganti->departemenTable->inisial) }}
+                        @if (($pengganti->levelTable->golongan >= 5) && ($pengganti->levelTable->golongan <= 6) && ($pengganti->level != 6)) <option value="{{ $pengganti['id'] }}" {{ $edit->otor2_by == $pengganti['id'] ? 'selected' : '' }}>
+                                {{ strtoupper($pengganti->name) }} - {{ strtoupper($pengganti->satuanKerja->inisial) }} | {{ strtoupper($pengganti->departemenTable->inisial) }}
                             </option>
                             @endif
                             @endif
