@@ -36,17 +36,17 @@
 
         <div class="card-body">
           @if ($errors->first())
-            <div class="alert alert-danger">
-              <ul>
-                  @if ($errors->first('name'))
-                    <li>{{ $errors->first('name') }}</li>
-                  @endif
+          <div class="alert alert-danger">
+            <ul>
+              @if ($errors->first('name'))
+              <li>{{ $errors->first('name') }}</li>
+              @endif
 
-                  @if ($errors->first('password'))
-                    <li>{{ $errors->first('password') }}</li>
-                  @endif
-              </ul>
-            </div>
+              @if ($errors->first('password'))
+              <li>{{ $errors->first('password') }}</li>
+              @endif
+            </ul>
+          </div>
           @endif
 
           <h2 class="card-title text-center">Registrasi Pengguna Baru <br> Pencatatan Memo Internal BCASyariah</h2>
@@ -67,21 +67,35 @@
           </div>
 
           <div class="mb-3" id="input_satuan_kerja">
-            <label for="satuan_kerja" class="form-label">Satuan Kerja</label>
+            <label for="satuan_kerja" class="form-label">Satuan Kerja/Divisi/Departemen Satu Tingkat di Bawah Direksi/Area Cabang</label>
             <select class="form-select mb-3" aria-label=".form-select-sm example" name="satuan_kerja" id="satuan_kerja" data-width="100%" required>
               <option selected disabled> ---- </option>
               @foreach ($satuanKerja as $item)
-                @if (($item->id == 1) || ($item->id == 11) || ($item->id == 12))
-                    @continue
-                @endif
-                <option value="{{ $item->id }}">{{ $item->satuan_kerja }}</option>
+              @if ($item->id == 1)
+              @continue
+              @endif
+              <option value="{{ $item->id }}">{{ $item->satuan_kerja }}</option>
               @endforeach
             </select>
           </div>
 
           <div class="mb-3" id="input_departemen">
-            <label for="departemen" class="form-label">Departemen</label>
+            <label for="departemen" class="form-label">Departemen/Kantor Cabang</label>
             <select class="form-select mb-3" aria-label=".form-select-sm example" name="departemen" id="departemen" data-width="100%">
+              <option selected disabled> ---- </option>
+            </select>
+          </div>
+
+          <div class="mb-3" id="input_cabang">
+            <label for="cabang" class="form-label">Cabang</label>
+            <select class="form-select mb-3" aria-label=".form-select-sm example" name="cabang" id="cabang" data-width="100%">
+              <option selected disabled> ---- </option>
+            </select>
+          </div>
+
+          <div class="mb-3" id="input_cabang_pembantu">
+            <label for="cabangPembantu" class="form-label">Cabang Pembantu</label>
+            <select class="form-select mb-3" aria-label=".form-select-sm example" name="cabangPembantu" id="cabangPembantu" data-width="100%">
               <option selected disabled> ---- </option>
             </select>
           </div>
@@ -107,6 +121,8 @@
       // Hide input departemen
       jQuery('#input_departemen').hide();
       jQuery('#input_satuan_kerja').hide();
+      jQuery('#input_cabang').hide();
+      jQuery('#input_cabang_pembantu').hide();
 
       // get value level id
       jQuery('#level').change(function() {
@@ -117,6 +133,7 @@
         } else if (lid > 2) {
           jQuery('#input_satuan_kerja').show();
           jQuery('#input_departemen').show();
+          jQuery('#input_cabang_pembantu').show();
         } else {
           jQuery('#input_satuan_kerja').show();
           jQuery('#input_departemen').hide();
@@ -133,6 +150,20 @@
             jQuery('#departemen').html(result)
           }
         });
+      });
+      jQuery('#departemen').change(function() {
+        var cid = jQuery(this).val();
+        var cidsub = cid.substring(1)
+        if (cid[0] == "C") {
+          jQuery.ajax({
+            url: '/getCabang',
+            type: 'post',
+            data: 'cid=' + cidsub + '&_token={{csrf_token()}}',
+            success: function(result) {
+              jQuery('#cabangPembantu').html(result)
+            }
+          });
+        }
       });
     });
   </script>

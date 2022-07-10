@@ -24,6 +24,8 @@ class User extends Authenticatable
         'departemen',
         'level',
         'password',
+        'cabang',
+        'bidang_cabang'
     ];
 
     public function satuanKerja()

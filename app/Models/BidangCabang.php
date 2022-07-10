@@ -9,6 +9,11 @@ class BidangCabang extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'cabang',
+        'bidang_cabang'
+    ];
+
     public function cabangTable()
     {
         return $this->belongsTo(Cabang::class, 'cabang_id');

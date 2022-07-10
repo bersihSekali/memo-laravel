@@ -54,11 +54,12 @@ Route::resource('satuanKerja', SatuanKerjaController::class);
 Route::resource('departemen', DepartemenController::class);
 Route::resource('kantorCabang', CabangController::class);
 Route::resource('cabangPembantu', CabangPembantuController::class);
-Route::get('/listuser', [AdminController::class, 'listUser'])->middleware('auth');
+Route::get('/listUser', [AdminController::class, 'listUser'])->middleware('auth');
 Route::get('/nomorSurat/suratHapus', [AdminController::class, 'listSuratHapus'])->middleware('auth');
 Route::get('/nomorSurat/allSurat', [AdminController::class, 'allSurat'])->middleware('auth');
 Route::get('/nomorSurat/hapusPermanen', [AdminController::class, 'hapusPermanen'])->middleware('auth');
 Route::post('/getSatuanKerja', [AdminController::class, 'getSatuanKerja']);
+Route::post('/getCabang', [AdminController::class, 'getCabang']);
 Route::post('/getLevel', [AdminController::class, 'getLevel']);
 
 // Surat Keluar Penomoran

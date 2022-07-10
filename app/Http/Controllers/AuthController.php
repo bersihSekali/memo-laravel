@@ -63,7 +63,13 @@ class AuthController extends Controller
             'level' => 'required'
         ]);
 
-        $validated['departemen'] = $request->departemen;
+        if ($request->departemen[0] == 'C') {
+            $validated['cabang'] = substr($request->departemen, 1);
+        } else {
+            $validated['departemen'] = $request->departemen;
+        }
+
+        $validated['bidang_cabang'] = $request->cabangPembantu;
         $validated['password'] = hash::make($validated['password']);
 
         $registration = User::create($validated);

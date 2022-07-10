@@ -203,7 +203,7 @@
             <div class="dropdown-menu">
               <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="/listuser">
+                  <a class="dropdown-item" href="/listUser">
                     Data Pengguna
                   </a>
                   <a class="dropdown-item" href="/registration">

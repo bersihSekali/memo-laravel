@@ -11,6 +11,7 @@ use App\Models\TujuanSatuanKerja;
 use App\Models\TujuanKantorCabang;
 use App\Models\TujuanDepartemen;
 use Illuminate\Support\Facades\DB;
+use App\Models\BidangCabang;
 
 class AdminController extends Controller
 {
@@ -22,9 +23,25 @@ class AdminController extends Controller
     {
         echo $skid = $request->post('skid');
         $departemen = DB::table('departemens')->where('satuan_kerja', $skid)->get();
+        $cabang = DB::table('cabangs')->where('satuan_kerja_id', $skid)->get();
         $html = '<option value=""> ---- </option>';
         foreach ($departemen as $key) {
             $html .= '<option value="' . $key->id . '">' . $key->departemen . '</option>';
+        }
+        foreach ($cabang as $key) {
+            if ($key->id != 1) {
+                $html .= '<option value="C' . $key->id . '">' . $key->cabang . '</option>';
+            }
+        }
+        echo $html;
+    }
+    public function getCabang(Request $request)
+    {
+        echo $cid = $request->post('cid');
+        $cabangPembantu = BidangCabang::where('cabang_id', $cid)->get();
+        $html = '<option value=""> ---- </option>';
+        foreach ($cabangPembantu as $key) {
+            $html .= '<option value="' . $key->id . '">' . $key->bidang . '</option>';
         }
         echo $html;
     }
