@@ -531,13 +531,12 @@ class NomorSuratController extends Controller
     public function destroy($id) // Soft Delete
     {
         $user_id = Auth::id();
-        $user = User::where('id', $user_id)->first();
+        $user = User::find($user_id);
 
         $datas = SuratKeluar::find($id);
-        $update[] = $datas['deleted_by'] = $user->name;
+        $update[] = $datas['deleted_by'] = $user->id;
 
-        Storage::delete($datas->lampiran);
-
+        $datas['nomor_surat'] = null;
         $datas['no_urut'] = 0;
         array_push($update, $datas['no_urut']);
 
@@ -554,139 +553,5 @@ class NomorSuratController extends Controller
         $datas->delete();
 
         return redirect('/nomorSurat')->with('success', 'Surat berhasil dihapus');
-    }
-
-    public function getSatuanKerja(Request $request)
-    {
-        echo $skid = $request->post('skid');
-        $departemen = DB::table('departemens')->where('satuan_kerja', $skid)->get();
-        $html = '<option value=""> ---- </option>';
-        foreach ($departemen as $key) {
-            $html .= '<option value="' . $key->id . '">' . $key->departemen . '</option>';
-        }
-        echo $html;
-    }
-
-    public function getLevel(Request $request)
-    {
-        echo $lid = $request->post('lid');
-        $html = '';
-        if ($lid == 2) {
-            $html .= '<div class="mb-3">
-            <label for="departemen" class="form-label">Department</label>
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="departemen" id="departemen">
-                <option value=""> ---- </option>
-            </select>
-        </div>';
-        }
-
-        echo $html;
-    }
-
-    public function listSuratHapus() // get Surat deleted only
-    {
-        $id = Auth::id();
-        $user = User::where('id', $id)->first();
-        $userLog = User::get();
-
-        $mails = SuratKeluar::onlyTrashed()->get();
-
-        //untuk cek all flag, Untuk view column tujuan 
-        $tujuan = $this->coba->columnTujuan($user);
-
-        $datas = [
-            'users' => $user,
-            'datas' => $mails,
-            'userLogs' => $userLog,
-            'tujuanDepartemens' => $tujuan['tujuanDepartemen'],
-            'tujuanSatkers' => $tujuan['tujuanSatker'],
-            'tujuanCabangs' => $tujuan['tujuanCabangs'],
-            'seluruhDepartemenMemoIds' => $tujuan['seluruhDepartemenMemoId'],
-            'seluruhSatkerMemoIds' => $tujuan['seluruhSatkerMemoId'],
-            'seluruhCabangMemoIds' => $tujuan['seluruhCabangMemoId']
-        ];
-
-        return view('nomorSurat.deleted', $datas);
-    }
-
-    public function hapusPermanen() // Force Delete
-    {
-        $user_id = Auth::id();
-        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
-            ->where('id', $user_id)->first();
-        $datas = SuratKeluar::onlyTrashed()->get();
-
-        foreach ($datas as $data) {
-            Storage::delete($data->lampiran);
-
-            // Hapus child tujuan cabang
-            TujuanKantorCabang::select('memo_id')->where('memo_id', $data->id)->forceDelete();
-
-            // Hapus tujuan departemen
-            TujuanDepartemen::select('memo_id')->where('memo_id', $data->id)->forceDelete();
-
-            // Hapus tujuan satuan kerja
-            TujuanSatuanKerja::select('memo_id')->where('memo_id', $data->id)->forceDelete();
-        }
-
-        // Update audit trail
-        $audit = [
-            'users' => $user->id,
-            'kegiatan' => 'config.constants.FORCE_DELETE',
-            'deskripsi' => null
-        ];
-        storeAudit($audit);
-
-        SuratKeluar::where('deleted_at', '!=', null)->forceDelete();
-
-        return redirect('/nomorSurat/suratHapus')->with('success', 'Surat berhasil dibersihkan');
-    }
-
-    public function allSurat() // get all Surat
-    {
-        $id = Auth::id();
-        $user = User::find($id);
-        if ($user->id != 1) {
-            dd('Bukan Admin');
-        }
-        $mails = SuratKeluar::withTrashed()->where('draft', 0)
-            ->latest()->get();
-        $userLog = User::all();
-
-        //untuk cek all flag, Untuk view column tujuan 
-        $memoIdSatker = SuratKeluar::pluck('id')->toArray();
-        $tujuanDepartemen = TujuanDepartemen::whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-        $tujuanSatker = TujuanSatuanKerja::whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-        $tujuanCabangs = TujuanKantorCabang::whereIn('memo_id', $memoIdSatker)
-            ->latest()->get();
-
-        $seluruhDepartemenMemoId = $tujuanDepartemen->where('departemen_id', 1)->pluck('memo_id')->toArray();
-        $seluruhSatkerMemoId = $tujuanSatker->where('satuan_kerja_id', 1)->pluck('memo_id')->toArray();
-        $seluruhCabangMemoId = $tujuanCabangs->where('cabang_id', 1)->pluck('memo_id')->toArray();
-
-        $tujuan = [
-            'tujuanDepartemen' => $tujuanDepartemen,
-            'tujuanSatker' => $tujuanSatker,
-            'tujuanCabangs' => $tujuanCabangs,
-            'seluruhDepartemenMemoId' => $seluruhDepartemenMemoId,
-            'seluruhSatkerMemoId' => $seluruhSatkerMemoId,
-            'seluruhCabangMemoId' => $seluruhCabangMemoId
-        ];
-
-        $datas = [
-            'users' => $user,
-            'tujuanDepartemens' => $tujuan['tujuanDepartemen'],
-            'tujuanSatkers' => $tujuan['tujuanSatker'],
-            'tujuanCabangs' => $tujuan['tujuanCabangs'],
-            'userLogs' => $userLog,
-            'datas' => $mails,
-            'seluruhDepartemenMemoIds' => $tujuan['seluruhDepartemenMemoId'],
-            'seluruhSatkerMemoIds' => $tujuan['seluruhSatkerMemoId'],
-            'seluruhCabangMemoIds' => $tujuan['seluruhCabangMemoId'],
-        ];
-
-        return view('admin.index', $datas);
     }
 }

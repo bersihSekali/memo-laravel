@@ -16,7 +16,18 @@ class SatuanKerjaController extends Controller
      */
     public function index()
     {
-        //
+        $id = Auth::id();
+        $user = User::find($id);
+        $satuanKerja = SatuanKerja::orderBy('id')->get();
+        $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
+            ->get();
+        $datas = [
+            'title' => 'Daftar Satuan Kerja dan Departemen',
+            'users' => $user,
+            'satuanKerjas' => $satuanKerja,
+            'userLogs' => $userLog
+        ];
+        return view('satuanKerja.index', $datas);
     }
 
     /**

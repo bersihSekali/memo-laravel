@@ -12,12 +12,6 @@
         <div class="col-12 col-md-auto ms-auto d-print-none">
             <div class="row">
                 <div class="col-6 btn-list">
-                    <a href="/satuanKerja/create" class="btn btn-primary d-none d-sm-inline-block">
-                        <i class="fas fa-plus-circle me-2"></i>
-                        Tambah Satuan Kerja
-                    </a>
-                </div>
-                <div class="col-6 btn-list">
                     <a href="/departemen/create" class="btn btn-primary d-none d-sm-inline-block">
                         <i class="fas fa-plus-circle me-2"></i>
                         Tambah Departemen
@@ -36,21 +30,23 @@
             @endif
 
             <div class="table-responsive">
-                <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
+                <table id="tabel-list-departemen" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th class="fs-4" scope="col" style="text-align: center">Satuan Kerja</th>
                             <th class="fs-4" scope="col" style="text-align: center">Departemen</th>
+                            <th class="fs-4" scope="col" style="text-align: center">Inisial</th>
+                            <th class="fs-4" scope="col" style="text-align: center">Satuan Kerja</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($departemens as $departemen)
-                        @if (($departemen->id == 1) || ($departemen->id == 12) || ($departemen->id == 12))
+                        @if ($departemen->id == 1)
                         @continue
                         @endif
                         <tr>
-                            <td class="align-top">{{ $departemen->satuanKerjaTable['inisial'] }}</td>
                             <td class="align-top">{{ $departemen->departemen }}</td>
+                            <td class="align-top">{{ $departemen->inisial }}</td>
+                            <td class="align-top">{{ $departemen->satuanKerjaTable['satuan_kerja'] }}</td>
                         </tr>
                         @endforeach
                     </tbody>

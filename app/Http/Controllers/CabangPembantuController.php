@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SatuanKerja;
-use App\Models\Departemen;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Cabang;
+use App\Models\BidangCabang;
+use Illuminate\Http\Request;
 
-class DepartemenController extends Controller
+class CabangPembantuController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,18 +19,18 @@ class DepartemenController extends Controller
     {
         $id = Auth::id();
         $user = User::find($id);
-        $satuanKerja = SatuanKerja::get();
-        $departemen = Departemen::get();
+        $cabang = Cabang::get();
+        $cabangPembantu = BidangCabang::get();
         $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
             ->get();
         $datas = [
             'title' => 'Daftar Satuan Kerja dan Departemen',
             'users' => $user,
-            'satuanKerjas' => $satuanKerja,
-            'departemens' => $departemen,
+            'cabangs' => $cabang,
+            'cabangPembantus' => $cabangPembantu,
             'userLogs' => $userLog
         ];
-        return view('departemen.index', $datas);
+        return view('cabangPembantu.index', $datas);
     }
 
     /**
@@ -40,19 +40,7 @@ class DepartemenController extends Controller
      */
     public function create()
     {
-        $id = Auth::id();
-        $user = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
-            ->where('id', $id)->first();
-        $satuanKerja = SatuanKerja::select('id', 'satuan_kerja')->get();
-        $userLog = User::select('id', 'name', 'satuan_kerja', 'departemen', 'level')
-            ->get();
-        $datas = [
-            'title' => 'Tambah Departemen',
-            'users' => $user,
-            'satuanKerja' => $satuanKerja,
-            'userLogs' => $userLog
-        ];
-        return view('departemen.create', $datas);
+        //
     }
 
     /**
@@ -63,18 +51,7 @@ class DepartemenController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'satuan_kerja' => 'required',
-            'departemen' => 'required',
-        ]);
-
-        $create = Departemen::create($validated);
-
-        if (!$create) {
-            return redirect('/departemen/create')->with('error', 'Pembuatan surat gagal');
-        }
-
-        return redirect('/departemen')->with('success', 'Tambah Departemen berhasil');
+        //
     }
 
     /**

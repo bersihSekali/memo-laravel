@@ -27,7 +27,11 @@
                     <tbody>
                         @foreach($datas as $data)
                         <tr id="data" data-bs-toggle="modal" data-bs-target="#mail-{{$data['id']}}" style="cursor: pointer;">
-                            <td class="align-top">{{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
+                            <td class="align-top">
+                                @if ($data->tanggal_otor1)
+                                {{date('Y-m-d', strtotime($data['tanggal_otor1']))}}
+                                @endif
+                            </td>
                             <td class="align-top">{{$data['nomor_surat']}}</td>
                             <td class="align-top">
                                 @if ($data->internal == 1)
@@ -91,12 +95,24 @@
 
                         <tr>
                             <td>Tanggal Tanda Tangan 2</td>
-                            <td>: {{date('Y-m-d', strtotime($data['tanggal_otor2']))}}</td>
+                            <td>
+                                @if ($data->tanggal_otor2)
+                                : {{date('Y-m-d', strtotime($data['tanggal_otor2']))}}
+                                @else
+                                :
+                                @endif
+                            </td>
                         </tr>
 
                         <tr>
                             <td>Tanggal Tanda Tangan 1</td>
-                            <td>: {{date('Y-m-d', strtotime($data['tanggal_otor1']))}}</td>
+                            <td>
+                                @if ($data->tanggal_otor1)
+                                : {{date('Y-m-d', strtotime($data['tanggal_otor1']))}}
+                                @else
+                                :
+                                @endif
+                            </td>
                         </tr>
 
                         <tr>

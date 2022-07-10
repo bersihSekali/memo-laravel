@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AktivitasController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -21,6 +22,8 @@ use App\Http\Controllers\TujuanDepartemenController;
 use App\Http\Controllers\ForwardCabangController;
 use App\Http\Controllers\DraftController;
 use App\Http\Controllers\PenomoranController;
+use App\Http\Controllers\CabangController;
+use App\Http\Controllers\CabangPembantuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,22 +42,26 @@ use App\Http\Controllers\PenomoranController;
 
 Route::get('/', [HomeController::class, 'index'])->middleware('auth');
 
-Route::resource('satuanKerja', SatuanKerjaController::class);
-Route::resource('departemen', DepartemenController::class);
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
-Route::get('/listuser', [AuthController::class, 'listUser'])->middleware('auth');
 
 Route::get('/registration', [AuthController::class, 'registration'])->middleware('auth');
 Route::post('/registration', [AuthController::class, 'register']);
 
+// Admin
+Route::resource('satuanKerja', SatuanKerjaController::class);
+Route::resource('departemen', DepartemenController::class);
+Route::resource('kantorCabang', CabangController::class);
+Route::resource('cabangPembantu', CabangPembantuController::class);
+Route::get('/listuser', [AdminController::class, 'listUser'])->middleware('auth');
+Route::get('/nomorSurat/suratHapus', [AdminController::class, 'listSuratHapus'])->middleware('auth');
+Route::get('/nomorSurat/allSurat', [AdminController::class, 'allSurat'])->middleware('auth');
+Route::get('/nomorSurat/hapusPermanen', [AdminController::class, 'hapusPermanen'])->middleware('auth');
+Route::post('/getSatuanKerja', [AdminController::class, 'getSatuanKerja']);
+Route::post('/getLevel', [AdminController::class, 'getLevel']);
+
 // Surat Keluar Penomoran
-Route::get('/nomorSurat/suratHapus', [NomorSuratController::class, 'listSuratHapus'])->middleware('auth');
-Route::get('/nomorSurat/allSurat', [NomorSuratController::class, 'allSurat'])->middleware('auth');
-Route::get('/nomorSurat/hapusPermanen', [NomorSuratController::class, 'hapusPermanen'])->middleware('auth');
-Route::post('/getSatuanKerja', [NomorSuratController::class, 'getSatuanKerja']);
-Route::post('/getLevel', [NomorSuratController::class, 'getLevel']);
 Route::resource('nomorSurat', NomorSuratController::class)->middleware('auth');
 
 // Otorisasi surat

@@ -10,6 +10,7 @@ class SatuanKerja extends Model
     use HasFactory;
 
     protected $fillable = [
-        'satuan_kerja'
+        'satuan_kerja',
+        'inisial'
     ];
 }

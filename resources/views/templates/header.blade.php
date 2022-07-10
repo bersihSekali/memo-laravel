@@ -204,13 +204,22 @@
               <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
                   <a class="dropdown-item" href="/listuser">
-                    Daftar Pengguna
+                    Data Pengguna
                   </a>
                   <a class="dropdown-item" href="/registration">
                     Tambah Pengguna
                   </a>
+                  <a class="dropdown-item" href="/satuanKerja">
+                    Data Satuan Kerja/Divisi/Departemen Satu Tingkat di Bawah Direksi
+                  </a>
                   <a class="dropdown-item" href="/departemen">
-                    List Satuan Kerja dan Departemen
+                    Data Departemen
+                  </a>
+                  <a class="dropdown-item" href="/kantorCabang">
+                    Data Kantor Cabang
+                  </a>
+                  <a class="dropdown-item" href="/cabangPembantu">
+                    Data Kantor Cabang Pembantu
                   </a>
                 </div>
               </div>
