@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penomoran;
+use App\Models\SuratKeluar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -20,10 +21,14 @@ class PenomoranController extends Controller
         $id = Auth::id();
         $user = User::where('id', $id)->first();
         $riwayat = Penomoran::latest()->get();
+        $nomorSuratTerpakai = SuratKeluar::pluck('nomor_surat')->toArray();
+        $nomor = Penomoran::whereNotIn('nomor_surat', $nomorSuratTerpakai)->get();
+
 
         $datas = [
             'users' => $user,
             'riwayats' => $riwayat,
+            'nomors' => $nomor,
         ];
 
         return view('penomoran.index', $datas);

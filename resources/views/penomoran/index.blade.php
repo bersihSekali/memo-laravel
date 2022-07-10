@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-md-6 mb-5">
+    <div class="col-md-6">
         @if(session()->has('error'))
         <div class="alert alert-warning mt-3" role="alert">
             {{ session('error') }}
@@ -39,39 +39,76 @@
             @endif
         </div>
     </div>
-    <h4 class="card-title">Riwayat Pengambilan Nomor</h4>
-    <div class="table-responsive">
-        <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
-            <thead>
-                <tr>
-                    <th class="fs-4" scope="col" width="10%">Tanggal</th>
-                    <th class="fs-4" scope="col" width="20%">Riwayat</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($riwayats as $riwayat)
-                @if ($riwayat->jenis == 1)
-                <tr style="color:darkslateblue;">
-                    <td>
-                        {{$riwayat['created_at']}}
-                    </td>
-                    <td>
-                        {{$riwayat->createdBy['name']}} mengambil nomor {{$riwayat['nomor_surat']}}
-                    </td>
-                </tr>
-                @elseif ($riwayat->jenis == 2)
-                <tr style="color:darkgoldenrod;">
-                    <td>
-                        {{$riwayat['created_at']}}
-                    </td>
-                    <td>
-                        {{$riwayat->createdBy['name']}} mengambil nomor {{$riwayat['nomor_surat']}}
-                    </td>
-                </tr>
-                @endif
-                @endforeach
-            </tbody>
-        </table>
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="card-title mt-5 mb-3">Riwayat Pengambilan Nomor</h4>
+            <div class="card p-3">
+                <div class="table-responsive">
+                    <table id="tabel-data" class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="fs-4" scope="col" width="10%">Tanggal</th>
+                                <th class="fs-4" scope="col" width="20%">Riwayat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($riwayats as $riwayat)
+                            @if ($riwayat->jenis == 1)
+                            <tr style="color:darkslateblue;">
+                                <td>
+                                    {{$riwayat['created_at']}}
+                                </td>
+                                <td>
+                                    {{$riwayat->createdBy['name']}} mengambil nomor {{$riwayat['nomor_surat']}}
+                                </td>
+                            </tr>
+                            @elseif ($riwayat->jenis == 2)
+                            <tr style="color:darkgoldenrod;">
+                                <td>
+                                    {{$riwayat['created_at']}}
+                                </td>
+                                <td>
+                                    {{$riwayat->createdBy['name']}} mengambil nomor {{$riwayat['nomor_surat']}}
+                                </td>
+                            </tr>
+                            @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4 class="card-title mt-5 mb-3">Nomor Siap Pakai</h4>
+            <div class="card p-3">
+                <div class="table-responsive">
+                    <table id="tabel-data2" class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="fs-4" scope="col" width="10%">PIC Nomor</th>
+                                <th class="fs-4" scope="col" width="20%">Tanggal Ambil</th>
+                                <th class="fs-4" scope="col" width="20%">Nomor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($nomors as $data)
+                            <tr>
+                                <td>
+                                    {{$data->createdBy['name']}}
+                                </td>
+                                <td>
+                                    {{$data['created_at']}}
+                                </td>
+                                <td>
+                                    {{$data['nomor_surat']}}
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
